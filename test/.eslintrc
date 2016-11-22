@@ -1,0 +1,13 @@
+
+env:
+  jest: true
+  jasmine: true
+rules:
+  no-require: off
+  global-require: off
+  react/no-multi-comp: off
+  react/no-render-return-value: off
+  react/no-find-dom-node: off
+  react/prop-types: off
+  react/prefer-stateless-function: off
+  react/jsx-boolean-value: off

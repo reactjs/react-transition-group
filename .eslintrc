@@ -1,0 +1,16 @@
+
+parser: babel-eslint
+extends: airbnb
+env:
+  node: true
+  browser: true
+
+rules:
+  prefer-const: off
+  prefer-template: off
+  no-prototype-builtins: off
+  no-underscore-dangle: off
+  import/prefer-default-export: off
+  no-param-reassign: off
+  react/jsx-filename-extension: off
+  no-plusplus: off
