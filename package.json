@@ -2,11 +2,12 @@
   "name": "react-transition-group",
   "version": "1.0.0",
   "description": "A react component toolset for managing animations",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "jest --runInBand --verbose",
     "tdd": "jest --watch",
-    "build": "babel src --out-dir lib"
+    "build": "rimraf lib && babel src --out-dir lib",
+    "release": "release"
   },
   "repository": {
     "type": "git",
@@ -57,6 +58,11 @@
     "eslint-plugin-react": "^6.7.1",
     "jest-cli": "^17.0.3",
     "react": "^15.4.0",
-    "react-dom": "^15.4.0"
+    "react-dom": "^15.4.0",
+    "release-script": "^1.0.2",
+    "rimraf": "^2.5.4"
+  },
+  "release-script": {
+    "altPkgRootFolder": "lib"
   }
 }

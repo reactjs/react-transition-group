@@ -14,3 +14,9 @@ rules:
   no-param-reassign: off
   react/jsx-filename-extension: off
   no-plusplus: off
+  guard-for-in: off
+  no-restricted-syntax:
+    - error
+    - ForOfStatement
+    - LabeledStatement
+    - WithStatement

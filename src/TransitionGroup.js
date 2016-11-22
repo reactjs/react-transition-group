@@ -18,7 +18,6 @@ const defaultProps = {
 class TransitionGroup extends React.Component {
   static displayName = 'TransitionGroup';
 
-
   constructor(props, context) {
     super(props, context);
 
@@ -121,7 +120,7 @@ class TransitionGroup extends React.Component {
 
     if (component.componentWillEnter) {
       component.componentWillEnter(
-        this._handleDoneEntering.bind(this, key)
+        this._handleDoneEntering.bind(this, key),
       );
     } else {
       this._handleDoneEntering(key);

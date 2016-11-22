@@ -53,7 +53,7 @@ export function mergeChildMappings(prev, next) {
   let nextKeysPending = {};
 
   let pendingKeys = [];
-  for (var prevKey in prev) {
+  for (let prevKey in prev) {
     if (next.hasOwnProperty(prevKey)) {
       if (pendingKeys.length) {
         nextKeysPending[prevKey] = pendingKeys;
@@ -66,12 +66,12 @@ export function mergeChildMappings(prev, next) {
 
   let i;
   let childMapping = {};
-  for (var nextKey in next) {
+  for (let nextKey in next) {
     if (nextKeysPending.hasOwnProperty(nextKey)) {
       for (i = 0; i < nextKeysPending[nextKey].length; i++) {
         let pendingNextKey = nextKeysPending[nextKey][i];
         childMapping[nextKeysPending[nextKey][i]] = getValueForKey(
-          pendingNextKey
+          pendingNextKey,
         );
       }
     }

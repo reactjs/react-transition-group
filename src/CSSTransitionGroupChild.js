@@ -4,24 +4,11 @@ import raf from 'dom-helpers/util/requestAnimationFrame';
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 
+import { nameShape } from './utils/PropTypes';
+
 const propTypes = {
   children: React.PropTypes.node,
-  name: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.shape({
-      enter: React.PropTypes.string,
-      leave: React.PropTypes.string,
-      active: React.PropTypes.string,
-    }),
-    React.PropTypes.shape({
-      enter: React.PropTypes.string,
-      enterActive: React.PropTypes.string,
-      leave: React.PropTypes.string,
-      leaveActive: React.PropTypes.string,
-      appear: React.PropTypes.string,
-      appearActive: React.PropTypes.string,
-    }),
-  ]).isRequired,
+  name: nameShape.isRequired,
 
   // Once we require timeouts to be specified, we can remove the
   // boolean flags (appear etc.) and just accept a number
@@ -35,6 +22,9 @@ const propTypes = {
 };
 
 class CSSTransitionGroupChild extends React.Component {
+
+  static displayName = 'CSSTransitionGroupChild';
+
   componentWillMount() {
     this.classNameAndNodeQueue = [];
     this.transitionTimeouts = [];
