@@ -1,0 +1,68 @@
+{
+  "name": "react-transition-group",
+  "version": "1.0.0",
+  "description": "A react component toolset for managing animations",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "jest --runInBand --verbose",
+    "tdd": "jest --watch",
+    "build": "rimraf lib && babel src --out-dir lib",
+    "release": "release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reactjs/react-transition-group.git"
+  },
+  "keywords": [
+    "react",
+    "transition",
+    "addons",
+    "transition-group",
+    "animation",
+    "css",
+    "transitions"
+  ],
+  "author": "",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/reactjs/react-transition-group/issues"
+  },
+  "homepage": "https://github.com/reactjs/react-transition-group#readme",
+  "jest": {
+    "testRegex": "-test\\.js",
+    "testPathDirs": [
+      "<rootDir>/test"
+    ],
+    "timers": "fake"
+  },
+  "peerDependencies": {
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0"
+  },
+  "dependencies": {
+    "dom-helpers": "^3.2.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.2",
+    "babel-eslint": "^7.1.1",
+    "babel-jest": "^17.0.2",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-dev-expression": "^0.2.1",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-stage-2": "^6.18.0",
+    "eslint": "^3.10.2",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.7.1",
+    "jest-cli": "^17.0.3",
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0",
+    "release-script": "^1.0.2",
+    "rimraf": "^2.5.4"
+  },
+  "release-script": {
+    "altPkgRootFolder": "lib"
+  }
+}

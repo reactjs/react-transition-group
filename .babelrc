@@ -1,0 +1,13 @@
+{
+  "presets": [
+    ["latest", {
+      "es2015": "loose"
+    }],
+    "stage-2",
+    "react"
+  ],
+  "plugins": [
+    "dev-expression",
+    "add-module-exports"
+  ]
+}
