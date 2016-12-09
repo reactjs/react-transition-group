@@ -40,7 +40,7 @@
     "react-dom": "^15.0.0"
   },
   "dependencies": {
-    "dom-helpers": "^3.0.0"
+    "dom-helpers": "^3.2.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

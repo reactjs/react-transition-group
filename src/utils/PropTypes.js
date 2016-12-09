@@ -10,7 +10,7 @@ export function transitionTimeout(transitionType) {
       // If no timeout duration is provided
       if (props[timeoutPropName] == null) {
         return new Error(
-          timeoutPropName + ' wasn\'t supplied to ReactCSSTransitionGroup: ' +
+          timeoutPropName + ' wasn\'t supplied to CSSTransitionGroup: ' +
           'this can cause unreliable animations and won\'t be supported in ' +
           'a future version of React. See ' +
           'https://fb.me/react-animation-transition-group-timeout for more ' +

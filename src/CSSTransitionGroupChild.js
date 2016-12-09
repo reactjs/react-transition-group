@@ -1,10 +1,29 @@
 import addClass from 'dom-helpers/class/addClass';
 import removeClass from 'dom-helpers/class/removeClass';
 import raf from 'dom-helpers/util/requestAnimationFrame';
+import { transitionEnd, animationEnd } from 'dom-helpers/transition/properties';
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 
 import { nameShape } from './utils/PropTypes';
+
+let events = [];
+if (transitionEnd) events.push(transitionEnd);
+if (animationEnd) events.push(animationEnd);
+
+function addEndListener(node, listener) {
+  if (events.length) {
+    events.forEach(e =>
+      node.addEventListener(e, listener, false));
+  } else {
+    setTimeout(listener, 0);
+  }
+
+  return () => {
+    if (!events.length) return;
+    events.forEach(e => node.removeEventListener(e, listener, false));
+  };
+}
 
 const propTypes = {
   children: React.PropTypes.node,
@@ -56,6 +75,7 @@ class CSSTransitionGroupChild extends React.Component {
     let className = this.props.name[animationType] || this.props.name + '-' + animationType;
     let activeClassName = this.props.name[animationType + 'Active'] || className + '-active';
     let timer = null;
+    let removeListeners;
 
     addClass(node, className);
 
@@ -63,23 +83,32 @@ class CSSTransitionGroupChild extends React.Component {
     this.queueClassAndNode(activeClassName, node);
 
     // Clean-up the animation after the specified delay
-    timer = setTimeout((e) => {
+    let finish = (e) => {
       if (e && e.target !== node) {
         return;
       }
 
-      clearTimeout(timeout);
+      clearTimeout(timer);
+      if (removeListeners) removeListeners();
+
       removeClass(node, className);
       removeClass(node, activeClassName);
+
+      if (removeListeners) removeListeners();
 
       // Usually this optional callback is used for informing an owner of
       // a leave animation and telling it to remove the child.
       if (finishCallback) {
         finishCallback();
       }
-    }, timeout);
+    };
 
-    this.transitionTimeouts.push(timer);
+    if (timeout) {
+      timer = setTimeout(finish, timeout);
+      this.transitionTimeouts.push(timer);
+    } else if (transitionEnd) {
+      removeListeners = addEndListener(node, finish);
+    }
   }
 
   queueClassAndNode(className, node) {
