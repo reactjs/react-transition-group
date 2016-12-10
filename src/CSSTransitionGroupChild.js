@@ -157,7 +157,9 @@ class CSSTransitionGroupChild extends React.Component {
   }
 
   render() {
-    return React.Children.only(this.props.children);
+    const props = { ...this.props };
+    Object.keys(propTypes).forEach(key => delete props[key]);
+    return React.cloneElement(React.Children.only(this.props.children), props);
   }
 }
 

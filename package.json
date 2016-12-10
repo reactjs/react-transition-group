@@ -50,6 +50,7 @@
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-dev-expression": "^0.2.1",
     "babel-preset-latest": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
     "babel-preset-stage-2": "^6.18.0",
     "eslint": "^3.10.2",
     "eslint-config-airbnb": "^13.0.0",
