@@ -1,4 +1,6 @@
+import chain from 'chain-function';
 import React from 'react';
+import warning from 'warning';
 
 import { getChildMapping, mergeChildMappings } from './utils/ChildMapping';
 
@@ -187,6 +189,11 @@ class TransitionGroup extends React.Component {
     for (let key in this.state.children) {
       let child = this.state.children[key];
       if (child) {
+        let isCallbackRef = typeof child.ref !== 'string';
+        warning(isCallbackRef,
+          'string refs are not supported on children of TransitionGroup and will be ignored. ' +
+          'Please use a callback ref instead: https://facebook.github.io/react/docs/refs-and-the-dom.html#the-ref-callback-attribute');
+
         // You may need to apply reactive updates to a child as it is leaving.
         // The normal React way to do it won't work since the child will have
         // already been removed. In case you need this behavior you can provide
@@ -196,9 +203,11 @@ class TransitionGroup extends React.Component {
           this.props.childFactory(child),
           {
             key,
-            ref: (r) => {
-              this.childRefs[key] = r;
-            },
+            ref: chain(
+              isCallbackRef ? child.ref : null,
+              (r) => {
+                this.childRefs[key] = r;
+              }),
           },
         ));
       }

@@ -40,7 +40,9 @@
     "react-dom": "^15.0.0"
   },
   "dependencies": {
-    "dom-helpers": "^3.2.0"
+    "chain-function": "^1.0.0",
+    "dom-helpers": "^3.2.0",
+    "warning": "^3.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
@@ -58,10 +60,11 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.7.1",
     "jest-cli": "^17.0.3",
-    "react": "^15.4.0",
-    "react-dom": "^15.4.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "release-script": "^1.0.2",
-    "rimraf": "^2.5.4"
+    "rimraf": "^2.5.4",
+    "teaspoon": "^6.4.3"
   },
   "release-script": {
     "altPkgRootFolder": "lib"

@@ -1,3 +1,5 @@
+import tsp from 'teaspoon';
+
 let React;
 let ReactDOM;
 let TransitionGroup;
@@ -7,10 +9,6 @@ let TransitionGroup;
 describe('TransitionGroup', () => {
   let container;
 
-  // function normalizeCodeLocInfo(str) {
-  //   return str && str.replace(/\(at .+?:\d+\)/g, '(at **)');
-  // }
-
   beforeEach(() => {
     React = require('react');
     ReactDOM = require('react-dom');
@@ -19,6 +17,46 @@ describe('TransitionGroup', () => {
     container = document.createElement('div');
   });
 
+  it('should warn when string refs are used', () => {
+    class Child extends React.Component {
+      render() {
+        return <span />;
+      }
+    }
+
+    spyOn(console, 'error');
+
+    tsp(
+      <TransitionGroup>
+        <Child ref="string" />
+      </TransitionGroup>,
+    )
+    .render();
+
+    expect(console.error).toHaveBeenCalled();
+    expect(console.error.calls.mostRecent().args[0]).toMatch(
+      /string refs are not supported on children of TransitionGroup and will be ignored/,
+    );
+  });
+
+  it('should allow callback refs', () => {
+    const ref = jest.fn();
+
+    class Child extends React.Component {
+      render() {
+        return <span />;
+      }
+    }
+
+    tsp(
+      <TransitionGroup>
+        <Child ref={ref} />
+      </TransitionGroup>,
+    )
+    .render();
+
+    expect(ref).toHaveBeenCalled();
+  });
 
   it('should handle willEnter correctly', () => {
     let log = [];
