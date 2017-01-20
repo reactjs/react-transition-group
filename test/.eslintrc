@@ -5,9 +5,14 @@ env:
 rules:
   no-require: off
   global-require: off
+  no-console: off
   react/no-multi-comp: off
   react/no-render-return-value: off
   react/no-find-dom-node: off
   react/prop-types: off
   react/prefer-stateless-function: off
   react/jsx-boolean-value: off
+  react/no-string-refs: off
+  import/no-extraneous-dependencies:
+    - error
+    - devDependencies: true
