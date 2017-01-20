@@ -189,8 +189,8 @@ class TransitionGroup extends React.Component {
     for (let key in this.state.children) {
       let child = this.state.children[key];
       if (child) {
-        let isCallbackRef = typeof child.ref === 'function';
-        warning(!child.ref || isCallbackRef,
+        let isCallbackRef = typeof child.ref !== 'string';
+        warning(isCallbackRef,
           'string refs are not supported on children of TransitionGroup and will be ignored. ' +
           'Please use a callback ref instead: https://facebook.github.io/react/docs/refs-and-the-dom.html#the-ref-callback-attribute');
 
