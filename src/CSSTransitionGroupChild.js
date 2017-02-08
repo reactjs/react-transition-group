@@ -7,34 +7,45 @@ import { findDOMNode } from 'react-dom';
 
 import { nameShape } from './utils/PropTypes';
 
-let events = [];
-if (transitionEnd) events.push(transitionEnd);
-if (animationEnd) events.push(animationEnd);
 
-function addEndListener(node, listener) {
-  if (events.length) {
-    events.forEach(e =>
-      node.addEventListener(e, listener, false));
-  } else {
-    setTimeout(listener, 0);
+function onTransitionEnd(node, timeout, handler) {
+  let timeoutTimer;
+
+  function clearHandlers() {
+    clearTimeout(timeoutTimer);
+    timeoutTimer = null;
+    /* eslint-disable no-use-before-define */
+    node.removeEventListener(transitionEnd, finish);
+    node.removeEventListener(animationEnd, finish);
+    /* eslint-enable no-use-before-define */
   }
 
-  return () => {
-    if (!events.length) return;
-    events.forEach(e => node.removeEventListener(e, listener, false));
-  };
+  function finish(event) {
+    if (event && event.target !== node) return;
+
+    clearHandlers();
+    handler();
+  }
+
+  if (!transitionEnd) {
+    timeout = 0;
+  }
+
+  timeoutTimer = setTimeout(finish, timeout);
+
+  if (transitionEnd) {
+    node.addEventListener(animationEnd, finish, false);
+    node.addEventListener(transitionEnd, finish, false);
+  }
+
+  return clearHandlers;
 }
+
 
 const propTypes = {
   children: React.PropTypes.node,
   name: nameShape.isRequired,
 
-  // Once we require timeouts to be specified, we can remove the
-  // boolean flags (appear etc.) and just accept a number
-  // or a bool for the timeout flags (appearTimeout etc.)
-  appear: React.PropTypes.bool,
-  enter: React.PropTypes.bool,
-  leave: React.PropTypes.bool,
   appearTimeout: React.PropTypes.number,
   enterTimeout: React.PropTypes.number,
   leaveTimeout: React.PropTypes.number,
@@ -46,17 +57,15 @@ class CSSTransitionGroupChild extends React.Component {
 
   componentWillMount() {
     this.classNameAndNodeQueue = [];
-    this.transitionTimeouts = [];
+    this.clearTransitions = [];
+    this.pendingRafs = [];
   }
 
   componentWillUnmount() {
     this.unmounted = true;
 
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
-    this.transitionTimeouts.forEach((timeout) => {
-      clearTimeout(timeout);
+    this.clearTransitions.forEach((clear) => {
+      clear();
     });
 
     this.classNameAndNodeQueue.length = 0;
@@ -74,41 +83,22 @@ class CSSTransitionGroupChild extends React.Component {
 
     let className = this.props.name[animationType] || this.props.name + '-' + animationType;
     let activeClassName = this.props.name[animationType + 'Active'] || className + '-active';
-    let timer = null;
-    let removeListeners;
 
     addClass(node, className);
-
-    // Need to do this to actually trigger a transition.
     this.queueClassAndNode(activeClassName, node);
 
-    // Clean-up the animation after the specified delay
-    let finish = (e) => {
-      if (e && e.target !== node) {
-        return;
-      }
+    this.clearTransitions.push(
+      onTransitionEnd(node, timeout, () => {
+        removeClass(node, className);
+        removeClass(node, activeClassName);
 
-      clearTimeout(timer);
-      if (removeListeners) removeListeners();
-
-      removeClass(node, className);
-      removeClass(node, activeClassName);
-
-      if (removeListeners) removeListeners();
-
-      // Usually this optional callback is used for informing an owner of
-      // a leave animation and telling it to remove the child.
-      if (finishCallback) {
-        finishCallback();
-      }
-    };
-
-    if (timeout) {
-      timer = setTimeout(finish, timeout);
-      this.transitionTimeouts.push(timer);
-    } else if (transitionEnd) {
-      removeListeners = addEndListener(node, finish);
-    }
+        // Usually this optional callback is used for informing an owner of
+        // a leave animation and telling it to remove the child.
+        if (finishCallback) {
+          finishCallback();
+        }
+      }),
+    );
   }
 
   queueClassAndNode(className, node) {
@@ -124,6 +114,9 @@ class CSSTransitionGroupChild extends React.Component {
 
   flushClassNameAndNodeQueue() {
     if (!this.unmounted) {
+      let first = this.classNameAndNodeQueue[0];
+
+      first && first.node.offsetHeight;
       this.classNameAndNodeQueue.forEach((obj) => {
         addClass(obj.node, obj.className);
       });
@@ -133,7 +126,7 @@ class CSSTransitionGroupChild extends React.Component {
   }
 
   componentWillAppear = (done) => {
-    if (this.props.appear) {
+    if (this.props.appearTimeout != null) {
       this.transition('appear', done, this.props.appearTimeout);
     } else {
       done();
@@ -141,7 +134,7 @@ class CSSTransitionGroupChild extends React.Component {
   }
 
   componentWillEnter = (done) => {
-    if (this.props.enter) {
+    if (this.props.enterTimeout != null) {
       this.transition('enter', done, this.props.enterTimeout);
     } else {
       done();
@@ -149,7 +142,7 @@ class CSSTransitionGroupChild extends React.Component {
   }
 
   componentWillLeave = (done) => {
-    if (this.props.leave) {
+    if (this.props.leaveTimeout != null) {
       this.transition('leave', done, this.props.leaveTimeout);
     } else {
       done();
@@ -159,12 +152,12 @@ class CSSTransitionGroupChild extends React.Component {
   render() {
     const props = { ...this.props };
     delete props.name;
-    delete props.appear;
-    delete props.enter;
-    delete props.leave;
+
     delete props.appearTimeout;
     delete props.enterTimeout;
     delete props.leaveTimeout;
+    delete props.children;
+
     return React.cloneElement(React.Children.only(this.props.children), props);
   }
 }

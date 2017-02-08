@@ -7,7 +7,9 @@
     "test": "jest --runInBand --verbose",
     "tdd": "jest --watch",
     "build": "rimraf lib && babel src --out-dir lib",
-    "release": "release"
+    "release": "release",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "repository": {
     "type": "git",
@@ -41,29 +43,34 @@
   },
   "dependencies": {
     "chain-function": "^1.0.0",
-    "dom-helpers": "^3.2.0",
+    "dom-helpers": "^3.2.1",
     "warning": "^3.0.0"
   },
   "devDependencies": {
+    "@kadira/storybook": "^2.21.0",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.2",
     "babel-eslint": "^7.1.1",
     "babel-jest": "^17.0.2",
+    "babel-loader": "^6.2.10",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-dev-expression": "^0.2.1",
     "babel-preset-latest": "^6.16.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-2": "^6.18.0",
+    "css-literal-loader": "^0.1.2",
+    "css-loader": "^0.26.1",
     "eslint": "^3.10.2",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.7.1",
-    "jest-cli": "^17.0.3",
+    "jest-cli": "^18.1.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "release-script": "^1.0.2",
     "rimraf": "^2.5.4",
+    "style-loader": "^0.13.1",
     "teaspoon": "^6.4.3"
   },
   "release-script": {

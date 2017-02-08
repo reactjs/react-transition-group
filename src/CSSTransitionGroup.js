@@ -2,52 +2,83 @@ import React from 'react';
 
 import TransitionGroup from './TransitionGroup';
 import CSSTransitionGroupChild from './CSSTransitionGroupChild';
-import { nameShape, transitionTimeout } from './utils/PropTypes';
+import { nameShape } from './utils/PropTypes';
+
+const transitionPropType = React.PropTypes.oneOfType([
+  React.PropTypes.bool,
+  React.PropTypes.number,
+]);
 
 const propTypes = {
-  transitionName: nameShape.isRequired,
+  name: nameShape.isRequired,
 
-  transitionAppear: React.PropTypes.bool,
-  transitionEnter: React.PropTypes.bool,
-  transitionLeave: React.PropTypes.bool,
-  transitionAppearTimeout: transitionTimeout('Appear'),
-  transitionEnterTimeout: transitionTimeout('Enter'),
-  transitionLeaveTimeout: transitionTimeout('Leave'),
+  timeout: (props, ...rest) => {
+    let propType = React.PropTypes.number;
+
+    if (
+      props.appearTimeout === true ||
+      props.enterTimeout === true ||
+      props.leaveTimeout === true
+    ) {
+      propType = propType.isRequired;
+    }
+
+    return propType(props, ...rest);
+  },
+
+  appearTransition: transitionPropType.isRequired,
+  enterTransition: transitionPropType.isRequired,
+  leaveTransition: transitionPropType.isRequired,
 };
 
 const defaultProps = {
-  transitionAppear: false,
-  transitionEnter: true,
-  transitionLeave: true,
+  appearTransition: false,
+  enterTransition: true,
+  leaveTransition: true,
 };
 
 class CSSTransitionGroup extends React.Component {
 
-  static displayName = 'CSSTransitionGroup';
+  getTimeout = (timeout) => {
+    if (timeout === false) return null;
+    return timeout === true ? this.props.timeout : timeout;
+  };
 
   // We need to provide this childFactory so that
   // ReactCSSTransitionGroupChild can receive updates to name, enter, and
   // leave while it is leaving.
-  _wrapChild = child => (
-    React.createElement(
-      CSSTransitionGroupChild,
-      {
-        name: this.props.transitionName,
-        appear: this.props.transitionAppear,
-        enter: this.props.transitionEnter,
-        leave: this.props.transitionLeave,
-        appearTimeout: this.props.transitionAppearTimeout,
-        enterTimeout: this.props.transitionEnterTimeout,
-        leaveTimeout: this.props.transitionLeaveTimeout,
-      },
-      child,
-    )
-  );
+  renderChild = (child) => {
+    const {
+      name, appearTransition, enterTransition, leaveTransition
+    } = this.props;
+
+    return (
+      <CSSTransitionGroupChild
+        name={name}
+        appearTimeout={this.getTimeout(appearTransition)}
+        enterTimeout={this.getTimeout(enterTransition)}
+        leaveTimeout={this.getTimeout(leaveTransition)}
+      >
+        {child}
+      </CSSTransitionGroupChild>
+    );
+  }
 
   render() {
-    return React.createElement(
-      TransitionGroup,
-      Object.assign({}, this.props, { childFactory: this._wrapChild }),
+    let props = { ...this.props };
+
+    delete props.timeout;
+    delete props.name;
+    delete props.childFactory;
+    delete props.leaveTransition;
+    delete props.enterTransition;
+    delete props.appearTransition;
+
+    return (
+      <TransitionGroup
+        {...props}
+        childFactory={this.renderChild}
+      />
     );
   }
 }

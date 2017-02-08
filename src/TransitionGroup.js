@@ -4,6 +4,9 @@ import warning from 'warning';
 
 import { getChildMapping, mergeChildMappings } from './utils/ChildMapping';
 
+function notify(handler, args = []) {
+  if (handler) handler(...args);
+}
 
 const propTypes = {
   component: React.PropTypes.any,
@@ -18,29 +21,24 @@ const defaultProps = {
 
 
 class TransitionGroup extends React.Component {
-  static displayName = 'TransitionGroup';
-
   constructor(props, context) {
     super(props, context);
 
     this.childRefs = Object.create(null);
+    this.currentlyTransitioningKeys = {};
+    this.keysToEnter = [];
+    this.keysToLeave = [];
 
     this.state = {
       children: getChildMapping(props.children),
     };
   }
 
-  componentWillMount() {
-    this.currentlyTransitioningKeys = {};
-    this.keysToEnter = [];
-    this.keysToLeave = [];
-  }
-
   componentDidMount() {
     let initialChildMapping = this.state.children;
     for (let key in initialChildMapping) {
       if (initialChildMapping[key]) {
-        this.performAppear(key);
+        this.perform('Appear', key);
       }
     }
   }
@@ -58,16 +56,22 @@ class TransitionGroup extends React.Component {
 
     for (let key in nextChildMapping) {
       let hasPrev = prevChildMapping && prevChildMapping.hasOwnProperty(key);
-      if (nextChildMapping[key] && !hasPrev &&
-          !this.currentlyTransitioningKeys[key]) {
+      if (
+        nextChildMapping[key] &&
+        !hasPrev &&
+        !this.currentlyTransitioningKeys[key]
+      ) {
         this.keysToEnter.push(key);
       }
     }
 
     for (let key in prevChildMapping) {
       let hasNext = nextChildMapping && nextChildMapping.hasOwnProperty(key);
-      if (prevChildMapping[key] && !hasNext &&
-          !this.currentlyTransitioningKeys[key]) {
+      if (
+        prevChildMapping[key] &&
+        !hasNext &&
+        !this.currentlyTransitioningKeys[key]
+      ) {
         this.keysToLeave.push(key);
       }
     }
@@ -78,93 +82,37 @@ class TransitionGroup extends React.Component {
   componentDidUpdate() {
     let keysToEnter = this.keysToEnter;
     this.keysToEnter = [];
-    keysToEnter.forEach(this.performEnter);
+    keysToEnter.forEach(key => this.perform('Enter', key));
 
     let keysToLeave = this.keysToLeave;
     this.keysToLeave = [];
-    keysToLeave.forEach(this.performLeave);
+    keysToLeave.forEach(key => this.perform('Leave', key));
   }
 
-  performAppear = (key) => {
-    this.currentlyTransitioningKeys[key] = true;
-
+  handleDoneAppear = (key) => {
     let component = this.childRefs[key];
 
-    if (component.componentWillAppear) {
-      component.componentWillAppear(
-        this._handleDoneAppearing.bind(this, key),
-      );
-    } else {
-      this._handleDoneAppearing(key);
-    }
-  };
-
-  _handleDoneAppearing = (key) => {
-    let component = this.childRefs[key];
-    if (component.componentDidAppear) {
-      component.componentDidAppear();
-    }
+    notify(component.componentDidAppear);
 
     delete this.currentlyTransitioningKeys[key];
 
-    let currentChildMapping = getChildMapping(this.props.children);
-
-    if (!currentChildMapping || !currentChildMapping.hasOwnProperty(key)) {
-      // This was removed before it had fully appeared. Remove it.
-      this.performLeave(key);
-    }
+    this.maybePerformLeave(key);
   };
 
-  performEnter = (key) => {
-    this.currentlyTransitioningKeys[key] = true;
-
+  handleDoneEnter = (key) => {
     let component = this.childRefs[key];
 
-    if (component.componentWillEnter) {
-      component.componentWillEnter(
-        this._handleDoneEntering.bind(this, key),
-      );
-    } else {
-      this._handleDoneEntering(key);
-    }
-  };
-
-  _handleDoneEntering = (key) => {
-    let component = this.childRefs[key];
-    if (component.componentDidEnter) {
-      component.componentDidEnter();
-    }
+    notify(component.componentDidEnter);
 
     delete this.currentlyTransitioningKeys[key];
 
-    let currentChildMapping = getChildMapping(this.props.children);
-
-    if (!currentChildMapping || !currentChildMapping.hasOwnProperty(key)) {
-      // This was removed before it had fully entered. Remove it.
-      this.performLeave(key);
-    }
+    this.maybePerformLeave(key);
   };
 
-  performLeave = (key) => {
-    this.currentlyTransitioningKeys[key] = true;
-
-    let component = this.childRefs[key];
-    if (component.componentWillLeave) {
-      component.componentWillLeave(this._handleDoneLeaving.bind(this, key));
-    } else {
-      // Note that this is somewhat dangerous b/c it calls setState()
-      // again, effectively mutating the component before all the work
-      // is done.
-      this._handleDoneLeaving(key);
-    }
-  };
-
-  _handleDoneLeaving = (key) => {
+  handleDoneLeave = (key) => {
     let component = this.childRefs[key];
 
-    if (component.componentDidLeave) {
-      component.componentDidLeave();
-    }
+    notify(component.componentDidLeave);
 
     delete this.currentlyTransitioningKeys[key];
 
@@ -172,58 +120,83 @@ class TransitionGroup extends React.Component {
 
     if (currentChildMapping && currentChildMapping.hasOwnProperty(key)) {
       // This entered again before it fully left. Add it again.
-      this.performEnter(key);
+      this.perform('Enter', key);
     } else {
-      this.setState((state) => {
-        let newChildren = Object.assign({}, state.children);
+      this.setState(({ children }) => {
+        let newChildren = Object.assign({}, children);
         delete newChildren[key];
         return { children: newChildren };
       });
     }
   };
 
+  perform = (type, key) => {
+    let component = this.childRefs[key];
+
+    let finishHandler = () => this[`handleDone${type}`](key);
+    let lifeCycle = component && component[`componentWill${type}`];
+
+    this.currentlyTransitioningKeys[key] = true;
+
+    if (lifeCycle) {
+      lifeCycle.call(component, finishHandler);
+    } else {
+      // Note that this is somewhat dangerous b/c it calls setState()
+      // again, effectively mutating the component before all the work
+      // is done.
+      finishHandler();
+    }
+  };
+
+  maybePerformLeave = (key) => {
+    let currentChildMapping = getChildMapping(this.props.children);
+
+    if (!currentChildMapping || !currentChildMapping.hasOwnProperty(key)) {
+      // This was removed before it had fully appeared. Remove it.
+      this.perform('Leave', key);
+    }
+  }
+
   render() {
+    const { children } = this.state;
+
     // TODO: we could get rid of the need for the wrapper node
     // by cloning a single child
     let childrenToRender = [];
-    for (let key in this.state.children) {
-      let child = this.state.children[key];
-      if (child) {
-        let isCallbackRef = typeof child.ref !== 'string';
-        warning(isCallbackRef,
-          'string refs are not supported on children of TransitionGroup and will be ignored. ' +
-          'Please use a callback ref instead: https://facebook.github.io/react/docs/refs-and-the-dom.html#the-ref-callback-attribute');
+    for (let key in children) {
+      let child = children[key];
 
-        // You may need to apply reactive updates to a child as it is leaving.
-        // The normal React way to do it won't work since the child will have
-        // already been removed. In case you need this behavior you can provide
-        // a childFactory function to wrap every child, even the ones that are
-        // leaving.
-        childrenToRender.push(React.cloneElement(
-          this.props.childFactory(child),
-          {
-            key,
-            ref: chain(
-              isCallbackRef ? child.ref : null,
-              (r) => {
-                this.childRefs[key] = r;
-              }),
-          },
-        ));
-      }
+      if (!child) continue;
+
+      let isCallbackRef = typeof child.ref !== 'string';
+      warning(isCallbackRef,
+        'string refs are not supported on children of TransitionGroup and will be ignored. ' +
+        'Please use a callback ref instead: https://facebook.github.io/react/docs/refs-and-the-dom.html#the-ref-callback-attribute');
+
+      // You may need to apply reactive updates to a child as it is leaving.
+      // The normal React way to do it won't work since the child will have
+      // already been removed. In case you need this behavior you can provide
+      // a childFactory function to wrap every child, even the ones that are
+      // leaving.
+      childrenToRender.push(React.cloneElement(
+        this.props.childFactory(child),
+        {
+          key,
+          ref: chain(
+            isCallbackRef ? child.ref : null,
+            (r) => {
+              this.childRefs[key] = r;
+            }),
+        },
+      ));
     }
 
     // Do not forward TransitionGroup props to primitive DOM nodes
-    let props = Object.assign({}, this.props);
-    delete props.transitionLeave;
-    delete props.transitionName;
-    delete props.transitionAppear;
-    delete props.transitionEnter;
+    let props = { ...this.props };
+
     delete props.childFactory;
-    delete props.transitionLeaveTimeout;
-    delete props.transitionEnterTimeout;
-    delete props.transitionAppearTimeout;
     delete props.component;
+    delete props.children;
 
     return React.createElement(
       this.props.component,

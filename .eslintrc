@@ -11,10 +11,18 @@ rules:
   no-prototype-builtins: off
   no-underscore-dangle: off
   import/prefer-default-export: off
+  import/no-extraneous-dependencies:
+    - error
+    - devDependencies: false
   no-param-reassign: off
   react/jsx-filename-extension: off
+  react/no-did-mount-set-state: off
+  react/forbid-prop-types: off
+  react/prefer-stateless-function: off
   no-plusplus: off
   guard-for-in: off
+  no-continue: off
+  class-methods-use-this: 'off'
   no-restricted-syntax:
     - error
     - ForOfStatement
