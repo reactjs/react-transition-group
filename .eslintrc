@@ -13,6 +13,7 @@ rules:
   import/prefer-default-export: off
   no-param-reassign: off
   react/jsx-filename-extension: off
+  react/no-did-mount-set-state: off
   no-plusplus: off
   guard-for-in: off
   no-restricted-syntax:
