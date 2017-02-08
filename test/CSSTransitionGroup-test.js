@@ -298,9 +298,7 @@ describe('CSSTransitionGroup', () => {
       state = { showChild: true };
 
       componentDidMount() {
-        setTimeout(() => {
-          this.setState({ showChild: false });
-        });
+        this.setState({ showChild: false });
       }
 
       render() {
