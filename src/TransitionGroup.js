@@ -101,7 +101,7 @@ class TransitionGroup extends React.Component {
 
   _handleDoneAppearing = (key) => {
     let component = this.childRefs[key];
-    if (component.componentDidAppear) {
+    if (component && component.componentDidAppear) {
       component.componentDidAppear();
     }
 
@@ -131,7 +131,7 @@ class TransitionGroup extends React.Component {
 
   _handleDoneEntering = (key) => {
     let component = this.childRefs[key];
-    if (component.componentDidEnter) {
+    if (component && component.componentDidEnter) {
       component.componentDidEnter();
     }
 
@@ -161,8 +161,8 @@ class TransitionGroup extends React.Component {
 
   _handleDoneLeaving = (key) => {
     let component = this.childRefs[key];
-
-    if (component.componentDidLeave) {
+    
+    if (component && component.componentDidLeave) {
       component.componentDidLeave();
     }
 
