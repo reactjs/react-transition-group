@@ -125,6 +125,11 @@ class CSSTransitionGroupChild extends React.Component {
   flushClassNameAndNodeQueue() {
     if (!this.unmounted) {
       this.classNameAndNodeQueue.forEach((obj) => {
+        // This is for to force a repaint,
+        // which is necessary in order to transition styles when adding a class name.
+        /* eslint-disable no-unused-expressions */
+        obj.node.scrollTop;
+        /* eslint-enable no-unused-expressions */
         addClass(obj.node, obj.className);
       });
     }
@@ -165,6 +170,7 @@ class CSSTransitionGroupChild extends React.Component {
     delete props.appearTimeout;
     delete props.enterTimeout;
     delete props.leaveTimeout;
+    delete props.children;
     return React.cloneElement(React.Children.only(this.props.children), props);
   }
 }
