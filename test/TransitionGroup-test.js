@@ -39,6 +39,20 @@ describe('TransitionGroup', () => {
     );
   });
 
+  it('should allow null components', () => {
+    function FirstChild(props) {
+      const childrenArray = React.Children.toArray(props.children);
+      return childrenArray[0] || null;
+    }
+
+    tsp(
+      <TransitionGroup component={FirstChild}>
+        <span />
+      </TransitionGroup>,
+    )
+    .render();
+  });
+
   it('should allow callback refs', () => {
     const ref = jest.fn();
 

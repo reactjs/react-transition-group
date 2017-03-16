@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --runInBand --verbose",
     "tdd": "jest --watch",
-    "build": "rimraf lib && babel src --out-dir lib",
+    "build": "rimraf lib && babel src --out-dir lib && npm run build:dist",
+    "build:dist": "rimraf lib/dist && webpack -p --define process.env.NODE_ENV='production'",
     "lint": "eslint src test",
     "release": "release"
   },
@@ -31,7 +32,7 @@
   "homepage": "https://github.com/reactjs/react-transition-group#readme",
   "jest": {
     "testRegex": "-test\\.js",
-    "testPathDirs": [
+    "roots": [
       "<rootDir>/test"
     ],
     "timers": "fake"
@@ -49,23 +50,25 @@
     "babel-cli": "^6.24.0",
     "babel-core": "^6.24.0",
     "babel-eslint": "^7.1.1",
-    "babel-jest": "^17.0.2",
+    "babel-jest": "^19.0.0",
+    "babel-loader": "^6.4.1",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-dev-expression": "^0.2.1",
     "babel-preset-latest": "^6.24.0",
     "babel-preset-react": "^6.23.0",
     "babel-preset-stage-2": "^6.18.0",
     "eslint": "^3.17.1",
-    "eslint-config-airbnb": "^13.0.0",
+    "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.0",
-    "jest-cli": "^17.0.3",
+    "jest-cli": "^19.0.2",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "release-script": "^1.0.2",
     "rimraf": "^2.6.1",
-    "teaspoon": "^6.4.3"
+    "teaspoon": "^6.4.3",
+    "webpack": "^2.2.1"
   },
   "release-script": {
     "altPkgRootFolder": "lib"

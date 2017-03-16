@@ -161,7 +161,7 @@ class TransitionGroup extends React.Component {
 
   _handleDoneLeaving = (key) => {
     let component = this.childRefs[key];
-    
+
     if (component && component.componentDidLeave) {
       component.componentDidLeave();
     }

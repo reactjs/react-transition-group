@@ -14,6 +14,7 @@ rules:
   no-param-reassign: off
   react/jsx-filename-extension: off
   react/no-did-mount-set-state: off
+  react/require-default-props: off
   no-plusplus: off
   guard-for-in: off
   no-restricted-syntax:

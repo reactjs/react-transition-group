@@ -1,3 +1,7 @@
+## [v1.1.1]
+> 2017-03-16
+
+- **Chore:** Add a prebuilt version of the library for jsbin and the like.
 
 ## [v1.1.0]
 > 2017-03-16
