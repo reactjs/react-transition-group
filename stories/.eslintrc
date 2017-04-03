@@ -1,0 +1,10 @@
+globals:
+  css: false
+rules:
+  react/prop-types: off
+  no-unused-vars:
+    - error
+    - varsIgnorePattern: ^_$
+  import/no-extraneous-dependencies:
+    - error
+    - devDependencies: true
