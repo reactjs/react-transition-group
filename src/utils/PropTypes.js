@@ -17,7 +17,7 @@ export function transitionTimeout(transitionType) {
           'information.',
         );
 
-      // If the duration isn't a number
+        // If the duration isn't a number
       } else if (typeof props[timeoutPropName] !== 'number') {
         return new Error(timeoutPropName + ' must be a number (in milliseconds)');
       }
@@ -26,6 +26,17 @@ export function transitionTimeout(transitionType) {
     return null;
   };
 }
+
+export const _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i]; for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+  return target;
+};
 
 export const nameShape = React.PropTypes.oneOfType([
   React.PropTypes.string,
