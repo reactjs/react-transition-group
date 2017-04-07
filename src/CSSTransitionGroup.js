@@ -2,7 +2,7 @@ import React from 'react';
 
 import TransitionGroup from './TransitionGroup';
 import CSSTransitionGroupChild from './CSSTransitionGroupChild';
-import { nameShape, transitionTimeout } from './utils/PropTypes';
+import { nameShape, transitionTimeout, _extends } from './utils/PropTypes';
 
 const propTypes = {
   transitionName: nameShape.isRequired,
@@ -47,7 +47,7 @@ class CSSTransitionGroup extends React.Component {
   render() {
     return React.createElement(
       TransitionGroup,
-      Object.assign({}, this.props, { childFactory: this._wrapChild }),
+      _extends({}, this.props, { childFactory: this._wrapChild }),
     );
   }
 }
