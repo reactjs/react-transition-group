@@ -3,6 +3,7 @@ import removeClass from 'dom-helpers/class/removeClass';
 import raf from 'dom-helpers/util/requestAnimationFrame';
 import { transitionEnd, animationEnd } from 'dom-helpers/transition/properties';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 
 import { nameShape } from './utils/PropTypes';
@@ -26,18 +27,18 @@ function addEndListener(node, listener) {
 }
 
 const propTypes = {
-  children: React.PropTypes.node,
+  children: PropTypes.node,
   name: nameShape.isRequired,
 
   // Once we require timeouts to be specified, we can remove the
   // boolean flags (appear etc.) and just accept a number
   // or a bool for the timeout flags (appearTimeout etc.)
-  appear: React.PropTypes.bool,
-  enter: React.PropTypes.bool,
-  leave: React.PropTypes.bool,
-  appearTimeout: React.PropTypes.number,
-  enterTimeout: React.PropTypes.number,
-  leaveTimeout: React.PropTypes.number,
+  appear: PropTypes.bool,
+  enter: PropTypes.bool,
+  leave: PropTypes.bool,
+  appearTimeout: PropTypes.number,
+  enterTimeout: PropTypes.number,
+  leaveTimeout: PropTypes.number,
 };
 
 class CSSTransitionGroupChild extends React.Component {

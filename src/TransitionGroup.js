@@ -1,14 +1,15 @@
 import chain from 'chain-function';
 import React from 'react';
+import PropTypes from 'prop-types';
 import warning from 'warning';
 
 import { getChildMapping, mergeChildMappings } from './utils/ChildMapping';
 
 
 const propTypes = {
-  component: React.PropTypes.any,
-  childFactory: React.PropTypes.func,
-  children: React.PropTypes.node,
+  component: PropTypes.any,
+  childFactory: PropTypes.func,
+  children: PropTypes.node,
 };
 
 const defaultProps = {
