@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export function transitionTimeout(transitionType) {
   let timeoutPropName = 'transition' + transitionType + 'Timeout';
@@ -27,19 +28,19 @@ export function transitionTimeout(transitionType) {
   };
 }
 
-export const nameShape = React.PropTypes.oneOfType([
-  React.PropTypes.string,
-  React.PropTypes.shape({
-    enter: React.PropTypes.string,
-    leave: React.PropTypes.string,
-    active: React.PropTypes.string,
+export const nameShape = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.shape({
+    enter: PropTypes.string,
+    leave: PropTypes.string,
+    active: PropTypes.string,
   }),
-  React.PropTypes.shape({
-    enter: React.PropTypes.string,
-    enterActive: React.PropTypes.string,
-    leave: React.PropTypes.string,
-    leaveActive: React.PropTypes.string,
-    appear: React.PropTypes.string,
-    appearActive: React.PropTypes.string,
+  PropTypes.shape({
+    enter: PropTypes.string,
+    enterActive: PropTypes.string,
+    leave: PropTypes.string,
+    leaveActive: PropTypes.string,
+    appear: PropTypes.string,
+    appearActive: PropTypes.string,
   }),
 ]);

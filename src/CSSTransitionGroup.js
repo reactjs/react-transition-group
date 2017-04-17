@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import TransitionGroup from './TransitionGroup';
 import CSSTransitionGroupChild from './CSSTransitionGroupChild';
@@ -7,9 +8,9 @@ import { nameShape, transitionTimeout } from './utils/PropTypes';
 const propTypes = {
   transitionName: nameShape.isRequired,
 
-  transitionAppear: React.PropTypes.bool,
-  transitionEnter: React.PropTypes.bool,
-  transitionLeave: React.PropTypes.bool,
+  transitionAppear: PropTypes.bool,
+  transitionEnter: PropTypes.bool,
+  transitionLeave: PropTypes.bool,
   transitionAppearTimeout: transitionTimeout('Appear'),
   transitionEnterTimeout: transitionTimeout('Enter'),
   transitionLeaveTimeout: transitionTimeout('Leave'),
