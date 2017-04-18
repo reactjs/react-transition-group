@@ -2,44 +2,58 @@ import PropTypes from 'prop-types';
 import React, { cloneElement, isValidElement } from 'react';
 
 import { getChildMapping, mergeChildMappings } from './utils/ChildMapping';
-import { timeoutsShape } from './utils/PropTypes';
 
 const values = Object.values || (obj => Object.keys(obj).map(k => obj[k]));
-
-function normalizeTimeout(timeout) {
-  if (typeof timeout === 'number') return timeout;
-  // transitions are always "appearing" in the context of a TransitionGroup
-  return { ...timeout, appear: timeout.enter }
-}
 
 const propTypes = {
   component: PropTypes.any,
   children: PropTypes.node,
-  timeout: timeoutsShape,
+  appear: PropTypes.bool,
+  enter: PropTypes.bool,
+  exit: PropTypes.bool,
 };
 
 const defaultProps = {
   component: 'span',
+  appear: false,
+  enter: true,
+  exit: true,
 };
 
 class TransitionGroup extends React.Component {
   static displayName = 'TransitionGroup';
+  static childContextTypes = {
+    transitionGroup: React.PropTypes.object.isRequired,
+  };
 
   constructor(props, context) {
     super(props, context);
 
-    // Initial children should all be entering, dependent on transitionAppear
+    const { appear, enter, exit } = this.props;
+
+    // Initial children should all be entering, dependent on appear
     this.state = {
       children: getChildMapping(props.children, child => {
-        const timeout = this.getTimeout(child);
+        const onExited = () => this.handleExited(child.key);
         return cloneElement(child, {
-          timeout,
           in: true,
-          transitionAppear: timeout.appear != null,
-          onExited: () => this.handleExited(child.key),
+          appear,
+          enter,
+          exit,
+          onExited,
         })
       }),
      };
+  }
+
+  getChildContext() {
+    return {
+       transitionGroup: { isMounting: !this.appeared }
+    }
+  }
+
+  componentDidMount() {
+    this.appeared = true;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -47,6 +61,7 @@ class TransitionGroup extends React.Component {
     let nextChildMapping = getChildMapping(nextProps.children);
 
     let children = mergeChildMappings(prevChildMapping, nextChildMapping);
+    const { enter, exit } = nextProps;
 
     Object.keys(children).forEach((key) => {
       let child = children[key]
@@ -54,7 +69,6 @@ class TransitionGroup extends React.Component {
       if (!isValidElement(child)) return;
 
       const onExited = () => this.handleExited(key);
-      const timeout = this.getTimeout(child);
 
       const hasPrev = key in prevChildMapping;
       const hasNext = key in nextChildMapping;
@@ -66,16 +80,16 @@ class TransitionGroup extends React.Component {
       if (hasNext && (!hasPrev || isLeaving)) {
         // console.log('entering', key)
         children[key] = cloneElement(child, {
+          exit,
           onExited,
           in: true,
-          transitionAppear: true,
-          timeout: normalizeTimeout(timeout)
+          appear: enter,
         });
       }
       // item is old (exiting)
       else if (!hasNext && hasPrev && !isLeaving) {
         // console.log('leaving', key)
-        children[key] = cloneElement(child, { in: false, timeout });
+        children[key] = cloneElement(child, { in: false });
       }
       // item hasn't changed transition states
       // copy over the last transition props;
@@ -84,7 +98,7 @@ class TransitionGroup extends React.Component {
         children[key] = cloneElement(child, {
           onExited,
           in: prevChild.props.in,
-          transitionAppear: prevChild.props.transitionAppear,
+          appear: prevChild.props.appear,
         });
       }
     })
@@ -104,15 +118,14 @@ class TransitionGroup extends React.Component {
     });
   };
 
-  getTimeout(child) {
-    const childTimeout = child && child.props.timeout;
-    if (childTimeout != null) return childTimeout;
-    return this.props.timeout;
-  }
 
   render() {
-    const { component: Component, timeout: _, ...props } = this.props;
+    const { component: Component, ...props } = this.props;
     const { children } = this.state;
+
+    delete props.appear;
+    delete props.enter;
+    delete props.exit;
 
     return (
       <Component {...props}>

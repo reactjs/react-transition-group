@@ -27,11 +27,9 @@ export function transitionTimeout(transitionType) {
   };
 }
 
-
 export const timeoutsShape = PropTypes.oneOfType([
   PropTypes.number,
   PropTypes.shape({
-    appear: PropTypes.number,
     enter: PropTypes.number,
     exit: PropTypes.number,
   }).isRequired,
@@ -49,7 +47,5 @@ export const classNamesShape = PropTypes.oneOfType([
     enterActive: PropTypes.string,
     leave: PropTypes.string,
     leaveActive: PropTypes.string,
-    appear: PropTypes.string,
-    appearActive: PropTypes.string,
   }),
 ]);

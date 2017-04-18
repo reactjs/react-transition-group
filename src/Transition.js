@@ -9,7 +9,6 @@ export const ENTERING = 2;
 export const ENTERED = 3;
 export const EXITING = 4;
 
-
 /**
  * The Transition component lets you define and run css transitions with a simple declarative api.
  * It works similar to React's own [CSSTransitionGroup](http://facebook.github.io/react/docs/animation.html#high-level-api-reactcsstransitiongroup)
@@ -27,7 +26,7 @@ class Transition extends React.Component {
     this.nextStatus = null;
 
     if (props.in) {
-      if (props.transitionAppear) {
+      if (props.appear) {
         initialStatus = EXITED;
         this.nextStatus = ENTERING;
       } else {
@@ -76,19 +75,27 @@ class Transition extends React.Component {
   }
 
   updateStatus(mounting = false) {
+    const { enter, exit } = this.props;
+
     if (this.nextStatus !== null) {
       // nextStatus will always be ENTERING or EXITING.
       this.cancelNextCallback();
       const node = ReactDOM.findDOMNode(this);
 
       if (this.nextStatus === ENTERING) {
+        if (!mounting && !enter) {
+          this.safeSetState({status: ENTERED}, () => {
+            this.props.onEntered(node);
+          });
+          return;
+        }
+
         this.props.onEnter(node, mounting);
 
         this.safeSetState({status: ENTERING}, () => {
           let { timeout } = this.props;
           if (typeof timeout !== 'number') {
-            timeout = mounting && timeout.appear != null ?
-              timeout.appear : timeout.enter;
+            timeout = timeout.enter;
           }
 
           this.props.onEntering(node, mounting);
@@ -100,6 +107,13 @@ class Transition extends React.Component {
           });
         });
       } else {
+        if (!exit) {
+          this.safeSetState({status: EXITED}, () => {
+            this.props.onExited(node);
+          });
+          return;
+        }
+
         this.props.onExit(node);
 
         this.safeSetState({status: EXITING}, () => {
@@ -160,11 +174,9 @@ class Transition extends React.Component {
   onTransitionEnd(node, timeout, handler) {
     this.setNextCallback(handler);
 
-    if (timeout == null) {
-      this.nextCallback()
-    } else if (node) {
+    if (node) {
       if (this.props.addEndListener) {
-        this.props.addEndListener(node, this.state.status, this.nextCallback)
+        this.props.addEndListener(node, this.nextCallback)
       }
       setTimeout(this.nextCallback, timeout);
     } else {
@@ -206,7 +218,9 @@ Transition.propTypes = {
    * Run the enter animation when the component mounts, if it is initially
    * shown
    */
-  transitionAppear: React.PropTypes.bool,
+  appear: React.PropTypes.bool,
+  enter: React.PropTypes.bool,
+  exit: React.PropTypes.bool,
 
   /**
    * A Timeout for the animation, in milliseconds, to ensure that a node doesn't
@@ -263,7 +277,9 @@ Transition.displayName = 'Transition';
 Transition.defaultProps = {
   in: false,
   unmountOnExit: false,
-  transitionAppear: false,
+  appear: false,
+  enter: true,
+  exit: true,
 
   onEnter: noop,
   onEntering: noop,

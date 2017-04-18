@@ -16,6 +16,10 @@ const propTypes = {
 };
 
 class CSSTransition extends React.Component {
+  static contextTypes = {
+    transitionGroup: React.PropTypes.object,
+  };
+
   constructor(...args) {
     super(...args);
 
@@ -51,22 +55,30 @@ class CSSTransition extends React.Component {
     removeClass(node, activeClassName);
   }
 
-  onEnter = (node) => {
+  onEnter = (node, isInitial) => {
+    const appearing = this.context.transitionGroup ?
+      this.context.transitionGroup.mounting : isInitial;
+
     this.onTransitionEnd(node, 'exit'); // just in case
-    this.onTransitionStart(node, 'enter');
+    this.onTransitionStart(node, appearing ? 'appear' : 'enter');
     if (this.props.onEnter) {
       this.props.onEnter(node)
     }
   }
 
-  onEntered = (node) => {
-    this.onTransitionEnd(node, 'enter');
+  onEntered = (node, isInitial) => {
+    const appearing = this.context.transitionGroup ?
+      this.context.transitionGroup.mounting : isInitial;
+
+    this.onTransitionEnd(node, appearing ? 'appear' : 'enter');
+
     if (this.props.onEntered) {
       this.props.onEntered(node)
     }
   }
 
   onExit = (node) => {
+    this.onTransitionEnd(node, 'appear');
     this.onTransitionEnd(node, 'enter');
     this.onTransitionStart(node, 'exit');
     if (this.props.onExit) {
@@ -126,7 +138,6 @@ class CSSTransition extends React.Component {
         onEntered={this.onEntered}
         onExit={this.onExit}
         onExited={this.onExited}
-        willTransition={this.transition}
       />
     );
   }

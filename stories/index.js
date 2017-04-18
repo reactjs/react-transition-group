@@ -36,7 +36,7 @@ let _ = css`
 class Fade extends React.Component {
   static defaultProps = {
     in: false,
-    //timeout: FADE_TIMEOUT,
+    timeout: FADE_TIMEOUT,
   };
   render() {
     return (
@@ -56,7 +56,7 @@ storiesOf('Css Transition Group', module)
         removed or on initial appear
       `}
     >
-      <Fade timeout={FADE_TIMEOUT} />
+      <Fade />
     </CSSTransitionGroupFixture>
   ))
   .add('Animates on enter', () => (
@@ -91,13 +91,14 @@ storiesOf('Css Transition Group', module)
       description={`
         Should animate when items first mount but not when added or removed
       `}
+      appear
       items={[
         'Item number: 1',
         'Item number: 2',
         'Item number: 3',
       ]}
     >
-      <Fade timeout={{ appear: FADE_TIMEOUT }} />
+      <Fade />
     </CSSTransitionGroupFixture>
   ))
   .add('Dynamic props', () => (
