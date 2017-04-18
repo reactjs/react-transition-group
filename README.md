@@ -166,7 +166,7 @@ It is also possible to use custom class names for each of the steps in your tran
 
 In order for it to apply transitions to its children, the `CSSTransitionGroup` must already be mounted in the DOM or the prop `transitionAppear` must be set to `true`.
 
-The example below would **not** work, because the `CSSTransitionGroup` is being mounted along with the new item, instead of the new item being mounted within it. Compare this to the [Getting Started](#getting-started) section above to see the difference.
+The example below would **not** work, because the `CSSTransitionGroup` is being mounted along with the new item, instead of the new item being mounted within it.
 
 ```javascript
 render() {
