@@ -1,6 +1,6 @@
 {
   "name": "react-transition-group",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A react component toolset for managing animations",
   "main": "lib/index.js",
   "scripts": {
