@@ -19,28 +19,6 @@ describe.only('TransitionGroup', () => {
     container = document.createElement('div');
   });
 
-  it('should warn when string refs are used', () => {
-    class Child extends React.Component {
-      render() {
-        return <span />;
-      }
-    }
-
-    spyOn(console, 'error');
-
-    tsp(
-      <TransitionGroup>
-        <Child ref="string" />
-      </TransitionGroup>,
-    )
-    .render();
-
-    expect(console.error).toHaveBeenCalled();
-    expect(console.error.calls.mostRecent().args[0]).toMatch(
-      /string refs are not supported on children of TransitionGroup and will be ignored/,
-    );
-  });
-
   it('should allow null components', () => {
     function FirstChild(props) {
       const childrenArray = React.Children.toArray(props.children);

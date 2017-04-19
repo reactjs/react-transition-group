@@ -99,6 +99,8 @@ class TransitionGroup extends React.Component {
         children[key] = cloneElement(child, {
           onExited,
           in: prevChild.props.in,
+          exit: this.getProp(child, 'exit', nextProps),
+          enter: this.getProp(child, 'enter', nextProps),
         });
       }
     })

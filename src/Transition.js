@@ -1,3 +1,4 @@
+import * as PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -20,7 +21,7 @@ export const EXITING = 4;
  */
 class Transition extends React.Component {
   static contextTypes = {
-    transitionGroup: React.PropTypes.object,
+    transitionGroup: PropTypes.object,
   };
   static childContextTypes = {
     transitionGroup: ()=>{},
@@ -236,34 +237,39 @@ class Transition extends React.Component {
     if (typeof children === 'function') {
       return children(status, childProps)
     }
+
     const child = React.Children.only(children);
     return React.cloneElement(child, childProps);
   }
 }
 
 Transition.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.func.isRequired,
+    PropTypes.element.isRequired,
+  ]).isRequired,
   /**
    * Show the component; triggers the enter or exit animation
    */
-  in: React.PropTypes.bool,
+  in: PropTypes.bool,
 
   /**
    * Wait until the first "enter" transition to mount the component (add it to the DOM)
    */
-  mountOnEnter: React.PropTypes.bool,
+  mountOnEnter: PropTypes.bool,
 
   /**
    * Unmount the component (remove it from the DOM) when it is not shown
    */
-  unmountOnExit: React.PropTypes.bool,
+  unmountOnExit: PropTypes.bool,
 
   /**
    * Run the enter animation when the component mounts, if it is initially
    * shown
    */
-  appear: React.PropTypes.bool,
-  enter: React.PropTypes.bool,
-  exit: React.PropTypes.bool,
+  appear: PropTypes.bool,
+  enter: PropTypes.bool,
+  exit: PropTypes.bool,
 
   /**
    * A Timeout for the animation, in milliseconds, to ensure that a node doesn't
@@ -285,31 +291,31 @@ Transition.propTypes = {
    *   node.addEventListener('transitionend', done, false);
    * }}
    */
-  addEndListener: React.PropTypes.func,
+  addEndListener: PropTypes.func,
   /**
    * Callback fired before the "entering" classes are applied
    */
-  onEnter: React.PropTypes.func,
+  onEnter: PropTypes.func,
   /**
    * Callback fired after the "entering" classes are applied
    */
-  onEntering: React.PropTypes.func,
+  onEntering: PropTypes.func,
   /**
    * Callback fired after the "enter" classes are applied
    */
-  onEntered: React.PropTypes.func,
+  onEntered: PropTypes.func,
   /**
    * Callback fired before the "exiting" classes are applied
    */
-  onExit: React.PropTypes.func,
+  onExit: PropTypes.func,
   /**
    * Callback fired after the "exiting" classes are applied
    */
-  onExiting: React.PropTypes.func,
+  onExiting: PropTypes.func,
   /**
    * Callback fired after the "exited" classes are applied
    */
-  onExited: React.PropTypes.func,
+  onExited: PropTypes.func,
 };
 
 // Name the function so it is clearer in the documentation

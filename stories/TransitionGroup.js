@@ -55,6 +55,8 @@ storiesOf('Css Transition Group', module)
         Should animate when items are added to the list but not when they are
         removed or on initial appear
       `}
+      appear
+      items={[ 'Item number: 1' ]}
     >
       <Fade />
     </CSSTransitionGroupFixture>
@@ -65,11 +67,11 @@ storiesOf('Css Transition Group', module)
         Should animate when items are added to the list but not when they are
         removed or on initial appear
       `}
-
+      exit={false}
       timeout={{ enter: FADE_TIMEOUT }}
       items={[ 'Item number: 1' ]}
     >
-      <Fade exit={false} />
+      <Fade  />
     </CSSTransitionGroupFixture>
   ))
   .add('Animates on exit', () => (

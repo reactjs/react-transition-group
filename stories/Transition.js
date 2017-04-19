@@ -2,9 +2,10 @@ import React from 'react';
 import style from 'dom-helpers/style';
 import { storiesOf } from '@kadira/storybook';
 
-import Transition from '../src/Transition';
+import Transition, { EXITED, ENTERED, ENTERING, EXITING } from '../src/Transition';
 import CSSTransition from '../src/CSSTransition';
 import StoryFixture from './StoryFixture';
+
 
 const _ = css`
   .fade {
@@ -24,18 +25,27 @@ const _ = css`
     position: relative;
     height: 0;
     overflow: hidden;
-    transition: height, visibility .35s ease;
+    transition: .35s ease;
+    transition-property: height, visibility;
   }
 `;
+
+
+const fadeStyles = {
+  [ENTERING]: 'in',
+  [ENTERED]: 'in',
+}
 
 const Fade = props => (
   <Transition
     {...props}
     className="fade"
     timeout={150}
-    onEntering={node => node.classList.add('in')}
-    onExit={node => node.classList.remove('in')}
-  />
+  >
+    {status => React.cloneElement(props.children, {
+      className: `fade ${fadeStyles[status] || ''}`
+    })}
+  </Transition>
 )
 
 function getHeight(elem) {
@@ -49,6 +59,13 @@ function getHeight(elem) {
 }
 
 
+const collapseStyles = {
+  [EXITED]: 'collapse',
+  [EXITING]: 'collapsing',
+  [ENTERING]: 'collapsing',
+  [ENTERED]: 'collapse in',
+}
+
 class Collapse extends React.Component {
   /* -- Expanding -- */
   handleEnter = (elem) => {
@@ -56,13 +73,10 @@ class Collapse extends React.Component {
   }
 
   handleEntering = (elem) => {
-    elem.classList.add('collapsing')
     elem.style.height = `${elem.scrollHeight}px`;
   }
 
   handleEntered = (elem) => {
-    elem.classList.remove('collapsing')
-    elem.classList.add('collapse', 'in')
     elem.style.height = null;
   }
 
@@ -73,27 +87,26 @@ class Collapse extends React.Component {
   }
 
   handleExiting = (elem) => {
-    elem.classList.add('collapsing')
     elem.style.height = '0';
   }
 
-  handleExited = (elem) => {
-    elem.classList.remove('collapsing')
-  }
-
   render() {
+    const { children } = this.props;
     return (
       <Transition
         {...this.props}
         timeout={350}
-        className="collapse"
         onEnter={this.handleEnter}
         onEntering={this.handleEntering}
         onEntered={this.handleEntered}
         onExit={this.handleExit}
         onExiting={this.handleExiting}
-        onExited={this.handleExited}
-      />
+      >
+        {(state, props) => React.cloneElement(children, {
+          ...props,
+          className: collapseStyles[state]
+        })}
+      </Transition>
     );
   }
 }
