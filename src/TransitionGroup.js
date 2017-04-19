@@ -204,11 +204,9 @@ class TransitionGroup extends React.Component {
           this.props.childFactory(child),
           {
             key,
-            ref: chain(
-              isCallbackRef ? child.ref : null,
-              (r) => {
-                this.childRefs[key] = r;
-              }),
+            ref: (r) => {
+              this.childRefs[key] = r;
+            },
           },
         ));
       }
