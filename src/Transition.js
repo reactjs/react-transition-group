@@ -19,14 +19,27 @@ export const EXITING = 4;
  * the transitioning now at each step of the way.
  */
 class Transition extends React.Component {
+  static contextTypes = {
+    transitionGroup: React.PropTypes.object,
+  };
+  static childContextTypes = {
+    transitionGroup: ()=>{},
+  };
+
   constructor(props, context) {
     super(props, context);
+
+    let parentGroup = context.transitionGroup;
+    // In the context of a TransitionGroup all enters are really appears
+    let appear = parentGroup && !parentGroup.isMounting ?
+      props.enter :
+      props.appear;
 
     let initialStatus;
     this.nextStatus = null;
 
     if (props.in) {
-      if (props.appear) {
+      if (appear) {
         initialStatus = EXITED;
         this.nextStatus = ENTERING;
       } else {
@@ -43,6 +56,10 @@ class Transition extends React.Component {
     this.state = { status: initialStatus };
 
     this.nextCallback = null;
+  }
+
+  getChildContext() {
+    return { transitionGroup: null }; // allows for nested Transitions
   }
 
   componentDidMount() {
@@ -74,68 +91,91 @@ class Transition extends React.Component {
     this.cancelNextCallback();
   }
 
-  updateStatus(mounting = false) {
-    const { enter, exit } = this.props;
+  getTimeouts() {
+    const { timeout } = this.props;
+    let exit, enter, appear;
 
+    exit = enter = appear = timeout
+
+    if (typeof timeout !== 'number') {
+      exit = timeout.exit
+      enter = timeout.enter
+      appear = timeout.appear
+    }
+    return { exit, enter, appear }
+  }
+
+  updateStatus(mounting = false) {
     if (this.nextStatus !== null) {
       // nextStatus will always be ENTERING or EXITING.
       this.cancelNextCallback();
       const node = ReactDOM.findDOMNode(this);
 
       if (this.nextStatus === ENTERING) {
-        if (!mounting && !enter) {
-          this.safeSetState({status: ENTERED}, () => {
-            this.props.onEntered(node);
-          });
-          return;
-        }
-
-        this.props.onEnter(node, mounting);
-
-        this.safeSetState({status: ENTERING}, () => {
-          let { timeout } = this.props;
-          if (typeof timeout !== 'number') {
-            timeout = timeout.enter;
-          }
-
-          this.props.onEntering(node, mounting);
-
-          this.onTransitionEnd(node, timeout, () => {
-            this.safeSetState({status: ENTERED}, () => {
-              this.props.onEntered(node);
-            });
-          });
-        });
+        this.performEnter(node, mounting);
       } else {
-        if (!exit) {
-          this.safeSetState({status: EXITED}, () => {
-            this.props.onExited(node);
-          });
-          return;
-        }
-
-        this.props.onExit(node);
-
-        this.safeSetState({status: EXITING}, () => {
-          let { timeout } = this.props;
-          if (typeof timeout !== 'number') {
-            timeout = timeout.exit
-          }
-
-          this.props.onExiting(node);
-
-          this.onTransitionEnd(node, timeout, () => {
-            this.safeSetState({status: EXITED}, () => {
-              this.props.onExited(node);
-            });
-          });
-        });
+        this.performExit(node);
       }
 
       this.nextStatus = null;
-    } else if (this.props.unmountOnExit && this.state.status === EXITED) {
+    } else if (
+      this.props.unmountOnExit &&
+      this.state.status === EXITED
+    ) {
       this.setState({ status: UNMOUNTED });
     }
+  }
+
+  performEnter(node, mounting) {
+    const { enter } = this.props;
+    const timeouts = this.getTimeouts();
+
+    // no enter animation skip right to ENTERED
+    // if we are mounting and running this it means appear _must_ be set
+    if (!mounting && !enter) {
+      this.safeSetState({ status: ENTERED }, () => {
+        this.props.onEntered(node);
+      });
+      return;
+    }
+
+    this.props.onEnter(node, mounting);
+
+    this.safeSetState({status: ENTERING}, () => {
+      this.props.onEntering(node, mounting);
+
+      // FIXME: appear timeout?
+      this.onTransitionEnd(node, timeouts.enter, () => {
+        this.safeSetState({status: ENTERED}, () => {
+          this.props.onEntered(node);
+        });
+      });
+    });
+  }
+
+  performExit(node) {
+    const { exit } = this.props;
+    const timeouts = this.getTimeouts();
+
+    // no exit animation skip right to EXITED
+    if (!exit) {
+      this.safeSetState({status: EXITED}, () => {
+        this.props.onExited(node);
+      });
+      return;
+    }
+
+    this.props.onExit(node);
+
+    this.safeSetState({status: EXITING}, () => {
+      this.props.onExiting(node);
+
+      this.onTransitionEnd(node, timeouts.exit, () => {
+        this.safeSetState({status: EXITED}, () => {
+          this.props.onExited(node);
+        });
+      });
+    });
   }
 
   cancelNextCallback() {
@@ -193,8 +233,11 @@ class Transition extends React.Component {
     const {children, ...childProps} = this.props;
     Object.keys(Transition.propTypes).forEach(key => delete childProps[key]);
 
+    if (typeof children === 'function') {
+      return children(status, childProps)
+    }
     const child = React.Children.only(children);
-    return child;
+    return React.cloneElement(child, childProps);
   }
 }
 

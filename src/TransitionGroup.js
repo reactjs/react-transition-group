@@ -15,9 +15,6 @@ const propTypes = {
 
 const defaultProps = {
   component: 'span',
-  appear: false,
-  enter: true,
-  exit: true,
 };
 
 class TransitionGroup extends React.Component {
@@ -29,18 +26,17 @@ class TransitionGroup extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    const { appear, enter, exit } = this.props;
-
     // Initial children should all be entering, dependent on appear
     this.state = {
       children: getChildMapping(props.children, child => {
         const onExited = () => this.handleExited(child.key);
         return cloneElement(child, {
-          in: true,
-          appear,
-          enter,
-          exit,
           onExited,
+          in: true,
+
+          appear: this.getProp(child, 'appear'),
+          enter: this.getProp(child, 'enter'),
+          exit: this.getProp(child, 'exit'),
         })
       }),
      };
@@ -50,6 +46,12 @@ class TransitionGroup extends React.Component {
     return {
        transitionGroup: { isMounting: !this.appeared }
     }
+  }
+  // use child config unless explictly set by the Group
+  getProp(child, prop, props = this.props) {
+    return props[prop] != null ?
+      props[prop] :
+      child.props[prop];
   }
 
   componentDidMount() {
@@ -61,7 +63,6 @@ class TransitionGroup extends React.Component {
     let nextChildMapping = getChildMapping(nextProps.children);
 
     let children = mergeChildMappings(prevChildMapping, nextChildMapping);
-    const { enter, exit } = nextProps;
 
     Object.keys(children).forEach((key) => {
       let child = children[key]
@@ -80,10 +81,10 @@ class TransitionGroup extends React.Component {
       if (hasNext && (!hasPrev || isLeaving)) {
         // console.log('entering', key)
         children[key] = cloneElement(child, {
-          exit,
           onExited,
           in: true,
-          appear: enter,
+          exit: this.getProp(child, 'exit', nextProps),
+          enter: this.getProp(child, 'enter', nextProps),
         });
       }
       // item is old (exiting)
@@ -98,7 +99,6 @@ class TransitionGroup extends React.Component {
         children[key] = cloneElement(child, {
           onExited,
           in: prevChild.props.in,
-          appear: prevChild.props.appear,
         });
       }
     })

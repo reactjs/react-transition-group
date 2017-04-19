@@ -1,18 +1,20 @@
-import React from 'react';
+import * as PropTypes from 'prop-types';
 import addClass from 'dom-helpers/class/addClass';
 import removeClass from 'dom-helpers/class/removeClass';
-import raf from 'dom-helpers/util/requestAnimationFrame';
+import React from 'react';
 
 import Transition from './Transition';
 import { classNamesShape } from './utils/PropTypes';
 
 const propTypes = {
   classNames: classNamesShape,
-  onEnter: React.PropTypes.func,
-  onEntered: React.PropTypes.func,
+  onEnter: PropTypes.func,
+  onEntering: PropTypes.func,
+  onEntered: PropTypes.func,
 
-  onExit: React.PropTypes.func,
-  onExited: React.PropTypes.func,
+  onExit: PropTypes.func,
+  onExiting: PropTypes.func,
+  onExited: PropTypes.func,
 };
 
 class CSSTransition extends React.Component {
@@ -20,57 +22,40 @@ class CSSTransition extends React.Component {
     transitionGroup: React.PropTypes.object,
   };
 
-  constructor(...args) {
-    super(...args);
-
-    this.classNameAndNodeQueue = [];
-    this.transitionTimeouts = [];
-  }
-
-  componentWillUnmount() {
-    this.unmounted = true;
-
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
-
-    this.transitionTimeouts.forEach((timeout) => {
-      clearTimeout(timeout);
-    });
-
-    this.classNameAndNodeQueue.length = 0;
-  }
-
-  onTransitionStart(node, animationType) {
-    const { className, activeClassName } = this.getClassNames(animationType)
-
-    addClass(node, className);
-
-    this.queueClassAndNode(activeClassName, node);
-  }
-
-  onTransitionEnd(node, animationType) {
-    const { className, activeClassName } = this.getClassNames(animationType)
-    removeClass(node, className);
-    removeClass(node, activeClassName);
-  }
-
   onEnter = (node, isInitial) => {
     const appearing = this.context.transitionGroup ?
-      this.context.transitionGroup.mounting : isInitial;
+      this.context.transitionGroup.isMounting : isInitial;
 
-    this.onTransitionEnd(node, 'exit'); // just in case
-    this.onTransitionStart(node, appearing ? 'appear' : 'enter');
+    const { className } = this.getClassNames(appearing ? 'appear' : 'enter')
+
+    this.removeClasses(node, 'exit');
+    addClass(node, className)
+
     if (this.props.onEnter) {
       this.props.onEnter(node)
     }
   }
 
+  onEntering = (node, isInitial) => {
+    const appearing = this.context.transitionGroup ?
+      this.context.transitionGroup.isMounting : isInitial;
+
+    const { activeClassName } = this.getClassNames(
+      appearing ? 'appear' : 'enter'
+    );
+
+    this.reflowAndAddClass(node, activeClassName)
+
+    if (this.props.onEntering) {
+      this.props.onEntering(node)
+    }
+  }
+
   onEntered = (node, isInitial) => {
     const appearing = this.context.transitionGroup ?
-      this.context.transitionGroup.mounting : isInitial;
+      this.context.transitionGroup.isMounting : isInitial;
 
-    this.onTransitionEnd(node, appearing ? 'appear' : 'enter');
+    this.removeClasses(node, appearing ? 'appear' : 'enter');
 
     if (this.props.onEntered) {
       this.props.onEntered(node)
@@ -78,16 +63,30 @@ class CSSTransition extends React.Component {
   }
 
   onExit = (node) => {
-    this.onTransitionEnd(node, 'appear');
-    this.onTransitionEnd(node, 'enter');
-    this.onTransitionStart(node, 'exit');
+    const { className } = this.getClassNames('exit')
+
+    this.removeClasses(node, 'appear');
+    this.removeClasses(node, 'exit');
+    addClass(node, className)
+
     if (this.props.onExit) {
       this.props.onExit(node)
     }
   }
 
+  onExiting = (node) => {
+    const { activeClassName } = this.getClassNames('exit')
+
+    this.reflowAndAddClass(node, activeClassName)
+
+    if (this.props.onExiting) {
+      this.props.onExiting(node)
+    }
+  }
+
   onExited = (node) => {
-    this.onTransitionEnd(node, 'exit');
+    this.removeClasses(node, 'exit');
+
     if (this.props.onExited) {
       this.props.onExited(node)
     }
@@ -104,30 +103,19 @@ class CSSTransition extends React.Component {
     }
   }
 
-  queueClassAndNode(className, node) {
-    this.classNameAndNodeQueue.push({
-      className,
-      node,
-    });
-
-    if (!this.rafHandle) {
-      this.rafHandle = raf(() => this.flushClassNameAndNodeQueue());
-    }
+  removeClasses(node, type) {
+    const { className, activeClassName } = this.getClassNames(type)
+    removeClass(node, className);
+    removeClass(node, activeClassName);
   }
 
-  flushClassNameAndNodeQueue() {
-    if (!this.unmounted) {
-      this.classNameAndNodeQueue.forEach((obj) => {
-        // This is for to force a repaint,
-        // which is necessary in order to transition styles when adding a class name.
-        /* eslint-disable no-unused-expressions */
-        obj.node.scrollTop;
-        /* eslint-enable no-unused-expressions */
-        addClass(obj.node, obj.className);
-      });
-    }
-    this.classNameAndNodeQueue.length = 0;
-    this.rafHandle = null;
+  reflowAndAddClass(node, className) {
+    // This is for to force a repaint,
+    // which is necessary in order to transition styles when adding a class name.
+    /* eslint-disable no-unused-expressions */
+    node.scrollTop;
+    /* eslint-enable no-unused-expressions */
+    addClass(node, className);
   }
 
   render() {
@@ -136,7 +124,9 @@ class CSSTransition extends React.Component {
         {...this.props}
         onEnter={this.onEnter}
         onEntered={this.onEntered}
+        onEntering={this.onEntering}
         onExit={this.onExit}
+        onExiting={this.onExiting}
         onExited={this.onExited}
       />
     );
