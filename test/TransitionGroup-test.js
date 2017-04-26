@@ -1,6 +1,7 @@
 import tsp from 'teaspoon';
 
 let React;
+let PropTypes;
 let ReactDOM;
 let TransitionGroup;
 
@@ -11,6 +12,7 @@ describe('TransitionGroup', () => {
 
   beforeEach(() => {
     React = require('react');
+    PropTypes = require('prop-types');
     ReactDOM = require('react-dom');
     TransitionGroup = require('../src/TransitionGroup');
 
@@ -70,6 +72,80 @@ describe('TransitionGroup', () => {
     .render();
 
     expect(ref).toHaveBeenCalled();
+  });
+
+  it('properly calls ref if childFactory doesn\'t create a wrapper', () => {
+    let transition;
+
+    const transitionRef = (r) => { transition = r; };
+    const childRef = jest.fn();
+
+    class Child extends React.Component {
+      render() {
+        return (<span />);
+      }
+    }
+
+    const rendered = tsp(
+      <TransitionGroup ref={transitionRef}>
+        <Child key="child" ref={childRef} />
+      </TransitionGroup>,
+    )
+    .render();
+
+    expect(transition.childRefs['.$child']).toEqual(jasmine.any(Child));
+
+    rendered.unmount();
+
+    for (let i in childRef.mock.calls) {
+      let call = childRef.mock.calls[i];
+      let valid = (call[0] === null || call[0] instanceof Child) && call.length === 1;
+
+      expect(valid).toBeTruthy();
+    }
+  });
+
+  it('properly calls ref if childFactory does create a wrapper', () => {
+    let transition;
+
+    const transitionRef = (r) => { transition = r; };
+    const childRef = jest.fn();
+
+    class Wrapper extends React.Component {
+      static propTypes = {
+        children: PropTypes.element,
+      }
+
+      render() {
+        return this.props.children;
+      }
+    }
+
+    class Child extends React.Component {
+      render() {
+        return (<span />);
+      }
+    }
+
+    const childFactory = x => React.createElement(Wrapper, null, x);
+
+    const rendered = tsp(
+      <TransitionGroup ref={transitionRef} childFactory={childFactory}>
+        <Child key="child" ref={childRef} />
+      </TransitionGroup>,
+    )
+    .render();
+
+    expect(transition.childRefs['.$child']).toEqual(jasmine.any(Wrapper));
+
+    rendered.unmount();
+
+    for (let i in childRef.mock.calls) {
+      let call = childRef.mock.calls[i];
+      let valid = (call[0] === null || call[0] instanceof Child) && call.length === 1;
+
+      expect(valid).toBeTruthy();
+    }
   });
 
   it('should handle willEnter correctly', () => {
