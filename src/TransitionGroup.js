@@ -191,9 +191,22 @@ class TransitionGroup extends React.Component {
       let child = this.state.children[key];
       if (child) {
         let isCallbackRef = typeof child.ref !== 'string';
+        let factoryChild = this.props.childFactory(child);
+        let ref = (r) => {
+          this.childRefs[key] = r;
+        };
+
         warning(isCallbackRef,
           'string refs are not supported on children of TransitionGroup and will be ignored. ' +
           'Please use a callback ref instead: https://facebook.github.io/react/docs/refs-and-the-dom.html#the-ref-callback-attribute');
+
+        // Always chaining the refs leads to problems when the childFactory
+        // wraps the child. The child ref callback gets called twice with the
+        // wrapper and the child. So we only need to chain the ref if the
+        // factoryChild is not different from child.
+        if (factoryChild === child && isCallbackRef) {
+          ref = chain(child.ref, ref);
+        }
 
         // You may need to apply reactive updates to a child as it is leaving.
         // The normal React way to do it won't work since the child will have
@@ -201,14 +214,10 @@ class TransitionGroup extends React.Component {
         // a childFactory function to wrap every child, even the ones that are
         // leaving.
         childrenToRender.push(React.cloneElement(
-          this.props.childFactory(child),
+          factoryChild,
           {
             key,
-            ref: chain(
-              isCallbackRef ? child.ref : null,
-              (r) => {
-                this.childRefs[key] = r;
-              }),
+            ref,
           },
         ));
       }
