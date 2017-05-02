@@ -1,7 +1,16 @@
+## [v1.1.2]
+> 2017-05-02
+
+- **Bugfix:** Fix refs on children ([#39])
+[v1.1.2]: https://github.com/reactjs/react-transition-group/compare/v1.1.1...v1.1.2
+[#39]: https://github.com/reactjs/react-transition-group/pull/39
+
 ## [v1.1.1]
 > 2017-03-16
 
 - **Chore:** Add a prebuilt version of the library for jsbin and the like.
+
+[v1.1.1]: https://github.com/reactjs/react-transition-group/compare/v1.1.0...v1.1.1
 
 ## [v1.1.0]
 > 2017-03-16
