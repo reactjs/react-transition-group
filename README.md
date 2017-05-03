@@ -6,7 +6,7 @@ A ton of thanks to the React team, and contributors for writing and maintaining 
 
 ---
 
-The [`TransitionGroup`](#transitiongroup) add-on component is a low-level API for animation, and [`CSSTransitionGroup`](#csstransitiongroup) is an add-on component for easily implementing basic CSS animations and transitions.
+The [`TransitionGroup`](#low-level-api-transitiongroup) add-on component is a low-level API for animation, and [`CSSTransitionGroup`](#csstransitiongroup) is an add-on component for easily implementing basic CSS animations and transitions.
 
 ## High-level API: CSSTransitionGroup
 
