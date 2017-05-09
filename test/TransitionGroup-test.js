@@ -148,6 +148,71 @@ describe('TransitionGroup', () => {
     }
   });
 
+  it('should maintain the same ref function for each child key', () => {
+    let transition;
+    const transitionRef = (r) => { transition = r; };
+
+    class Child extends React.Component {
+      render() {
+        return (<span />);
+      }
+    }
+    
+    const element = (
+      <TransitionGroup ref={transitionRef} >
+        <Child key="child" />
+      </TransitionGroup>
+    );
+
+    ReactDOM.render(element, container);
+    const firstChildRefFunc = transition.childRefFuncs[".$child"];
+    ReactDOM.render(element, container);
+    const secondChildRefFunc = transition.childRefFuncs[".$child"];
+
+    expect(firstChildRefFunc).toEqual(secondChildRefFunc);
+  });
+
+  it('should not throw when enter callback is called and is now leaving', () => {
+      class Child extends React.Component {
+        componentWillReceiveProps() {
+          if (this.callback) {
+            this.callback();
+          }
+        }
+
+        componentWillEnter(callback) {
+          this.callback = callback;
+        }
+
+        render() {
+          return (<span />);
+        }
+      }
+
+      class Component extends React.Component {
+        render() {
+          return (
+            <TransitionGroup>
+              {this.props.children}
+            </TransitionGroup>
+          );
+        }
+      }
+
+    // render the base component
+    ReactDOM.render(<Component />, container);
+    // now make the child enter
+    ReactDOM.render(
+      <Component>
+        <Child key="child" />
+      </Component>,
+      container,
+    );
+    // rendering the child leaving will call 'componentWillProps' which will trigger the
+    // callback. This would throw an error previously.
+    expect(ReactDOM.render.bind(this, <Component />, container)).not.toThrow();
+  })
+
   it('should handle willEnter correctly', () => {
     let log = [];
 

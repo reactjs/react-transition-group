@@ -25,6 +25,12 @@ class TransitionGroup extends React.Component {
     super(props, context);
 
     this.childRefs = Object.create(null);
+    // Maintain a list of our childrens 'ref' functions
+    // This is to prevent react from treating each ref as a new ref
+    // causing the ref to be detached for each render 
+    // (this causes an error if the callback is 
+    // called during an existing onEnter/onLeave/onAppear) 
+    this.childRefFuncs = Object.create(null);
 
     this.state = {
       children: getChildMapping(props.children),
@@ -192,9 +198,13 @@ class TransitionGroup extends React.Component {
       if (child) {
         let isCallbackRef = typeof child.ref !== 'string';
         let factoryChild = this.props.childFactory(child);
-        let ref = (r) => {
-          this.childRefs[key] = r;
-        };
+        let ref = this.childRefFuncs[key];
+        if (!ref) {
+          ref = (r) => {
+            this.childRefs[key] = r;
+          };
+          this.childRefFuncs[key] = ref;
+        }
 
         warning(isCallbackRef,
           'string refs are not supported on children of TransitionGroup and will be ignored. ' +
@@ -204,6 +214,8 @@ class TransitionGroup extends React.Component {
         // wraps the child. The child ref callback gets called twice with the
         // wrapper and the child. So we only need to chain the ref if the
         // factoryChild is not different from child.
+        // NOTE: same ref func cannot be maintained if child has ref defined
+        // seeing as child ref may change, we cannot capture it...
         if (factoryChild === child && isCallbackRef) {
           ref = chain(child.ref, ref);
         }
