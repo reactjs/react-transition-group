@@ -44,6 +44,7 @@
   "dependencies": {
     "chain-function": "^1.0.0",
     "dom-helpers": "^3.2.0",
+    "loose-envify": "^1.3.1",
     "prop-types": "^15.5.6",
     "warning": "^3.0.0"
   },
@@ -74,5 +75,10 @@
   },
   "release-script": {
     "altPkgRootFolder": "lib"
+  },
+  "browserify": {
+    "transform": [
+      "loose-envify"
+    ]
   }
 }
