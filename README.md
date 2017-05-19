@@ -8,6 +8,18 @@ A ton of thanks to the React team, and contributors for writing and maintaining 
 
 The [`TransitionGroup`](#low-level-api-transitiongroup) add-on component is a low-level API for animation, and [`CSSTransitionGroup`](#csstransitiongroup) is an add-on component for easily implementing basic CSS animations and transitions.
 
+## Installation
+
+The recommended installation method is through either [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/en/).
+
+```sh
+# npm
+npm install react-transition-group --save
+
+# yarn
+yarn add react-transition-group
+```
+
 ## High-level API: CSSTransitionGroup
 
 `CSSTransitionGroup` is a high-level API based on [`TransitionGroup`](#low-level-api-transitiongroup) and is an easy way to perform CSS transitions and animations when a React component enters or leaves the DOM. It's inspired by the excellent [ng-animate](http://www.nganimate.org/) library.
