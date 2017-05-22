@@ -27,9 +27,9 @@ yarn add react-transition-group
 **Importing**
 
 ```javascript
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup' // ES6
+import {CSSTransitionGroup} from 'react-transition-group' // ES6
 
-var CSSTransitionGroup = require('react-transition-group/CSSTransitionGroup') // ES5 with npm
+var CSSTransitionGroup = require('react-transition-group').CSSTransitionGroup // ES5 with npm
 ```
 
 ```javascript
@@ -204,7 +204,7 @@ render() {
 In the example above, we rendered a list of items into `CSSTransitionGroup`. However, the children of `CSSTransitionGroup` can also be one or zero items. This makes it possible to animate a single element entering or leaving. Similarly, you can animate a new element replacing the current element. For example, we can implement a simple image carousel like this:
 
 ```javascript
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import {CSSTransitionGroup} from 'react-transition-group';
 
 function ImageCarousel(props) {
   return (
@@ -235,8 +235,8 @@ You can disable animating `enter` or `leave` animations if you want. For example
 **Importing**
 
 ```javascript
-import TransitionGroup from 'react-transition-group/TransitionGroup' // ES6
-var TransitionGroup = require('react-transition-group/TransitionGroup') // ES5 with npm
+import {TransitionGroup} from 'react-transition-group' // ES6
+var TransitionGroup = require('react-transition-group').TransitionGroup // ES5 with npm
 ```
 
 `TransitionGroup` is the basis for animations. When children are declaratively added or removed from it (as in the [example above](#getting-started)), special lifecycle hooks are called on them.
