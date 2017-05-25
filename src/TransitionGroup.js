@@ -174,7 +174,7 @@ class TransitionGroup extends React.Component {
     if (currentChildMapping && currentChildMapping.hasOwnProperty(key)) {
       // This entered again before it fully left. Add it again.
       this.performEnter(key);
-    } else {
+    } else if (component) {
       this.setState((state) => {
         let newChildren = Object.assign({}, state.children);
         delete newChildren[key];

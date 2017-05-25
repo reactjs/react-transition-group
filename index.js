@@ -437,7 +437,7 @@ var TransitionGroup = function (_React$Component) {
       if (currentChildMapping && currentChildMapping.hasOwnProperty(key)) {
         // This entered again before it fully left. Add it again.
         _this.performEnter(key);
-      } else {
+      } else if (component) {
         _this.setState(function (state) {
           var newChildren = Object.assign({}, state.children);
           delete newChildren[key];
