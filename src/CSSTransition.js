@@ -18,14 +18,7 @@ const propTypes = {
 };
 
 class CSSTransition extends React.Component {
-  static contextTypes = {
-    transitionGroup: React.PropTypes.object,
-  };
-
-  onEnter = (node, isInitial) => {
-    const appearing = this.context.transitionGroup ?
-      this.context.transitionGroup.isMounting : isInitial;
-
+  onEnter = (node, appearing) => {
     const { className } = this.getClassNames(appearing ? 'appear' : 'enter')
 
     this.removeClasses(node, 'exit');
@@ -36,10 +29,7 @@ class CSSTransition extends React.Component {
     }
   }
 
-  onEntering = (node, isInitial) => {
-    const appearing = this.context.transitionGroup ?
-      this.context.transitionGroup.isMounting : isInitial;
-
+  onEntering = (node, appearing) => {
     const { activeClassName } = this.getClassNames(
       appearing ? 'appear' : 'enter'
     );
@@ -51,10 +41,7 @@ class CSSTransition extends React.Component {
     }
   }
 
-  onEntered = (node, isInitial) => {
-    const appearing = this.context.transitionGroup ?
-      this.context.transitionGroup.isMounting : isInitial;
-
+  onEntered = (node, appearing) => {
     this.removeClasses(node, appearing ? 'appear' : 'enter');
 
     if (this.props.onEntered) {
@@ -95,18 +82,19 @@ class CSSTransition extends React.Component {
   getClassNames = (type) => {
     const { classNames } = this.props
 
-    let className = classNames[type] || classNames + '-' + type;
+    let className = typeof classNames !== 'string' ?
+      classNames[type] : classNames + '-' + type;
 
-    return {
-      className,
-      activeClassName: classNames[type + 'Active'] || className + '-active',
-    }
+    let activeClassName = typeof classNames !== 'string' ?
+      classNames[type + 'Active'] : className + '-active';
+
+    return { className, activeClassName }
   }
 
   removeClasses(node, type) {
     const { className, activeClassName } = this.getClassNames(type)
-    removeClass(node, className);
-    removeClass(node, activeClassName);
+    className && removeClass(node, className);
+    activeClassName && removeClass(node, activeClassName);
   }
 
   reflowAndAddClass(node, className) {
@@ -119,9 +107,11 @@ class CSSTransition extends React.Component {
   }
 
   render() {
+    const props = { ...this.props };
+    Object.keys(propTypes).forEach(key => delete props[key]);
     return (
       <Transition
-        {...this.props}
+        {...props}
         onEnter={this.onEnter}
         onEntered={this.onEntered}
         onEntering={this.onEntering}

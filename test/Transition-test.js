@@ -31,18 +31,28 @@ describe('Transition', () => {
   });
 
   it('should transition on mount with `appear`', done => {
-    let instance = tsp(
-      <Transition in
-        appear
+    tsp(
+      <Transition
+        in
         timeout={0}
-        onEnter={()=> done()}
+        onEnter={()=> { throw Error('Animated!') }}
       >
-        <div></div>
+        <div />
       </Transition>
     )
     .render();
 
-    expect(instance.state('status')).toEqual(EXITED);
+    tsp(
+      <Transition
+        in
+        appear
+        timeout={0}
+        onEnter={()=> done()}
+      >
+        <div />
+      </Transition>
+    )
+    .render();
   });
 
   describe('entering', () => {

@@ -20,7 +20,7 @@ const defaultProps = {
 class TransitionGroup extends React.Component {
   static displayName = 'TransitionGroup';
   static childContextTypes = {
-    transitionGroup: React.PropTypes.object.isRequired,
+    transitionGroup: PropTypes.object.isRequired,
   };
 
   constructor(props, context) {
@@ -33,7 +33,6 @@ class TransitionGroup extends React.Component {
         return cloneElement(child, {
           onExited,
           in: true,
-
           appear: this.getProp(child, 'appear'),
           enter: this.getProp(child, 'enter'),
           exit: this.getProp(child, 'exit'),

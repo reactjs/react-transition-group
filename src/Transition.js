@@ -107,6 +107,7 @@ class Transition extends React.Component {
   }
 
   updateStatus(mounting = false) {
+
     if (this.nextStatus !== null) {
       // nextStatus will always be ENTERING or EXITING.
       this.cancelNextCallback();
@@ -129,6 +130,9 @@ class Transition extends React.Component {
 
   performEnter(node, mounting) {
     const { enter } = this.props;
+    const appearing = this.context.transitionGroup ?
+      this.context.transitionGroup.isMounting : mounting;
+
     const timeouts = this.getTimeouts();
 
     // no enter animation skip right to ENTERED
@@ -140,15 +144,15 @@ class Transition extends React.Component {
       return;
     }
 
-    this.props.onEnter(node, mounting);
+    this.props.onEnter(node, appearing);
 
     this.safeSetState({status: ENTERING}, () => {
-      this.props.onEntering(node, mounting);
+      this.props.onEntering(node, appearing);
 
       // FIXME: appear timeout?
       this.onTransitionEnd(node, timeouts.enter, () => {
         this.safeSetState({status: ENTERED}, () => {
-          this.props.onEntered(node);
+          this.props.onEntered(node, appearing);
         });
       });
     });
@@ -165,7 +169,6 @@ class Transition extends React.Component {
       });
       return;
     }
-
     this.props.onExit(node);
 
     this.safeSetState({status: EXITING}, () => {

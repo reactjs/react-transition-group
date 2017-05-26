@@ -1,10 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import tsp from 'teaspoon';
-import sinon from 'sinon';
 
-import Transition, { UNMOUNTED, EXITED, ENTERING, ENTERED, EXITING }
-  from '../src/Transition';
+import CSSTransition from '../src/CSSTransition';
 
 jasmine.addMatchers({
   toExist: () => ({
@@ -18,10 +15,10 @@ describe('CSSTransition', () => {
 
   it('should flush new props to the DOM before initiating a transition', (done) => {
     tsp(
-      <Transition
+      <CSSTransition
         in={false}
         timeout={0}
-        enteringClassName='test-entering'
+        classNames="test"
         onEnter={node => {
           expect(node.classList.contains('test-class')).toEqual(true)
           expect(node.classList.contains('test-entering')).toEqual(false)
@@ -29,7 +26,7 @@ describe('CSSTransition', () => {
         }}
       >
         <div></div>
-      </Transition>
+      </CSSTransition>
     )
     .render()
     .tap(inst => {
@@ -46,13 +43,12 @@ describe('CSSTransition', () => {
 
     beforeEach(() => {
       instance = tsp(
-        <Transition
+        <CSSTransition
           timeout={10}
-          enteredClassName='test-enter'
-          enteringClassName='test-entering'
+          classNames="test"
         >
           <div/>
-        </Transition>
+        </CSSTransition>
       )
       .render();
     });
@@ -60,23 +56,57 @@ describe('CSSTransition', () => {
     it('should apply classes at each transition state', done => {
       let count = 0;
 
-      expect(instance.state('status')).toEqual(EXITED);
+      instance.props({
+        in: true,
+
+        onEnter(node){
+          count++;
+          expect(node.className).toEqual('test-enter');
+        },
+
+        onEntering(node){
+          count++;
+          expect(node.className).toEqual('test-enter test-enter-active');
+        },
+
+        onEntered(node){
+          expect(node.className).toEqual('');
+          expect(count).toEqual(2);
+          done();
+        }
+      });
+    });
+
+    it('should apply custom classNames names', done => {
+      let count = 0;
+      instance = tsp(
+        <CSSTransition
+          timeout={10}
+          classNames={{
+            enter: 'custom',
+            enterActive: 'custom-super-active',
+          }}
+        >
+          <div/>
+        </CSSTransition>
+      )
+      .render();
 
       instance.props({
         in: true,
 
         onEnter(node){
           count++;
-          expect(node.className).toEqual('');
+          expect(node.className).toEqual('custom');
         },
 
         onEntering(node){
           count++;
-          expect(node.className).toEqual('test-entering');
+          expect(node.className).toEqual('custom custom-super-active');
         },
 
         onEntered(node){
-          expect(node.className).toEqual('test-enter');
+          expect(node.className).toEqual('');
           expect(count).toEqual(2);
           done();
         }
@@ -89,14 +119,13 @@ describe('CSSTransition', () => {
 
     beforeEach(() => {
       instance = tsp(
-        <Transition
+        <CSSTransition
           in
           timeout={10}
-          exitedClassName='test-exit'
-          exitingClassName='test-exiting'
+          classNames="test"
         >
           <div/>
-        </Transition>
+        </CSSTransition>
       )
       .render();
     });
@@ -104,23 +133,58 @@ describe('CSSTransition', () => {
     it('should apply classes at each transition state', done => {
       let count = 0;
 
-      expect(instance.state('status')).toEqual(ENTERED);
+      instance.props({
+        in: false,
+
+        onExit(node){
+          count++;
+          expect(node.className).toEqual('test-exit');
+        },
+
+        onExiting(node){
+          count++;
+          expect(node.className).toEqual('test-exit test-exit-active');
+        },
+
+        onExited(node){
+          expect(node.className).toEqual('');
+          expect(count).toEqual(2);
+          done();
+        }
+      });
+    });
+
+    it('should apply custom classNames names', done => {
+      let count = 0;
+      instance = tsp(
+        <CSSTransition
+          in
+          timeout={10}
+          classNames={{
+            exit: 'custom',
+            exitActive: 'custom-super-active',
+          }}
+        >
+          <div/>
+        </CSSTransition>
+      )
+      .render();
 
       instance.props({
         in: false,
 
         onExit(node){
           count++;
-          expect(node.className).toEqual('');
+          expect(node.className).toEqual('custom');
         },
 
         onExiting(node){
           count++;
-          expect(node.className).toEqual('test-exiting');
+          expect(node.className).toEqual('custom custom-super-active');
         },
 
         onExited(node){
-          expect(node.className).toEqual('test-exit');
+          expect(node.className).toEqual('');
           expect(count).toEqual(2);
           done();
         }
