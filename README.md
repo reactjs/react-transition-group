@@ -20,6 +20,14 @@ npm install react-transition-group --save
 yarn add react-transition-group
 ```
 
+## CDN / External
+
+Since react-transition-group is fairly small, the overhead of including the library in your application is
+negligible. However, in situations where it may be useful to benefit from an external CDN when bundling, link
+to the following CDN:
+
+[https://unpkg.com/react-transition-group/dist/react-transition-group.min.js](https://unpkg.com/react-transition-group/dist/react-transition-group.min.js)
+
 ## High-level API: CSSTransitionGroup
 
 `CSSTransitionGroup` is a high-level API based on [`TransitionGroup`](#low-level-api-transitiongroup) and is an easy way to perform CSS transitions and animations when a React component enters or leaves the DOM. It's inspired by the excellent [ng-animate](http://www.nganimate.org/) library.
@@ -27,7 +35,7 @@ yarn add react-transition-group
 **Importing**
 
 ```javascript
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup' // ES6
+import { CSSTransitionGroup } from 'react-transition-group' // ES6
 
 var CSSTransitionGroup = require('react-transition-group/CSSTransitionGroup') // ES5 with npm
 ```
