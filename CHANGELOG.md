@@ -1,3 +1,8 @@
+## [v1.1.X]
+> 2017-XX-XX
+
+- **Feature:** Dist build now includes both production and development builds ([#64])
+
 ## [v1.1.3]
 > 2017-05-02
 
