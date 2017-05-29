@@ -150,7 +150,7 @@ class TransitionGroup extends React.Component {
     this.currentlyTransitioningKeys[key] = true;
 
     let component = this.childRefs[key];
-    if (component.componentWillLeave) {
+    if (component && component.componentWillLeave) {
       component.componentWillLeave(this._handleDoneLeaving.bind(this, key));
     } else {
       // Note that this is somewhat dangerous b/c it calls setState()
