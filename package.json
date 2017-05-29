@@ -7,7 +7,7 @@
     "test": "jest --runInBand --verbose",
     "tdd": "jest --watch",
     "build": "rimraf lib && babel src --out-dir lib && npm run build:dist",
-    "build:dist": "rimraf lib/dist && webpack -p --define process.env.NODE_ENV='production'",
+    "build:dist": "rimraf lib/dist && webpack && NODE_ENV=production webpack -p",
     "lint": "eslint src test",
     "release": "release"
   },
