@@ -22,23 +22,11 @@ yarn add react-transition-group
 
 ## CDN / External
 
-To exclude the react-transition-group package from your primary build and use an external CDN when bundling, link
+Since react-transition-group is fairly small, the overhead of including the library in your application is
+negligible. However, in situations where it may be useful to benefit from an external CDN when bundling, link
 to the following CDN:
 
 [https://unpkg.com/react-transition-group/dist/react-transition-group.min.js](https://unpkg.com/react-transition-group/dist/react-transition-group.min.js)
-
-In order to exclude react-transition-group using **Webpack**, include the following configuration in the `externals`
-webpack configuration section: 
-
-```
-externals: {
-    'react-transition-group': {
-        amd: 'react-transition-group',
-        commonjs2: 'react-transition-group',
-        commonjs: 'react-transition-group',
-        root: 'ReactTransitionGroup',
-    }
-```
 
 ## High-level API: CSSTransitionGroup
 
