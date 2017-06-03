@@ -26,20 +26,6 @@ function addEndListener(node, listener) {
   };
 }
 
-const propTypes = {
-  children: PropTypes.node,
-  name: nameShape.isRequired,
-
-  // Once we require timeouts to be specified, we can remove the
-  // boolean flags (appear etc.) and just accept a number
-  // or a bool for the timeout flags (appearTimeout etc.)
-  appear: PropTypes.bool,
-  enter: PropTypes.bool,
-  leave: PropTypes.bool,
-  appearTimeout: PropTypes.number,
-  enterTimeout: PropTypes.number,
-  leaveTimeout: PropTypes.number,
-};
 
 class CSSTransitionGroupChild extends React.Component {
 
@@ -176,6 +162,19 @@ class CSSTransitionGroupChild extends React.Component {
   }
 }
 
-CSSTransitionGroupChild.propTypes = propTypes;
+CSSTransitionGroupChild.propTypes = {
+  children: PropTypes.node,
+  name: nameShape.isRequired,
+
+  // Once we require timeouts to be specified, we can remove the
+  // boolean flags (appear etc.) and just accept a number
+  // or a bool for the timeout flags (appearTimeout etc.)
+  appear: PropTypes.bool,
+  enter: PropTypes.bool,
+  leave: PropTypes.bool,
+  appearTimeout: PropTypes.number,
+  enterTimeout: PropTypes.number,
+  leaveTimeout: PropTypes.number,
+};
 
 export default CSSTransitionGroupChild;

@@ -5,22 +5,6 @@ import TransitionGroup from './TransitionGroup';
 import CSSTransitionGroupChild from './CSSTransitionGroupChild';
 import { nameShape, transitionTimeout } from './utils/PropTypes';
 
-const propTypes = {
-  transitionName: nameShape.isRequired,
-
-  transitionAppear: PropTypes.bool,
-  transitionEnter: PropTypes.bool,
-  transitionLeave: PropTypes.bool,
-  transitionAppearTimeout: transitionTimeout('Appear'),
-  transitionEnterTimeout: transitionTimeout('Enter'),
-  transitionLeaveTimeout: transitionTimeout('Leave'),
-};
-
-const defaultProps = {
-  transitionAppear: false,
-  transitionEnter: true,
-  transitionLeave: true,
-};
 
 class CSSTransitionGroup extends React.Component {
 
@@ -53,7 +37,21 @@ class CSSTransitionGroup extends React.Component {
   }
 }
 
-CSSTransitionGroup.propTypes = propTypes;
-CSSTransitionGroup.defaultProps = defaultProps;
+CSSTransitionGroup.propTypes = {
+  transitionName: nameShape.isRequired,
+
+  transitionAppear: PropTypes.bool,
+  transitionEnter: PropTypes.bool,
+  transitionLeave: PropTypes.bool,
+  transitionAppearTimeout: transitionTimeout('Appear'),
+  transitionEnterTimeout: transitionTimeout('Enter'),
+  transitionLeaveTimeout: transitionTimeout('Leave'),
+};
+
+CSSTransitionGroup.defaultProps = {
+  transitionAppear: false,
+  transitionEnter: true,
+  transitionLeave: true,
+};
 
 export default CSSTransitionGroup;
