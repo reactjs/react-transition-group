@@ -41,7 +41,7 @@ class TransitionGroup extends React.Component {
     let initialChildMapping = this.state.children;
     for (let key in initialChildMapping) {
       if (initialChildMapping[key]) {
-        this.performAppear(key);
+        this.performAppear(key, this.childRefs[key]);
       }
     }
   }
@@ -60,7 +60,7 @@ class TransitionGroup extends React.Component {
     for (let key in nextChildMapping) {
       let hasPrev = prevChildMapping && prevChildMapping.hasOwnProperty(key);
       if (nextChildMapping[key] && !hasPrev &&
-          !this.currentlyTransitioningKeys[key]) {
+        !this.currentlyTransitioningKeys[key]) {
         this.keysToEnter.push(key);
       }
     }
@@ -68,7 +68,7 @@ class TransitionGroup extends React.Component {
     for (let key in prevChildMapping) {
       let hasNext = nextChildMapping && nextChildMapping.hasOwnProperty(key);
       if (prevChildMapping[key] && !hasNext &&
-          !this.currentlyTransitioningKeys[key]) {
+        !this.currentlyTransitioningKeys[key]) {
         this.keysToLeave.push(key);
       }
     }
@@ -79,90 +79,81 @@ class TransitionGroup extends React.Component {
   componentDidUpdate() {
     let keysToEnter = this.keysToEnter;
     this.keysToEnter = [];
-    keysToEnter.forEach(this.performEnter);
+    keysToEnter.forEach(key => this.performEnter(key, this.childRefs[key]));
 
     let keysToLeave = this.keysToLeave;
     this.keysToLeave = [];
-    keysToLeave.forEach(this.performLeave);
+    keysToLeave.forEach(key => this.performLeave(key, this.childRefs[key]));
   }
 
-  performAppear = (key) => {
-    let component = this.childRefs[key];
-    this.currentlyTransitioningKeys[key] = component;
+  performAppear = (key, component) => {
+    this.currentlyTransitioningKeys[key] = true;
 
     if (component.componentWillAppear) {
       component.componentWillAppear(
-        this._handleDoneAppearing.bind(this, key),
+        this._handleDoneAppearing.bind(this, key, component),
       );
     } else {
-      this._handleDoneAppearing(key);
+      this._handleDoneAppearing(key, component);
     }
   };
 
-  _handleDoneAppearing = (key) => {
-    let component = this.currentlyTransitioningKeys[key];
+  _handleDoneAppearing = (key, component) => {
     if (component.componentDidAppear) {
       component.componentDidAppear();
     }
+
+    delete this.currentlyTransitioningKeys[key];
 
     let currentChildMapping = getChildMapping(this.props.children);
 
     if (!currentChildMapping || !currentChildMapping.hasOwnProperty(key)) {
       // This was removed before it had fully appeared. Remove it.
-      this.performLeave(key);
-    }
-    else {
-      delete this.currentlyTransitioningKeys[key];
+      this.performLeave(key, component);
     }
   };
 
-  performEnter = (key) => {
-    let component = this.childRefs[key];
-    this.currentlyTransitioningKeys[key] = component;
+  performEnter = (key, component) => {
+    this.currentlyTransitioningKeys[key] = true;
 
     if (component.componentWillEnter) {
       component.componentWillEnter(
-        this._handleDoneEntering.bind(this, key),
+        this._handleDoneEntering.bind(this, key, component),
       );
     } else {
-      this._handleDoneEntering(key);
+      this._handleDoneEntering(key, component);
     }
   };
 
-  _handleDoneEntering = (key) => {
-    let component = this.currentlyTransitioningKeys[key];
+  _handleDoneEntering = (key, component) => {
     if (component.componentDidEnter) {
       component.componentDidEnter();
     }
+
+    delete this.currentlyTransitioningKeys[key];
 
     let currentChildMapping = getChildMapping(this.props.children);
 
     if (!currentChildMapping || !currentChildMapping.hasOwnProperty(key)) {
       // This was removed before it had fully entered. Remove it.
-      this.performLeave(key);
-    }
-    else {
-      delete this.currentlyTransitioningKeys[key];
+      this.performLeave(key, component);
     }
   };
 
-  performLeave = (key) => {
-    let component = this.currentlyTransitioningKeys[key] || this.childRefs[key];
-    this.currentlyTransitioningKeys[key] = component;
+  performLeave = (key, component) => {
+    this.currentlyTransitioningKeys[key] = true;
 
     if (component.componentWillLeave) {
-      component.componentWillLeave(this._handleDoneLeaving.bind(this, key));
+      component.componentWillLeave(this._handleDoneLeaving.bind(this, key, component));
     } else {
       // Note that this is somewhat dangerous b/c it calls setState()
       // again, effectively mutating the component before all the work
       // is done.
-      this._handleDoneLeaving(key);
+      this._handleDoneLeaving(key, component);
     }
   };
 
-  _handleDoneLeaving = (key) => {
-    let component = this.currentlyTransitioningKeys[key];
-
+  _handleDoneLeaving = (key, component) => {
     if (component.componentDidLeave) {
       component.componentDidLeave();
     }
