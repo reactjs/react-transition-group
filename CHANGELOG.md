@@ -2,16 +2,24 @@
 > 2017-XX-XX
 
 - **Feature:** Dist build now includes both production and development builds ([#64])
+- **Feature:** PropTypes are now wrapped allowing for lighter weight production builds ([#69])
+
+[#64]: https://github.com/reactjs/react-transition-group/issues/64
+[#69]: https://github.com/reactjs/react-transition-group/issues/69
+[v1.1.X]: https://github.com/reactjs/react-transition-group/compare/v1.1.3...master
 
 ## [v1.1.3]
 > 2017-05-02
 
 - bonus release, no additions
 
+[v1.1.3]: https://github.com/reactjs/react-transition-group/compare/v1.1.2...v1.1.3
+
 ## [v1.1.2]
 > 2017-05-02
 
 - **Bugfix:** Fix refs on children ([#39])
+
 [v1.1.2]: https://github.com/reactjs/react-transition-group/compare/v1.1.1...v1.1.2
 [#39]: https://github.com/reactjs/react-transition-group/pull/39
 
