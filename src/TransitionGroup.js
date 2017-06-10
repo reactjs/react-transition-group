@@ -6,6 +6,18 @@ import warning from 'warning';
 import { getChildMapping, mergeChildMappings } from './utils/ChildMapping';
 
 
+const propTypes = {
+  component: PropTypes.any,
+  childFactory: PropTypes.func,
+  children: PropTypes.node,
+};
+
+const defaultProps = {
+  component: 'span',
+  childFactory: child => child,
+};
+
+
 class TransitionGroup extends React.Component {
   static displayName = 'TransitionGroup';
 
@@ -231,15 +243,7 @@ class TransitionGroup extends React.Component {
   }
 }
 
-TransitionGroup.propTypes = {
-  component: PropTypes.any,
-  childFactory: PropTypes.func,
-  children: PropTypes.node,
-};
-
-TransitionGroup.defaultProps = {
-  component: 'span',
-  childFactory: child => child,
-};
+TransitionGroup.propTypes = propTypes;
+TransitionGroup.defaultProps = defaultProps;
 
 export default TransitionGroup;
