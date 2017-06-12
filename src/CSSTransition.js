@@ -92,21 +92,53 @@ const propTypes = {
  * the `example-enter` CSS class and the `example-enter-active` CSS class
  * added in the next tick. This is a convention based on the `classNames` prop.
  *
+ * ```js
+ * const Fade = ({ children, ...props }) => (
+ *  <CSSTransition
+ *    {...props}
+ *    timeout={500}
+ *    classNames="fade"
+ *  >
+ *   {children}
+ *  </CSSTransition>
+ * );
+ *
+ * class FadeInAndOut extends React.Component {
+ *   constructor(...args) {
+ *     super(...args);
+ *     this.state= { show: false }
+ *
+ *     setInterval(() => {
+ *       this.setState({ show: !this.state.show })
+ *     }, 5000)
+ *   }
+ *   render() {
+ *     return (
+ *       <Fade in={this.state.show}>
+ *         <div>Hello world</div>
+ *       </Fade>
+ *     )
+ *   }
+ * }
+ * ```
+ *
+ * And the coorresponding CSS for the `<Fade>` component:
+ *
  * ```css
- * .example-enter {
+ * .fade-enter {
  *   opacity: 0.01;
  * }
  *
- * .example-enter.example-enter-active {
+ * .fade-enter.fade-enter-active {
  *   opacity: 1;
  *   transition: opacity 500ms ease-in;
  * }
  *
- * .example-leave {
+ * .fade-leave {
  *   opacity: 1;
  * }
  *
- * .example-leave.example-leave-active {
+ * .fade-leave.fade-leave-active {
  *   opacity: 0.01;
  *   transition: opacity 300ms ease-in;
  * }

@@ -6,17 +6,98 @@ import { getChildMapping, mergeChildMappings } from './utils/ChildMapping';
 const values = Object.values || (obj => Object.keys(obj).map(k => obj[k]));
 
 const propTypes = {
+  /**
+   * `<TransitionGroup>` renders a `<div>` by default. You can change this
+   * behavior by providing a `component` prop.
+   */
   component: PropTypes.any,
+  /**
+   * A set of `<Transition>` components, that are toggled `in` and out as they
+   * leave. the `<TransitionGroup>` will inject specific transition props, so
+   * remember to spread them throguh if you are wrapping the `<Transition>` as
+   * with our `<Fade>` example.
+   */
   children: PropTypes.node,
+
+  /**
+   * A convenience prop that enables or disabled appear animations
+   * for all children. Note that specifiying this will override any defaults set
+   * on individual children Transitions.
+   */
   appear: PropTypes.bool,
+  /**
+   * A convenience prop that enables or disabled enter animations
+   * for all children. Note that specifiying this will override any defaults set
+   * on individual children Transitions.
+   */
   enter: PropTypes.bool,
+ /**
+   * A convenience prop that enables or disabled exit animations
+   * for all children. Note that specifiying this will override any defaults set
+   * on individual children Transitions.
+   */
   exit: PropTypes.bool,
 };
 
 const defaultProps = {
-  component: 'span',
+  component: 'div',
 };
 
+/**
+ * The `<TransitionGroup>` component manages a set of `<Transition>` components
+ * in a list. Like with the `<Transition>` component, `<TransitionGroup>`, is a
+ * state machine for managing the mounting and unmounting of components over
+ * time.
+ *
+ * Consider the example below using the `Fade` CSS transition from before.
+ * As items are removed or added to the TodoList the `in` prop is toggled
+ * automatically by the `<TransitionGroup>`. You can use _any_ `<Transition>`
+ * component in a `<TransitionGroup>`, not just css.
+ *
+ * ```js
+ * class TodoList extends React.Component {
+ *   constructor(props) {
+ *     super(props)
+ *     this.state = {items: ['hello', 'world', 'click', 'me']}
+ *   }
+ *   handleAdd = () => {
+ *     const newItems = this.state.items.concat([
+ *       prompt('Enter some text')
+ *     ]);
+ *     this.setState({ items: newItems });
+ *   }
+ *   handleRemove(i) {
+ *     let newItems = this.state.items.slice();
+ *     newItems.splice(i, 1);
+ *     this.setState({items: newItems});
+ *   }
+ *   render() {
+ *     return (
+ *       <div>
+ *         <button onClick={this.handleAdd}>Add Item</button>
+ *         <TransitionGroup>
+ *           {this.state.items.map((item, i) => (
+ *             <Fade key={item}>
+ *               <div>
+ *                 {item}{' '}
+ *                 <button onClick={() => this.handleRemove(i)}>
+ *                   remove
+ *                 </button>
+ *               </div>
+ *             </Fade>
+ *           ))}
+ *         </TransitionGroup>
+ *       </div>
+ *     );
+ *   }
+ * }
+ * ```
+ *
+ * Note that `<TransitionGroup>`  does not define any animation behavior!
+ * Exactly _how_ a list item animates is up to the individual `<Transition>`
+ * components. This means you can mix and match animations across different
+ * list items.
+ */
 class TransitionGroup extends React.Component {
   static displayName = 'TransitionGroup';
   static childContextTypes = {
