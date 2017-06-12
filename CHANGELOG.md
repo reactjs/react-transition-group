@@ -1,12 +1,12 @@
-## [v1.1.X]
-> 2017-XX-XX
+## [v1.2.0]
+> 2017-05-12
 
 - **Feature:** Dist build now includes both production and development builds ([#64])
 - **Feature:** PropTypes are now wrapped allowing for lighter weight production builds ([#69])
 
 [#64]: https://github.com/reactjs/react-transition-group/issues/64
 [#69]: https://github.com/reactjs/react-transition-group/issues/69
-[v1.1.X]: https://github.com/reactjs/react-transition-group/compare/v1.1.3...master
+[v1.2.0]: https://github.com/reactjs/react-transition-group/compare/v1.1.3...v1.2.0
 
 ## [v1.1.3]
 > 2017-05-02
