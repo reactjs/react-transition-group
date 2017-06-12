@@ -1,4 +1,4 @@
-import { Children } from 'react';
+import { Children, isValidElement } from 'react';
 
 
 /**
@@ -7,14 +7,14 @@ import { Children } from 'react';
  * @param {*} children `this.props.children`
  * @return {object} Mapping of key to child
  */
-export function getChildMapping(children) {
-  if (!children) {
-    return children;
-  }
-  let result = {};
-  Children.map(children, child => child)
-    .forEach((child) => {
-      result[child.key] = child;
+export function getChildMapping(children, mapFn) {
+  let mapper = child => mapFn && isValidElement(child ) ? mapFn(child) : child;
+
+  let result = Object.create(null);
+  if (children)
+    Children.map(children, c => c).forEach((child) => {
+      // run the map function here instead so that the key is the computed one
+      result[child.key] = mapper(child);
     });
   return result;
 }
@@ -41,20 +41,16 @@ export function mergeChildMappings(prev, next) {
   next = next || {};
 
   function getValueForKey(key) {
-    if (next.hasOwnProperty(key)) {
-      return next[key];
-    }
-
-    return prev[key];
+    return key in next ? next[key] : prev[key];
   }
 
   // For each key of `next`, the list of keys to insert before that key in
   // the combined list
-  let nextKeysPending = {};
+  let nextKeysPending = Object.create(null);
 
   let pendingKeys = [];
   for (let prevKey in prev) {
-    if (next.hasOwnProperty(prevKey)) {
+    if (prevKey in next) {
       if (pendingKeys.length) {
         nextKeysPending[prevKey] = pendingKeys;
         pendingKeys = [];
@@ -67,7 +63,7 @@ export function mergeChildMappings(prev, next) {
   let i;
   let childMapping = {};
   for (let nextKey in next) {
-    if (nextKeysPending.hasOwnProperty(nextKey)) {
+    if (nextKeysPending[nextKey]) {
       for (i = 0; i < nextKeysPending[nextKey].length; i++) {
         let pendingNextKey = nextKeysPending[nextKey][i];
         childMapping[nextKeysPending[nextKey][i]] = getValueForKey(

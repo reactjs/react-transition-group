@@ -1,24 +1,10 @@
 
 parser: babel-eslint
-extends: airbnb
+extends:
+  - jason/react
+  - plugin:jsx-a11y/recommended
 env:
   node: true
   browser: true
-
-rules:
-  prefer-const: off
-  prefer-template: off
-  no-prototype-builtins: off
-  no-underscore-dangle: off
-  import/prefer-default-export: off
-  no-param-reassign: off
-  react/jsx-filename-extension: off
-  react/no-did-mount-set-state: off
-  react/require-default-props: off
-  no-plusplus: off
-  guard-for-in: off
-  no-restricted-syntax:
-    - error
-    - ForOfStatement
-    - LabeledStatement
-    - WithStatement
+plugins:
+  - jsx-a11y
