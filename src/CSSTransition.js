@@ -235,7 +235,9 @@ class CSSTransition extends React.Component {
 
   render() {
     const props = { ...this.props };
-    Object.keys(propTypes).forEach(key => delete props[key]);
+
+    delete props.classNames;
+
     return (
       <Transition
         {...props}

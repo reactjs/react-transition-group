@@ -7,7 +7,7 @@ let TransitionGroup;
 
 // Most of the real functionality is covered in other unit tests, this just
 // makes sure we're wired up correctly.
-describe('TransitionGroup', () => {
+describe('CSSTransitionGroup', () => {
   let container;
 
   function YoloTransition({ id, ...props }) {

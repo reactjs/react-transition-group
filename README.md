@@ -1,3 +1,8 @@
+**ATTENTION!** The API in v2.0.0 (in beta!) will be dramically different from the original
+React addon. V1 is still being mantained and is a drop-in replacement for react-addons-transition-group.
+
+PR's for bug fixes to v1 should be made against `v1-stable`
+
 # react-transition-group
 
 A fork, and "drop in" replacement for the original React TransitionGroup addons. Eventually this package can supercede the original addon, letting the React team focus on other stuff and giving these components a chance to get the attention they deserve out on their own. See: https://github.com/facebook/react/issues/8125 for more context.
