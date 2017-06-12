@@ -119,7 +119,6 @@ class TransitionGroup extends React.Component {
     });
   };
 
-
   render() {
     const { component: Component, ...props } = this.props;
     const { children } = this.state;
