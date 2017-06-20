@@ -121,6 +121,15 @@ storiesOf('Css Transition Group', module)
     >
       <RenterTransition />
     </StoryFixture>
+  ))
+  .add('Staggers in items', () => (
+    <StoryFixture
+      description={`
+        Staggers in items
+      `}
+    >
+      <StaggerTransition />
+    </StoryFixture>
   ));
 
 class DynamicTransition extends React.Component {
@@ -173,6 +182,31 @@ class RenterTransition extends React.Component {
               <div>I'm entering!</div>
             </Fade>
           }
+        </TransitionGroup>
+      </div>
+    )
+  }
+}
+
+class StaggerTransition extends React.Component {
+  handleClick = () => {
+    this.setState({ show: true });
+  }
+
+  render() {
+    const { show } = this.state || {}
+    const range = [0,1,2,3,4,5,6,7,8];
+    return (
+      <div>
+        <button onClick={this.handleClick}>Toggle</button>
+        <TransitionGroup
+          staggerTime={300}
+          >
+          {show && range.map((_, i) => (
+            <Fade key={`item-${i}`}>
+              <div>I'm entering!</div>
+            </Fade>
+          ))}
         </TransitionGroup>
       </div>
     )

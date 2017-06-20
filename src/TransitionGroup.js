@@ -37,11 +37,30 @@ const propTypes = {
    * on individual children Transitions.
    */
   exit: PropTypes.bool,
+
+  staggerTime: PropTypes.number,
 };
 
 const defaultProps = {
   component: 'div',
 };
+
+function childMapperFn(child, index) {
+  const { staggerTime } = this.props;
+  const onExited = () => this.handleExited(child.key);
+  const style = staggerTime > 0 ? {
+    transitionDelay: `${staggerTime * (index + 1)}ms`
+  } : {};
+
+  return cloneElement(child, {
+    style,
+    onExited,
+    in: true,
+    appear: this.getProp(child, 'appear'),
+    enter: this.getProp(child, 'enter'),
+    exit: this.getProp(child, 'exit'),
+  });
+}
 
 /**
  * The `<TransitionGroup>` component manages a set of `<Transition>` components
@@ -109,16 +128,7 @@ class TransitionGroup extends React.Component {
 
     // Initial children should all be entering, dependent on appear
     this.state = {
-      children: getChildMapping(props.children, child => {
-        const onExited = () => this.handleExited(child.key);
-        return cloneElement(child, {
-          onExited,
-          in: true,
-          appear: this.getProp(child, 'appear'),
-          enter: this.getProp(child, 'enter'),
-          exit: this.getProp(child, 'exit'),
-        })
-      }),
+      children: getChildMapping(props.children, childMapperFn.bind(this)),
      };
   }
 
@@ -140,7 +150,7 @@ class TransitionGroup extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     let prevChildMapping = this.state.children;
-    let nextChildMapping = getChildMapping(nextProps.children);
+    let nextChildMapping = getChildMapping(nextProps.children, childMapperFn.bind(this));
 
     let children = mergeChildMappings(prevChildMapping, nextChildMapping);
 
@@ -189,7 +199,7 @@ class TransitionGroup extends React.Component {
   }
 
   handleExited = (key) => {
-    let currentChildMapping = getChildMapping(this.props.children);
+    let currentChildMapping = getChildMapping(this.props.children, childMapperFn.bind(this));
 
     if (key in currentChildMapping) return
 
