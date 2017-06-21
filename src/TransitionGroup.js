@@ -37,6 +37,12 @@ const propTypes = {
    * on individual children Transitions.
    */
   exit: PropTypes.bool,
+  /**
+    * A convenience prop for staggering the animations of the children if a
+    * delay is defined. Children will have their animations delayed by the delay
+    * property multiplied by their index. e.g. (this.props.delay * childIndex)
+    */
+  stagger: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -126,6 +132,7 @@ class TransitionGroup extends React.Component {
   // those properties are specified
   getChildWithPropertyOverrides(child, index) {
     const onExited = () => this.handleExited(child.key);
+    const multiplier = (this.props.stagger && typeof this.props.delay !== 'undefined') ? index : 1;
 
     return cloneElement(child, {
       onExited,
@@ -133,7 +140,8 @@ class TransitionGroup extends React.Component {
       appear: this.getProp(child, 'appear'),
       enter: this.getProp(child, 'enter'),
       exit: this.getProp(child, 'exit'),
-      delay: this.getProp(child, 'delay'),
+      timeout: this.getProp(child, 'timeout'),
+      delay: this.getProp(child, 'delay') * multiplier,
     });
   }
 
@@ -217,6 +225,9 @@ class TransitionGroup extends React.Component {
     delete props.appear;
     delete props.enter;
     delete props.exit;
+    delete props.timeout;
+    delete props.delay;
+    delete props.stagger;
 
     return (
       <Component {...props}>

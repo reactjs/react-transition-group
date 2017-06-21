@@ -253,9 +253,9 @@ class StaggerTransition extends React.Component {
     return (
       <div>
         <button onClick={this.handleClick}>Toggle</button>
-        <TransitionGroup>
+        <TransitionGroup delay={this.props.delay} stagger={true}>
           {show && range.map((_, i) => (
-            <Fade key={`item-${i}`} delay={this.props.delay * i}>
+            <Fade key={`item-${i}`}>
               <div>I'm entering!</div>
             </Fade>
           ))}
