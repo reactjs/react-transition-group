@@ -200,7 +200,7 @@ class StaggerTransition extends React.Component {
       <div>
         <button onClick={this.handleClick}>Toggle</button>
         <TransitionGroup
-          staggerTime={300}
+          delay={300}
           >
           {show && range.map((_, i) => (
             <Fade key={`item-${i}`}>

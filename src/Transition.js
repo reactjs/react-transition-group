@@ -90,16 +90,17 @@ class Transition extends React.Component {
   }
 
   getTimeouts() {
-    const { timeout } = this.props;
+    const { timeout, delay } = this.props;
     let exit, enter, appear;
 
-    exit = enter = appear = timeout
+    exit = enter = appear = (timeout + delay)
 
     if (typeof timeout !== 'number') {
-      exit = timeout.exit
-      enter = timeout.enter
-      appear = timeout.appear
+      exit = timeout.exit + delay
+      enter = timeout.enter + delay
+      appear = timeout.appear + delay
     }
+
     return { exit, enter, appear }
   }
 
@@ -312,6 +313,11 @@ Transition.propTypes = {
   timeout: timeoutsShape,
 
   /**
+    * The milliseconds which the animation will be delayed after mounting.
+    */
+  delay: PropTypes.number,
+
+  /**
    * Add a custom transition end trigger. Called with the transitioning
    * DOM node and a `done` callback. Allows for more fine grained transition end
    * logic. **Note:** Timeouts are still used as a fallback.
@@ -363,6 +369,7 @@ Transition.defaultProps = {
   appear: false,
   enter: true,
   exit: true,
+  delay: 0,
 
   onEnter: noop,
   onEntering: noop,

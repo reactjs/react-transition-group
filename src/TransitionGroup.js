@@ -37,30 +37,22 @@ const propTypes = {
    * on individual children Transitions.
    */
   exit: PropTypes.bool,
-
-  staggerTime: PropTypes.number,
+  /**
+    * The milliseconds which the animation will be delayed for all children
+    * after mounting. Note that specifiying this will override any defaults set
+    * on individual children Transitions.
+    */
+  delay: PropTypes.number,
+  /**
+    * If specified and there is a delay also defined, this will stagger the
+    * animations of each child based on the delay time
+    */
+  stagger: PropTypes.bool,
 };
 
 const defaultProps = {
   component: 'div',
 };
-
-function childMapperFn(child, index) {
-  const { staggerTime } = this.props;
-  const onExited = () => this.handleExited(child.key);
-  const style = staggerTime > 0 ? {
-    transitionDelay: `${staggerTime * (index + 1)}ms`
-  } : {};
-
-  return cloneElement(child, {
-    style,
-    onExited,
-    in: true,
-    appear: this.getProp(child, 'appear'),
-    enter: this.getProp(child, 'enter'),
-    exit: this.getProp(child, 'exit'),
-  });
-}
 
 /**
  * The `<TransitionGroup>` component manages a set of `<Transition>` components
@@ -126,9 +118,12 @@ class TransitionGroup extends React.Component {
   constructor(props, context) {
     super(props, context);
 
+    // bind class functions with proper context
+    this.getChildWithPropertyOverrides = this.getChildWithPropertyOverrides.bind(this);
+
     // Initial children should all be entering, dependent on appear
     this.state = {
-      children: getChildMapping(props.children, childMapperFn.bind(this)),
+      children: getChildMapping(props.children, this.getChildWithPropertyOverrides),
      };
   }
 
@@ -137,6 +132,22 @@ class TransitionGroup extends React.Component {
        transitionGroup: { isMounting: !this.appeared }
     }
   }
+
+  // return a cloned element with property overrides from TransitionGroup if
+  // those properties are specified
+  getChildWithPropertyOverrides(child, index) {
+    const onExited = () => this.handleExited(child.key);
+
+    return cloneElement(child, {
+      onExited,
+      in: true,
+      appear: this.getProp(child, 'appear'),
+      enter: this.getProp(child, 'enter'),
+      exit: this.getProp(child, 'exit'),
+      delay: this.getProp(child, 'delay'),
+    });
+  }
+
   // use child config unless explictly set by the Group
   getProp(child, prop, props = this.props) {
     return props[prop] != null ?
@@ -150,7 +161,7 @@ class TransitionGroup extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     let prevChildMapping = this.state.children;
-    let nextChildMapping = getChildMapping(nextProps.children, childMapperFn.bind(this));
+    let nextChildMapping = getChildMapping(nextProps.children, this.getChildWithPropertyOverrides);
 
     let children = mergeChildMappings(prevChildMapping, nextChildMapping);
 
@@ -199,7 +210,7 @@ class TransitionGroup extends React.Component {
   }
 
   handleExited = (key) => {
-    let currentChildMapping = getChildMapping(this.props.children, childMapperFn.bind(this));
+    let currentChildMapping = getChildMapping(this.props.children, this.getChildWithPropertyOverrides);
 
     if (key in currentChildMapping) return
 
