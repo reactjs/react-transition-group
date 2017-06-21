@@ -37,17 +37,6 @@ const propTypes = {
    * on individual children Transitions.
    */
   exit: PropTypes.bool,
-  /**
-    * The milliseconds which the animation will be delayed for all children
-    * after mounting. Note that specifiying this will override any defaults set
-    * on individual children Transitions.
-    */
-  delay: PropTypes.number,
-  /**
-    * If specified and there is a delay also defined, this will stagger the
-    * animations of each child based on the delay time
-    */
-  stagger: PropTypes.bool,
 };
 
 const defaultProps = {
