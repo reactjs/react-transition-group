@@ -116,7 +116,7 @@ class Transition extends React.Component {
       appear = delay.appear;
     }
 
-    return { exit, enter };
+    return { exit, enter, appear };
   }
 
   updateStatus(mounting = false) {
