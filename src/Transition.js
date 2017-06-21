@@ -2,7 +2,7 @@ import * as PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { timeoutsShape } from './utils/PropTypes';
+import { timeoutsShape, delaysShape } from './utils/PropTypes';
 
 export const UNMOUNTED = 'unmounted';
 export const EXITED = 'exited';
@@ -90,18 +90,33 @@ class Transition extends React.Component {
   }
 
   getTimeouts() {
-    const { timeout, delay } = this.props;
+    const { timeout } = this.props;
     let exit, enter, appear;
 
-    exit = enter = appear = (timeout + delay)
+    exit = enter = appear = timeout;
 
     if (typeof timeout !== 'number') {
-      exit = timeout.exit + delay
-      enter = timeout.enter + delay
-      appear = timeout.appear + delay
+      exit = timeout.exit;
+      enter = timeout.enter;
+      appear = timeout.appear;
     }
 
     return { exit, enter, appear }
+  }
+
+  getDelays() {
+    const { delay } = this.props;
+    let exit, enter, appear;
+
+    exit = enter = appear = delay;
+
+    if (typeof delay !== 'number') {
+      exit = delay.exit;
+      enter = delay.enter;
+      appear = delay.appear;
+    }
+
+    return { exit, enter };
   }
 
   updateStatus(mounting = false) {
@@ -132,6 +147,7 @@ class Transition extends React.Component {
       this.context.transitionGroup.isMounting : mounting;
 
     const timeouts = this.getTimeouts();
+    const delays = this.getDelays();
 
     // no enter animation skip right to ENTERED
     // if we are mounting and running this it means appear _must_ be set
@@ -145,13 +161,25 @@ class Transition extends React.Component {
     this.props.onEnter(node, appearing);
 
     this.safeSetState({status: ENTERING}, () => {
-      this.props.onEntering(node, appearing);
+      if (delays.enter > 0) {
+        setTimeout(() => {
+          this.performEntering(node, appearing);
+        }, delays.enter);
+      } else {
+        this.performEntering(node, appearing);
+      }
+    });
+  }
 
-      // FIXME: appear timeout?
-      this.onTransitionEnd(node, timeouts.enter, () => {
-        this.safeSetState({status: ENTERED}, () => {
-          this.props.onEntered(node, appearing);
-        });
+  performEntering(node, appearing) {
+    const timeouts = this.getTimeouts();
+
+    this.props.onEntering(node, appearing);
+
+    // FIXME: appear timeout?
+    this.onTransitionEnd(node, timeouts.enter, () => {
+      this.safeSetState({status: ENTERED}, () => {
+        this.props.onEntered(node, appearing);
       });
     });
   }
@@ -159,6 +187,7 @@ class Transition extends React.Component {
   performExit(node) {
     const { exit } = this.props;
     const timeouts = this.getTimeouts();
+    const delays = this.getDelays();
 
     // no exit animation skip right to EXITED
     if (!exit) {
@@ -170,12 +199,24 @@ class Transition extends React.Component {
     this.props.onExit(node);
 
     this.safeSetState({status: EXITING}, () => {
-      this.props.onExiting(node);
+      if (delays.exit > 0) {
+        setTimeout(() => {
+          this.performExiting(node);
+        }, delays.exit);
+      } else {
+        this.performExiting(node);
+      }
+    });
+  }
 
-      this.onTransitionEnd(node, timeouts.exit, () => {
-        this.safeSetState({status: EXITED}, () => {
-          this.props.onExited(node);
-        });
+  performExiting(node) {
+    const timeouts = this.getTimeouts();
+
+    this.props.onExiting(node);
+
+    this.onTransitionEnd(node, timeouts.exit, () => {
+      this.safeSetState({status: EXITED}, () => {
+        this.props.onExited(node);
       });
     });
   }
@@ -313,9 +354,18 @@ Transition.propTypes = {
   timeout: timeoutsShape,
 
   /**
-    * The milliseconds which the animation will be delayed after mounting.
+    * The duration which the transition will be delayed.
+    *
+    * You may specify a single delay for all transitions like: `delay={500}`,
+    * or individually like:
+    * ```js
+    * delay={{
+    *  enter: 300,
+    *  leave: 500,
+    * }}
+    * ```
     */
-  delay: PropTypes.number,
+  delay: delaysShape,
 
   /**
    * Add a custom transition end trigger. Called with the transitioning

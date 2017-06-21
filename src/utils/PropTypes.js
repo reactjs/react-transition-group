@@ -35,6 +35,8 @@ export const timeoutsShape = PropTypes.oneOfType([
   }).isRequired,
 ]).isRequired;
 
+export const delaysShape = timeoutsShape;
+
 export const classNamesShape = PropTypes.oneOfType([
   PropTypes.string,
   PropTypes.shape({

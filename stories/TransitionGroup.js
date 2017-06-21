@@ -189,8 +189,14 @@ class RenterTransition extends React.Component {
 }
 
 class StaggerTransition extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = { show: false };
+  }
+
   handleClick = () => {
-    this.setState({ show: true });
+    this.setState({ show: !this.state.show });
   }
 
   render() {
@@ -199,11 +205,9 @@ class StaggerTransition extends React.Component {
     return (
       <div>
         <button onClick={this.handleClick}>Toggle</button>
-        <TransitionGroup
-          delay={300}
-          >
+        <TransitionGroup>
           {show && range.map((_, i) => (
-            <Fade key={`item-${i}`}>
+            <Fade key={`item-${i}`} delay={150 * i}>
               <div>I'm entering!</div>
             </Fade>
           ))}
