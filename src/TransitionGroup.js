@@ -132,7 +132,6 @@ class TransitionGroup extends React.Component {
   // those properties are specified
   getChildWithPropertyOverrides(child, index) {
     const onExited = () => this.handleExited(child.key);
-    const multiplier = (this.props.stagger && typeof this.props.delay !== 'undefined') ? index : 1;
 
     return cloneElement(child, {
       onExited,
@@ -141,8 +140,31 @@ class TransitionGroup extends React.Component {
       enter: this.getProp(child, 'enter'),
       exit: this.getProp(child, 'exit'),
       timeout: this.getProp(child, 'timeout'),
-      delay: this.getProp(child, 'delay') * multiplier,
+      delay: this.getCalculatedDelay(child, index),
     });
+  }
+
+  getCalculatedDelay(child, index) {
+    const delay = this.getProp(child, 'delay');
+    const hasGlobalDelay = typeof this.props.delay !== 'undefined';
+
+    // if stagger is false, just return the same delay for every child
+    if (!this.props.stagger) {
+      return delay;
+    }
+    // return a new delay object with enter, exit multiplied by child index
+    else if (hasGlobalDelay && typeof delay !== 'number') {
+      return {
+        enter: delay.enter * index,
+        exit: delay.exit * index,
+      };
+    }
+    // return new delay number multiplied by child index
+    else if (hasGlobalDelay) {
+      return delay * index;
+    }
+
+    return delay;
   }
 
   // use child config unless explictly set by the Group
