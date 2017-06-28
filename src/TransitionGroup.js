@@ -99,7 +99,6 @@ const defaultProps = {
  * list items.
  */
 class TransitionGroup extends React.Component {
-  static displayName = 'TransitionGroup';
   static childContextTypes = {
     transitionGroup: PropTypes.object.isRequired,
   };
