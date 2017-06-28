@@ -10,6 +10,136 @@ export const ENTERING = 'entering';
 export const ENTERED = 'entered';
 export const EXITING = 'exiting';
 
+const propTypes = {
+  /**
+   * Generally a React element to animate, all unknown props on Transition are
+   * transfered to the **single** child element.
+   *
+   * For advanced uses a `function` child can be used instead of a React element.
+   * This function is called with the current transition status
+   * ('entering', 'entered', 'exiting', 'exited', 'unmounted'), which can used
+   * to apply context specific props to a component.
+   *
+   * ```js
+   * <Transition timeout={150}>
+   *   {(status) => (
+   *     <MyComponent className={`fade fade-${status}`} />
+   *   )}
+   * </Transition>
+   * ```
+   */
+  children: PropTypes.oneOfType([
+    PropTypes.func.isRequired,
+    PropTypes.element.isRequired,
+  ]).isRequired,
+
+  /**
+   * Show the component; triggers the enter or exit states
+   */
+  in: PropTypes.bool,
+
+  /**
+   * Wait until the first "enter" transition to mount the component (add it to the DOM)
+   */
+  mountOnEnter: PropTypes.bool,
+
+  /**
+   * Unmount the component (remove it from the DOM) when it is not shown
+   */
+  unmountOnExit: PropTypes.bool,
+
+  /**
+   * Run the enter transition when the component mounts, if it is initially
+   * `in={true}`
+   */
+  appear: PropTypes.bool,
+
+  /**
+   * Run the enter transition when `in={true}`.
+   */
+  enter: PropTypes.bool,
+
+  /**
+   * Run the exit transition when `in={false}`.
+   */
+  exit: PropTypes.bool,
+
+  /**
+   * The duration for the transition, in milliseconds.
+   *
+   * You may specify a single timeout for all transitions like: `timeout={500}`,
+   * or individually like:
+   * ```js
+   * timeout={{
+   *  enter: 300,
+   *  leave: 500,
+   * }}
+   * ```
+   */
+  timeout: timeoutsShape,
+
+  /**
+   * Add a custom transition end trigger. Called with the transitioning
+   * DOM node and a `done` callback. Allows for more fine grained transition end
+   * logic. **Note:** Timeouts are still used as a fallback.
+   *
+   * addEndListener={(node, done) => {
+   *   // use the css transitionend event to mark the finish of a transition
+   *   node.addEventListener('transitionend', done, false);
+   * }}
+   */
+  addEndListener: PropTypes.func,
+
+  /**
+   * Callback fired before the "entering" status is applied.
+   */
+  onEnter: PropTypes.func,
+
+  /**
+   * Callback fired after the "entering" status is applied.
+   */
+  onEntering: PropTypes.func,
+
+  /**
+   * Callback fired after the "enter" status is applied.
+   */
+  onEntered: PropTypes.func,
+
+  /**
+   * Callback fired before the "exiting" status is applied.
+   */
+  onExit: PropTypes.func,
+
+  /**
+   * Callback fired after the "exiting" status is applied.
+   */
+  onExiting: PropTypes.func,
+
+  /**
+   * Callback fired after the "exited" status is applied.
+   */
+  onExited: PropTypes.func,
+};
+
+// Name the function so it is clearer in the documentation
+function noop() {}
+
+const defaultProps = {
+  in: false,
+  unmountOnExit: false,
+  appear: false,
+  enter: true,
+  exit: true,
+
+  onEnter: noop,
+  onEntering: noop,
+  onEntered: noop,
+
+  onExit: noop,
+  onExiting: noop,
+  onExited: noop
+};
+
 /**
  * The Transition component lets you describe a transition from one component
  * state to another _over time_ with a simple declarative api. Most commonly
@@ -17,6 +147,14 @@ export const EXITING = 'exiting';
  * be used to describe in-place transition states as well.
  */
 class Transition extends React.Component {
+  static UNMOUNTED = 0;
+  static EXITED = 1;
+  static ENTERING = 2;
+  static ENTERED = 3;
+  static EXITING = 4;
+
+  static propTypes = propTypes;
+  static defaultProps = defaultProps;
   static contextTypes = {
     transitionGroup: PropTypes.object,
   };
@@ -242,141 +380,5 @@ class Transition extends React.Component {
     return React.cloneElement(child, childProps);
   }
 }
-
-Transition.propTypes = {
-  /**
-   * Generally a React element to animate, all unknown props on Transition are
-   * transfered to the **single** child element.
-   *
-   * For advanced uses a `function` child can be used instead of a React element.
-   * This function is called with the current transition status
-   * ('entering', 'entered', 'exiting', 'exited', 'unmounted'), which can used
-   * to apply context specific props to a component.
-   *
-   * ```js
-   * <Transition timeout={150}>
-   *   {(status) => (
-   *     <MyComponent className={`fade fade-${status}`} />
-   *   )}
-   * </Transition>
-   * ```
-   */
-  children: PropTypes.oneOfType([
-    PropTypes.func.isRequired,
-    PropTypes.element.isRequired,
-  ]).isRequired,
-
-  /**
-   * Show the component; triggers the enter or exit states
-   */
-  in: PropTypes.bool,
-
-  /**
-   * Wait until the first "enter" transition to mount the component (add it to the DOM)
-   */
-  mountOnEnter: PropTypes.bool,
-
-  /**
-   * Unmount the component (remove it from the DOM) when it is not shown
-   */
-  unmountOnExit: PropTypes.bool,
-
-  /**
-   * Run the enter transition when the component mounts, if it is initially
-   * `in={true}`
-   */
-  appear: PropTypes.bool,
-
-  /**
-   * Run the enter transition when `in={true}`.
-   */
-  enter: PropTypes.bool,
-
-  /**
-   * Run the exit transition when `in={false}`.
-   */
-  exit: PropTypes.bool,
-
-  /**
-   * The duration for the transition, in milliseconds.
-   *
-   * You may specify a single timeout for all transitions like: `timeout={500}`,
-   * or individually like:
-   * ```js
-   * timeout={{
-   *  enter: 300,
-   *  leave: 500,
-   * }}
-   * ```
-   */
-  timeout: timeoutsShape,
-
-  /**
-   * Add a custom transition end trigger. Called with the transitioning
-   * DOM node and a `done` callback. Allows for more fine grained transition end
-   * logic. **Note:** Timeouts are still used as a fallback.
-   *
-   * addEndListener={(node, done) => {
-   *   // use the css transitionend event to mark the finish of a transition
-   *   node.addEventListener('transitionend', done, false);
-   * }}
-   */
-  addEndListener: PropTypes.func,
-
-  /**
-   * Callback fired before the "entering" status is applied.
-   */
-  onEnter: PropTypes.func,
-
-  /**
-   * Callback fired after the "entering" status is applied.
-   */
-  onEntering: PropTypes.func,
-
-  /**
-   * Callback fired after the "enter" status is applied.
-   */
-  onEntered: PropTypes.func,
-
-  /**
-   * Callback fired before the "exiting" status is applied.
-   */
-  onExit: PropTypes.func,
-
-  /**
-   * Callback fired after the "exiting" status is applied.
-   */
-  onExiting: PropTypes.func,
-
-  /**
-   * Callback fired after the "exited" status is applied.
-   */
-  onExited: PropTypes.func,
-};
-
-// Name the function so it is clearer in the documentation
-function noop() {}
-
-Transition.defaultProps = {
-  in: false,
-  unmountOnExit: false,
-  appear: false,
-  enter: true,
-  exit: true,
-
-  onEnter: noop,
-  onEntering: noop,
-  onEntered: noop,
-
-  onExit: noop,
-  onExiting: noop,
-  onExited: noop
-};
-
-Transition.UNMOUNTED = 0;
-Transition.EXITED = 1;
-Transition.ENTERING = 2;
-Transition.ENTERED = 3;
-Transition.EXITING = 4;
 
 export default Transition;

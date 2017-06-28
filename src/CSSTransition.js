@@ -145,6 +145,8 @@ const propTypes = {
  * ```
  */
 class CSSTransition extends React.Component {
+  static propTypes = propTypes;
+
   onEnter = (node, appearing) => {
     const { className } = this.getClassNames(appearing ? 'appear' : 'enter')
 
@@ -251,7 +253,5 @@ class CSSTransition extends React.Component {
     );
   }
 }
-
-CSSTransition.propTypes = propTypes;
 
 export default CSSTransition

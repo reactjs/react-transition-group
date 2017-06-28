@@ -99,6 +99,9 @@ const defaultProps = {
  * list items.
  */
 class TransitionGroup extends React.Component {
+  static propTypes = propTypes;
+  static defaultProps = defaultProps;
+
   static childContextTypes = {
     transitionGroup: PropTypes.object.isRequired,
   };
@@ -214,8 +217,5 @@ class TransitionGroup extends React.Component {
     );
   }
 }
-
-TransitionGroup.propTypes = propTypes;
-TransitionGroup.defaultProps = defaultProps;
 
 export default TransitionGroup;
