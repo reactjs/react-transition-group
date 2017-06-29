@@ -109,7 +109,13 @@ class TransitionGroup extends React.Component {
     // Initial children should all be entering, dependent on appear
     this.state = {
       children: getChildMapping(props.children, child => {
-        const onExited = () => this.handleExited(child.key);
+        const onExited = () => {
+          if (child.props.onExited)
+            child.props.onExited();
+
+          this.handleExited(child.key);
+        }
+
         return cloneElement(child, {
           onExited,
           in: true,
