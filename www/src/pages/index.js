@@ -4,18 +4,22 @@ import React from 'react';
 import ComponentPage from '../components/ComponentPage';
 
 import '../css/bootstrap.scss';
-import '../css/prism-theme.css';
+import '../css/prism-theme.scss';
 
 const propTypes = {
   data: PropTypes.object.isRequired,
 };
 
 class Index extends React.Component {
+  componentDidMount() {
+    document.title = 'react-transition-group'
+  }
   render() {
     const { data: { transition, cssTransition, transitionGroup } } = this.props;
 
     return (
       <div className='container' style={{ marginTop: '2rem' }}>
+        <h1>React Transition Group</h1>
         <section>
           <h2>Getting Started</h2>
           <p>
@@ -32,19 +36,17 @@ yarn add react-transition-group
 `}
 </code>
 </pre>
+
           <h3 className='h4'>CDN / External</h3>
-
           <p>
-          Since react-transition-group is fairly small, the overhead of including the library in your application is
-          negligible. However, in situations where it may be useful to benefit from an external CDN when bundling, link
-          to the following CDN:
-
-          <a href="https://unpkg.com/react-transition-group/dist/react-transition-group.min.js">
-            https://unpkg.com/react-transition-group/dist/react-transition-group.min.js
-          </a>
+            Since react-transition-group is fairly small, the overhead of including the library in your application is
+            negligible. However, in situations where it may be useful to benefit from an external CDN when bundling, link
+            to the following CDN: <a href="https://unpkg.com/react-transition-group/dist/react-transition-group.min.js">
+              https://unpkg.com/react-transition-group/dist/react-transition-group.min.js
+            </a>
           </p>
         </section>
-
+        <h2>Components</h2>
         <ComponentPage metadata={transition} />
         <ComponentPage metadata={transitionGroup} />
         <ComponentPage metadata={cssTransition} />

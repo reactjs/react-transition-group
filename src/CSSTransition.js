@@ -27,6 +27,15 @@ const propTypes = {
    *  exitActive: 'my-active-exit',
    * }}
    * ```
+   *
+   * @type {{
+   *  appear?: string,
+   *  appearActive?: string,
+   *  enter?: string,
+   *  enterActive?: string,
+   *  exit?: string,
+   *  exitActive?: string,
+   * }}
    */
   classNames: classNamesShape,
 
@@ -59,7 +68,7 @@ const propTypes = {
    * A `<Transition>` callback fired immediately after the 'exit'  class is
    * applied.
    *
-   * @type Function(node: HtmlElement, isAppearing: bool)
+   * @type Function(node: HtmlElement)
    */
   onExit: PropTypes.func,
 
@@ -67,7 +76,7 @@ const propTypes = {
    * A `<Transition>` callback fired immediately after the 'exit-active' is
    * class is applied.
    *
-   * @type Function(node: HtmlElement, isAppearing: bool)
+   * @type Function(node: HtmlElement
    */
   onExiting: PropTypes.func,
 
@@ -75,7 +84,7 @@ const propTypes = {
    * A `<Transition>` callback fired immediately after the 'exit' classes
    * are **removed** from the DOM node.
    *
-   * @type Function(node: HtmlElement, isAppearing: bool)
+   * @type Function(node: HtmlElement)
    */
   onExited: PropTypes.func,
 };
@@ -93,6 +102,8 @@ const propTypes = {
  * added in the next tick. This is a convention based on the `classNames` prop.
  *
  * ```js
+ * import CSSTransition from 'react-transition-group/CSSTransition';
+ *
  * const Fade = ({ children, ...props }) => (
  *  <CSSTransition
  *    {...props}

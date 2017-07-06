@@ -12,9 +12,44 @@ export const EXITING = 'exiting';
 
 /**
  * The Transition component lets you describe a transition from one component
- * state to another _over time_ with a simple declarative api. Most commonly
+ * state to another _over time_ with a simple declarative API. Most commonly
  * It's used to animate the mounting and unmounting of Component, but can also
  * be used to describe in-place transition states as well.
+ *
+ * By default the `Transition` component does not alter the behavior of the
+ * component it renders, it only tracks "enter" and "exit" states for the components.
+ * It's up to you to give meaning and effect to those states. For example we can
+ * add styles to a component when it enters or exits:
+ *
+ * ```jsx
+ * import Transition from 'react-transition-group/Transition';
+ *
+ * const duration = 300;
+ *
+ * const defaultStyle = {
+ *   transition: `opacity ${duration}ms ease-in-out`,
+ *   opactity: 0,
+ * }
+ *
+ * const transitionStyles = {
+ *   entering: { opacity: 1 },
+ *   entered:  { opacity: 1 },
+ * };
+ *
+ * const Fade = ({ in: inProp }) => (
+ *   <Transition in={inProp} timeout={duration}>
+ *     {(state) => (
+ *       <div style={{
+ *         ...defaultStyle,
+ *         ...transitionStyles[state]
+ *       }}>
+ *         I'm A fade Transition!
+ *       </div>
+ *     )}
+ *   </Transition>
+ * );
+ * ```
+ *
  */
 class Transition extends React.Component {
   static contextTypes = {
@@ -143,12 +178,12 @@ class Transition extends React.Component {
 
     this.props.onEnter(node, appearing);
 
-    this.safeSetState({status: ENTERING}, () => {
+    this.safeSetState({ status: ENTERING }, () => {
       this.props.onEntering(node, appearing);
 
       // FIXME: appear timeout?
       this.onTransitionEnd(node, timeouts.enter, () => {
-        this.safeSetState({status: ENTERED}, () => {
+        this.safeSetState({ status: ENTERED }, () => {
           this.props.onEntered(node, appearing);
         });
       });
@@ -161,18 +196,18 @@ class Transition extends React.Component {
 
     // no exit animation skip right to EXITED
     if (!exit) {
-      this.safeSetState({status: EXITED}, () => {
+      this.safeSetState({ status: EXITED }, () => {
         this.props.onExited(node);
       });
       return;
     }
     this.props.onExit(node);
 
-    this.safeSetState({status: EXITING}, () => {
+    this.safeSetState({ status: EXITING }, () => {
       this.props.onExiting(node);
 
       this.onTransitionEnd(node, timeouts.exit, () => {
-        this.safeSetState({status: EXITED}, () => {
+        this.safeSetState({ status: EXITED }, () => {
           this.props.onExited(node);
         });
       });
@@ -253,7 +288,7 @@ Transition.propTypes = {
    * ('entering', 'entered', 'exiting', 'exited', 'unmounted'), which can used
    * to apply context specific props to a component.
    *
-   * ```js
+   * ```jsx
    * <Transition timeout={150}>
    *   {(status) => (
    *     <MyComponent className={`fade fade-${status}`} />
@@ -282,18 +317,17 @@ Transition.propTypes = {
   unmountOnExit: PropTypes.bool,
 
   /**
-   * Run the enter transition when the component mounts, if it is initially
-   * `in={true}`
+   * Enable or disable appear (entering on mount) transitions.
    */
   appear: PropTypes.bool,
 
   /**
-   * Run the enter transition when `in={true}`.
+   * Enable or disable enter transitions.
    */
   enter: PropTypes.bool,
 
   /**
-   * Run the exit transition when `in={false}`.
+   * Enable or disable exit transitions.
    */
   exit: PropTypes.bool,
 
@@ -302,12 +336,15 @@ Transition.propTypes = {
    *
    * You may specify a single timeout for all transitions like: `timeout={500}`,
    * or individually like:
-   * ```js
+   *
+   * ```jsx
    * timeout={{
    *  enter: 300,
    *  leave: 500,
    * }}
    * ```
+   *
+   * @type {number | { enter?: number, exit?: number }}
    */
   timeout: timeoutsShape,
 
@@ -316,40 +353,54 @@ Transition.propTypes = {
    * DOM node and a `done` callback. Allows for more fine grained transition end
    * logic. **Note:** Timeouts are still used as a fallback.
    *
+   * ```jsx
    * addEndListener={(node, done) => {
    *   // use the css transitionend event to mark the finish of a transition
    *   node.addEventListener('transitionend', done, false);
    * }}
+   * ```
    */
   addEndListener: PropTypes.func,
 
   /**
    * Callback fired before the "entering" status is applied.
+   *
+   * @type Function(node: HtmlElement, isAppearing: bool)
    */
   onEnter: PropTypes.func,
 
   /**
    * Callback fired after the "entering" status is applied.
+   *
+   * @type Function(node: HtmlElement, isAppearing: bool)
    */
   onEntering: PropTypes.func,
 
   /**
    * Callback fired after the "enter" status is applied.
+   *
+   * @type Function(node: HtmlElement, isAppearing: bool)
    */
   onEntered: PropTypes.func,
 
   /**
    * Callback fired before the "exiting" status is applied.
+   *
+   * @type Function(node: HtmlElement)
    */
   onExit: PropTypes.func,
 
   /**
    * Callback fired after the "exiting" status is applied.
+   *
+   * @type Function(node: HtmlElement)
    */
   onExiting: PropTypes.func,
 
   /**
    * Callback fired after the "exited" status is applied.
+   *
+   * @type Function(node: HtmlElement)
    */
   onExited: PropTypes.func,
 };
@@ -359,6 +410,7 @@ function noop() {}
 
 Transition.defaultProps = {
   in: false,
+  mountOnEnter: false,
   unmountOnExit: false,
   appear: false,
   enter: true,

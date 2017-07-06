@@ -7,7 +7,6 @@ function displayObj(obj){
   return JSON.stringify(obj, null, 2).replace(/"|'/g, '')
 }
 
-let capitalize = str => str[0].toUpperCase() + str.substr(1);
 let cleanDocletValue = str => str.trim().replace(/^\{/, '').replace(/\}$/, '');
 
 const extractMarkdown = ({ description }) => (
@@ -21,13 +20,22 @@ class ComponentPage extends React.Component {
     const { metadata, ...props } = this.props;
 
     return (
-      <div {...this.props}>
+      <div {...props}>
         <h2 id={metadata.displayName}><a href={`#${metadata.displayName}`}>
           {metadata.displayName}</a>
         </h2>
         <p dangerouslySetInnerHTML={{ __html: extractMarkdown(metadata) }} />
 
-        <h3>Props</h3>
+        <h3>
+          <div>Props</div>
+          {metadata.composes && (
+          <small style={{ fontStyle: 'italic', fontSize: '70%'}}>
+            Accepts all props
+            from {metadata.composes.map(p => `<${p.replace('./', '')}>`).join(', ')} unless otherwise noted.
+          </small>
+        )}
+        </h3>
+
         {metadata.props.map(p =>
           this.renderProp(p, metadata.displayName
         ))}
@@ -44,9 +52,7 @@ class ComponentPage extends React.Component {
       <section key={name}>
         <h4 id={id}>
           <a href={`#${id}`}><code>{name}</code></a>
-          {required && (
-            <strong>{' required'}</strong>
-          )}
+
         </h4>
         <div dangerouslySetInnerHTML={{ __html: extractMarkdown(prop) }} />
 
@@ -55,9 +61,13 @@ class ComponentPage extends React.Component {
             {'type: '}
             { typeInfo && typeInfo.type === 'pre' ? typeInfo : <code>{typeInfo}</code> }
           </div>
+          {required && (
+            <div>required</div>
+          )}
           {defaultValue &&
             <div>default: <code>{defaultValue.value.trim()}</code></div>
           }
+
         </div>
       </section>
     )

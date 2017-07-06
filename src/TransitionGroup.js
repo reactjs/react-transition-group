@@ -54,13 +54,15 @@ const defaultProps = {
  * automatically by the `<TransitionGroup>`. You can use _any_ `<Transition>`
  * component in a `<TransitionGroup>`, not just css.
  *
- * ```js
+ * ```jsx
+ * import TransitionGroup from 'react-transition-group/TransitionGroup';
+ *
  * class TodoList extends React.Component {
  *   constructor(props) {
  *     super(props)
  *     this.state = {items: ['hello', 'world', 'click', 'me']}
  *   }
- *   handleAdd = () => {
+ *   handleAdd() {
  *     const newItems = this.state.items.concat([
  *       prompt('Enter some text')
  *     ]);
@@ -74,17 +76,17 @@ const defaultProps = {
  *   render() {
  *     return (
  *       <div>
- *         <button onClick={this.handleAdd}>Add Item</button>
+ *         <button onClick={() => this.handleAdd()}>Add Item</button>
  *         <TransitionGroup>
  *           {this.state.items.map((item, i) => (
- *             <Fade key={item}>
+ *             <FadeTransition key={item}>
  *               <div>
  *                 {item}{' '}
  *                 <button onClick={() => this.handleRemove(i)}>
  *                   remove
  *                 </button>
  *               </div>
- *             </Fade>
+ *             </FadeTransition>
  *           ))}
  *         </TransitionGroup>
  *       </div>

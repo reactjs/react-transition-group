@@ -4,6 +4,8 @@ Author:     Bram de Haan (http://atelierbram.github.io/syntax-highlighting/ateli
 Prism template by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/prism/)
 Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16)
 */
+@import 'variables.scss';
+
 code[class*="language-"],
 pre[class*="language-"] {
   font-family: Consolas, Menlo, Monaco, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", "Courier New", Courier, monospace;
@@ -21,20 +23,20 @@ pre[class*="language-"] {
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
-  background: #f5f7ff;
-  color: #5e6687;
+  background: $syntax-bg;
+  color: $syntax-fg;
 }
 
 pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
 code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
   text-shadow: none;
-  background: #dfe2f1;
+  background: darken($syntax-bg, 8%);;
 }
 
 pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
 code[class*="language-"]::selection, code[class*="language-"] ::selection {
   text-shadow: none;
-  background: #dfe2f1;
+  background: darken($syntax-bg, 8%);
 }
 
 /* Code blocks */
@@ -54,7 +56,7 @@ pre[class*="language-"] {
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  color: #898ea4;
+  color: $mono-3;
 }
 
 .token.punctuation {
@@ -68,19 +70,23 @@ pre[class*="language-"] {
 .token.operator,
 .token.boolean,
 .token.number {
-  color: #c76b29;
+  color: $hue-6-2;
 }
 
 .token.property {
-  color: #c08b30;
+  color: $hue-2;
 }
 
 .token.tag {
-  color: #3d8fd1;
+  color: $hue-6;
 }
 
 .token.string {
-  color: #22a2c9;
+  color: $hue-4;
+}
+
+.token.function {
+  color: $hue-1;
 }
 
 .token.selector {
@@ -88,14 +94,14 @@ pre[class*="language-"] {
 }
 
 .token.attr-name {
-  color: #c76b29;
+  color: $hue-5;
 }
 
 .token.entity,
 .token.url,
 .language-css .token.string,
 .style .token.string {
-  color: #22a2c9;
+  color: $hue-1;
 }
 
 .token.attr-value,
@@ -103,18 +109,18 @@ pre[class*="language-"] {
 .token.control,
 .token.directive,
 .token.unit {
-  color: #ac9739;
+  color: $hue-3;
 }
 
 .token.statement,
 .token.regex,
 .token.atrule {
-  color: #22a2c9;
+  color: $hue-1;
 }
 
 .token.placeholder,
 .token.variable {
-  color: #3d8fd1;
+  color: $hue-2;
 }
 
 .token.deleted {
@@ -136,7 +142,7 @@ pre[class*="language-"] {
 }
 
 .token.important {
-  color: #c94922;
+  color: $hue-5;
 }
 
 .token.entity {
@@ -144,7 +150,7 @@ pre[class*="language-"] {
 }
 
 pre > code.highlight {
-  outline: 0.4em solid #c94922;
+  outline: 0.4em solid $hue-5;
   outline-offset: .4em;
 }
 
@@ -152,9 +158,9 @@ pre > code.highlight {
  * http://prismjs.com/plugins/line-numbers/
  */
 .line-numbers .line-numbers-rows {
-  border-right-color: #dfe2f1;
+  border-right-color: $mono-1;
 }
 
 .line-numbers-rows > span:before {
-  color: #979db4;
+  color: $mono-1;
 }
