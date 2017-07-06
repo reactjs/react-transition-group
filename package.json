@@ -10,7 +10,7 @@
     "build:dist": "rimraf lib/dist && webpack && NODE_ENV=production webpack -p",
     "lint": "eslint src test",
     "release": "release",
-    "prerelease": "release --preid beta --tag next",
+    "release:next": "release --preid beta --tag next",
     "deploy-docs": "cd www && npm run deploy",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
