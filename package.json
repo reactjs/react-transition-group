@@ -6,10 +6,10 @@
   "scripts": {
     "test": "jest --runInBand --verbose",
     "tdd": "jest --watch",
-    "build": "rimraf lib && babel src --out-dir lib && npm run build:dist",
+    "build": "rimraf lib && babel src --out-dir lib && npm run build:dist && cp README.md ./lib",
     "build:dist": "rimraf lib/dist && webpack && NODE_ENV=production webpack -p",
     "lint": "eslint src test",
-    "release": "cp README.md ./lib && release",
+    "release": "release",
     "release:next": "release --preid beta --tag next",
     "deploy-docs": "cd www && npm run deploy",
     "storybook": "start-storybook -p 6006",
