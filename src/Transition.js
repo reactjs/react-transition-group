@@ -340,7 +340,7 @@ Transition.propTypes = {
    * ```jsx
    * timeout={{
    *  enter: 300,
-   *  leave: 500,
+   *  exit: 500,
    * }}
    * ```
    *
