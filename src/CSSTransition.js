@@ -145,11 +145,11 @@ const propTypes = {
  *   transition: opacity 500ms ease-in;
  * }
  *
- * .fade-leave {
+ * .fade-exit {
  *   opacity: 1;
  * }
  *
- * .fade-leave.fade-leave-active {
+ * .fade-exit.fade-exit-active {
  *   opacity: 0.01;
  *   transition: opacity 300ms ease-in;
  * }
