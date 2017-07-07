@@ -39,13 +39,13 @@ export const classNamesShape = PropTypes.oneOfType([
   PropTypes.string,
   PropTypes.shape({
     enter: PropTypes.string,
-    leave: PropTypes.string,
+    exit: PropTypes.string,
     active: PropTypes.string,
   }),
   PropTypes.shape({
     enter: PropTypes.string,
     enterActive: PropTypes.string,
-    leave: PropTypes.string,
-    leaveActive: PropTypes.string,
+    exit: PropTypes.string,
+    exitActive: PropTypes.string,
   }),
 ]);
