@@ -11,6 +11,8 @@ specifically designed with animation in mind.
 
 Check out the documentation at: [https://reactcommunity.org/react-transition-group/](https://reactcommunity.org/react-transition-group/)
 
+And the Migration details from v1: [https://github.com/reactjs/react-transition-group/blob/master/migration.md](https://github.com/reactjs/react-transition-group/blob/master/migration.md)
+
 ### Examples
 
 Clone the repo first:
