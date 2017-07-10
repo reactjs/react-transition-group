@@ -134,8 +134,10 @@ For that we wrap each item in a `CSSTransition`, but first let's adjust our css.
   transition: opacity 300ms ease-in;
 }
 ```
-We simply replaced the word `"leave"` with `"exit"`. In general `v2` uses "exit" instead of "leave".
-Next we include `CSSTransition` (at last).
+All we did was replace the word `"leave"` with `"exit"`. Overall, `v2` uses
+"exit" instead of "leave" to be more symetrical, avoiding awkwardness with english tenses (like "entered" and "leaved").
+
+Now, at last we include the `CSSTransition` component.
 
 ```diff
 render() {
