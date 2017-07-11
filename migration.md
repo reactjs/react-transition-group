@@ -1,5 +1,5 @@
 
-## Migratiing from v1 to v2
+## Migrating from v1 to v2
 
 A few notes to help with migrating from `v1` to `v2`
 
@@ -135,7 +135,8 @@ For that we wrap each item in a `CSSTransition`, but first let's adjust our css.
 }
 ```
 All we did was replace the word `"leave"` with `"exit"`. Overall, `v2` uses
-"exit" instead of "leave" to be more symetrical, avoiding awkwardness with english tenses (like "entered" and "leaved").
+"exit" instead of "leave" to be more symmetrical, avoiding awkwardness
+with english tenses (like "entered" and "leaved").
 
 Now, at last we include the `CSSTransition` component.
 
@@ -145,7 +146,7 @@ render() {
 +    <CSSTransition
 +      key={item}
 +      classNames="example"
-+      timout={{ enter: 500, exit: 300 }}
++      timeout={{ enter: 500, exit: 300 }}
 +    >
       <div onClick={() => this.handleRemove(i)}>
         {item}
@@ -171,14 +172,14 @@ We also replaced `transitionEnterTimeout` and `transitionLeaveTimeout` with a si
 > Hint: If your enter and exit timeouts are the same you can use the shorthand: `timeout={500}`
 
 If we wanted to make this a bit more encapsulated we could wrap up our `CSSTransition`
-into a seperate component for reuse later!
+into a separate component for reuse later!
 
 ```js
 const FadeTransition = (props) => (
   <CSSTransition
     {...props}
     classNames="example"
-    timout={{ enter: 500, exit: 300 }}
+    timeout={{ enter: 500, exit: 300 }}
   />
 )
 ```
@@ -191,7 +192,7 @@ render() {
 -    <CSSTransition
 -      key={item}
 -      classNames="example"
--      timout={{ enter: 500, exit: 300 }}
+-      timeout={{ enter: 500, exit: 300 }}
 -    >
 +    <FadeTransition>
       <div onClick={() => this.handleRemove(i)}>
@@ -213,14 +214,14 @@ render() {
 ```
 
 > HEY! You may not need CSSTransition at all! The lower level `Transition` component
-is very flexible and may be easier to work with for simpler or very cuistom cases. Check out how we migrated react-bootstrap's simple transitions to v2: [https://github.com/react-bootstrap/react-bootstrap/pull/2676/files#diff-4f938f648d04d4859be417d6590ca7c4](Collapse) and [https://github.com/react-bootstrap/react-bootstrap/pull/2676/files#diff-8f766132cbd9f8de55ee05d63d75abd8](Fade)
+is very flexible and may be easier to work with for simpler or custom cases. Check out how we migrated react-bootstrap's simple transitions to v2: [https://github.com/react-bootstrap/react-bootstrap/pull/2676/files#diff-4f938f648d04d4859be417d6590ca7c4](Collapse) and [https://github.com/react-bootstrap/react-bootstrap/pull/2676/files#diff-8f766132cbd9f8de55ee05d63d75abd8](Fade)
 
 
 ### TransitionGroup
 
 The old TransitionGroup managed transitions through custom static lifecycle methods
 on its `children`. In `v2` we removed that API in favor of requiring that `TransitionGroup`s
-be used with a `Transition` componenent, and traditional prop passing to communicate with the Group.
+be used with a `Transition` component, and traditional prop passing to communicate with the Group.
 
 Practically this means that `TransitionGroup` will inject it's `children` with `Transition` specific
 props that **must** be passed through to the `Transition` component in order for the
@@ -229,7 +230,7 @@ transition to work.
 ```js
 const MyTransition = ({ children: child, ...props }) => (
   // NOTICE THE SPREAD! THIS IS REQUIRED!
-  <Transition {..props}>
+  <Transition {...props}>
     {(transitionState) => React.cloneElement(child, {
       style: getStyleBasedOnTransitionState(transitionState)
     })}
@@ -238,14 +239,14 @@ const MyTransition = ({ children: child, ...props }) => (
 
 const MyList = () => (
   <TransitionGroup>
-    {items.map(item) => (
+    {items.map((item) => (
       <MyTransition>{item}</MyTransition>
     )}
   </TransitionGroup>
 );
 ```
 
-Notice how `MyTransition` passing all the props it doesn't care about to `Transition`?
+Notice how `MyTransition` passes all props it doesn't care about to `Transition`?
 
 
 #### Callbacks
@@ -255,7 +256,7 @@ when the Transition _changes_ from one state to another you can use the callback
 
 ```js
 <Transition
-  {..props}
+  {...props}
   onEnter={handleEnter}
   onEntering={handleEntering}
   onEntered={handleEntered}
