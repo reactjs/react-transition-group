@@ -214,7 +214,7 @@ render() {
 ```
 
 > HEY! You may not need CSSTransition at all! The lower level `Transition` component
-is very flexible and may be easier to work with for simpler or custom cases. Check out how we migrated react-bootstrap's simple transitions to v2: [https://github.com/react-bootstrap/react-bootstrap/pull/2676/files#diff-4f938f648d04d4859be417d6590ca7c4](Collapse) and [https://github.com/react-bootstrap/react-bootstrap/pull/2676/files#diff-8f766132cbd9f8de55ee05d63d75abd8](Fade)
+is very flexible and may be easier to work with for simpler or custom cases. Check out how we migrated react-bootstrap's simple transitions to v2: [Collapse](https://github.com/react-bootstrap/react-bootstrap/pull/2676/files#diff-4f938f648d04d4859be417d6590ca7c4) and [Fade](https://github.com/react-bootstrap/react-bootstrap/pull/2676/files#diff-8f766132cbd9f8de55ee05d63d75abd8) components.
 
 
 ### TransitionGroup
