@@ -191,7 +191,7 @@ class CSSTransition extends React.Component {
     const { className } = this.getClassNames('exit')
 
     this.removeClasses(node, 'appear');
-    this.removeClasses(node, 'exit');
+    this.removeClasses(node, 'enter');
     addClass(node, className)
 
     if (this.props.onExit) {
