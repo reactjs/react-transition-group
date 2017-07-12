@@ -66,8 +66,8 @@ const defaultProps = {
  *   exited:  { opacity: 0 },
  * };
  *
- * const Fade = ({ in: inProp, children, ...props }) => (
- *   <Transition in={inProp} timeout={duration} {...props}>
+ * const Fade = ({ children, ...props }) => (
+ *   <Transition timeout={duration} {...props}>
  *     {(state) => (
  *       <div style={{
  *         ...defaultStyle,
