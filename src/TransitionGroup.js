@@ -53,6 +53,7 @@ const defaultProps = {
  * `<Transition>` component, so you should make sure to pass extra props through
  * if your children are components that render a `<Transition>`.  For example:
  *
+ * ```jsx
  * const duration = 300;
  *
  * const defaultStyle = {
@@ -78,6 +79,7 @@ const defaultProps = {
  *     )}
  *   </Transition>
  * );
+ * ```
  *
  * Consider the example below using this `Fade` component.
  * As items are removed or added to the TodoList the `in` prop is toggled
