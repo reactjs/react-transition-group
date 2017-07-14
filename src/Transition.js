@@ -66,8 +66,6 @@ export const EXITING = 'exiting';
  * it's complete. So in the following example: `<Transition in timeout={500} />`,
  * the component will immediately shift to `'entering'` and stay there for 500ms and switch to `'entered'`.
  * When `in` is `false` the same thing happens except the states are `'exiting'` to `'exited'`.
- *
- * This framework is intentionally
  */
 class Transition extends React.Component {
   static contextTypes = {

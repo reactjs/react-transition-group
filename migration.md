@@ -5,7 +5,7 @@ A few notes to help with migrating from `v1` to `v2`
 
 ### CSSTransitionGroup migration guide
 
-The `CSSTransitonGroup` has been removed, and a `CSSTransition` component has
+The `CSSTransitionGroup` has been removed, and a `CSSTransition` component has
 been added and can be used with the new `TransitionGroup` component to accomplish the same tasks.
 
 **tl;dr;**

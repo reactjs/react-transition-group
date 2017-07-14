@@ -1,5 +1,33 @@
-## [v1.1.X]
-> 2017-XX-XX
+## [v2.2.0]
+> 2017-07-06
+
+- **Feature:** Add back `childFactory` on `<TransitionGroup>` ([#113])
+- **Bugfix:** Ensure child specified `onExited` fires in a `<TransitionGroup>` ([#113])
+
+
+[#113]: https://github.com/reactjs/react-transition-group/pull/113
+[v2.2.0]: https://github.com/reactjs/react-transition-group/compare/v2.0.1...2.2.0
+
+## v2.0.2
+> 2017-07-06
+
+- **Fix documentation npm:** No code changes
+
+## v2.0.1
+> 2017-07-06
+
+- **Fix documentation on npm:** No code changes
+
+## [v2.0.0]
+> 2017-07-06
+
+- **Feature:** New API! ([#24]), migration guide at [https://github.com/reactjs/react-transition-group/blob/master/migration.md](https://github.com/reactjs/react-transition-group/blob/master/migration.md)
+
+[#24]: https://github.com/reactjs/react-transition-group/pull/24
+[v2.0.0]: https://github.com/reactjs/react-transition-group/compare/v1.2.0...v2.0.0
+
+## [v1.2.0]
+> 2017-06-12
 
 - **Feature:** Dist build now includes both production and development builds ([#64])
 - **Feature:** PropTypes are now wrapped allowing for lighter weight production builds ([#69])
