@@ -1,11 +1,11 @@
-## [v2.2.0]
+## [v2.1.0]
 > 2017-07-06
 
 - **Feature:** Add back `childFactory` on `<TransitionGroup>` ([#113])
 - **Bugfix:** Ensure child specified `onExited` fires in a `<TransitionGroup>` ([#113])
 
 [#113]: https://github.com/reactjs/react-transition-group/pull/113
-[v2.2.0]: https://github.com/reactjs/react-transition-group/compare/v2.0.1...2.2.0
+[v2.1.0]: https://github.com/reactjs/react-transition-group/compare/v2.0.1...2.1.0
 
 ## v2.0.2
 > 2017-07-06
