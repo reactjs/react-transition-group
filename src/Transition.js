@@ -13,7 +13,7 @@ export const EXITING = 'exiting';
 /**
  * The Transition component lets you describe a transition from one component
  * state to another _over time_ with a simple declarative API. Most commonly
- * It's used to animate the mounting and unmounting of Component, but can also
+ * it's used to animate the mounting and unmounting of a component, but can also
  * be used to describe in-place transition states as well.
  *
  * By default the `Transition` component does not alter the behavior of the
@@ -50,6 +50,22 @@ export const EXITING = 'exiting';
  * );
  * ```
  *
+ * As noted the `Transition` component doesn't _do_ anything by itself to its child component.
+ * What it does do is track transition states over time so you can adjust you
+ * component (such as adding styles of classes) as it changes states.
+ *
+ * There are 4 main states a Transition can be in:
+ *  - `ENTERING`
+ *  - `ENTERED`
+ *  - `EXITING`
+ *  - `EXITED`
+ *
+ * Transition state is toggled via the `in` prop. When `true` the component begins the
+ * "Enter" stage. During this stage, the component will shift from its current transitions state,
+ * to `'entering'` for the duration of the transition and then to the `'entered'` stage once
+ * it's complete. So in the following example: `<Transition in timeout={500} />`,
+ * the component will immediately shift to `'entering'` and stay there for 500ms and switch to `'entered'`.
+ * When `in` is `false` the same thing happens except the states are `'exiting'` to `'exited'`.
  */
 class Transition extends React.Component {
   static contextTypes = {
@@ -280,10 +296,7 @@ class Transition extends React.Component {
 
 Transition.propTypes = {
   /**
-   * Generally a React element to animate, all unknown props on Transition are
-   * transfered to the **single** child element.
-   *
-   * For advanced uses a `function` child can be used instead of a React element.
+   * A `function` child can be used instead of a React element.
    * This function is called with the current transition status
    * ('entering', 'entered', 'exiting', 'exited', 'unmounted'), which can used
    * to apply context specific props to a component.
@@ -307,17 +320,25 @@ Transition.propTypes = {
   in: PropTypes.bool,
 
   /**
-   * Wait until the first "enter" transition to mount the component (add it to the DOM)
+   * By default the child component is mounted immediately along with
+   * the parent `Transition` component. If you want to "lazy mount" the component on the
+   * first `in={true}` you can set `mountOnEnter`. After the first enter transition the component will stay
+   * mounted even on exit unless you also specify `unmountOnExit`
    */
   mountOnEnter: PropTypes.bool,
 
   /**
-   * Unmount the component (remove it from the DOM) when it is not shown
+   * By default the child component is mounted in the DOM after it enteres the `'exited'` state.
+   * If you'd prefer to completely unmonut the component after it exits, set `unmountOnExit`.
    */
   unmountOnExit: PropTypes.bool,
 
   /**
-   * Enable or disable appear (entering on mount) transitions.
+   * Normally a component is not transitioned on it's initial mount. If you
+   * want to transition on the first mount set `appear` to `true`, and the
+   * component will enter the component.
+   *
+   * > Note: there are no specific "appear" states. `apprear` only an additional `enter` transition.
    */
   appear: PropTypes.bool,
 
@@ -363,44 +384,47 @@ Transition.propTypes = {
   addEndListener: PropTypes.func,
 
   /**
-   * Callback fired before the "entering" status is applied.
+   * Callback fired before the "entering" status is applied. An extra parameter
+   * `isAppearing` is supplied to indicate if the enter stage is occuring on the initial mount
    *
-   * @type Function(node: HtmlElement, isAppearing: bool)
+   * @type Function(node: HtmlElement, isAppearing: bool) -> void
    */
   onEnter: PropTypes.func,
 
   /**
-   * Callback fired after the "entering" status is applied.
+   * Callback fired after the "entering" status is applied. An extra parameter
+   * `isAppearing` is supplied to indicate if the enter stage is occuring on the initial mount
    *
    * @type Function(node: HtmlElement, isAppearing: bool)
    */
   onEntering: PropTypes.func,
 
   /**
-   * Callback fired after the "enter" status is applied.
+   * Callback fired after the "enter" status is applied. An extra parameter
+   * `isAppearing` is supplied to indicate if the enter stage is occuring on the initial mount
    *
-   * @type Function(node: HtmlElement, isAppearing: bool)
+   * @type Function(node: HtmlElement, isAppearing: bool) -> void
    */
   onEntered: PropTypes.func,
 
   /**
    * Callback fired before the "exiting" status is applied.
    *
-   * @type Function(node: HtmlElement)
+   * @type Function(node: HtmlElement) -> void
    */
   onExit: PropTypes.func,
 
   /**
    * Callback fired after the "exiting" status is applied.
    *
-   * @type Function(node: HtmlElement)
+   * @type Function(node: HtmlElement) -> void
    */
   onExiting: PropTypes.func,
 
   /**
    * Callback fired after the "exited" status is applied.
    *
-   * @type Function(node: HtmlElement)
+   * @type Function(node: HtmlElement) -> void
    */
   onExited: PropTypes.func,
 };

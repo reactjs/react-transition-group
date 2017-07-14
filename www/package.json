@@ -13,14 +13,13 @@
   "license": "MIT",
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.6",
-    "gatsby": "^1.0.0-beta.7",
-    "gatsby-link": "^1.0.0-beta.6",
-    "gatsby-plugin-sass": "^1.0.0-beta.1",
-    "gatsby-remark-prismjs": "^1.0.0-beta.6",
-    "gatsby-source-filesystem": "^1.0.0-beta.6",
-    "gatsby-transformer-react-docgen": "^1.0.0-beta.6",
-    "gatsby-transformer-remark": "^1.0.0-beta.6",
-    "graphql-type-json": "^0.1.4",
+    "gatsby": "^1.0.0",
+    "gatsby-link": "^1.0.0",
+    "gatsby-plugin-sass": "^1.0.0",
+    "gatsby-remark-prismjs": "^1.0.0",
+    "gatsby-source-filesystem": "^1.0.0",
+    "gatsby-transformer-react-docgen": "^1.0.0",
+    "gatsby-transformer-remark": "^1.0.0",
     "lodash": "^4.17.4"
   },
   "devDependencies": {
