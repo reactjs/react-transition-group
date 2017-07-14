@@ -51,8 +51,8 @@ export const EXITING = 'exiting';
  * ```
  *
  * As noted the `Transition` component doesn't _do_ anything by itself to its child component.
- * What it does do is track transition states over time so you can adjust you
- * component (such as adding styles of classes) as it changes states.
+ * What it does do is track transition states over time so you can update the
+ * component (such as by adding styles or classes) when it changes states.
  *
  * There are 4 main states a Transition can be in:
  *  - `ENTERING`
@@ -61,11 +61,31 @@ export const EXITING = 'exiting';
  *  - `EXITED`
  *
  * Transition state is toggled via the `in` prop. When `true` the component begins the
- * "Enter" stage. During this stage, the component will shift from its current transitions state,
+ * "Enter" stage. During this stage, the component will shift from its current transition state,
  * to `'entering'` for the duration of the transition and then to the `'entered'` stage once
- * it's complete. So in the following example: `<Transition in timeout={500} />`,
- * the component will immediately shift to `'entering'` and stay there for 500ms and switch to `'entered'`.
- * When `in` is `false` the same thing happens except the states are `'exiting'` to `'exited'`.
+ * it's complete. Let's take the following example:
+ *
+ * ```jsx
+ * state= { in: false };
+ *
+ * toggleEnterState = () => {
+ *   this.setState({ in: true });
+ * }
+ *
+ * render() {
+ *   return (
+ *     <div>
+ *       <Transition in={this.state.in} timeout={500} />
+ *       <button onClick={this.toggleEnterState}>Click to Enter</button>
+ *     </div>
+ *   );
+ * }
+ * ```
+ *
+ * When the button is clicked the component will shift to the `'entering'` state and
+ * stay there for 500ms (the value of `timeout`) when finally switches to `'entered'`.
+ *
+ * When `in` is `false` the same thing happens except the state moves from `'exiting'` to `'exited'`.
  */
 class Transition extends React.Component {
   static contextTypes = {
@@ -323,20 +343,20 @@ Transition.propTypes = {
    * By default the child component is mounted immediately along with
    * the parent `Transition` component. If you want to "lazy mount" the component on the
    * first `in={true}` you can set `mountOnEnter`. After the first enter transition the component will stay
-   * mounted even on exit unless you also specify `unmountOnExit`
+   * mounted, even on "exited", unless you also specify `unmountOnExit`.
    */
   mountOnEnter: PropTypes.bool,
 
   /**
-   * By default the child component is mounted in the DOM after it enteres the `'exited'` state.
-   * If you'd prefer to completely unmonut the component after it exits, set `unmountOnExit`.
+   * By default the child component stays mounted after it reaches the `'exited'` state.
+   * Set `unmountOnExit` if you'd prefer to unmount the component after it finishes exiting.
    */
   unmountOnExit: PropTypes.bool,
 
   /**
-   * Normally a component is not transitioned on it's initial mount. If you
-   * want to transition on the first mount set `appear` to `true`, and the
-   * component will enter the component.
+   * Normally a component is not transitioned if it shown when the `<Transition>` component mounts.
+   * If you want to transition on the first mount set `appear` to `true`, and the
+   * component will transition in as soon as the `<Transition>` mounts.
    *
    * > Note: there are no specific "appear" states. `apprear` only an additional `enter` transition.
    */
