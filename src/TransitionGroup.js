@@ -37,10 +37,23 @@ const propTypes = {
    * on individual children Transitions.
    */
   exit: PropTypes.bool,
+
+  /**
+   * You may need to apply reactive updates to a child as it is exiting.
+   * This is generally done by using `cloneElement` however in the case of an exiting
+   * child the element has already been removed and not accessible to the consumer.
+   *
+   * If you do need to update a child as it leaves you can provide a `childFactory`
+   * to wrap every child, even the ones that are leaving.
+   *
+   * @type Function(child: ReactElement) -> ReactElement
+   */
+  childFactory: PropTypes.func,
 };
 
 const defaultProps = {
   component: 'div',
+  childFactory: child => child,
 };
 
 /**
@@ -111,11 +124,8 @@ class TransitionGroup extends React.Component {
     // Initial children should all be entering, dependent on appear
     this.state = {
       children: getChildMapping(props.children, child => {
-        const onExited = () => {
-          if (child.props.onExited)
-            child.props.onExited();
-
-          this.handleExited(child.key);
+        const onExited = (node) => {
+          this.handleExited(child.key, node, child.props.onExited);
         }
 
         return cloneElement(child, {
@@ -156,7 +166,9 @@ class TransitionGroup extends React.Component {
 
       if (!isValidElement(child)) return;
 
-      const onExited = () => this.handleExited(key);
+      const onExited = (node) => {
+        this.handleExited(child.key, node, child.props.onExited);
+      }
 
       const hasPrev = key in prevChildMapping;
       const hasNext = key in nextChildMapping;
@@ -195,20 +207,24 @@ class TransitionGroup extends React.Component {
     this.setState({ children });
   }
 
-  handleExited = (key) => {
+  handleExited = (key, node, originalHandler) => {
     let currentChildMapping = getChildMapping(this.props.children);
 
     if (key in currentChildMapping) return
 
+    if (originalHandler)
+      originalHandler(node)
+
     this.setState((state) => {
       let children = { ...state.children };
+
       delete children[key];
       return { children };
     });
   };
 
   render() {
-    const { component: Component, ...props } = this.props;
+    const { component: Component, childFactory, ...props } = this.props;
     const { children } = this.state;
 
     delete props.appear;
@@ -217,7 +233,7 @@ class TransitionGroup extends React.Component {
 
     return (
       <Component {...props}>
-        {values(children)}
+        {values(children).map(childFactory)}
       </Component>
     );
   }
