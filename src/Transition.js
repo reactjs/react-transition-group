@@ -217,7 +217,7 @@ class Transition extends React.Component {
       });
       return;
     }
-    this.props.onExit(node);
+    this.props.onExited(node);
 
     this.safeSetState({ status: EXITING }, () => {
       this.props.onExiting(node);
