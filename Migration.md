@@ -63,7 +63,7 @@ class TodoList extends React.Component {
 
   render() {
     const items = this.state.items.map((item, i) => (
-      <div key={item} onClick={() => this.handleRemove(i)}>
+      <div key={i} onClick={() => this.handleRemove(i)}>
         {item}
       </div>
     ));
@@ -88,7 +88,7 @@ The most straightforward way to migrate is to use `<TransitionGroup>` instead of
 ```diff
  render() {
    const items = this.state.items.map((item, i) => (
-     <div key={item} onClick={() => this.handleRemove(i)}>
+     <div key={i} onClick={() => this.handleRemove(i)}>
        {item}
      </div>
    ));
@@ -141,14 +141,14 @@ Now we add the `<CSSTransition>` component:
  render() {
    const items = this.state.items.map((item, i) => (
 +    <CSSTransition
-+      key={item}
++      key={i}
 +      classNames="example"
 +      timeout={{ enter: 500, exit: 300 }}
 +    >
        <div onClick={() => this.handleRemove(i)}>
          {item}
        </div>
-+    <CSSTransition>
++    </CSSTransition>
    ));
 
    return (
@@ -184,7 +184,7 @@ We can then use it like:
  render() {
    const items = this.state.items.map((item, i) => (
 -    <CSSTransition
--      key={item}
+-      key={i}
 -      classNames="example"
 -      timeout={{ enter: 500, exit: 300 }}
 -    >
@@ -192,7 +192,7 @@ We can then use it like:
        <div onClick={() => this.handleRemove(i)}>
          {item}
        </div>
--    <CSSTransition>
+-    </CSSTransition>
 +    </FadeTransition>
    ));
 
