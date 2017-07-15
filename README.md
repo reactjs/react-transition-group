@@ -1,25 +1,27 @@
-**ATTENTION!** To address many issues that have come up over the years, the API in v2.0.0 is different from the original React addon.
+# react-transition-group [![npm][npm-badge]][npm]
 
-**If you are migrating from `react-addons-transition-group` and `react-addons-css-transition-group`, [read the documentation for 1.x branch instead](https://github.com/reactjs/react-transition-group/tree/v1-stable) which is a drop-in replacement and is still actively maintained.**
+> **ATTENTION!** To address many issues that have come up over the years, the API in v2 is different from that in the original React addon.
+>
+> **For a drop-in replacement for `react-addons-transition-group` and `react-addons-css-transition-group`, use the v1 release, which is still actively maintained. Documentation and code for that release are available on the [`v1-stable`](https://github.com/reactjs/react-transition-group/tree/v1-stable) branch.**
+>
+> You can send pull requests with v1 bugfixes against the `v1-stable` branch.
 
-You can also send pull requests with 1.x bugfixes against the `v1-stable` branch.
+A set of components for managing component states (including mounting and unmounting) over time, specifically designed with animation in mind.
 
-# react-transition-group
+## Documentation
 
-A set of components for managing component states (including mounting) over time,
-specifically designed with animation in mind.
+- [**Main documentation**](https://reactcommunity.org/react-transition-group/)
+- [Migration guide from v1](/Migration.md)
 
-Check out the documentation at: [https://reactcommunity.org/react-transition-group/](https://reactcommunity.org/react-transition-group/)
-
-And the Migration details from v1: [https://github.com/reactjs/react-transition-group/blob/master/migration.md](https://github.com/reactjs/react-transition-group/blob/master/migration.md)
-
-### Examples
+## Examples
 
 Clone the repo first:
 
-```sh
+```
 git@github.com:reactjs/react-transition-group.git
 ```
 
-Then run `npm install` (or `yarn install`), and finally `npm run storybook` to
-start a storybook instance you can navigate to in your browser and see some examples
+Then run `npm install` (or `yarn`), and finally `npm run storybook` to start a storybook instance that you can navigate to in your browser to see the examples.
+
+[npm-badge]: https://img.shields.io/npm/v/react-transition-group.svg
+[npm]: https://www.npmjs.org/package/react-transition-group
