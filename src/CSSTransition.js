@@ -7,7 +7,7 @@ import React from 'react';
 import Transition from './Transition';
 import { classNamesShape } from './utils/PropTypes';
 
-const addClass = (node, classes) => classes.forEach(c => addOneClass(node, c));
+const addClass = (node, classes) => classes.split(' ').forEach(c => addOneClass(node, c));
 
 const propTypes = {
   ...Transition.propTypes,
