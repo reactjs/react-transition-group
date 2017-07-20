@@ -1,10 +1,13 @@
 import * as PropTypes from 'prop-types';
-import addClass from 'dom-helpers/class/addClass';
+import addOneClass from 'dom-helpers/class/addClass';
+
 import removeClass from 'dom-helpers/class/removeClass';
 import React from 'react';
 
 import Transition from './Transition';
 import { classNamesShape } from './utils/PropTypes';
+
+const addClass = (node, classes) => classes.forEach(c => addOneClass(node, c));
 
 const propTypes = {
   ...Transition.propTypes,
