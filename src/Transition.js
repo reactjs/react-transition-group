@@ -166,7 +166,7 @@ class Transition extends React.Component {
 
     exit = enter = appear = timeout
 
-    if (typeof timeout !== 'number') {
+    if (timeout != null && typeof timeout !== 'number') {
       exit = timeout.exit
       enter = timeout.enter
       appear = timeout.appear
@@ -290,7 +290,9 @@ class Transition extends React.Component {
       if (this.props.addEndListener) {
         this.props.addEndListener(node, this.nextCallback)
       }
-      setTimeout(this.nextCallback, timeout);
+      if (timeout != null) {
+        setTimeout(this.nextCallback, timeout);
+      }
     } else {
       setTimeout(this.nextCallback, 0);
     }
@@ -388,6 +390,7 @@ Transition.propTypes = {
 
   /**
    * The duration for the transition, in milliseconds.
+   * Required unless `addEventListener` is provided
    *
    * You may specify a single timeout for all transitions like: `timeout={500}`,
    * or individually like:
@@ -401,12 +404,16 @@ Transition.propTypes = {
    *
    * @type {number | { enter?: number, exit?: number }}
    */
-  timeout: timeoutsShape,
+  timeout: (props, ...args) => {
+    let pt = timeoutsShape
+    if (!props.addEndListener) pt = pt.isRequired
+    return pt(props, ...args);
+  },
 
   /**
    * Add a custom transition end trigger. Called with the transitioning
    * DOM node and a `done` callback. Allows for more fine grained transition end
-   * logic. **Note:** Timeouts are still used as a fallback.
+   * logic. **Note:** Timeouts are still used as a fallback if provided.
    *
    * ```jsx
    * addEndListener={(node, done) => {
