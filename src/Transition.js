@@ -303,7 +303,21 @@ class Transition extends React.Component {
     }
 
     const {children, ...childProps} = this.props;
-    Object.keys(Transition.propTypes).forEach(key => delete childProps[key]);
+    // filter props for Transtition
+    delete childProps.in;
+    delete childProps.mountOnEnter;
+    delete childProps.unmountOnExit;
+    delete childProps.appear;
+    delete childProps.enter;
+    delete childProps.exit;
+    delete childProps.timeout;
+    delete childProps.addEndListener;
+    delete childProps.onEnter;
+    delete childProps.onEntering;
+    delete childProps.onEntered;
+    delete childProps.onExit;
+    delete childProps.onExiting;
+    delete childProps.onExited;
 
     if (typeof children === 'function') {
       return children(status, childProps)

@@ -55,6 +55,40 @@ describe('Transition', () => {
     .render();
   });
 
+  it('should pass filtered props to children', () => {
+    class Child extends React.Component {
+      render() {
+        return <div>child</div>;
+      }
+    }
+    const child = tsp(
+      <Transition
+        foo="foo"
+        bar="bar"
+        in
+        mountOnEnter
+        unmountOnExit
+        appear
+        enter
+        exit
+        timeout={0}
+        addEndListener={() => {}}
+        onEnter={() => {}}
+        onEntering={() => {}}
+        onEntered={() => {}}
+        onExit={() => {}}
+        onExiting={() => {}}
+        onExited={() => {}}
+      >
+        <Child />
+      </Transition>
+    )
+    .render()
+    .find(Child);
+
+    expect(child.props()).toEqual({foo: 'foo',  bar: 'bar'});
+  });
+
   describe('entering', () => {
     let instance;
 
