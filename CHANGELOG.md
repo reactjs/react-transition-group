@@ -20,7 +20,7 @@
 ## [v2.0.0]
 > 2017-07-06
 
-- **Feature:** New API! ([#24]), migration guide at [https://github.com/reactjs/react-transition-group/blob/master/migration.md](https://github.com/reactjs/react-transition-group/blob/master/migration.md)
+- **Feature:** New API! ([#24]), migration guide at [https://github.com/reactjs/react-transition-group/blob/master/Migration.md](https://github.com/reactjs/react-transition-group/blob/master/Migration.md)
 
 [#24]: https://github.com/reactjs/react-transition-group/pull/24
 [v2.0.0]: https://github.com/reactjs/react-transition-group/compare/v1.2.0...v2.0.0
