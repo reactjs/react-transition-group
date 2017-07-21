@@ -89,6 +89,49 @@ describe('Transition', () => {
     expect(child.props()).toEqual({foo: 'foo',  bar: 'bar'});
   });
 
+  it('should allow addEndListener instead of timeouts', done => {
+    let listener = sinon.spy((node, end) => setTimeout(end, 0));
+
+    let inst = tsp(
+        <Transition
+          addEndListener={listener}
+          onEntered={() => {
+            expect(listener.callCount).toEqual(1);
+            done();
+          }}
+        >
+          <div/>
+        </Transition>
+      )
+      .render();
+
+      inst.props('in', true);
+  })
+
+  it('should fallback to timeous with addEndListener ', done => {
+    let calledEnd = false
+    let listener = (node, end) => setTimeout(() => {
+      calledEnd = true;
+      end()
+    }, 100);
+
+    let inst = tsp(
+        <Transition
+          timeout={0}
+          addEndListener={listener}
+          onEntered={() => {
+            expect(calledEnd).toEqual(false);
+            done();
+          }}
+        >
+          <div/>
+        </Transition>
+      )
+      .render();
+
+      inst.props('in', true);
+  })
+
   describe('entering', () => {
     let instance;
 
