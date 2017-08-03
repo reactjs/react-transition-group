@@ -90,7 +90,7 @@ describe('CSSTransition', () => {
           <div/>
         </CSSTransition>
       )
-      .render();
+        .render();
 
       instance.props({
         in: true,
@@ -111,6 +111,70 @@ describe('CSSTransition', () => {
           done();
         }
       });
+    });
+
+    describe('isAppearing', () => {
+
+      it('should be false', done => {
+
+        instance = tsp(
+          <CSSTransition
+            timeout={10}
+            classNames="test"
+          >
+            <div/>
+          </CSSTransition>
+        )
+          .render();
+
+
+        instance.props({
+          in: true,
+          onEnter(node, isAppearing){
+            expect(isAppearing).toEqual(false);
+          },
+
+          onEntering(node, isAppearing){
+            expect(isAppearing).toEqual(false);
+          },
+
+          onEntered(node, isAppearing){
+            expect(isAppearing).toEqual(false);
+            done();
+          }
+        });
+      });
+
+      it('should be true', done => {
+
+        instance = tsp(
+          <CSSTransition
+            timeout={10}
+            appear={true}
+            in={true}
+            classNames="test"
+          >
+            <div/>
+          </CSSTransition>
+        )
+          .render();
+
+        instance.props({
+          onEnter(node, isAppearing){
+            expect(isAppearing).toEqual(true);
+          },
+
+          onEntering(node, isAppearing){
+            expect(isAppearing).toEqual(true);
+          },
+
+          onEntered(node, isAppearing){
+            expect(isAppearing).toEqual(true);
+            done();
+          }
+        });
+      });
+
     });
   });
 

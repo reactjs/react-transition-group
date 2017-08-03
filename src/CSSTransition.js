@@ -160,10 +160,10 @@ class CSSTransition extends React.Component {
     const { className } = this.getClassNames(appearing ? 'appear' : 'enter')
 
     this.removeClasses(node, 'exit');
-    addClass(node, className)
+    addClass(node, className);
 
     if (this.props.onEnter) {
-      this.props.onEnter(node)
+      this.props.onEnter(node, appearing);
     }
   }
 
@@ -172,10 +172,10 @@ class CSSTransition extends React.Component {
       appearing ? 'appear' : 'enter'
     );
 
-    this.reflowAndAddClass(node, activeClassName)
+    this.reflowAndAddClass(node, activeClassName);
 
     if (this.props.onEntering) {
-      this.props.onEntering(node)
+      this.props.onEntering(node, appearing);
     }
   }
 
@@ -183,7 +183,7 @@ class CSSTransition extends React.Component {
     this.removeClasses(node, appearing ? 'appear' : 'enter');
 
     if (this.props.onEntered) {
-      this.props.onEntered(node)
+      this.props.onEntered(node, appearing);
     }
   }
 
