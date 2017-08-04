@@ -60,6 +60,7 @@
     "babel-jest": "^20.0.3",
     "babel-loader": "^6.4.1",
     "babel-plugin-dev-expression": "^0.2.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
     "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.5",
     "babel-preset-latest": "^6.24.0",
