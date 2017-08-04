@@ -8,8 +8,8 @@
   ],
   "plugins": [
     "dev-expression",
-    "add-module-exports",
     "transform-object-assign",
+    "transform-es2015-modules-commonjs",
     ["transform-react-remove-prop-types", { mode: "wrap" }]
   ],
 }
