@@ -14,7 +14,7 @@ const propTypes = {
   /**
    * A set of `<Transition>` components, that are toggled `in` and out as they
    * leave. the `<TransitionGroup>` will inject specific transition props, so
-   * remember to spread them throguh if you are wrapping the `<Transition>` as
+   * remember to spread them through if you are wrapping the `<Transition>` as
    * with our `<Fade>` example.
    */
   children: PropTypes.node,
