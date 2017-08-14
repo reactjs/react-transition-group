@@ -214,7 +214,7 @@ We can then use it like:
 
 The old `<TransitionGroup>` component managed transitions through custom static lifecycle methods on its children. In v2 we removed that API in favor of requiring that `<TransitionGroup>` be used with a `<Transition>` component, and using traditional prop passing to communicate between the two.
 
-This means that `<TransitionGroup>`s injects their children with `<Transition>`-specific props that _must_ be passed through to the `<Transition>` component for the transition to work.
+This means that `<TransitionGroup>`s inject their children with `<Transition>`-specific props that _must_ be passed through to the `<Transition>` component for the transition to work.
 
 ```js
 const MyTransition = ({ children: child, ...props }) => (
