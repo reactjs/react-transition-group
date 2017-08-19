@@ -32,7 +32,7 @@ const propTypes = {
    * }}
    * ```
    *
-   * @type {{
+   * @type {string | {
    *  appear?: string,
    *  appearActive?: string,
    *  enter?: string,
