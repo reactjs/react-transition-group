@@ -11,9 +11,6 @@ const propTypes = {
 };
 
 class Index extends React.Component {
-  componentDidMount() {
-    document.title = 'react-transition-group'
-  }
   render() {
     const { data: { transition, cssTransition, transitionGroup } } = this.props;
 
