@@ -338,7 +338,7 @@ Transition.propTypes = {
    * want to transition on the first mount set `appear` to `true`, and the
    * component will enter the component.
    *
-   * > Note: there are no specific "appear" states. `apprear` only an additional `enter` transition.
+   * > Note: there are no specific "appear" states. `appear` only an additional `enter` transition.
    */
   appear: PropTypes.bool,
 
