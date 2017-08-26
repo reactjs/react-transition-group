@@ -441,7 +441,7 @@ Transition.propTypes = {
   onEntering: PropTypes.func,
 
   /**
-   * Callback fired after the "enter" status is applied. An extra parameter
+   * Callback fired after the "entered" status is applied. An extra parameter
    * `isAppearing` is supplied to indicate if the enter stage is occuring on the initial mount
    *
    * @type Function(node: HtmlElement, isAppearing: bool) -> void
