@@ -77,7 +77,7 @@ const propTypes = {
   onExit: PropTypes.func,
 
   /**
-   * A `<Transition>` callback fired immediately after the 'exit-active' is is applied.
+   * A `<Transition>` callback fired immediately after the 'exit-active' is applied.
    *
    * @type Function(node: HtmlElement
    */
