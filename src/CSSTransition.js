@@ -69,7 +69,7 @@ const propTypes = {
 
 
   /**
-   * A `<Transition>` callback fired immediately after the 'exit'  class is
+   * A `<Transition>` callback fired immediately after the 'exit' class is
    * applied.
    *
    * @type Function(node: HtmlElement)
@@ -77,8 +77,7 @@ const propTypes = {
   onExit: PropTypes.func,
 
   /**
-   * A `<Transition>` callback fired immediately after the 'exit-active' is
-   * class is applied.
+   * A `<Transition>` callback fired immediately after the 'exit-active' is applied.
    *
    * @type Function(node: HtmlElement
    */
@@ -95,7 +94,7 @@ const propTypes = {
 
 /**
  * A `Transition` component using CSS transitions and animations.
- * It's inspired by the excellent [ng-animate](http://www.nganimate.org/) libary.
+ * It's inspired by the excellent [ng-animate](http://www.nganimate.org/) library.
  *
  * `CSSTransition` applies a pair of class names during the `appear`, `enter`,
  * and `exit` stages of the transition. The first class is applied and then a

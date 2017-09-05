@@ -21,19 +21,19 @@ const propTypes = {
 
   /**
    * A convenience prop that enables or disabled appear animations
-   * for all children. Note that specifiying this will override any defaults set
+   * for all children. Note that specifying this will override any defaults set
    * on individual children Transitions.
    */
   appear: PropTypes.bool,
   /**
    * A convenience prop that enables or disabled enter animations
-   * for all children. Note that specifiying this will override any defaults set
+   * for all children. Note that specifying this will override any defaults set
    * on individual children Transitions.
    */
   enter: PropTypes.bool,
  /**
    * A convenience prop that enables or disabled exit animations
-   * for all children. Note that specifiying this will override any defaults set
+   * for all children. Note that specifying this will override any defaults set
    * on individual children Transitions.
    */
   exit: PropTypes.bool,

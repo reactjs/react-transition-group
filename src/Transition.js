@@ -374,7 +374,7 @@ Transition.propTypes = {
    * If you want to transition on the first mount set `appear` to `true`, and the
    * component will transition in as soon as the `<Transition>` mounts.
    *
-   * > Note: there are no specific "appear" states. `apprear` only an additional `enter` transition.
+   * > Note: there are no specific "appear" states. `appear` only adds an additional `enter` transition.
    */
   appear: PropTypes.bool,
 
@@ -389,7 +389,7 @@ Transition.propTypes = {
   exit: PropTypes.bool,
 
   /**
-   * The duration for the transition, in milliseconds.
+   * The duration of the transition, in milliseconds.
    * Required unless `addEventListener` is provided
    *
    * You may specify a single timeout for all transitions like: `timeout={500}`,
@@ -426,7 +426,7 @@ Transition.propTypes = {
 
   /**
    * Callback fired before the "entering" status is applied. An extra parameter
-   * `isAppearing` is supplied to indicate if the enter stage is occuring on the initial mount
+   * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
    *
    * @type Function(node: HtmlElement, isAppearing: bool) -> void
    */
@@ -434,7 +434,7 @@ Transition.propTypes = {
 
   /**
    * Callback fired after the "entering" status is applied. An extra parameter
-   * `isAppearing` is supplied to indicate if the enter stage is occuring on the initial mount
+   * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
    *
    * @type Function(node: HtmlElement, isAppearing: bool)
    */
@@ -442,7 +442,7 @@ Transition.propTypes = {
 
   /**
    * Callback fired after the "entered" status is applied. An extra parameter
-   * `isAppearing` is supplied to indicate if the enter stage is occuring on the initial mount
+   * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
    *
    * @type Function(node: HtmlElement, isAppearing: bool) -> void
    */
