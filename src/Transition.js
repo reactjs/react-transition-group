@@ -258,8 +258,8 @@ class Transition extends React.Component {
   }
 
   safeSetState(nextState, callback) {
-    // We need to track oending updates for instances where a cWRP fires quickly
-    // after a cDM and before the state flushes, which would double trigger a
+    // We need to track pending updates for instances where a cWRP fires quickly
+    // after cDM and before the state flushes, which would double trigger a
     // transition
     this.pendingState = nextState;
 
