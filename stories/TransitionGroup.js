@@ -4,6 +4,7 @@ import { storiesOf } from '@kadira/storybook';
 import CSSTransition from '../src/CSSTransition';
 import TransitionGroup from '../src/TransitionGroup';
 import CSSTransitionGroupFixture from './CSSTransitionGroupFixture';
+import NestedTransition from './NestedTransition'
 import StoryFixture from './StoryFixture';
 
 // const GREY = '#DDD';
@@ -121,7 +122,11 @@ storiesOf('Css Transition Group', module)
     >
       <RenterTransition />
     </StoryFixture>
-  ));
+  ))
+  .add('Nested Transitions', () => (
+    <NestedTransition />
+  ))
+  ;
 
 class DynamicTransition extends React.Component {
   state = { count: 0 }

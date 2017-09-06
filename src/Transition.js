@@ -136,7 +136,7 @@ class Transition extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { status } = this.state;
+    const { status } = this.pendingState || this.state;
 
     if (nextProps.in) {
       if (status === UNMOUNTED) {
@@ -175,19 +175,19 @@ class Transition extends React.Component {
   }
 
   updateStatus(mounting = false) {
+    let nextStatus = this.nextStatus;
 
-    if (this.nextStatus !== null) {
+    if (nextStatus !== null) {
+      this.nextStatus = null;
       // nextStatus will always be ENTERING or EXITING.
       this.cancelNextCallback();
       const node = ReactDOM.findDOMNode(this);
 
-      if (this.nextStatus === ENTERING) {
+      if (nextStatus === ENTERING) {
         this.performEnter(node, mounting);
       } else {
         this.performExit(node);
       }
-
-      this.nextStatus = null;
     } else if (
       this.props.unmountOnExit &&
       this.state.status === EXITED
@@ -258,10 +258,19 @@ class Transition extends React.Component {
   }
 
   safeSetState(nextState, callback) {
+    // We need to track pending updates for instances where a cWRP fires quickly
+    // after cDM and before the state flushes, which would double trigger a
+    // transition
+    this.pendingState = nextState;
+
     // This shouldn't be necessary, but there are weird race conditions with
     // setState callbacks and unmounting in testing, so always make sure that
     // we can cancel any pending setState callbacks after we unmount.
-    this.setState(nextState, this.setNextCallback(callback));
+    callback = this.setNextCallback(callback)
+    this.setState(nextState, () => {
+      this.pendingState = null;
+      callback()
+    });
   }
 
   setNextCallback(callback) {
