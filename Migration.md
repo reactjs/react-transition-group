@@ -188,7 +188,9 @@ We can then use it like:
 -      classNames="example"
 -      timeout={{ enter: 500, exit: 300 }}
 -    >
-+    <FadeTransition>
++    <FadeTransition
++       key={i}
++    >
        <div onClick={() => this.handleRemove(i)}>
          {item}
        </div>
