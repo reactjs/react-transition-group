@@ -133,7 +133,7 @@ That doesn't get us much, since we haven't included anything to do the animation
  }
 ```
 
-All we did was replace `leave` with `exit`. v2 uses "exit" instead of "leave" to be more symmetric, avoiding awkwardness with English tenses (like with "entered" and "leaved").
+All we did was replace `leave` with `exit`. v2 uses "exit" instead of "leave" to be more symmetric, avoiding awkwardness with English tenses (like with "entered" and "left").
 
 Now we add the `<CSSTransition>` component:
 
