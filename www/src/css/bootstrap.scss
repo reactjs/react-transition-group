@@ -1,0 +1,21 @@
+
+@import 'variables.scss';
+
+$body-bg: $syntax-bg;
+$code-bg: $syntax-bg;
+$code-color: $hue-3;
+$headings-margin-bottom: 2rem;
+
+@import '~bootstrap/scss/bootstrap.scss';
+
+
+section {
+  margin-bottom: 3rem;
+}
+
+h1, h2, h3, h4, h5 {
+  & > a,
+  & > a:hover {
+    color: $headings-color;
+  }
+}

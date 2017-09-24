@@ -7,7 +7,7 @@ let Transition;
 
 // Most of the real functionality is covered in other unit tests, this just
 // makes sure we're wired up correctly.
-describe.only('TransitionGroup', () => {
+describe('TransitionGroup', () => {
   let container, log, Child;
 
   beforeEach(() => {
@@ -67,7 +67,7 @@ describe.only('TransitionGroup', () => {
   });
 
 
-  it.only('should work with no children', () => {
+  it('should work with no children', () => {
     ReactDOM.render(
       <TransitionGroup />,
       container,

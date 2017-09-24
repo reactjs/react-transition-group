@@ -1,16 +1,17 @@
 {
   "name": "react-transition-group",
-  "version": "2.0.0-beta.0",
+  "version": "2.2.0",
   "description": "A react component toolset for managing animations",
   "main": "lib/index.js",
   "scripts": {
     "test": "jest --runInBand --verbose",
     "tdd": "jest --watch",
-    "build": "rimraf lib && babel src --out-dir lib && npm run build:dist",
+    "build": "rimraf lib && babel src --out-dir lib && npm run build:dist && cp README.md ./lib",
     "build:dist": "rimraf lib/dist && webpack && NODE_ENV=production webpack -p",
     "lint": "eslint src test",
     "release": "release",
-    "prelease": "release --preid beta --tag next",
+    "release:next": "release --preid beta --tag next",
+    "deploy-docs": "cd www && npm run deploy",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },

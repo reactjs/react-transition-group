@@ -14,39 +14,53 @@ const propTypes = {
   /**
    * A set of `<Transition>` components, that are toggled `in` and out as they
    * leave. the `<TransitionGroup>` will inject specific transition props, so
-   * remember to spread them throguh if you are wrapping the `<Transition>` as
+   * remember to spread them through if you are wrapping the `<Transition>` as
    * with our `<Fade>` example.
    */
   children: PropTypes.node,
 
   /**
    * A convenience prop that enables or disabled appear animations
-   * for all children. Note that specifiying this will override any defaults set
+   * for all children. Note that specifying this will override any defaults set
    * on individual children Transitions.
    */
   appear: PropTypes.bool,
   /**
    * A convenience prop that enables or disabled enter animations
-   * for all children. Note that specifiying this will override any defaults set
+   * for all children. Note that specifying this will override any defaults set
    * on individual children Transitions.
    */
   enter: PropTypes.bool,
  /**
    * A convenience prop that enables or disabled exit animations
-   * for all children. Note that specifiying this will override any defaults set
+   * for all children. Note that specifying this will override any defaults set
    * on individual children Transitions.
    */
   exit: PropTypes.bool,
+
   /**
     * A convenience prop for staggering the animations of the children if a
     * delay is defined. Children will have their animations delayed by the delay
     * property multiplied by their index. e.g. (this.props.delay * childIndex)
     */
   stagger: PropTypes.bool,
+
+  /**
+   * You may need to apply reactive updates to a child as it is exiting.
+   * This is generally done by using `cloneElement` however in the case of an exiting
+   * child the element has already been removed and not accessible to the consumer.
+   *
+   * If you do need to update a child as it leaves you can provide a `childFactory`
+   * to wrap every child, even the ones that are leaving.
+   *
+   * @type Function(child: ReactElement) -> ReactElement
+   */
+  childFactory: PropTypes.func,
 };
 
 const defaultProps = {
   component: 'div',
+  childFactory: child => child,
 };
 
 /**
@@ -60,13 +74,15 @@ const defaultProps = {
  * automatically by the `<TransitionGroup>`. You can use _any_ `<Transition>`
  * component in a `<TransitionGroup>`, not just css.
  *
- * ```js
+ * ```jsx
+ * import TransitionGroup from 'react-transition-group/TransitionGroup';
+ *
  * class TodoList extends React.Component {
  *   constructor(props) {
  *     super(props)
  *     this.state = {items: ['hello', 'world', 'click', 'me']}
  *   }
- *   handleAdd = () => {
+ *   handleAdd() {
  *     const newItems = this.state.items.concat([
  *       prompt('Enter some text')
  *     ]);
@@ -80,17 +96,17 @@ const defaultProps = {
  *   render() {
  *     return (
  *       <div>
- *         <button onClick={this.handleAdd}>Add Item</button>
+ *         <button onClick={() => this.handleAdd()}>Add Item</button>
  *         <TransitionGroup>
  *           {this.state.items.map((item, i) => (
- *             <Fade key={item}>
+ *             <FadeTransition key={item}>
  *               <div>
  *                 {item}{' '}
  *                 <button onClick={() => this.handleRemove(i)}>
  *                   remove
  *                 </button>
  *               </div>
- *             </Fade>
+ *             </FadeTransition>
  *           ))}
  *         </TransitionGroup>
  *       </div>
@@ -105,7 +121,6 @@ const defaultProps = {
  * list items.
  */
 class TransitionGroup extends React.Component {
-  static displayName = 'TransitionGroup';
   static childContextTypes = {
     transitionGroup: PropTypes.object.isRequired,
   };
@@ -119,7 +134,7 @@ class TransitionGroup extends React.Component {
     // Initial children should all be entering, dependent on appear
     this.state = {
       children: getChildMapping(props.children, this.getChildWithPropertyOverrides),
-     };
+    };
   }
 
   getChildContext() {
@@ -131,7 +146,9 @@ class TransitionGroup extends React.Component {
   // return a cloned element with property overrides from TransitionGroup if
   // those properties are specified
   getChildWithPropertyOverrides(child, index) {
-    const onExited = () => this.handleExited(child.key);
+    const onExited = (node) => {
+      this.handleExited(child.key, node, child.props.onExited);
+    }
 
     return cloneElement(child, {
       onExited,
@@ -189,7 +206,9 @@ class TransitionGroup extends React.Component {
 
       if (!isValidElement(child)) return;
 
-      const onExited = () => this.handleExited(key);
+      const onExited = (node) => {
+        this.handleExited(child.key, node, child.props.onExited);
+      }
 
       const hasPrev = key in prevChildMapping;
       const hasNext = key in nextChildMapping;
@@ -228,20 +247,24 @@ class TransitionGroup extends React.Component {
     this.setState({ children });
   }
 
-  handleExited = (key) => {
-    let currentChildMapping = getChildMapping(this.props.children, this.getChildWithPropertyOverrides);
+  handleExited = (key, node, originalHandler) => {
+    let currentChildMapping = getChildMapping(this.props.children);
 
     if (key in currentChildMapping) return
 
+    if (originalHandler)
+      originalHandler(node)
+
     this.setState((state) => {
       let children = { ...state.children };
+
       delete children[key];
       return { children };
     });
   };
 
   render() {
-    const { component: Component, ...props } = this.props;
+    const { component: Component, childFactory, ...props } = this.props;
     const { children } = this.state;
 
     delete props.appear;
@@ -253,7 +276,7 @@ class TransitionGroup extends React.Component {
 
     return (
       <Component {...props}>
-        {values(children)}
+        {values(children).map(childFactory)}
       </Component>
     );
   }

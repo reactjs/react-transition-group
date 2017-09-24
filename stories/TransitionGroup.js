@@ -4,6 +4,7 @@ import { storiesOf } from '@kadira/storybook';
 import CSSTransition from '../src/CSSTransition';
 import TransitionGroup from '../src/TransitionGroup';
 import CSSTransitionGroupFixture from './CSSTransitionGroupFixture';
+import NestedTransition from './NestedTransition'
 import StoryFixture from './StoryFixture';
 
 // const GREY = '#DDD';
@@ -112,6 +113,9 @@ storiesOf('Css Transition Group', module)
     >
       <DynamicTransition />
     </StoryFixture>
+  ))
+  .add('Nested Transitions', () => (
+    <NestedTransition />
   ))
   .add('Re-entering while leaving', () => (
     <StoryFixture

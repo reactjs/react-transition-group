@@ -1,10 +1,14 @@
 import * as PropTypes from 'prop-types';
-import addClass from 'dom-helpers/class/addClass';
-import removeClass from 'dom-helpers/class/removeClass';
+import addOneClass from 'dom-helpers/class/addClass';
+
+import removeOneClass from 'dom-helpers/class/removeClass';
 import React from 'react';
 
 import Transition from './Transition';
 import { classNamesShape } from './utils/PropTypes';
+
+const addClass = (node, classes) => classes && classes.split(' ').forEach(c => addOneClass(node, c));
+const removeClass = (node, classes) => classes && classes.split(' ').forEach(c => removeOneClass(node, c));
 
 const propTypes = {
   ...Transition.propTypes,
@@ -27,6 +31,15 @@ const propTypes = {
    *  exitActive: 'my-active-exit',
    * }}
    * ```
+   *
+   * @type {string | {
+   *  appear?: string,
+   *  appearActive?: string,
+   *  enter?: string,
+   *  enterActive?: string,
+   *  exit?: string,
+   *  exitActive?: string,
+   * }}
    */
   classNames: classNamesShape,
 
@@ -56,18 +69,17 @@ const propTypes = {
 
 
   /**
-   * A `<Transition>` callback fired immediately after the 'exit'  class is
+   * A `<Transition>` callback fired immediately after the 'exit' class is
    * applied.
    *
-   * @type Function(node: HtmlElement, isAppearing: bool)
+   * @type Function(node: HtmlElement)
    */
   onExit: PropTypes.func,
 
   /**
-   * A `<Transition>` callback fired immediately after the 'exit-active' is
-   * class is applied.
+   * A `<Transition>` callback fired immediately after the 'exit-active' is applied.
    *
-   * @type Function(node: HtmlElement, isAppearing: bool)
+   * @type Function(node: HtmlElement
    */
   onExiting: PropTypes.func,
 
@@ -75,14 +87,14 @@ const propTypes = {
    * A `<Transition>` callback fired immediately after the 'exit' classes
    * are **removed** from the DOM node.
    *
-   * @type Function(node: HtmlElement, isAppearing: bool)
+   * @type Function(node: HtmlElement)
    */
   onExited: PropTypes.func,
 };
 
 /**
  * A `Transition` component using CSS transitions and animations.
- * It's inspired by the excellent [ng-animate](http://www.nganimate.org/) libary.
+ * It's inspired by the excellent [ng-animate](http://www.nganimate.org/) library.
  *
  * `CSSTransition` applies a pair of class names during the `appear`, `enter`,
  * and `exit` stages of the transition. The first class is applied and then a
@@ -93,6 +105,8 @@ const propTypes = {
  * added in the next tick. This is a convention based on the `classNames` prop.
  *
  * ```js
+ * import CSSTransition from 'react-transition-group/CSSTransition';
+ *
  * const Fade = ({ children, ...props }) => (
  *  <CSSTransition
  *    {...props}
@@ -134,11 +148,11 @@ const propTypes = {
  *   transition: opacity 500ms ease-in;
  * }
  *
- * .fade-leave {
+ * .fade-exit {
  *   opacity: 1;
  * }
  *
- * .fade-leave.fade-leave-active {
+ * .fade-exit.fade-exit-active {
  *   opacity: 0.01;
  *   transition: opacity 300ms ease-in;
  * }
@@ -180,7 +194,7 @@ class CSSTransition extends React.Component {
     const { className } = this.getClassNames('exit')
 
     this.removeClasses(node, 'appear');
-    this.removeClasses(node, 'exit');
+    this.removeClasses(node, 'enter');
     addClass(node, className)
 
     if (this.props.onExit) {
