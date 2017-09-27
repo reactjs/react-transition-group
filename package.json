@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --runInBand --verbose",
     "tdd": "jest --watch",
-    "build": "rimraf lib && babel src --out-dir lib && npm run build:dist && cp README.md ./lib",
+    "build": "rimraf lib && babel src --out-dir lib && npm run build:dist && cp README.md LICENSE ./lib",
     "build:dist": "rimraf lib/dist && webpack && NODE_ENV=production webpack -p",
     "lint": "eslint src test",
     "release": "release",
