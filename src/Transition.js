@@ -379,7 +379,7 @@ Transition.propTypes = {
   unmountOnExit: PropTypes.bool,
 
   /**
-   * Normally a component is not transitioned if it shown when the `<Transition>` component mounts.
+   * Normally a component is not transitioned if it is shown when the `<Transition>` component mounts.
    * If you want to transition on the first mount set `appear` to `true`, and the
    * component will transition in as soon as the `<Transition>` mounts.
    *
