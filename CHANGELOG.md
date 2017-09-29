@@ -1,3 +1,11 @@
+## [v2.2.1]
+> 2017-09-29
+
+- **Patch:** Allow React v16 ([#198])
+
+[#198]: https://github.com/reactjs/react-transition-group/pull/198
+[v2.2.1]: https://github.com/reactjs/react-transition-group/compare/v2.2.0...2.2.1
+
 ## [v2.2.0]
 > 2017-07-21
 
