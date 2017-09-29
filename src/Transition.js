@@ -86,6 +86,10 @@ export const EXITING = 'exiting';
  * stay there for 500ms (the value of `timeout`) when finally switches to `'entered'`.
  *
  * When `in` is `false` the same thing happens except the state moves from `'exiting'` to `'exited'`.
+ *
+ * ### Example
+ *
+ * <p data-height="365" data-theme-id="0" data-slug-hash="veZjJx" data-default-tab="js,result" data-user="jquense" data-embed-version="2" data-pen-title="Transition Component" class="codepen">See the Pen <a href="https://codepen.io/jquense/pen/veZjJx/">Transition Component</a> by Jason Quense (<a href="https://codepen.io/jquense">jquense</a>) on <a href="https://codepen.io">CodePen</a>.</p>
  */
 class Transition extends React.Component {
   static contextTypes = {

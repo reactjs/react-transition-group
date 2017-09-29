@@ -69,44 +69,10 @@ const defaultProps = {
  *
  * ```jsx
  * import TransitionGroup from 'react-transition-group/TransitionGroup';
- *
- * class TodoList extends React.Component {
- *   constructor(props) {
- *     super(props)
- *     this.state = {items: ['hello', 'world', 'click', 'me']}
- *   }
- *   handleAdd() {
- *     const newItems = this.state.items.concat([
- *       prompt('Enter some text')
- *     ]);
- *     this.setState({ items: newItems });
- *   }
- *   handleRemove(i) {
- *     let newItems = this.state.items.slice();
- *     newItems.splice(i, 1);
- *     this.setState({items: newItems});
- *   }
- *   render() {
- *     return (
- *       <div>
- *         <button onClick={() => this.handleAdd()}>Add Item</button>
- *         <TransitionGroup>
- *           {this.state.items.map((item, i) => (
- *             <FadeTransition key={item}>
- *               <div>
- *                 {item}{' '}
- *                 <button onClick={() => this.handleRemove(i)}>
- *                   remove
- *                 </button>
- *               </div>
- *             </FadeTransition>
- *           ))}
- *         </TransitionGroup>
- *       </div>
- *     );
- *   }
- * }
  * ```
+ *
+ * <p data-height="465" data-theme-id="dark" data-slug-hash="EwXLzK" data-default-tab="js,result" data-user="jquense" data-embed-version="2" data-pen-title="TransitionGroup Component" class="codepen">See the Pen <a href="https://codepen.io/jquense/pen/EwXLzK/">TransitionGroup Component</a> by Jason Quense (<a href="https://codepen.io/jquense">@jquense</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+ *
  *
  * Note that `<TransitionGroup>`  does not define any animation behavior!
  * Exactly _how_ a list item animates is up to the individual `<Transition>`

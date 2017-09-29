@@ -27,6 +27,7 @@ const Html = ({ headComponents, body, postBodyComponents }) => {
         <meta httpEquiv="x-ua-compatible" content="ie=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         {headComponents}
+        <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
         <title>React Transition Group</title>
         {css}
       </head>

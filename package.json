@@ -57,6 +57,7 @@
     "warning": "^3.0.0"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^3.2.11",
     "@storybook/react": "3.2.10",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.24.0",

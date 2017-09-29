@@ -106,57 +106,9 @@ const propTypes = {
  *
  * ```js
  * import CSSTransition from 'react-transition-group/CSSTransition';
- *
- * const Fade = ({ children, ...props }) => (
- *  <CSSTransition
- *    {...props}
- *    timeout={500}
- *    classNames="fade"
- *  >
- *   {children}
- *  </CSSTransition>
- * );
- *
- * class FadeInAndOut extends React.Component {
- *   constructor(...args) {
- *     super(...args);
- *     this.state= { show: false }
- *
- *     setInterval(() => {
- *       this.setState({ show: !this.state.show })
- *     }, 5000)
- *   }
- *   render() {
- *     return (
- *       <Fade in={this.state.show}>
- *         <div>Hello world</div>
- *       </Fade>
- *     )
- *   }
- * }
  * ```
  *
- * And the coorresponding CSS for the `<Fade>` component:
- *
- * ```css
- * .fade-enter {
- *   opacity: 0.01;
- * }
- *
- * .fade-enter.fade-enter-active {
- *   opacity: 1;
- *   transition: opacity 500ms ease-in;
- * }
- *
- * .fade-exit {
- *   opacity: 1;
- * }
- *
- * .fade-exit.fade-exit-active {
- *   opacity: 0.01;
- *   transition: opacity 300ms ease-in;
- * }
- * ```
+ * <p data-height="465" data-theme-id="dark" data-slug-hash="ZXyoVz" data-default-tab="js,result" data-user="jquense" data-embed-version="2" data-pen-title="CSSTransition Component" class="codepen">See the Pen <a href="https://codepen.io/jquense/pen/ZXyoVz/">CSSTransition Component</a> by Jason Quense (<a href="https://codepen.io/jquense">@jquense</a>) on <a href="https://codepen.io">CodePen</a>.</p>
  */
 class CSSTransition extends React.Component {
   onEnter = (node, appearing) => {
