@@ -1,4 +1,4 @@
-import tsp from 'teaspoon';
+import { mount } from 'enzyme';
 
 let React;
 let ReactDOM;
@@ -39,12 +39,11 @@ describe('TransitionGroup', () => {
       return childrenArray[0] || null;
     }
 
-    tsp(
+    mount(
       <TransitionGroup component={FirstChild}>
         <Child />
       </TransitionGroup>,
     )
-    .render();
   });
 
   it('should allow callback refs', () => {
@@ -56,12 +55,11 @@ describe('TransitionGroup', () => {
       }
     }
 
-    tsp(
+    mount(
       <TransitionGroup>
         <Child ref={ref} />
       </TransitionGroup>,
     )
-    .render();
 
     expect(ref).toHaveBeenCalled();
   });

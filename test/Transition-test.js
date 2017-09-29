@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import tsp from 'teaspoon';
+
+import { mount } from 'enzyme';
 import sinon from 'sinon';
 
 import Transition, { UNMOUNTED, EXITED, ENTERING, ENTERED, EXITING }
@@ -16,7 +17,7 @@ jasmine.addMatchers({
 
 describe('Transition', () => {
   it('should not transition on mount', () => {
-    let instance = tsp(
+    let wrapper = mount(
       <Transition
         in
         timeout={0}
@@ -25,13 +26,12 @@ describe('Transition', () => {
         <div></div>
       </Transition>
     )
-    .render()
 
-    expect(instance.state('status')).toEqual(ENTERED);
+    expect(wrapper.state('status')).toEqual(ENTERED);
   });
 
   it('should transition on mount with `appear`', done => {
-    tsp(
+    mount(
       <Transition
         in
         timeout={0}
@@ -39,10 +39,9 @@ describe('Transition', () => {
       >
         <div />
       </Transition>
-    )
-    .render();
+    );
 
-    tsp(
+    mount(
       <Transition
         in
         appear
@@ -51,8 +50,7 @@ describe('Transition', () => {
       >
         <div />
       </Transition>
-    )
-    .render();
+    );
   });
 
   it('should pass filtered props to children', () => {
@@ -61,7 +59,7 @@ describe('Transition', () => {
         return <div>child</div>;
       }
     }
-    const child = tsp(
+    const child = mount(
       <Transition
         foo="foo"
         bar="bar"
@@ -83,7 +81,6 @@ describe('Transition', () => {
         <Child />
       </Transition>
     )
-    .render()
     .find(Child);
 
     expect(child.props()).toEqual({foo: 'foo',  bar: 'bar'});
@@ -92,7 +89,7 @@ describe('Transition', () => {
   it('should allow addEndListener instead of timeouts', done => {
     let listener = sinon.spy((node, end) => setTimeout(end, 0));
 
-    let inst = tsp(
+    let inst = mount(
         <Transition
           addEndListener={listener}
           onEntered={() => {
@@ -103,9 +100,8 @@ describe('Transition', () => {
           <div/>
         </Transition>
       )
-      .render();
 
-      inst.props('in', true);
+      inst.setProps({ 'in': true });
   })
 
   it('should fallback to timeous with addEndListener ', done => {
@@ -115,7 +111,7 @@ describe('Transition', () => {
       end()
     }, 100);
 
-    let inst = tsp(
+    let inst = mount(
         <Transition
           timeout={0}
           addEndListener={listener}
@@ -126,31 +122,29 @@ describe('Transition', () => {
         >
           <div/>
         </Transition>
-      )
-      .render();
+      );
 
-      inst.props('in', true);
+      inst.setProps({ in: true });
   })
 
   describe('entering', () => {
-    let instance;
+    let wrapper;
 
     beforeEach(() => {
-      instance = tsp(
+      wrapper = mount(
         <Transition timeout={10}>
           <div/>
         </Transition>
-      )
-      .render();
+      );
     });
 
     it('should fire callbacks', done => {
       let onEnter = sinon.spy();
       let onEntering = sinon.spy();
 
-      expect(instance.state('status')).toEqual(EXITED);
+      expect(wrapper.state('status')).toEqual(EXITED);
 
-      instance.props({
+      wrapper.setProps({
         in: true,
 
         onEnter,
@@ -169,23 +163,23 @@ describe('Transition', () => {
     it('should move to each transition state', done => {
       let count = 0;
 
-      expect(instance.state('status')).toEqual(EXITED);
+      expect(wrapper.state('status')).toEqual(EXITED);
 
-      instance.props({
+      wrapper.setProps({
         in: true,
 
         onEnter(){
           count++;
-          expect(instance.state('status')).toEqual(EXITED);
+          expect(wrapper.state('status')).toEqual(EXITED);
         },
 
         onEntering(){
           count++;
-          expect(instance.state('status')).toEqual(ENTERING);
+          expect(wrapper.state('status')).toEqual(ENTERING);
         },
 
         onEntered(){
-          expect(instance.state('status')).toEqual(ENTERED);
+          expect(wrapper.state('status')).toEqual(ENTERED);
           expect(count).toEqual(2);
           done();
         }
@@ -194,24 +188,23 @@ describe('Transition', () => {
   });
 
   describe('exiting', ()=> {
-    let instance;
+    let wrapper;
 
     beforeEach(() => {
-      instance = tsp(
+      wrapper = mount(
         <Transition in timeout={10}>
           <div/>
         </Transition>
-      )
-      .render();
+      );
     });
 
     it('should fire callbacks', done => {
       let onExit = sinon.spy();
       let onExiting = sinon.spy();
 
-      expect(instance.state('status')).toEqual(ENTERED);
+      expect(wrapper.state('status')).toEqual(ENTERED);
 
-      instance.props({
+      wrapper.setProps({
         in: false,
 
         onExit,
@@ -230,23 +223,23 @@ describe('Transition', () => {
     it('should move to each transition state', done => {
       let count = 0;
 
-      expect(instance.state('status')).toEqual(ENTERED);
+      expect(wrapper.state('status')).toEqual(ENTERED);
 
-      instance.props({
+      wrapper.setProps({
         in: false,
 
         onExit(){
           count++;
-          expect(instance.state('status')).toEqual(ENTERED);
+          expect(wrapper.state('status')).toEqual(ENTERED);
         },
 
         onExiting(){
           count++;
-          expect(instance.state('status')).toEqual(EXITING);
+          expect(wrapper.state('status')).toEqual(EXITING);
         },
 
         onExited(){
-          expect(instance.state('status')).toEqual(EXITED);
+          expect(wrapper.state('status')).toEqual(EXITED);
           expect(count).toEqual(2);
           done();
         }
@@ -284,47 +277,45 @@ describe('Transition', () => {
     }
 
     it('should mount when entering', done => {
-      const instance = tsp(
+      const wrapper = mount(
         <MountTransition
           initialIn={false}
           onEnter={() => {
-            expect(instance.unwrap().getStatus()).toEqual(EXITED);
-            expect(instance.dom()).toExist();
+            expect(wrapper.instance().getStatus()).toEqual(EXITED);
+            expect(wrapper.getDOMNode()).toExist();
             done();
           }}
         />
-      )
-      .render();
+      );
 
-      expect(instance.unwrap().getStatus()).toEqual(UNMOUNTED);
+      expect(wrapper.instance().getStatus()).toEqual(UNMOUNTED);
 
-      expect(instance.dom()).not.toExist();
+      expect(wrapper.getDOMNode()).not.toExist();
 
-      instance.props({ in: true });
+      wrapper.setProps({ in: true });
     });
 
     it('should stay mounted after exiting', done => {
-      const instance = tsp(
+      const wrapper = mount(
         <MountTransition
           initialIn={false}
           onEntered={() => {
-            expect(instance.unwrap().getStatus()).toEqual(ENTERED);
-            expect(instance.dom()).toExist();
+            expect(wrapper.instance().getStatus()).toEqual(ENTERED);
+            expect(wrapper.getDOMNode()).toExist();
 
-            instance.state({ in: false });
+            wrapper.setState({ in: false });
           }}
           onExited={() => {
-            expect(instance.unwrap().getStatus()).toEqual(EXITED);
-            expect(instance.dom()).toExist();
+            expect(wrapper.instance().getStatus()).toEqual(EXITED);
+            expect(wrapper.getDOMNode()).toExist();
 
             done();
           }}
         />
-      )
-      .render();
+      );
 
-      expect(instance.dom()).not.toExist();
-      instance.state({ in: true });
+      expect(wrapper.getDOMNode()).not.toExist();
+      wrapper.setState({ in: true });
     });
   })
 
@@ -359,45 +350,44 @@ describe('Transition', () => {
     }
 
     it('should mount when entering', done => {
-      const instance = tsp(
+      const wrapper = mount(
         <UnmountTransition
           initialIn={false}
           onEnter={() => {
-            expect(instance.getStatus()).toEqual(EXITED);
-            expect(ReactDOM.findDOMNode(instance)).toExist();
+            expect(wrapper.getStatus()).toEqual(EXITED);
+            expect(ReactDOM.findDOMNode(wrapper)).toExist();
 
             done();
           }}
         />
       )
-      .render()
-      .unwrap();
+      .instance()
 
-      expect(instance.getStatus()).toEqual(UNMOUNTED);
-      expect(ReactDOM.findDOMNode(instance)).toBeNull();
+      expect(wrapper.getStatus()).toEqual(UNMOUNTED);
+      expect(ReactDOM.findDOMNode(wrapper)).toBeNull();
 
-      instance.setState({in: true});
+      wrapper.setState({in: true});
     });
 
     it('should unmount after exiting', done => {
-      const instance = tsp(
+      const wrapper = mount(
         <UnmountTransition
           initialIn
           onExited={() => {
-            expect(instance.getStatus()).toEqual(UNMOUNTED);
-            expect(ReactDOM.findDOMNode(instance)).not.toExist();
-
-            done();
+            setTimeout(() => {
+              expect(wrapper.getStatus()).toEqual(UNMOUNTED);
+              expect(ReactDOM.findDOMNode(wrapper)).not.toExist();
+              done();
+            })
           }}
         />
       )
-      .render()
-      .unwrap();
+      .instance();
 
-      expect(instance.getStatus()).toEqual(ENTERED);
-      expect(ReactDOM.findDOMNode(instance)).toExist();
+      expect(wrapper.getStatus()).toEqual(ENTERED);
+      expect(ReactDOM.findDOMNode(wrapper)).toExist();
 
-      instance.setState({in: false});
+      wrapper.setState({in: false});
     });
   });
 });

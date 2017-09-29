@@ -1,6 +1,6 @@
 import React from 'react';
 import style from 'dom-helpers/style';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 
 import Transition, { EXITED, ENTERED, ENTERING, EXITING } from '../src/Transition';
 import CSSTransition from '../src/CSSTransition';

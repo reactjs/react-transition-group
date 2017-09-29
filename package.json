@@ -4,7 +4,8 @@
   "description": "A react component toolset for managing animations",
   "main": "lib/index.js",
   "scripts": {
-    "test": "jest --runInBand --verbose",
+    "test": "npm run lint && npm run testonly",
+    "testonly": "jest --verbose",
     "tdd": "jest --watch",
     "build": "rimraf lib && babel src --out-dir lib && npm run build:dist && cp README.md LICENSE ./lib",
     "build:dist": "rimraf lib/dist && webpack && NODE_ENV=production webpack -p",
@@ -36,13 +37,16 @@
   "homepage": "https://github.com/reactjs/react-transition-group#readme",
   "jest": {
     "testRegex": "-test\\.js",
+    "setupFiles": [
+      "./test/setup.js"
+    ],
     "roots": [
       "<rootDir>/test"
     ]
   },
   "peerDependencies": {
-    "react": "^15.0.0 || ^16.0.0",
-    "react-dom": "^15.0.0 || ^16.0.0"
+    "react": ">=15.0.0",
+    "react-dom": ">=15.0.0"
   },
   "dependencies": {
     "chain-function": "^1.0.0",
@@ -53,7 +57,7 @@
     "warning": "^3.0.0"
   },
   "devDependencies": {
-    "@kadira/storybook": "^2.21.0",
+    "@storybook/react": "3.2.10",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.24.0",
     "babel-eslint": "^7.1.1",
@@ -68,19 +72,21 @@
     "babel-preset-stage-2": "^6.18.0",
     "css-literal-loader": "^0.2.0",
     "css-loader": "^0.28.0",
+    "enzyme": "^3.0.0",
+    "enzyme-adapter-react-16": "^1.0.0",
     "eslint": "^3.17.1",
     "eslint-config-jason": "^4.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.3",
     "jest": "^20.0.4",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-test-renderer": "^16.0.0",
     "release-script": "^1.0.2",
     "rimraf": "^2.6.1",
     "sinon": "^2.1.0",
     "style-loader": "^0.16.1",
-    "teaspoon": "^6.4.3",
     "webpack": "^2.2.1"
   },
   "release-script": {
