@@ -4,7 +4,8 @@
   "description": "A react component toolset for managing animations",
   "main": "lib/index.js",
   "scripts": {
-    "test": "jest --runInBand --verbose",
+    "test": "npm run lint && npm run testonly",
+    "testonly": "jest --verbose",
     "tdd": "jest --watch",
     "build": "rimraf lib && babel src --out-dir lib && npm run build:dist && cp README.md LICENSE ./lib",
     "build:dist": "rimraf lib/dist && webpack && NODE_ENV=production webpack -p",
