@@ -1,3 +1,12 @@
+## [v1.2.1]
+> 2017-9-29
+
+- allow react 16 in peer deps ([#203])
+
+[#203]: https://github.com/reactjs/react-transition-group/pull/203
+[v1.2.1]: https://github.com/reactjs/react-transition-group/compare/v1.2.0...v1.2.1
+
+
 ## [v1.2.0]
 > 2017-05-12
 
