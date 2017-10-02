@@ -5,7 +5,7 @@ import TransitionGroup from '../src/TransitionGroup';
 import CSSTransitionGroupFixture from './CSSTransitionGroupFixture';
 import NestedTransition from './NestedTransition'
 import StoryFixture from './StoryFixture';
-import Fade, { FADE_TIMEOUT } from './Fade';
+import Fade, { FADE_TIMEOUT } from './transitions/Fade';
 
 
 storiesOf('Css Transition Group', module)

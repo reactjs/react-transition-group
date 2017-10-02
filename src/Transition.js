@@ -89,7 +89,8 @@ export const EXITING = 'exiting';
  *
  * ### Example
  *
- * <p data-height="365" data-theme-id="0" data-slug-hash="veZjJx" data-default-tab="js,result" data-user="jquense" data-embed-version="2" data-pen-title="Transition Component" class="codepen">See the Pen <a href="https://codepen.io/jquense/pen/veZjJx/">Transition Component</a> by Jason Quense (<a href="https://codepen.io/jquense">jquense</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+ * <iframe src="https://codesandbox.io/embed/y26rj99yov?autoresize=1&fontsize=12&hidenavigation=1&moduleview=1" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+ *
  */
 class Transition extends React.Component {
   static contextTypes = {

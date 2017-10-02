@@ -66,13 +66,8 @@ const defaultProps = {
  * As items are removed or added to the TodoList the `in` prop is toggled
  * automatically by the `<TransitionGroup>`. You can use _any_ `<Transition>`
  * component in a `<TransitionGroup>`, not just css.
- *
- * ```jsx
- * import TransitionGroup from 'react-transition-group/TransitionGroup';
- * ```
- *
- * <p data-height="465" data-theme-id="dark" data-slug-hash="EwXLzK" data-default-tab="js,result" data-user="jquense" data-embed-version="2" data-pen-title="TransitionGroup Component" class="codepen">See the Pen <a href="https://codepen.io/jquense/pen/EwXLzK/">TransitionGroup Component</a> by Jason Quense (<a href="https://codepen.io/jquense">@jquense</a>) on <a href="https://codepen.io">CodePen</a>.</p>
- *
+ * *
+ * <iframe src="https://codesandbox.io/embed/43v5wj62q9?autoresize=1&fontsize=12&hidenavigation=1&moduleview=1" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
  *
  * Note that `<TransitionGroup>`  does not define any animation behavior!
  * Exactly _how_ a list item animates is up to the individual `<Transition>`

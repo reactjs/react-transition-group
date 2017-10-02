@@ -104,11 +104,7 @@ const propTypes = {
  * the `example-enter` CSS class and the `example-enter-active` CSS class
  * added in the next tick. This is a convention based on the `classNames` prop.
  *
- * ```js
- * import CSSTransition from 'react-transition-group/CSSTransition';
- * ```
- *
- * <p data-height="465" data-theme-id="dark" data-slug-hash="ZXyoVz" data-default-tab="js,result" data-user="jquense" data-embed-version="2" data-pen-title="CSSTransition Component" class="codepen">See the Pen <a href="https://codepen.io/jquense/pen/ZXyoVz/">CSSTransition Component</a> by Jason Quense (<a href="https://codepen.io/jquense">@jquense</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+ * <iframe src="https://codesandbox.io/embed/yv645oq21x?autoresize=1&fontsize=12&hidenavigation=1&moduleview=1" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
  */
 class CSSTransition extends React.Component {
   onEnter = (node, appearing) => {
