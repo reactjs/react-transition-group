@@ -136,7 +136,7 @@ const propTypes = {
  * }
  * ```
  *
- * And the coorresponding CSS for the `<Fade>` component:
+ * And the corresponding CSS for the `<Fade>` component:
  *
  * ```css
  * .fade-enter {
