@@ -124,12 +124,8 @@ class TransitionGroup extends React.Component {
     // Initial children should all be entering, dependent on appear
     this.state = {
       children: getChildMapping(props.children, child => {
-        const onExited = (node) => {
-          this.handleExited(child.key, node, child.props.onExited);
-        }
-
         return cloneElement(child, {
-          onExited,
+          onExited: this.handleExited.bind(this, child),
           in: true,
           appear: this.getProp(child, 'appear'),
           enter: this.getProp(child, 'enter'),
@@ -166,10 +162,6 @@ class TransitionGroup extends React.Component {
 
       if (!isValidElement(child)) return;
 
-      const onExited = (node) => {
-        this.handleExited(child.key, node, child.props.onExited);
-      }
-
       const hasPrev = key in prevChildMapping;
       const hasNext = key in nextChildMapping;
 
@@ -180,7 +172,7 @@ class TransitionGroup extends React.Component {
       if (hasNext && (!hasPrev || isLeaving)) {
         // console.log('entering', key)
         children[key] = cloneElement(child, {
-          onExited,
+          onExited: this.handleExited.bind(this, child),
           in: true,
           exit: this.getProp(child, 'exit', nextProps),
           enter: this.getProp(child, 'enter', nextProps),
@@ -196,7 +188,7 @@ class TransitionGroup extends React.Component {
       else if (hasNext && hasPrev && isValidElement(prevChild)) {
         // console.log('unchanged', key)
         children[key] = cloneElement(child, {
-          onExited,
+          onExited: this.handleExited.bind(this, child),
           in: prevChild.props.in,
           exit: this.getProp(child, 'exit', nextProps),
           enter: this.getProp(child, 'enter', nextProps),
@@ -207,18 +199,19 @@ class TransitionGroup extends React.Component {
     this.setState({ children });
   }
 
-  handleExited = (key, node, originalHandler) => {
+  handleExited = (child, node) => {
     let currentChildMapping = getChildMapping(this.props.children);
 
-    if (key in currentChildMapping) return
+    if (child.key in currentChildMapping) return;
 
-    if (originalHandler)
-      originalHandler(node)
+    if (child.props.onExited) {
+      child.props.onExited(node);
+    }
 
     this.setState((state) => {
       let children = { ...state.children };
 
-      delete children[key];
+      delete children[child.key];
       return { children };
     });
   };
