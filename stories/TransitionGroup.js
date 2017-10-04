@@ -8,7 +8,7 @@ import NestedTransition from './NestedTransition'
 import StoryFixture from './StoryFixture';
 
 // const GREY = '#DDD';
-const FADE_TIMEOUT = 3000;
+const FADE_TIMEOUT = 1500;
 
 let _ = css`
   .fade-enter,
@@ -114,6 +114,9 @@ storiesOf('Css Transition Group', module)
       <DynamicTransition />
     </StoryFixture>
   ))
+  .add('Nested Transitions', () => (
+    <NestedTransition />
+  ))
   .add('Re-entering while leaving', () => (
     <StoryFixture
       description={`
@@ -123,10 +126,33 @@ storiesOf('Css Transition Group', module)
       <RenterTransition />
     </StoryFixture>
   ))
-  .add('Nested Transitions', () => (
-    <NestedTransition />
+  .add('Animations can be delayed', () => (
+    <StoryFixture
+      description={`
+        An animation can be delayed by a few seconds before kicking off
+      `}
+    >
+      <DelayedTransiton />
+    </StoryFixture>
   ))
-  ;
+  .add('Animations can be staggered', () => (
+    <StoryFixture
+      description={`
+        Children can have their animations staggered one after another
+      `}
+    >
+      <StaggerTransition delay={250} />
+    </StoryFixture>
+  ))
+  .add('Animations can be sequential', () => (
+    <StoryFixture
+      description={`
+        Children can animate one after another
+      `}
+    >
+      <StaggerTransition delay={FADE_TIMEOUT} />
+    </StoryFixture>
+  ));
 
 class DynamicTransition extends React.Component {
   state = { count: 0 }
@@ -178,6 +204,65 @@ class RenterTransition extends React.Component {
               <div>I'm entering!</div>
             </Fade>
           }
+        </TransitionGroup>
+      </div>
+    )
+  }
+}
+
+class DelayedTransiton extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = { show: false };
+  }
+
+  handleClick = () => {
+    this.setState({ show: !this.state.show });
+  }
+
+  render() {
+    const { show } = this.state || {};
+
+    return (
+      <div>
+        <button onClick={this.handleClick}>Toggle</button>
+        <TransitionGroup>
+          {show &&
+            <Fade key='item' delay={500}>
+              <div>I'm a delayed transition!</div>
+            </Fade>
+          }
+        </TransitionGroup>
+      </div>
+    )
+  }
+}
+
+class StaggerTransition extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = { show: false };
+  }
+
+  handleClick = () => {
+    this.setState({ show: !this.state.show });
+  }
+
+  render() {
+    const { show } = this.state || {}
+    const range = [0,1,2,3,4,5,6,7,8];
+
+    return (
+      <div>
+        <button onClick={this.handleClick}>Toggle</button>
+        <TransitionGroup delay={this.props.delay} stagger={true}>
+          {show && range.map((_, i) => (
+            <Fade key={`item-${i}`}>
+              <div>I'm entering!</div>
+            </Fade>
+          ))}
         </TransitionGroup>
       </div>
     )

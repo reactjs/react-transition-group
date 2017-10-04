@@ -8,13 +8,13 @@ import { Children, isValidElement } from 'react';
  * @return {object} Mapping of key to child
  */
 export function getChildMapping(children, mapFn) {
-  let mapper = child => mapFn && isValidElement(child ) ? mapFn(child) : child;
+  let mapper = (child, index) => mapFn && isValidElement(child ) ? mapFn(child, index) : child;
 
   let result = Object.create(null);
   if (children)
-    Children.map(children, c => c).forEach((child) => {
+    Children.map(children, c => c).forEach((child, index) => {
       // run the map function here instead so that the key is the computed one
-      result[child.key] = mapper(child);
+      result[child.key] = mapper(child, index);
     });
   return result;
 }

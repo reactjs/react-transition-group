@@ -2,7 +2,7 @@ import * as PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { timeoutsShape } from './utils/PropTypes';
+import { timeoutsShape, delaysShape } from './utils/PropTypes';
 
 export const UNMOUNTED = 'unmounted';
 export const EXITED = 'exited';
@@ -164,14 +164,30 @@ class Transition extends React.Component {
     const { timeout } = this.props;
     let exit, enter, appear;
 
-    exit = enter = appear = timeout
+    exit = enter = appear = timeout;
 
     if (timeout != null && typeof timeout !== 'number') {
-      exit = timeout.exit
-      enter = timeout.enter
-      appear = timeout.appear
+      exit = timeout.exit;
+      enter = timeout.enter;
+      appear = timeout.appear;
     }
+
     return { exit, enter, appear }
+  }
+
+  getDelays() {
+    const { delay } = this.props;
+    let exit, enter, appear;
+
+    exit = enter = appear = delay;
+
+    if (typeof delay !== 'number') {
+      exit = delay.exit;
+      enter = delay.enter;
+      appear = delay.appear;
+    }
+
+    return { exit, enter, appear };
   }
 
   updateStatus(mounting = false) {
@@ -202,6 +218,7 @@ class Transition extends React.Component {
       this.context.transitionGroup.isMounting : mounting;
 
     const timeouts = this.getTimeouts();
+    const delays = this.getDelays();
 
     // no enter animation skip right to ENTERED
     // if we are mounting and running this it means appear _must_ be set
@@ -215,7 +232,13 @@ class Transition extends React.Component {
     this.props.onEnter(node, appearing);
 
     this.safeSetState({ status: ENTERING }, () => {
-      this.props.onEntering(node, appearing);
+      if (delays.exit > 0) {
+        setTimeout(() => {
+          this.props.onEntering(node, appearing);
+        }, delays.exit);
+      } else {
+        this.props.onEntering(node, appearing);
+      }
 
       // FIXME: appear timeout?
       this.onTransitionEnd(node, timeouts.enter, () => {
@@ -229,6 +252,7 @@ class Transition extends React.Component {
   performExit(node) {
     const { exit } = this.props;
     const timeouts = this.getTimeouts();
+    const delays = this.getDelays();
 
     // no exit animation skip right to EXITED
     if (!exit) {
@@ -240,7 +264,13 @@ class Transition extends React.Component {
     this.props.onExit(node);
 
     this.safeSetState({ status: EXITING }, () => {
-      this.props.onExiting(node);
+      if (delays.exit > 0) {
+        setTimeout(() => {
+          this.props.onExiting(node);
+        }, delays.exit);
+      } else {
+        this.props.onExiting(node);
+      }
 
       this.onTransitionEnd(node, timeouts.exit, () => {
         this.safeSetState({ status: EXITED }, () => {
@@ -420,6 +450,20 @@ Transition.propTypes = {
   },
 
   /**
+    * The duration which the transition will be delayed.
+    *
+    * You may specify a single delay for all transitions like: `delay={500}`,
+    * or individually like:
+    * ```js
+    * delay={{
+    *  enter: 300,
+    *  leave: 500,
+    * }}
+    * ```
+    */
+  delay: delaysShape,
+
+  /**
    * Add a custom transition end trigger. Called with the transitioning
    * DOM node and a `done` callback. Allows for more fine grained transition end
    * logic. **Note:** Timeouts are still used as a fallback if provided.
@@ -489,6 +533,7 @@ Transition.defaultProps = {
   appear: false,
   enter: true,
   exit: true,
+  delay: 0,
 
   onEnter: noop,
   onEntering: noop,

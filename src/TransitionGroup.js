@@ -39,6 +39,13 @@ const propTypes = {
   exit: PropTypes.bool,
 
   /**
+    * A convenience prop for staggering the animations of the children if a
+    * delay is defined. Children will have their animations delayed by the delay
+    * property multiplied by their index. e.g. (this.props.delay * childIndex)
+    */
+  stagger: PropTypes.bool,
+
+  /**
    * You may need to apply reactive updates to a child as it is exiting.
    * This is generally done by using `cloneElement` however in the case of an exiting
    * child the element has already been removed and not accessible to the consumer.
@@ -121,22 +128,13 @@ class TransitionGroup extends React.Component {
   constructor(props, context) {
     super(props, context);
 
+    // bind class functions with proper context
+    this.getChildWithPropertyOverrides = this.getChildWithPropertyOverrides.bind(this);
+
     // Initial children should all be entering, dependent on appear
     this.state = {
-      children: getChildMapping(props.children, child => {
-        const onExited = (node) => {
-          this.handleExited(child.key, node, child.props.onExited);
-        }
-
-        return cloneElement(child, {
-          onExited,
-          in: true,
-          appear: this.getProp(child, 'appear'),
-          enter: this.getProp(child, 'enter'),
-          exit: this.getProp(child, 'exit'),
-        })
-      }),
-     };
+      children: getChildMapping(props.children, this.getChildWithPropertyOverrides),
+    };
   }
 
   getChildContext() {
@@ -144,6 +142,48 @@ class TransitionGroup extends React.Component {
        transitionGroup: { isMounting: !this.appeared }
     }
   }
+
+  // return a cloned element with property overrides from TransitionGroup if
+  // those properties are specified
+  getChildWithPropertyOverrides(child, index) {
+    const onExited = (node) => {
+      this.handleExited(child.key, node, child.props.onExited);
+    }
+
+    return cloneElement(child, {
+      onExited,
+      in: true,
+      appear: this.getProp(child, 'appear'),
+      enter: this.getProp(child, 'enter'),
+      exit: this.getProp(child, 'exit'),
+      timeout: this.getProp(child, 'timeout'),
+      delay: this.getCalculatedDelay(child, index),
+    });
+  }
+
+  getCalculatedDelay(child, index) {
+    const delay = this.getProp(child, 'delay');
+    const hasGlobalDelay = typeof this.props.delay !== 'undefined';
+
+    // if stagger is false, just return the same delay for every child
+    if (!this.props.stagger) {
+      return delay;
+    }
+    // return a new delay object with enter, exit multiplied by child index
+    else if (hasGlobalDelay && typeof delay !== 'number') {
+      return {
+        enter: delay.enter * index,
+        exit: delay.exit * index,
+      };
+    }
+    // return new delay number multiplied by child index
+    else if (hasGlobalDelay) {
+      return delay * index;
+    }
+
+    return delay;
+  }
+
   // use child config unless explictly set by the Group
   getProp(child, prop, props = this.props) {
     return props[prop] != null ?
@@ -157,7 +197,7 @@ class TransitionGroup extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     let prevChildMapping = this.state.children;
-    let nextChildMapping = getChildMapping(nextProps.children);
+    let nextChildMapping = getChildMapping(nextProps.children, this.getChildWithPropertyOverrides);
 
     let children = mergeChildMappings(prevChildMapping, nextChildMapping);
 
@@ -230,6 +270,9 @@ class TransitionGroup extends React.Component {
     delete props.appear;
     delete props.enter;
     delete props.exit;
+    delete props.timeout;
+    delete props.delay;
+    delete props.stagger;
 
     return (
       <Component {...props}>
