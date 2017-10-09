@@ -57,7 +57,8 @@
     "warning": "^3.0.0"
   },
   "devDependencies": {
-    "@storybook/react": "3.2.10",
+    "@storybook/addon-actions": "^3.2.11",
+    "@storybook/react": "^3.2.11",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.24.0",
     "babel-eslint": "^7.1.1",
@@ -70,8 +71,6 @@
     "babel-preset-latest": "^6.24.0",
     "babel-preset-react": "^6.23.0",
     "babel-preset-stage-2": "^6.18.0",
-    "css-literal-loader": "^0.2.0",
-    "css-loader": "^0.28.0",
     "enzyme": "^3.0.0",
     "enzyme-adapter-react-16": "^1.0.0",
     "eslint": "^3.17.1",
@@ -86,8 +85,8 @@
     "release-script": "^1.0.2",
     "rimraf": "^2.6.1",
     "sinon": "^2.1.0",
-    "style-loader": "^0.16.1",
-    "webpack": "^2.2.1"
+    "webpack": "^3.6.0",
+    "webpack-atoms": "^3.0.2"
   },
   "release-script": {
     "altPkgRootFolder": "lib"

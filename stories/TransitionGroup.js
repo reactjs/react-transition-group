@@ -1,53 +1,12 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import CSSTransition from '../src/CSSTransition';
 import TransitionGroup from '../src/TransitionGroup';
 import CSSTransitionGroupFixture from './CSSTransitionGroupFixture';
 import NestedTransition from './NestedTransition'
 import StoryFixture from './StoryFixture';
+import Fade, { FADE_TIMEOUT } from './transitions/Fade';
 
-// const GREY = '#DDD';
-const FADE_TIMEOUT = 3000;
-
-let _ = css`
-  .fade-enter,
-  .fade-appear,
-  .fade-exit {
-    transition: all ${FADE_TIMEOUT}ms;
-  }
-  .fade-enter,
-  .fade-appear {
-    opacity: 0;
-  }
-  .fade-enter-active,
-  .fade-appear-active {
-    opacity: 1
-  }
-  .fade-exit {
-    transition: all ${FADE_TIMEOUT}ms;
-    opacity: 1;
-  }
-  .fade-exit-active {
-    opacity: 0
-  }
-`;
-
-
-class Fade extends React.Component {
-  static defaultProps = {
-    in: false,
-    timeout: FADE_TIMEOUT,
-  };
-  render() {
-    return (
-      <CSSTransition
-        {...this.props}
-        classNames="fade"
-      />
-    );
-  }
-}
 
 storiesOf('Css Transition Group', module)
   .add('Animates on all', () => (
