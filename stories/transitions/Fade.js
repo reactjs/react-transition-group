@@ -4,7 +4,7 @@ import CSSTransition from '../../src/CSSTransition';
 
 export const FADE_TIMEOUT = 3000;
 
-let styles = css`
+const styles = css`
   .enter,
   .appear {
     opacity: 0.01;
