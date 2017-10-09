@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  pathPrefix: `/react-transition-group`,
   siteMetadata: {
     title: 'React Transition Group Documentation',
     author: 'Jason Quense',

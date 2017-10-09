@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "NODE_ENV=production gatsby build",
+    "build": "NODE_ENV=production gatsby build --prefix-paths",
     "deploy": "npm run build && gh-pages -d public",
     "develop": "gatsby develop"
   },
