@@ -1,20 +1,20 @@
 {
   "assetsByChunkName": {
-    "commons": [
-      "commons-6a434c58e68be228d2c1.js",
-      "commons-6a434c58e68be228d2c1.js.map"
-    ],
-    "page-component---src-pages-index-js": [
-      "page-component---src-pages-index-js-c824e7ff3cc54aa60dd4.js",
-      "page-component---src-pages-index-js-c824e7ff3cc54aa60dd4.js.map"
+    "component---src-pages-index-js": [
+      "component---src-pages-index-js-1f0df1cf984004b577fe.js",
+      "component---src-pages-index-js-1f0df1cf984004b577fe.js.map"
     ],
     "path---index": [
-      "path---index-bf2a640ad07921f5f24b.js",
-      "path---index-bf2a640ad07921f5f24b.js.map"
+      "path---index-d3ca16f33331b0ad894e.js",
+      "path---index-d3ca16f33331b0ad894e.js.map"
+    ],
+    "commons": [
+      "commons-4bfc4b8d2f5c6c7b13d4.js",
+      "commons-4bfc4b8d2f5c6c7b13d4.js.map"
     ],
     "app": [
-      "app-a3a9004db2e5488aa8cb.js",
-      "app-a3a9004db2e5488aa8cb.js.map"
+      "app-9623578d5f633946f4b9.js",
+      "app-9623578d5f633946f4b9.js.map"
     ]
   }
 }
