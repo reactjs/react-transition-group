@@ -137,7 +137,9 @@ class Transition extends React.Component {
   }
 
   componentDidMount() {
-    this.updateStatus(true);
+    // we do this with setTimeout, so that we are sure that a paint will be done after the initial 'exited' state
+    // without this transitions on mount will not work. See: https://github.com/reactjs/react-transition-group/issues/216
+    setTimeout(() => this.updateStatus(true), 0);
   }
 
   componentWillReceiveProps(nextProps) {
