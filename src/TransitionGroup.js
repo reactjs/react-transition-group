@@ -160,7 +160,7 @@ class TransitionGroup extends React.Component {
     this.setState({ children });
   }
 
-  handleExited = (child, node) => {
+  handleExited(child, node){
     let currentChildMapping = getChildMapping(this.props.children);
 
     if (child.key in currentChildMapping) return;
@@ -175,7 +175,7 @@ class TransitionGroup extends React.Component {
       delete children[child.key];
       return { children };
     });
-  };
+  }
 
   render() {
     const { component: Component, childFactory, ...props } = this.props;
