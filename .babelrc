@@ -1,60 +1,24 @@
 {
+  "presets": [
+    [
+      "latest",
+      {
+        "es2015": { "loose": true }
+      }
+    ],
+    "react",
+    "stage-2"
+  ],
+  "plugins": [
+    "dev-expression",
+    "add-module-exports",
+    "transform-object-assign",
+    ["transform-react-remove-prop-types", { "mode": "wrap" }]
+  ],
+
   "env" : {
-    "development": {
-      "presets": [
-        [
-          "latest",
-          {
-            "es2015": { "loose": true }
-          }
-        ],
-        "react",
-        "stage-2"
-      ],
-      "plugins": [
-        "dev-expression",
-        "add-module-exports",
-        "transform-object-assign",
-        ["transform-react-remove-prop-types", { "mode": "wrap" }]
-      ]
-    },
-    "testing": {
-      "presets": [
-        [
-          "latest",
-          {
-            "es2015": { "loose": true }
-          }
-        ],
-        "react",
-        "stage-2"
-      ],
-      "plugins": [
-        "dev-expression",
-        "add-module-exports",
-        "transform-object-assign",
-        ["transform-react-remove-prop-types", { "mode": "wrap" }]
-      ]
-    },
-    "production": {
-      "presets": [
-        [
-          "latest",
-          {
-            "es2015": { "loose": true }
-          }
-        ],
-        "react",
-        "stage-2"
-      ],
-      "plugins": [
-        "dev-expression",
-        "add-module-exports",
-        "transform-object-assign",
-        ["transform-react-remove-prop-types", { "mode": "wrap" }]
-      ]
-    },
-    "es6": {
+    
+    "es": {
       "presets": [
         [
           "latest",

@@ -54,7 +54,7 @@ yarn add react-transition-group
 import Transition from 'react-transition-group/Transition';
 
 // ES6
-import Transition from 'react-transition-group/es6/Transition';
+import Transition from 'react-transition-group/es/Transition';
 `}
 </code>
 </pre>

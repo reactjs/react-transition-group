@@ -19,7 +19,7 @@ import { UNMOUNTED, EXITED, ENTERING, ENTERED, EXITING } from './constants';
  * ```jsx
  * import Transition from 'react-transition-group/Transition';
  * // or for ES6 build
- * import Transition from 'react-transition-group/es6/Transition';
+ * import Transition from 'react-transition-group/es/Transition';
  *
  * const duration = 300;
  *
