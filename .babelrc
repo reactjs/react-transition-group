@@ -59,11 +59,11 @@
         [
           "latest",
           {
-            "es2015": { "modules": false }
+            "es2015": { "modules": false, "loose": true }
           }
         ],
         "react",
-        "stage-1"
+        "stage-2"
       ]
     }
   }
