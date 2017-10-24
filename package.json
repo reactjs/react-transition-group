@@ -9,7 +9,7 @@
     "testonly": "jest --verbose",
     "tdd": "jest --watch",
     "build": "npm run build:lib && npm run build:es && npm run build:dist && cp README.md LICENSE ./lib",
-    "build:lib": "rimraf lib && babel src --out-dir lib",
+    "build:lib": "rimraf lib && babel src --out-dir lib && echo \"\nmodule.exports = exports['default'];\" >> ./lib/Transition.js",
     "build:es": "rimraf lib/es && BABEL_ENV=es babel ./src --out-dir ./lib/es",
     "build:dist": "rimraf lib/dist && webpack && NODE_ENV=production webpack -p",
     "lint": "eslint src test",

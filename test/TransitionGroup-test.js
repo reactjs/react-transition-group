@@ -1,9 +1,10 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 import { mount } from 'enzyme';
 
-let React;
-let ReactDOM;
-let TransitionGroup;
-let Transition;
+import Transition from '../src/Transition';
+import TransitionGroup from '../src/TransitionGroup';
 
 // Most of the real functionality is covered in other unit tests, this just
 // makes sure we're wired up correctly.
@@ -11,11 +12,6 @@ describe('TransitionGroup', () => {
   let container, log, Child;
 
   beforeEach(() => {
-    React = require('react');
-    ReactDOM = require('react-dom');
-    Transition = require('../src/Transition');
-    TransitionGroup = require('../src/TransitionGroup');
-
     container = document.createElement('div');
 
     log = [];
