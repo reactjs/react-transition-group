@@ -3,12 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { timeoutsShape } from './utils/PropTypes';
-
-export const UNMOUNTED = 'unmounted';
-export const EXITED = 'exited';
-export const ENTERING = 'entering';
-export const ENTERED = 'entered';
-export const EXITING = 'exiting';
+import { UNMOUNTED, EXITED, ENTERING, ENTERED, EXITING } from './constants';
 
 /**
  * The Transition component lets you describe a transition from one component

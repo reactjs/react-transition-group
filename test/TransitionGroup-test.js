@@ -13,7 +13,7 @@ describe('TransitionGroup', () => {
   beforeEach(() => {
     React = require('react');
     ReactDOM = require('react-dom');
-    Transition = require('../src/Transition').default;
+    Transition = require('../src/Transition');
     TransitionGroup = require('../src/TransitionGroup');
 
     container = document.createElement('div');
