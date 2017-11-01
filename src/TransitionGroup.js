@@ -179,15 +179,18 @@ class TransitionGroup extends React.Component {
 
   render() {
     const { component: Component, childFactory, ...props } = this.props;
-    const { children } = this.state;
+    const children = values(this.state.children).map(childFactory);
 
     delete props.appear;
     delete props.enter;
     delete props.exit;
 
+    if (Component === null) {
+      return children;
+    }
     return (
       <Component {...props}>
-        {values(children).map(childFactory)}
+        {children}
       </Component>
     );
   }
