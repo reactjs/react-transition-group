@@ -9,6 +9,9 @@ const propTypes = {
   /**
    * `<TransitionGroup>` renders a `<div>` by default. You can change this
    * behavior by providing a `component` prop.
+   * If you use React v16+ and would like to avoid a wrapping `<div>` element
+   * you can pass in `component={null}`. This is useful if the wrapping div
+   * borks your css styles.
    */
   component: PropTypes.any,
   /**
@@ -179,15 +182,18 @@ class TransitionGroup extends React.Component {
 
   render() {
     const { component: Component, childFactory, ...props } = this.props;
-    const { children } = this.state;
+    const children = values(this.state.children).map(childFactory);
 
     delete props.appear;
     delete props.enter;
     delete props.exit;
 
+    if (Component === null) {
+      return children;
+    }
     return (
       <Component {...props}>
-        {values(children).map(childFactory)}
+        {children}
       </Component>
     );
   }
