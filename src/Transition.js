@@ -404,7 +404,7 @@ Transition.propTypes = {
 
   /**
    * The duration of the transition, in milliseconds.
-   * Required unless `addEventListener` is provided
+   * Required unless `addEndListener` is provided
    *
    * You may specify a single timeout for all transitions like: `timeout={500}`,
    * or individually like:
