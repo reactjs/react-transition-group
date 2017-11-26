@@ -43,7 +43,7 @@ export const EXITING = 'exiting';
  *         ...defaultStyle,
  *         ...transitionStyles[state]
  *       }}>
- *         I'm A fade Transition!
+ *         I'm a fade Transition!
  *       </div>
  *     )}
  *   </Transition>
@@ -83,7 +83,7 @@ export const EXITING = 'exiting';
  * ```
  *
  * When the button is clicked the component will shift to the `'entering'` state and
- * stay there for 500ms (the value of `timeout`) when finally switches to `'entered'`.
+ * stay there for 500ms (the value of `timeout`) before it finally switches to `'entered'`.
  *
  * When `in` is `false` the same thing happens except the state moves from `'exiting'` to `'exited'`.
  *
@@ -348,7 +348,7 @@ Transition.propTypes = {
   /**
    * A `function` child can be used instead of a React element.
    * This function is called with the current transition status
-   * ('entering', 'entered', 'exiting', 'exited', 'unmounted'), which can used
+   * ('entering', 'entered', 'exiting', 'exited', 'unmounted'), which can be used
    * to apply context specific props to a component.
    *
    * ```jsx
