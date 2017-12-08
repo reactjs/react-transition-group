@@ -59,8 +59,10 @@
   },
   "dependencies": {
     "dom-helpers": "^3.4.0",
+    "fastdom": "^1.0.8",
     "loose-envify": "^1.4.0",
-    "prop-types": "^15.6.2"
+    "prop-types": "^15.6.2",
+    "visibility": "^0.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.3",
