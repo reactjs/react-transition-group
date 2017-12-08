@@ -1,14 +1,9 @@
 import * as PropTypes from 'prop-types';
-import addOneClass from 'dom-helpers/class/addClass';
-
-import removeOneClass from 'dom-helpers/class/removeClass';
 import React from 'react';
 
 import Transition from './Transition';
 import { classNamesShape } from './utils/PropTypes';
-
-const addClass = (node, classes) => node && classes && classes.split(' ').forEach(c => addOneClass(node, c));
-const removeClass = (node, classes) => node && classes && classes.split(' ').forEach(c => removeOneClass(node, c));
+import { addClass, removeClass } from './utils/ClassHelpers';
 
 /**
  * A transition component inspired by the excellent
@@ -90,7 +85,7 @@ class CSSTransition extends React.Component {
       appearing ? 'appear' : 'enter'
     );
 
-    this.reflowAndAddClass(node, activeClassName)
+    addClass(node, activeClassName)
 
     if (this.props.onEntering) {
       this.props.onEntering(node, appearing)
@@ -127,7 +122,7 @@ class CSSTransition extends React.Component {
   onExiting = (node) => {
     const { activeClassName } = this.getClassNames('exit')
 
-    this.reflowAndAddClass(node, activeClassName)
+    addClass(node, activeClassName)
 
     if (this.props.onExiting) {
       this.props.onExiting(node)
@@ -171,17 +166,6 @@ class CSSTransition extends React.Component {
     className && removeClass(node, className);
     activeClassName && removeClass(node, activeClassName);
     doneClassName && removeClass(node, doneClassName);
-  }
-
-  reflowAndAddClass(node, className) {
-    // This is for to force a repaint,
-    // which is necessary in order to transition styles when adding a class name.
-    if (className) {
-      /* eslint-disable no-unused-expressions */
-      node && node.scrollTop;
-      /* eslint-enable no-unused-expressions */
-      addClass(node, className);
-    }
   }
 
   render() {
