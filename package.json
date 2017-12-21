@@ -50,7 +50,6 @@
   },
   "dependencies": {
     "chain-function": "^1.0.0",
-    "classnames": "^2.2.5",
     "dom-helpers": "^3.2.0",
     "loose-envify": "^1.3.1",
     "prop-types": "^15.5.8",
