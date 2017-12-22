@@ -27,8 +27,10 @@ const propTypes = {
    *  appearActive: 'my-active-appear',
    *  enter: 'my-enter',
    *  enterActive: 'my-active-enter',
+   *  enterDone: 'my-done-enter,
    *  exit: 'my-exit',
    *  exitActive: 'my-active-exit',
+   *  exitDone: 'my-done-exit,
    * }}
    * ```
    *
@@ -37,8 +39,10 @@ const propTypes = {
    *  appearActive?: string,
    *  enter?: string,
    *  enterActive?: string,
+   *  enterDone?: string,
    *  exit?: string,
    *  exitActive?: string,
+   *  exitDone?: string,
    * }}
    */
   classNames: classNamesShape,
@@ -131,7 +135,10 @@ class CSSTransition extends React.Component {
   }
 
   onEntered = (node, appearing) => {
+    const { doneClassName } = this.getClassNames('enter');
+
     this.removeClasses(node, appearing ? 'appear' : 'enter');
+    addClass(node, doneClassName);
 
     if (this.props.onEntered) {
       this.props.onEntered(node)
@@ -161,7 +168,10 @@ class CSSTransition extends React.Component {
   }
 
   onExited = (node) => {
+    const { doneClassName } = this.getClassNames('exit');
+
     this.removeClasses(node, 'exit');
+    addClass(node, doneClassName);
 
     if (this.props.onExited) {
       this.props.onExited(node)
@@ -169,7 +179,7 @@ class CSSTransition extends React.Component {
   }
 
   getClassNames = (type) => {
-    const { classNames } = this.props
+    const { classNames } = this.props;
 
     let className = typeof classNames !== 'string' ?
       classNames[type] : classNames + '-' + type;
@@ -177,7 +187,14 @@ class CSSTransition extends React.Component {
     let activeClassName = typeof classNames !== 'string' ?
       classNames[type + 'Active'] : className + '-active';
 
-    return { className, activeClassName }
+    let doneClassName = typeof classNames !== 'string' ?
+      classNames[type + 'Done'] : className + '-done';
+
+    return {
+      className,
+      activeClassName,
+      doneClassName
+    };
   }
 
   removeClasses(node, type) {

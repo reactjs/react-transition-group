@@ -44,8 +44,10 @@ export const classNamesShape = PropTypes.oneOfType([
   }),
   PropTypes.shape({
     enter: PropTypes.string,
+    enterDone: PropTypes.string,
     enterActive: PropTypes.string,
     exit: PropTypes.string,
+    exitDone: PropTypes.string,
     exitActive: PropTypes.string,
   }),
 ]);
