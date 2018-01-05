@@ -7,8 +7,8 @@ import React from 'react';
 import Transition from './Transition';
 import { classNamesShape } from './utils/PropTypes';
 
-const addClass = (node, classes) => classes && classes.split(' ').forEach(c => addOneClass(node, c));
-const removeClass = (node, classes) => classes && classes.split(' ').forEach(c => removeOneClass(node, c));
+const addClass = (node, classes) => node && classes && classes.split(' ').forEach(c => addOneClass(node, c));
+const removeClass = (node, classes) => node && classes && classes.split(' ').forEach(c => removeOneClass(node, c));
 
 const propTypes = {
   ...Transition.propTypes,
@@ -190,7 +190,7 @@ class CSSTransition extends React.Component {
     // This is for to force a repaint,
     // which is necessary in order to transition styles when adding a class name.
     /* eslint-disable no-unused-expressions */
-    node.scrollTop;
+    node && node.scrollTop;
     /* eslint-enable no-unused-expressions */
     addClass(node, className);
   }
