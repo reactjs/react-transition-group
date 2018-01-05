@@ -119,6 +119,28 @@ describe('CSSTransitionGroup', () => {
     );
   });
 
+  it('should work with a child which renders as null', () => {
+    const NullComponent = () => null;
+    // Testing the whole lifecycle of entering and exiting,
+    // because those lifecycle methods used to fail when the DOM node was null.
+    ReactDOM.render(
+      <TransitionGroup/>,
+      container,
+    );
+    ReactDOM.render(
+      <TransitionGroup>
+        <CSSTransition classNames="yolo" timeout={0}>
+          <NullComponent/>
+        </CSSTransition>
+      </TransitionGroup>,
+      container,
+    );
+    ReactDOM.render(
+      <TransitionGroup/>,
+      container,
+    );
+  });
+
   it('should transition from one to null', () => {
     let a = ReactDOM.render(
       <TransitionGroup>
