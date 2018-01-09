@@ -14,11 +14,11 @@ const propTypes = {
   ...Transition.propTypes,
 
   /**
-   * The animation classNames applied to the component as it enters or exits.
+   * The animation classNames applied to the component as it enters, exits or has finished the transition.
    * A single name can be provided and it will be suffixed for each stage: e.g.
    *
-   * `classNames="fade"` applies `fade-enter`, `fade-enter-active`,
-   * `fade-exit`, `fade-exit-active`, `fade-appear`, and `fade-appear-active`.
+   * `classNames="fade"` applies `fade-enter`, `fade-enter-active`, `fade-enter-done`,
+   * `fade-exit`, `fade-exit-active`, `fade-exit-done`, `fade-appear`, and `fade-appear-active`.
    * Each individual classNames can also be specified independently like:
    *
    * ```js
@@ -65,7 +65,7 @@ const propTypes = {
 
   /**
    * A `<Transition>` callback fired immediately after the 'enter' or
-   * 'appear' classes are **removed** from the DOM node.
+   * 'appear' classes are **removed** and the `done` class is added to the DOM node.
    *
    * @type Function(node: HtmlElement, isAppearing: bool)
    */
@@ -89,7 +89,7 @@ const propTypes = {
 
   /**
    * A `<Transition>` callback fired immediately after the 'exit' classes
-   * are **removed** from the DOM node.
+   * are **removed** and the `exit-done` class is added to the DOM node.
    *
    * @type Function(node: HtmlElement)
    */
@@ -102,7 +102,8 @@ const propTypes = {
  *
  * `CSSTransition` applies a pair of class names during the `appear`, `enter`,
  * and `exit` stages of the transition. The first class is applied and then a
- * second "active" class in order to activate the css animation.
+ * second "active" class in order to activate the css animation. After the animation,
+ * matching `done` class names are applied to persist the animation state.
  *
  * When the `in` prop is toggled to `true` the Component will get
  * the `example-enter` CSS class and the `example-enter-active` CSS class
