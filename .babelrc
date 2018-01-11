@@ -1,15 +1,34 @@
 {
   "presets": [
-    ["latest", {
-      "es2015": { "loose": true }
-    }],
-    "stage-2",
-    "react"
+    [
+      "latest",
+      {
+        "es2015": { "loose": true }
+      }
+    ],
+    "react",
+    "stage-2"
   ],
   "plugins": [
     "dev-expression",
     "add-module-exports",
     "transform-object-assign",
     ["transform-react-remove-prop-types", { "mode": "wrap" }]
-  ]
+  ],
+
+  "env" : {
+    
+    "es": {
+      "presets": [
+        [
+          "latest",
+          {
+            "es2015": { "modules": false, "loose": true }
+          }
+        ],
+        "react",
+        "stage-2"
+      ]
+    }
+  }
 }

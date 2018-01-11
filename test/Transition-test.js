@@ -4,8 +4,7 @@ import ReactDOM from 'react-dom';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 
-import Transition, { UNMOUNTED, EXITED, ENTERING, ENTERED, EXITING }
-  from '../src/Transition';
+import Transition, { UNMOUNTED, EXITED, ENTERING, ENTERED, EXITING } from '../src/Transition';
 
 jasmine.addMatchers({
   toExist: () => ({

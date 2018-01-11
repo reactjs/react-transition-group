@@ -1,12 +1,4 @@
-import CSSTransition from './CSSTransition';
-import ReplaceTransition from './ReplaceTransition';
-import TransitionGroup from './TransitionGroup';
-import Transition from './Transition';
-
-
-module.exports = {
-  Transition,
-  TransitionGroup,
-  ReplaceTransition,
-  CSSTransition,
-};
+export { default as CSSTransition } from './CSSTransition';
+export { default as ReplaceTransition } from './ReplaceTransition';
+export { default as TransitionGroup } from './TransitionGroup';
+export { default as Transition } from './Transition';

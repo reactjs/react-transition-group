@@ -43,6 +43,23 @@ yarn add react-transition-group
             </a>
           </p>
         </section>
+        <section>
+          <h2>Build for ES6</h2>
+          <p>
+            Components could be resolved from UMD build or native ES6 module (useful for tree shaking when using Webpack
+            or Rollup). All components can be imported two ways, for example <code>Transition</code> component:
+<pre>
+<code>{`
+// UMD
+import Transition from 'react-transition-group/Transition';
+
+// ES6
+import Transition from 'react-transition-group/es/Transition';
+`}
+</code>
+</pre>
+          </p>
+        </section>
         <h2>Components</h2>
         <ComponentPage metadata={transition} />
         <ComponentPage metadata={transitionGroup} />
