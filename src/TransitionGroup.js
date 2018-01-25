@@ -89,7 +89,7 @@ class TransitionGroup extends React.Component {
     this.state = {
       children: getChildMapping(props.children, child => {
         return cloneElement(child, {
-          onExited: this.handleExited.bind(this, child),
+          onExited: this.handleExited.bind(this, child.key, child.props.onExited),
           in: true,
           appear: this.getProp(child, 'appear'),
           enter: this.getProp(child, 'enter'),
@@ -136,7 +136,7 @@ class TransitionGroup extends React.Component {
       if (hasNext && (!hasPrev || isLeaving)) {
         // console.log('entering', key)
         children[key] = cloneElement(child, {
-          onExited: this.handleExited.bind(this, child),
+          onExited: this.handleExited.bind(this, key, child.props.onExited),
           in: true,
           exit: this.getProp(child, 'exit', nextProps),
           enter: this.getProp(child, 'enter', nextProps),
@@ -152,7 +152,7 @@ class TransitionGroup extends React.Component {
       else if (hasNext && hasPrev && isValidElement(prevChild)) {
         // console.log('unchanged', key)
         children[key] = cloneElement(child, {
-          onExited: this.handleExited.bind(this, child),
+          onExited: prevChild.props.onExited,
           in: prevChild.props.in,
           exit: this.getProp(child, 'exit', nextProps),
           enter: this.getProp(child, 'enter', nextProps),
@@ -163,13 +163,19 @@ class TransitionGroup extends React.Component {
     this.setState({ children });
   }
 
-  handleExited(child, node){
+  handleExited(key, originalHandler, node) {
     let currentChildMapping = getChildMapping(this.props.children);
+    if (key in currentChildMapping) {
+      return;
+    }
 
-    if (child.key in currentChildMapping) return;
+    const child = this.state.children[key];
+    if (!child) {
+      return;
+    }
 
-    if (child.props.onExited) {
-      child.props.onExited(node);
+    if (originalHandler) {
+      originalHandler(node);
     }
 
     this.setState((state) => {
