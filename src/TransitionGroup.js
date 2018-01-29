@@ -99,7 +99,7 @@ class TransitionGroup extends React.Component {
   };
 
   _handleDoneAppearing = (key, component) => {
-    if (component.componentDidAppear) {
+    if (component && component.componentDidAppear) {
       component.componentDidAppear();
     }
 
@@ -126,7 +126,7 @@ class TransitionGroup extends React.Component {
   };
 
   _handleDoneEntering = (key, component) => {
-    if (component.componentDidEnter) {
+    if (component && component.componentDidEnter) {
       component.componentDidEnter();
     }
 
@@ -143,7 +143,7 @@ class TransitionGroup extends React.Component {
   performLeave = (key, component) => {
     this.currentlyTransitioningKeys[key] = true;
 
-    if (component.componentWillLeave) {
+    if (component && component.componentWillLeave) {
       component.componentWillLeave(this._handleDoneLeaving.bind(this, key, component));
     } else {
       // Note that this is somewhat dangerous b/c it calls setState()
@@ -154,7 +154,7 @@ class TransitionGroup extends React.Component {
   };
 
   _handleDoneLeaving = (key, component) => {
-    if (component.componentDidLeave) {
+    if (component && component.componentDidLeave) {
       component.componentDidLeave();
     }
 
