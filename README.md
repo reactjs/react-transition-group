@@ -10,7 +10,7 @@ A set of components for managing component states (including mounting and unmoun
 
 ## Documentation
 
-- [**Main documentation**](https://reactcommunity.org/react-transition-group/)
+- [**Main documentation**](https://reactjs.github.io/react-transition-group/)
 - [Migration guide from v1](/Migration.md)
 
 ## Examples
