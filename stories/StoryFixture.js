@@ -1,7 +1,8 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const propTypes = {
-  description: React.PropTypes.string,
+  description: PropTypes.string,
 };
 
 class StoryFixture extends React.Component {

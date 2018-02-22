@@ -10,6 +10,6 @@
     "dev-expression",
     "add-module-exports",
     "transform-object-assign",
-    ["transform-react-remove-prop-types", { mode: "wrap" }]
-  ],
+    ["transform-react-remove-prop-types", { "mode": "wrap" }]
+  ]
 }

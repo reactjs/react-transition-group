@@ -1,3 +1,23 @@
+## [v2.2.1]
+> 2017-09-29
+
+- **Patch:** Allow React v16 ([#198])
+
+[#198]: https://github.com/reactjs/react-transition-group/pull/198
+[v2.2.1]: https://github.com/reactjs/react-transition-group/compare/v2.2.0...2.2.1
+
+## [v2.2.0]
+> 2017-07-21
+
+- **Feature:** Support multiple classes in `classNames` ([#124])
+- **Docs:** fix broken link ([#127])
+- **Bugfix:** Fix Transition props pass-through ([#123])
+
+[#124]: https://github.com/reactjs/react-transition-group/pull/124
+[#123]: https://github.com/reactjs/react-transition-group/pull/123
+[#127]: https://github.com/reactjs/react-transition-group/pull/127
+[v2.2.0]: https://github.com/reactjs/react-transition-group/compare/v2.1.0...2.2.0
+
 ## [v2.1.0]
 > 2017-07-06
 
@@ -20,7 +40,7 @@
 ## [v2.0.0]
 > 2017-07-06
 
-- **Feature:** New API! ([#24]), migration guide at [https://github.com/reactjs/react-transition-group/blob/master/migration.md](https://github.com/reactjs/react-transition-group/blob/master/migration.md)
+- **Feature:** New API! ([#24]), migration guide at [https://github.com/reactjs/react-transition-group/blob/master/Migration.md](https://github.com/reactjs/react-transition-group/blob/master/Migration.md)
 
 [#24]: https://github.com/reactjs/react-transition-group/pull/24
 [v2.0.0]: https://github.com/reactjs/react-transition-group/compare/v1.2.0...v2.0.0

@@ -9,31 +9,34 @@ const propTypes = {
   /**
    * `<TransitionGroup>` renders a `<div>` by default. You can change this
    * behavior by providing a `component` prop.
+   * If you use React v16+ and would like to avoid a wrapping `<div>` element
+   * you can pass in `component={null}`. This is useful if the wrapping div
+   * borks your css styles.
    */
   component: PropTypes.any,
   /**
    * A set of `<Transition>` components, that are toggled `in` and out as they
    * leave. the `<TransitionGroup>` will inject specific transition props, so
-   * remember to spread them throguh if you are wrapping the `<Transition>` as
+   * remember to spread them through if you are wrapping the `<Transition>` as
    * with our `<Fade>` example.
    */
   children: PropTypes.node,
 
   /**
-   * A convenience prop that enables or disabled appear animations
-   * for all children. Note that specifiying this will override any defaults set
+   * A convenience prop that enables or disables appear animations
+   * for all children. Note that specifying this will override any defaults set
    * on individual children Transitions.
    */
   appear: PropTypes.bool,
   /**
-   * A convenience prop that enables or disabled enter animations
-   * for all children. Note that specifiying this will override any defaults set
+   * A convenience prop that enables or disables enter animations
+   * for all children. Note that specifying this will override any defaults set
    * on individual children Transitions.
    */
   enter: PropTypes.bool,
  /**
-   * A convenience prop that enables or disabled exit animations
-   * for all children. Note that specifiying this will override any defaults set
+   * A convenience prop that enables or disables exit animations
+   * for all children. Note that specifying this will override any defaults set
    * on individual children Transitions.
    */
   exit: PropTypes.bool,
@@ -67,46 +70,7 @@ const defaultProps = {
  * automatically by the `<TransitionGroup>`. You can use _any_ `<Transition>`
  * component in a `<TransitionGroup>`, not just css.
  *
- * ```jsx
- * import TransitionGroup from 'react-transition-group/TransitionGroup';
- *
- * class TodoList extends React.Component {
- *   constructor(props) {
- *     super(props)
- *     this.state = {items: ['hello', 'world', 'click', 'me']}
- *   }
- *   handleAdd() {
- *     const newItems = this.state.items.concat([
- *       prompt('Enter some text')
- *     ]);
- *     this.setState({ items: newItems });
- *   }
- *   handleRemove(i) {
- *     let newItems = this.state.items.slice();
- *     newItems.splice(i, 1);
- *     this.setState({items: newItems});
- *   }
- *   render() {
- *     return (
- *       <div>
- *         <button onClick={() => this.handleAdd()}>Add Item</button>
- *         <TransitionGroup>
- *           {this.state.items.map((item, i) => (
- *             <FadeTransition key={item}>
- *               <div>
- *                 {item}{' '}
- *                 <button onClick={() => this.handleRemove(i)}>
- *                   remove
- *                 </button>
- *               </div>
- *             </FadeTransition>
- *           ))}
- *         </TransitionGroup>
- *       </div>
- *     );
- *   }
- * }
- * ```
+ * <iframe src="https://codesandbox.io/embed/43v5wj62q9?autoresize=1&fontsize=12&hidenavigation=1&moduleview=1" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
  *
  * Note that `<TransitionGroup>`  does not define any animation behavior!
  * Exactly _how_ a list item animates is up to the individual `<Transition>`
@@ -124,12 +88,8 @@ class TransitionGroup extends React.Component {
     // Initial children should all be entering, dependent on appear
     this.state = {
       children: getChildMapping(props.children, child => {
-        const onExited = (node) => {
-          this.handleExited(child.key, node, child.props.onExited);
-        }
-
         return cloneElement(child, {
-          onExited,
+          onExited: this.handleExited.bind(this, child),
           in: true,
           appear: this.getProp(child, 'appear'),
           enter: this.getProp(child, 'enter'),
@@ -166,10 +126,6 @@ class TransitionGroup extends React.Component {
 
       if (!isValidElement(child)) return;
 
-      const onExited = (node) => {
-        this.handleExited(child.key, node, child.props.onExited);
-      }
-
       const hasPrev = key in prevChildMapping;
       const hasNext = key in nextChildMapping;
 
@@ -180,7 +136,7 @@ class TransitionGroup extends React.Component {
       if (hasNext && (!hasPrev || isLeaving)) {
         // console.log('entering', key)
         children[key] = cloneElement(child, {
-          onExited,
+          onExited: this.handleExited.bind(this, child),
           in: true,
           exit: this.getProp(child, 'exit', nextProps),
           enter: this.getProp(child, 'enter', nextProps),
@@ -196,7 +152,7 @@ class TransitionGroup extends React.Component {
       else if (hasNext && hasPrev && isValidElement(prevChild)) {
         // console.log('unchanged', key)
         children[key] = cloneElement(child, {
-          onExited,
+          onExited: this.handleExited.bind(this, child),
           in: prevChild.props.in,
           exit: this.getProp(child, 'exit', nextProps),
           enter: this.getProp(child, 'enter', nextProps),
@@ -207,33 +163,37 @@ class TransitionGroup extends React.Component {
     this.setState({ children });
   }
 
-  handleExited = (key, node, originalHandler) => {
+  handleExited(child, node){
     let currentChildMapping = getChildMapping(this.props.children);
 
-    if (key in currentChildMapping) return
+    if (child.key in currentChildMapping) return;
 
-    if (originalHandler)
-      originalHandler(node)
+    if (child.props.onExited) {
+      child.props.onExited(node);
+    }
 
     this.setState((state) => {
       let children = { ...state.children };
 
-      delete children[key];
+      delete children[child.key];
       return { children };
     });
-  };
+  }
 
   render() {
     const { component: Component, childFactory, ...props } = this.props;
-    const { children } = this.state;
+    const children = values(this.state.children).map(childFactory);
 
     delete props.appear;
     delete props.enter;
     delete props.exit;
 
+    if (Component === null) {
+      return children;
+    }
     return (
       <Component {...props}>
-        {values(children).map(childFactory)}
+        {children}
       </Component>
     );
   }

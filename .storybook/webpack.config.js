@@ -1,20 +1,15 @@
-module.exports = (config) => {
-  config.plugins = config.plugins
-    .filter(p => p.constructor.name !== 'CaseSensitivePathsPlugin');
+const { plugins, rules } = require('webpack-atoms');
 
+module.exports = (config) => {
   config.module = {
-    loaders: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader!css-literal-loader',
-      },
-      {
-        test: /\.css$/,
-        loader: 'style-loader!css-loader',
-      },
+    rules: [
+      rules.js.inlineCss(),
+      rules.css({ modules: true }),
     ],
   };
 
+  config.plugins.push(
+    plugins.extractText({ disable: true })
+  )
   return config;
 };

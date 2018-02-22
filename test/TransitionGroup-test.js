@@ -1,4 +1,4 @@
-import tsp from 'teaspoon';
+import { mount } from 'enzyme';
 
 let React;
 let ReactDOM;
@@ -7,7 +7,7 @@ let Transition;
 
 // Most of the real functionality is covered in other unit tests, this just
 // makes sure we're wired up correctly.
-describe.only('TransitionGroup', () => {
+describe('TransitionGroup', () => {
   let container, log, Child;
 
   beforeEach(() => {
@@ -39,12 +39,11 @@ describe.only('TransitionGroup', () => {
       return childrenArray[0] || null;
     }
 
-    tsp(
+    mount(
       <TransitionGroup component={FirstChild}>
         <Child />
       </TransitionGroup>,
     )
-    .render();
   });
 
   it('should allow callback refs', () => {
@@ -56,18 +55,17 @@ describe.only('TransitionGroup', () => {
       }
     }
 
-    tsp(
+    mount(
       <TransitionGroup>
         <Child ref={ref} />
       </TransitionGroup>,
     )
-    .render();
 
     expect(ref).toHaveBeenCalled();
   });
 
 
-  it.only('should work with no children', () => {
+  it('should work with no children', () => {
     ReactDOM.render(
       <TransitionGroup />,
       container,

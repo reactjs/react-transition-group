@@ -1,6 +1,6 @@
 # react-transition-group [![npm][npm-badge]][npm]
 
-> **ATTENTION!** To address many issues that have come up over the years, the API in v2 is different from that in the original React addon.
+> **ATTENTION!** To address many issues that have come up over the years, the API in v2 is not backwards compatible with the original [`React addon (v1-stable)`](https://github.com/reactjs/react-transition-group/tree/v1-stable).
 >
 > **For a drop-in replacement for `react-addons-transition-group` and `react-addons-css-transition-group`, use the v1 release, which is still actively maintained. Documentation and code for that release are available on the [`v1-stable`](https://github.com/reactjs/react-transition-group/tree/v1-stable) branch.**
 >
