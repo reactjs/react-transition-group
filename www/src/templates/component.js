@@ -18,21 +18,25 @@ const extractMarkdown = ({ description }) =>
   description.childMarkdownRemark.html;
 
 const propTypes = {
-  metadata: PropTypes.object.isRequired,
+  data: PropTypes.shape({
+    metadata: PropTypes.shape({
+      displayName: PropTypes.string,
+      composes: PropTypes.arrayOf(PropTypes.string),
+      description: PropTypes.object.isRequired,
+    }),
+  }).isRequired,
 };
 
-class ComponentPage extends React.Component {
+class ComponentTemplate extends React.Component {
   render() {
-    const { metadata, ...props } = this.props;
+    const { data: { metadata } } = this.props;
 
     return (
-      <div {...props}>
-        <h2 id={metadata.displayName}>
-          <a href={`#${metadata.displayName}`}>{metadata.displayName}</a>
-        </h2>
+      <div>
+        <h1 id={metadata.displayName}>{metadata.displayName}</h1>
         <p dangerouslySetInnerHTML={{ __html: extractMarkdown(metadata) }} />
 
-        <h3>
+        <h2>
           <div>Props</div>
           {metadata.composes && (
             <small style={{ fontStyle: 'italic', fontSize: '70%' }}>
@@ -43,7 +47,7 @@ class ComponentPage extends React.Component {
               unless otherwise noted.
             </small>
           )}
-        </h3>
+        </h2>
 
         {metadata.props.map(p => this.renderProp(p, metadata.displayName))}
       </div>
@@ -57,11 +61,11 @@ class ComponentPage extends React.Component {
 
     return (
       <section key={name}>
-        <h4 id={id}>
+        <h3 id={id} style={{ marginTop: '1.5rem', marginBottom: '0.5rem' }}>
           <a href={`#${id}`}>
             <code>{name}</code>
           </a>
-        </h4>
+        </h3>
         <div dangerouslySetInnerHTML={{ __html: extractMarkdown(prop) }} />
 
         <div style={{ paddingLeft: 0 }}>
@@ -150,6 +154,8 @@ class ComponentPage extends React.Component {
   }
 }
 
+ComponentTemplate.propTypes = propTypes;
+
 function getDisplayTypeName(typeName) {
   if (typeName === 'func') {
     return 'function';
@@ -201,49 +207,39 @@ function simpleType(prop) {
   }
 }
 
-ComponentPage.propTypes = propTypes;
-
-export default ComponentPage;
-
-export const descFragment = graphql`
-  fragment ComponentPage_desc on ComponentDescription {
-    childMarkdownRemark {
-      html
-    }
-  }
-`;
-
-export const propsFragment = graphql`
-  fragment ComponentPage_prop on ComponentProp {
-    name
-    required
-    type {
-      name
-      value
-      raw
-    }
-    defaultValue {
-      value
-      computed
-    }
-    description {
-      ...ComponentPage_desc
-    }
-    doclets {
-      type
-    }
-  }
-`;
-
 export const query = graphql`
-  fragment ComponentPage_metadata on ComponentMetadata {
-    displayName
-    composes
-    description {
-      ...ComponentPage_desc
-    }
-    props {
-      ...ComponentPage_prop
+  query ComponentMetadata($displayName: String!) {
+    metadata: componentMetadata(displayName: { eq: $displayName }) {
+      displayName
+      composes
+      description: childComponentDescription {
+        childMarkdownRemark {
+          html
+        }
+      }
+      props {
+        name
+        required
+        type {
+          name
+          value
+          raw
+        }
+        defaultValue {
+          value
+          computed
+        }
+        description: childComponentDescription {
+          childMarkdownRemark {
+            html
+          }
+        }
+        doclets {
+          type
+        }
+      }
     }
   }
 `;
+
+export default ComponentTemplate;

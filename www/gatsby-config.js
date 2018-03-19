@@ -5,6 +5,11 @@ module.exports = {
   siteMetadata: {
     title: 'React Transition Group Documentation',
     author: 'Jason Quense',
+    componentPages: [
+      { path: '/transition', displayName: 'Transition' },
+      { path: '/css-transition', displayName: 'CSSTransition' },
+      { path: '/transition-group', displayName: 'TransitionGroup' },
+    ],
   },
   plugins: [
     {
