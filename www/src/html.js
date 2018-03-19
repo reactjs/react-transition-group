@@ -1,11 +1,13 @@
-import React from "react"
-import PropTypes from "prop-types"
+import React from 'react'
+import PropTypes from 'prop-types'
 
 let inlinedStyles = '';
 if (process.env.NODE_ENV === 'production') {
   try {
+    // eslint-disable-next-line global-require
     inlinedStyles = require('!raw-loader!../public/styles.css');
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.log(e);
   }
 }
@@ -21,7 +23,7 @@ const Html = ({ headComponents, body, postBodyComponents }) => {
     );
   }
   return (
-    <html>
+    <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta httpEquiv="x-ua-compatible" content="ie=edge"/>

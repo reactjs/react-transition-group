@@ -1,4 +1,4 @@
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import transform from 'lodash/transform';
 
@@ -14,6 +14,10 @@ const extractMarkdown = ({ description }) => (
   description.childMarkdownRemark &&
   description.childMarkdownRemark.html
 );
+
+const propTypes = {
+  metadata: PropTypes.object.isRequired,
+}
 
 class ComponentPage extends React.Component {
   render() {
@@ -181,6 +185,9 @@ function simpleType(prop) {
       return name;
   }
 }
+
+ComponentPage.propTypes = propTypes;
+
 export default ComponentPage;
 
 export const descFragment = graphql`
