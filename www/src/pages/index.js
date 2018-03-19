@@ -15,30 +15,31 @@ class Index extends React.Component {
     const { data: { transition, cssTransition, transitionGroup } } = this.props;
 
     return (
-      <div className='container' style={{ marginTop: '2rem' }}>
+      <div className="container" style={{ marginTop: '2rem' }}>
         <h1>React Transition Group</h1>
         <section>
           <h2>Getting Started</h2>
-          <p>
-
-          </p>
-          <h3 className='h4'>Installation</h3>
-<pre>
-<code>{`
+          <p />
+          <h3 className="h4">Installation</h3>
+          <pre>
+            <code>
+              {`
 # npm
 npm install react-transition-group --save
 
 # yarn
 yarn add react-transition-group
 `}
-</code>
-</pre>
+            </code>
+          </pre>
 
-          <h3 className='h4'>CDN / External</h3>
+          <h3 className="h4">CDN / External</h3>
           <p>
-            Since react-transition-group is fairly small, the overhead of including the library in your application is
-            negligible. However, in situations where it may be useful to benefit from an external CDN when bundling, link
-            to the following CDN: <a href="https://unpkg.com/react-transition-group/dist/react-transition-group.min.js">
+            Since react-transition-group is fairly small, the overhead of
+            including the library in your application is negligible. However, in
+            situations where it may be useful to benefit from an external CDN
+            when bundling, link to the following CDN:{' '}
+            <a href="https://unpkg.com/react-transition-group/dist/react-transition-group.min.js">
               https://unpkg.com/react-transition-group/dist/react-transition-group.min.js
             </a>
           </p>
@@ -62,7 +63,7 @@ export const pageQuery = graphql`
       ...ComponentPage_metadata
     }
     transition: componentMetadata(displayName: { eq: "Transition" }) {
-       ...ComponentPage_metadata
+      ...ComponentPage_metadata
     }
     transitionGroup: componentMetadata(displayName: { eq: "TransitionGroup" }) {
       ...ComponentPage_metadata
