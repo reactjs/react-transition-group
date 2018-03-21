@@ -111,7 +111,7 @@ const propTypes = {
  *
  * ## Example
  *
- * <iframe src="https://codesandbox.io/embed/kw8z6pp9zo?autoresize=1&fontsize=12&hidenavigation=1&moduleview=1" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+ * <iframe src="https://codesandbox.io/embed/m77l2vp00x?fontsize=14" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
  */
 class CSSTransition extends React.Component {
   onEnter = (node, appearing) => {
