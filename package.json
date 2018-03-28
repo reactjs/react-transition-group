@@ -7,12 +7,17 @@
     "test": "npm run lint && npm run testonly",
     "testonly": "jest --verbose",
     "tdd": "jest --watch",
-    "build": "rimraf lib && babel src --out-dir lib && npm run build:dist && cp README.md LICENSE ./lib",
-    "build:dist": "rimraf lib/dist && webpack && NODE_ENV=production webpack -p",
+    "build":
+      "rimraf lib && babel src --out-dir lib && npm run build:dist && cp README.md LICENSE ./lib",
+    "build:docs": "npm -C www run build",
+    "build:dist":
+      "rimraf lib/dist && webpack && NODE_ENV=production webpack -p",
+    "bootstrap": "yarn && yarn --cwd www",
     "lint": "eslint src test",
     "release": "release",
     "release:next": "release --preid beta --tag next",
     "deploy-docs": "npm -C www run deploy",
+    "start": "npm -C www run develop",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
@@ -37,12 +42,8 @@
   "homepage": "https://github.com/reactjs/react-transition-group#readme",
   "jest": {
     "testRegex": "-test\\.js",
-    "setupFiles": [
-      "./test/setup.js"
-    ],
-    "roots": [
-      "<rootDir>/test"
-    ]
+    "setupFiles": ["./test/setup.js"],
+    "roots": ["<rootDir>/test"]
   },
   "peerDependencies": {
     "react": ">=15.0.0",
@@ -94,8 +95,6 @@
     "altPkgRootFolder": "lib"
   },
   "browserify": {
-    "transform": [
-      "loose-envify"
-    ]
+    "transform": ["loose-envify"]
   }
 }
