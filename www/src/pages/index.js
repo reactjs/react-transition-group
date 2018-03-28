@@ -1,52 +1,64 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-
-import ComponentPage from '../components/ComponentPage';
-
-import '../css/bootstrap.scss';
-import '../css/prism-theme.scss';
+import Link from 'gatsby-link';
 
 const propTypes = {
-  data: PropTypes.object.isRequired,
+  data: PropTypes.shape({
+    site: PropTypes.shape({
+      siteMetadata: PropTypes.shape({
+        componentPages: PropTypes.arrayOf(
+          PropTypes.shape({
+            path: PropTypes.string.isRequired,
+            displayName: PropTypes.string.isRequired,
+          })
+        ).isRequired,
+      }).isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 class Index extends React.Component {
   render() {
-    const { data: { transition, cssTransition, transitionGroup } } = this.props;
+    const { data } = this.props;
 
     return (
-      <div className='container' style={{ marginTop: '2rem' }}>
+      <div>
         <h1>React Transition Group</h1>
         <section>
           <h2>Getting Started</h2>
-          <p>
-
-          </p>
-          <h3 className='h4'>Installation</h3>
-<pre>
-<code>{`
-# npm
+          <p />
+          <h3 className="h4">Installation</h3>
+          <pre className="language-bash">
+            <code>
+              {`# npm
 npm install react-transition-group --save
 
 # yarn
-yarn add react-transition-group
-`}
-</code>
-</pre>
+yarn add react-transition-group`}
+            </code>
+          </pre>
 
-          <h3 className='h4'>CDN / External</h3>
+          <h3 className="h4">CDN / External</h3>
           <p>
-            Since react-transition-group is fairly small, the overhead of including the library in your application is
-            negligible. However, in situations where it may be useful to benefit from an external CDN when bundling, link
-            to the following CDN: <a href="https://unpkg.com/react-transition-group/dist/react-transition-group.min.js">
+            Since react-transition-group is fairly small, the overhead of
+            including the library in your application is negligible. However, in
+            situations where it may be useful to benefit from an external CDN
+            when bundling, link to the following CDN:{' '}
+            <a href="https://unpkg.com/react-transition-group/dist/react-transition-group.min.js">
               https://unpkg.com/react-transition-group/dist/react-transition-group.min.js
             </a>
           </p>
         </section>
         <h2>Components</h2>
-        <ComponentPage metadata={transition} />
-        <ComponentPage metadata={transitionGroup} />
-        <ComponentPage metadata={cssTransition} />
+        <ul>
+          {data.site.siteMetadata.componentPages.map(
+            ({ path, displayName }) => (
+              <li key={path}>
+                <Link to={path}>{displayName}</Link>
+              </li>
+            )
+          )}
+        </ul>
       </div>
     );
   }
@@ -57,15 +69,7 @@ Index.propTypes = propTypes;
 export default Index;
 
 export const pageQuery = graphql`
-  query Components {
-    cssTransition: componentMetadata(displayName: { eq: "CSSTransition" }) {
-      ...ComponentPage_metadata
-    }
-    transition: componentMetadata(displayName: { eq: "Transition" }) {
-       ...ComponentPage_metadata
-    }
-    transitionGroup: componentMetadata(displayName: { eq: "TransitionGroup" }) {
-      ...ComponentPage_metadata
-    }
+  query Home {
+    ...ComponentPages
   }
 `;

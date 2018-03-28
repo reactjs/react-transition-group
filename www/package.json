@@ -12,7 +12,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "bootstrap": "^4.0.0-alpha.6",
+    "bootstrap": "^3.3.7",
     "gatsby": "^1.0.0",
     "gatsby-link": "^1.0.0",
     "gatsby-plugin-sass": "^1.0.0",
@@ -20,7 +20,8 @@
     "gatsby-source-filesystem": "^1.0.0",
     "gatsby-transformer-react-docgen": "^1.0.0",
     "gatsby-transformer-remark": "^1.0.0",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "react-bootstrap": "^0.32.1"
   },
   "devDependencies": {
     "gh-pages": "^1.0.0"

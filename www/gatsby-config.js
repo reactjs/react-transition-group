@@ -5,6 +5,11 @@ module.exports = {
   siteMetadata: {
     title: 'React Transition Group Documentation',
     author: 'Jason Quense',
+    componentPages: [
+      { path: '/transition', displayName: 'Transition' },
+      { path: '/css-transition', displayName: 'CSSTransition' },
+      { path: '/transition-group', displayName: 'TransitionGroup' },
+    ],
   },
   plugins: [
     {
@@ -24,12 +29,10 @@ module.exports = {
     {
       resolve: 'gatsby-transformer-remark',
       options: {
-        plugins: [
-          'gatsby-remark-prismjs',
-        ],
+        plugins: ['gatsby-remark-prismjs'],
       },
     },
     'gatsby-transformer-react-docgen',
-    'gatsby-plugin-sass'
+    'gatsby-plugin-sass',
   ],
-}
+};

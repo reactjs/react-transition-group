@@ -1,21 +1,41 @@
-
+@import '~bootstrap/dist/css/bootstrap.css';
 @import 'variables.scss';
 
-$body-bg: $syntax-bg;
-$code-bg: $syntax-bg;
-$code-color: $hue-3;
-$headings-margin-bottom: 2rem;
+html {
+  font-size: 16px;
+}
 
-@import '~bootstrap/scss/bootstrap.scss';
+body {
+  background: $syntax-bg;
+  font-size: 1rem;
+}
 
+pre {
+  border: 0;
+  background: transparent;
+}
+
+code {
+  background: transparent;
+  color: $hue-3;
+  a & {
+    padding: 0;
+  }
+}
 
 section {
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 h1, h2, h3, h4, h5 {
+  margin-bottom: 2rem;
+
   & > a,
   & > a:hover {
-    color: $headings-color;
+    color: inherit;
   }
+}
+
+iframe[src*=codesandbox] + p {
+  margin-top: 1rem;
 }
