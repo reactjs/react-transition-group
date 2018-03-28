@@ -1,5 +1,5 @@
 {
-  "name": "react-transition-group",
+  "name": "@qutics/react-transition-group",
   "version": "2.3.0-beta.0",
   "description": "A react component toolset for managing animations",
   "main": "lib/index.js",
