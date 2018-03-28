@@ -1,17 +1,15 @@
 {
   "name": "react-transition-group",
-  "version": "2.3.0-beta.0",
+  "version": "2.3.0",
   "description": "A react component toolset for managing animations",
   "main": "lib/index.js",
   "scripts": {
     "test": "npm run lint && npm run testonly",
     "testonly": "jest --verbose",
     "tdd": "jest --watch",
-    "build":
-      "rimraf lib && babel src --out-dir lib && npm run build:dist && cp README.md LICENSE ./lib",
+    "build": "rimraf lib && babel src --out-dir lib && npm run build:dist && cp README.md LICENSE ./lib",
     "build:docs": "npm -C www run build",
-    "build:dist":
-      "rimraf lib/dist && webpack && NODE_ENV=production webpack -p",
+    "build:dist": "rimraf lib/dist && webpack && NODE_ENV=production webpack -p",
     "bootstrap": "yarn && yarn --cwd www",
     "lint": "eslint src test",
     "release": "release",
@@ -42,8 +40,12 @@
   "homepage": "https://github.com/reactjs/react-transition-group#readme",
   "jest": {
     "testRegex": "-test\\.js",
-    "setupFiles": ["./test/setup.js"],
-    "roots": ["<rootDir>/test"]
+    "setupFiles": [
+      "./test/setup.js"
+    ],
+    "roots": [
+      "<rootDir>/test"
+    ]
   },
   "peerDependencies": {
     "react": ">=15.0.0",
@@ -95,6 +97,8 @@
     "altPkgRootFolder": "lib"
   },
   "browserify": {
-    "transform": ["loose-envify"]
+    "transform": [
+      "loose-envify"
+    ]
   }
 }
