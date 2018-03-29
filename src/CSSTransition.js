@@ -27,10 +27,10 @@ const propTypes = {
    *  appearActive: 'my-active-appear',
    *  enter: 'my-enter',
    *  enterActive: 'my-active-enter',
-   *  enterDone: 'my-done-enter,
+   *  enterDone: 'my-done-enter',
    *  exit: 'my-exit',
    *  exitActive: 'my-active-exit',
-   *  exitDone: 'my-done-exit,
+   *  exitDone: 'my-done-exit',
    * }}
    * ```
    *
