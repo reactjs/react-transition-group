@@ -55,10 +55,10 @@ export const EXITING = 'exiting';
  * component (such as by adding styles or classes) when it changes states.
  *
  * There are 4 main states a Transition can be in:
- *  - `entering`
- *  - `entered`
- *  - `exiting`
- *  - `exited`
+ *  - `'entering'`
+ *  - `'entered'`
+ *  - `'exiting'`
+ *  - `'exited'`
  *
  * Transition state is toggled via the `in` prop. When `true` the component begins the
  * "Enter" stage. During this stage, the component will shift from its current transition state,
@@ -86,6 +86,14 @@ export const EXITING = 'exiting';
  * stay there for 500ms (the value of `timeout`) before it finally switches to `'entered'`.
  *
  * When `in` is `false` the same thing happens except the state moves from `'exiting'` to `'exited'`.
+ *
+ * ## Timing
+ *
+ * Timing is often the trickiest part of animation, mistakes can result in slight delays
+ * that are hard to pin down. A common example is when you want to add an exit transition,
+ * you should set the desired final styles when the state is `'exiting'`. That's when the
+ * transition to those styles will start and, if you matched the `timeout` prop with the
+ * CSS Transition duration, it will end exactly when the state changes to `'exited'`.
  *
  * > **Note**: For simpler transitions the `Transition` component might be enough, but
  * > take into account that it's platform-agnostic, while the `CSSTransition` component
