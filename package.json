@@ -7,6 +7,7 @@
     "test": "npm run lint && npm run testonly",
     "testonly": "jest --verbose",
     "tdd": "jest --watch",
+    "commitmsg": "commitlint -e $GIT_PARAMS",
     "build": "rimraf lib && babel src --out-dir lib && npm run build:dist && cp README.md LICENSE ./lib",
     "build:docs": "npm -C www run build",
     "build:dist": "rimraf lib/dist && webpack && NODE_ENV=production webpack -p",
@@ -17,11 +18,13 @@
     "deploy-docs": "npm -C www run deploy",
     "start": "npm -C www run develop",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "travis-deploy-once": "travis-deploy-once",
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactjs/react-transition-group.git"
+    "url": "https://github.com/reactjs/react-transition-group.git"
   },
   "keywords": [
     "react",
@@ -52,11 +55,20 @@
     "react-dom": ">=15.0.0"
   },
   "dependencies": {
+    "@semantic-release/github": "^4.2.8",
     "dom-helpers": "^3.2.0",
     "loose-envify": "^1.3.1",
     "prop-types": "^15.5.8"
   },
   "devDependencies": {
+    "@commitlint/cli": "^6.1.3",
+    "@commitlint/config-angular": "^6.1.3",
+    "@commitlint/prompt": "^6.1.3",
+    "@commitlint/prompt-cli": "^6.1.3",
+    "@commitlint/travis-cli": "^6.1.3",
+    "@semantic-release/changelog": "^2.0.1",
+    "@semantic-release/git": "^4.0.1",
+    "@semantic-release/npm": "^3.2.4",
     "@storybook/addon-actions": "^3.2.11",
     "@storybook/react": "^3.2.11",
     "babel-cli": "^6.24.0",
@@ -87,12 +99,27 @@
     "react-test-renderer": "^16.0.0",
     "release-script": "^1.0.2",
     "rimraf": "^2.6.1",
+    "semantic-release": "^15.1.4",
+    "semantic-release-alt-publish-dir": "^2.1.0",
     "sinon": "^2.1.0",
+    "travis-deploy-once": "^4.4.1",
     "webpack": "^3.6.0",
     "webpack-atoms": "^3.0.2"
   },
-  "release-script": {
-    "altPkgRootFolder": "lib"
+  "release": {
+    "pkgRoot": "lib",
+    "verifyConditions": [
+      "@semantic-release/changelog",
+      "semantic-release-alt-publish-dir",
+      "@semantic-release/git",
+      "@semantic-release/github"
+    ],
+    "prepare": [
+      "@semantic-release/changelog",
+      "semantic-release-alt-publish-dir",
+      "@semantic-release/npm",
+      "@semantic-release/git"
+    ]
   },
   "browserify": {
     "transform": [

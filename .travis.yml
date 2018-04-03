@@ -1,14 +1,14 @@
 sudo: false
-
 language: node_js
 node_js:
   - stable
+cache: yarn
+script:
+  - commitlint-travis
+  - yarn test
 
-cache:
-  yarn: true
-  directories:
-    - node_modules
-
+after_success:
+  - npm run semantic-release
 branches:
   only:
     - master
