@@ -66,7 +66,7 @@ export const EXITING = 'exiting';
  * it's complete. Let's take the following example:
  *
  * ```jsx
- * state= { in: false };
+ * state = { in: false };
  *
  * toggleEnterState = () => {
  *   this.setState({ in: true });
