@@ -24,6 +24,17 @@ class Index extends React.Component {
     return (
       <div>
         <h1>React Transition Group</h1>
+        <blockquote>
+          <p>
+            Exposes simple components useful for defining entering and exiting
+            transitions. React Transition Group is not an animation library like{' '}
+            <a href="https://github.com/chenglou/react-motion">React-Motion</a>,
+            it does not animate styles by itself. Instead it exposes transition
+            stages, manages classes and group elements and manipulates the DOM
+            in useful ways, making the implementation of actual visual
+            transitions much easier.
+          </p>
+        </blockquote>
         <section>
           <h2>Getting Started</h2>
           <p />
