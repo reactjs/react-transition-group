@@ -5,6 +5,8 @@ node_js:
 cache: yarn
 script:
   - commitlint-travis
+  - yarn test
+
 after_success:
   - npm run semantic-release
 branches:
