@@ -1,3 +1,11 @@
+<a name="2.3.1"></a>
+## [2.3.1](https://github.com/reactjs/react-transition-group/compare/v2.3.0...v2.3.1) (2018-04-14)
+
+
+### Bug Fixes
+
+* **deps:** Move loose-envify and semantic-release to devDependencies ([#319](https://github.com/reactjs/react-transition-group/issues/319)) ([b4ec774](https://github.com/reactjs/react-transition-group/commit/b4ec774))
+
 ## [v2.3.0]
 
 > 2018-03-28
