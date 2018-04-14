@@ -8,6 +8,7 @@ script:
   - yarn test
 
 after_success:
+  - npm run build
   - npm run semantic-release
 branches:
   only:
