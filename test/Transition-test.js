@@ -104,6 +104,51 @@ describe('Transition', () => {
       inst.setProps({ 'in': true });
   })
 
+  it('should pass in a callback to onEntering to switch state to "entered"', done => {
+    let cachedStatus
+    const inst = mount(
+        <Transition
+          onEntering={(node, appearing, setEntered) => {
+            expect(cachedStatus).toEqual('entering')
+            setEntered()
+            setTimeout(()=>{
+              expect(cachedStatus).toEqual('entered')
+              done()
+            }, 0)
+          }}
+        >
+           {(status) => {
+             cachedStatus = status
+             return null
+           }}
+        </Transition>
+      )
+      inst.setProps({ 'in': true });
+  })
+
+  it('should pass in a callback to onExiting to switch state to "exited"', done => {
+    let cachedStatus
+    const inst = mount(
+        <Transition
+          onExiting={(node, setExited) => {
+            expect(cachedStatus).toEqual('exiting')
+            setExited()
+            setTimeout(()=>{
+              expect(cachedStatus).toEqual('exited')
+              done()
+            }, 0)
+          }}
+        >
+           {(status) => {
+             cachedStatus = status
+             return null
+           }}
+        </Transition>
+      )
+      inst.setProps({ 'in': true });
+      inst.setProps({ 'in': false });
+  })
+
   it('should fallback to timeous with addEndListener ', done => {
     let calledEnd = false
     let listener = (node, end) => setTimeout(() => {

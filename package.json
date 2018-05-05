@@ -71,6 +71,7 @@
     "@semantic-release/npm": "^3.2.4",
     "@storybook/addon-actions": "^3.2.11",
     "@storybook/react": "^3.2.11",
+    "animejs": "^2.2.0",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.24.0",
     "babel-eslint": "^7.1.1",
