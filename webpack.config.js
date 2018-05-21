@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
   entry: './src/index.js',
   output: {
-    filename: process.env.NODE_ENV === 'production' 
+    filename: process.env.NODE_ENV === 'production'
       ? 'react-transition-group.min.js'
       : 'react-transition-group.js',
     path: path.join(__dirname, 'lib/dist'),
