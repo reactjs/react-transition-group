@@ -34,6 +34,19 @@ const propTypes = {
    * }}
    * ```
    *
+   * If you want to set these classes using CSS Modules:
+   *
+   * ```js
+   * import styles from './styles.css';
+   * ```
+   *
+   * you might want to use camelCase in your CSS file, that way could simply spread
+   * them instead of listing them one by one:
+   *
+   * ```js
+   * classNames={{ ...styles }}
+   * ```
+   *
    * @type {string | {
    *  appear?: string,
    *  appearActive?: string,
