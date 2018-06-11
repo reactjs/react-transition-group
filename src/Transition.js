@@ -2,7 +2,7 @@ import * as PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { timeoutsShape } from './utils/PropTypes';
+import { timeoutsShape, delayShape } from './utils/PropTypes';
 
 export const UNMOUNTED = 'unmounted';
 export const EXITED = 'exited';
@@ -197,6 +197,21 @@ class Transition extends React.Component {
     return { exit, enter, appear }
   }
 
+  // Sets the delay before running either an exit or enter animation.
+  getDelays() {
+    let { delay } = this.props
+    if(!delay) delay = 0
+    let exit, enter
+
+    exit = enter = delay
+
+    if (delay != null && typeof delay !== 'number') {
+      exit = delay.exit
+      enter = delay.enter
+    }
+    return { exit, enter }
+  }
+
   updateStatus(mounting = false) {
     let nextStatus = this.nextStatus;
 
@@ -237,16 +252,17 @@ class Transition extends React.Component {
 
     this.props.onEnter(node, appearing);
 
-    this.safeSetState({ status: ENTERING }, () => {
-      this.props.onEntering(node, appearing);
+    setTimeout(() => {
+      this.safeSetState({ status: ENTERING }, () => {
+        this.props.onEntering(node, appearing);
 
-      // FIXME: appear timeout?
-      this.onTransitionEnd(node, timeouts.enter, () => {
-        this.safeSetState({ status: ENTERED }, () => {
-          this.props.onEntered(node, appearing);
+        this.onTransitionEnd(node, timeouts.enter, () => {
+          this.safeSetState({ status: ENTERED }, () => {
+            this.props.onEntered(node, appearing);
+          });
         });
       });
-    });
+    }, this.getDelays().enter);
   }
 
   performExit(node) {
@@ -260,17 +276,21 @@ class Transition extends React.Component {
       });
       return;
     }
+
     this.props.onExit(node);
 
-    this.safeSetState({ status: EXITING }, () => {
-      this.props.onExiting(node);
+    setTimeout(() => {
 
-      this.onTransitionEnd(node, timeouts.exit, () => {
-        this.safeSetState({ status: EXITED }, () => {
-          this.props.onExited(node);
+      this.safeSetState({ status: EXITING }, () => {
+        this.props.onExiting(node);
+
+        this.onTransitionEnd(node, timeouts.exit, () => {
+          this.safeSetState({ status: EXITED }, () => {
+            this.props.onExited(node);
+          });
         });
       });
-    });
+    }, this.getDelays().exit);
   }
 
   cancelNextCallback() {
@@ -439,6 +459,26 @@ Transition.propTypes = {
   timeout: (props, ...args) => {
     let pt = timeoutsShape
     if (!props.addEndListener) pt = pt.isRequired
+    return pt(props, ...args);
+  },
+
+  /**
+   * The duration of the timeout before an animation starts.
+   *
+   * You may specify a single timeout for all delays like: `delay={500}`,
+   * or individually like:
+   *
+   * ```jsx
+   * delay={{
+   *  enter: 300,
+   *  exit: 500,
+   * }}
+   * ```
+   *
+   * @type {number | { enter?: number, exit?: number }}
+   */
+  delay: (props, ...args) => {
+    let pt = delayShape
     return pt(props, ...args);
   },
 
