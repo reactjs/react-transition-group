@@ -25,16 +25,13 @@ class TransitionGroup extends React.Component {
     super(props, context);
 
     this.childRefs = Object.create(null);
+    this.currentlyTransitioningKeys = {};
+    this.keysToEnter = [];
+    this.keysToLeave = [];
 
     this.state = {
       children: getChildMapping(props.children),
     };
-  }
-
-  componentWillMount() {
-    this.currentlyTransitioningKeys = {};
-    this.keysToEnter = [];
-    this.keysToLeave = [];
   }
 
   componentDidMount() {
@@ -46,16 +43,21 @@ class TransitionGroup extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    let nextChildMapping = getChildMapping(nextProps.children);
-    let prevChildMapping = this.state.children;
+  static getDerivedStateFromProps(props, state) {
+    let nextChildMapping = getChildMapping(props.children);
+    let prevChildMapping = state.children;
 
-    this.setState({
+    return {
       children: mergeChildMappings(
         prevChildMapping,
         nextChildMapping,
       ),
-    });
+    };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    let nextChildMapping = getChildMapping(this.props.children);
+    let prevChildMapping = prevState.children;
 
     for (let key in nextChildMapping) {
       let hasPrev = prevChildMapping && prevChildMapping.hasOwnProperty(key);
@@ -73,10 +75,6 @@ class TransitionGroup extends React.Component {
       }
     }
 
-    // If we want to someday check for reordering, we could do it here.
-  }
-
-  componentDidUpdate() {
     let keysToEnter = this.keysToEnter;
     this.keysToEnter = [];
     keysToEnter.forEach(key => this.performEnter(key, this.childRefs[key]));
