@@ -76,6 +76,8 @@ class TransitionGroup extends React.Component {
       }
     }
 
+    // If we want to someday check for reordering, we could do it here.
+
     let keysToEnter = this.keysToEnter;
     this.keysToEnter = [];
     keysToEnter.forEach(key => this.performEnter(key, this.childRefs[key]));
