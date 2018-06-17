@@ -5,8 +5,12 @@ node_js:
   - stable
 
 cache:
+  yarn: true
   directories:
     - node_modules
+
+script:
+  - yarn test
 
 branches:
   only:
