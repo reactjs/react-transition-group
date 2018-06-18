@@ -2,6 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import { Fade, Collapse } from './transitions/Bootstrap'
+import JavascriptTransition from './transitions/JavaScriptTransition';
 import StoryFixture from './StoryFixture';
 
 
@@ -45,4 +46,10 @@ storiesOf('Transition', module)
         </div>
       </Collapse>
     </ToggleFixture>
+  ))
+  .add('Javascript Transition', () => (
+    <ToggleFixture>
+      <JavascriptTransition />
+    </ToggleFixture>
   ));
+

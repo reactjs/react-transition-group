@@ -226,6 +226,12 @@ class Transition extends React.Component {
 
     const timeouts = this.getTimeouts();
 
+    const setEntered = () => {
+      this.safeSetState({ status: ENTERED }, () => {
+        this.props.onEntered(node, appearing)
+      })
+    }
+
     // no enter animation skip right to ENTERED
     // if we are mounting and running this it means appear _must_ be set
     if (!mounting && !enter) {
@@ -238,14 +244,10 @@ class Transition extends React.Component {
     this.props.onEnter(node, appearing);
 
     this.safeSetState({ status: ENTERING }, () => {
-      this.props.onEntering(node, appearing);
+      this.props.onEntering(node, appearing, setEntered);
 
       // FIXME: appear timeout?
-      this.onTransitionEnd(node, timeouts.enter, () => {
-        this.safeSetState({ status: ENTERED }, () => {
-          this.props.onEntered(node, appearing);
-        });
-      });
+      this.onTransitionEnd(node, timeouts.enter, setEntered);
     });
   }
 
@@ -253,23 +255,23 @@ class Transition extends React.Component {
     const { exit } = this.props;
     const timeouts = this.getTimeouts();
 
+    const setExited = () => {
+      this.safeSetState({ status: EXITED }, () => {
+      this.props.onExited(node)
+      })
+    }
+
     // no exit animation skip right to EXITED
     if (!exit) {
-      this.safeSetState({ status: EXITED }, () => {
-        this.props.onExited(node);
-      });
+      setExited()
       return;
     }
     this.props.onExit(node);
 
     this.safeSetState({ status: EXITING }, () => {
-      this.props.onExiting(node);
+      this.props.onExiting(node, setExited);
 
-      this.onTransitionEnd(node, timeouts.exit, () => {
-        this.safeSetState({ status: EXITED }, () => {
-          this.props.onExited(node);
-        });
-      });
+      this.onTransitionEnd(node, timeouts.exit, setExited);
     });
   }
 
@@ -437,9 +439,7 @@ Transition.propTypes = {
    * @type {number | { enter?: number, exit?: number }}
    */
   timeout: (props, ...args) => {
-    let pt = timeoutsShape
-    if (!props.addEndListener) pt = pt.isRequired
-    return pt(props, ...args);
+    return timeoutsShape(props, ...args);
   },
 
   /**
