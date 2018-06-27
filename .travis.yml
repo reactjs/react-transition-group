@@ -4,7 +4,6 @@ node_js:
   - stable
 cache: yarn
 script:
-  - commitlint-travis
   - yarn test
 
 after_success:
