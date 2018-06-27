@@ -1,3 +1,15 @@
+# [2.4.0](https://github.com/reactjs/react-transition-group/compare/v2.3.1...v2.4.0) (2018-06-27)
+
+
+### Features
+
+* remove deprecated lifecycle hooks and polyfill for older react versions ([c1ab1cf](https://github.com/reactjs/react-transition-group/commit/c1ab1cf))
+
+
+### Performance Improvements
+
+* don't reflow when there's no class to add ([d7b898d](https://github.com/reactjs/react-transition-group/commit/d7b898d))
+
 <a name="2.3.1"></a>
 ## [2.3.1](https://github.com/reactjs/react-transition-group/compare/v2.3.0...v2.3.1) (2018-04-14)
 
