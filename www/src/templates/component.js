@@ -1,8 +1,9 @@
+import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
 import transform from 'lodash/transform';
 
-import Layout from '../Components/Layout';
+import Layout from '../components/Layout';
 
 function displayObj(obj) {
   return JSON.stringify(obj, null, 2).replace(/"|'/g, '');
@@ -20,6 +21,7 @@ const extractMarkdown = ({ description }) =>
   description.childMarkdownRemark.html;
 
 const propTypes = {
+  location: PropTypes.object.isRequired,
   data: PropTypes.shape({
     metadata: PropTypes.shape({
       displayName: PropTypes.string,
@@ -213,7 +215,9 @@ function simpleType(prop) {
 
 export const query = graphql`
   query ComponentMetadata($displayName: String!) {
-    ...Layout_site
+    site {
+      ...Layout_site
+    }
     metadata: componentMetadata(displayName: { eq: $displayName }) {
       displayName
       composes
@@ -239,9 +243,7 @@ export const query = graphql`
             html
           }
         }
-        doclets {
-          type
-        }
+        doclets
       }
     }
   }

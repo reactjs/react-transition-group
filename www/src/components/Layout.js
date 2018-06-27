@@ -1,6 +1,6 @@
+import { graphql, Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Link from 'gatsby-link';
 
 import { Grid, Navbar, Nav } from 'react-bootstrap';
 
@@ -77,13 +77,11 @@ Layout.propTypes = propTypes;
 export default Layout;
 
 export const exposedComponentsFragment = graphql`
-  fragment Layout_site on RootQueryType {
-    site {
-      siteMetadata {
-        componentPages {
-          path
-          displayName
-        }
+  fragment Layout_site on Site {
+    siteMetadata {
+      componentPages {
+        path
+        displayName
       }
     }
   }
