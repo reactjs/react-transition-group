@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import lifecyclesCompat from 'react-lifecycles-compat'
+import { polyfill } from 'react-lifecycles-compat'
 
 import { timeoutsShape } from './utils/PropTypes'
 
@@ -540,4 +540,4 @@ Transition.ENTERING = 2
 Transition.ENTERED = 3
 Transition.EXITING = 4
 
-export default lifecyclesCompat(Transition)
+export default polyfill(Transition)

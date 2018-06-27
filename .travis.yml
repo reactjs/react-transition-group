@@ -4,7 +4,6 @@ node_js:
   - stable
 cache: yarn
 script:
-  - if [ "${TRAVIS_PULL_REQUEST}" = "true" ]; then commitlint-travis; fi
   - yarn test
 
 after_success:
