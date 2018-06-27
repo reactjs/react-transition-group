@@ -1,7 +1,7 @@
 const path = require('path');
 const config = require('./gatsby-config');
 
-exports.createPages = ({ boundActionCreators, graphql }) => {
+exports.onCreatePages = ({ boundActionCreators, graphql }) => {
   const { createPage } = boundActionCreators;
   const componentTemplate = path.join(
     __dirname,

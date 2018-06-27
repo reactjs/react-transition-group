@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Link from 'gatsby-link';
+
 import { Grid, Navbar, Nav } from 'react-bootstrap';
 
 import '../css/bootstrap.scss';
@@ -35,7 +36,7 @@ NavItem.propTypes = {
   to: PropTypes.string.isRequired,
 };
 
-class BaseLayout extends React.Component {
+class Layout extends React.Component {
   render() {
     const { data, location, children } = this.props;
     return (
@@ -64,19 +65,19 @@ class BaseLayout extends React.Component {
           </Navbar.Collapse>
         </Navbar>
         <Grid style={{ paddingTop: '4rem', paddingBottom: '1rem' }}>
-          {children()}
+          {children}
         </Grid>
       </div>
     );
   }
 }
 
-BaseLayout.propTypes = propTypes;
+Layout.propTypes = propTypes;
 
-export default BaseLayout;
+export default Layout;
 
 export const exposedComponentsFragment = graphql`
-  fragment ComponentPages on RootQueryType {
+  fragment Layout_site on RootQueryType {
     site {
       siteMetadata {
         componentPages {
@@ -85,11 +86,5 @@ export const exposedComponentsFragment = graphql`
         }
       }
     }
-  }
-`;
-
-export const query = graphql`
-  query BaseLayout {
-    ...ComponentPages
   }
 `;

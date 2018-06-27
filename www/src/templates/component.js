@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import transform from 'lodash/transform';
 
+import Layout from '../Components/Layout';
+
 function displayObj(obj) {
   return JSON.stringify(obj, null, 2).replace(/"|'/g, '');
 }
@@ -29,28 +31,30 @@ const propTypes = {
 
 class ComponentTemplate extends React.Component {
   render() {
-    const { data: { metadata } } = this.props;
-
+    const { data, location } = this.props;
+    const { metadata } = data;
     return (
-      <div>
-        <h1 id={metadata.displayName}>{metadata.displayName}</h1>
-        <p dangerouslySetInnerHTML={{ __html: extractMarkdown(metadata) }} />
+      <Layout data={data} location={location}>
+        <div>
+          <h1 id={metadata.displayName}>{metadata.displayName}</h1>
+          <p dangerouslySetInnerHTML={{ __html: extractMarkdown(metadata) }} />
 
-        <h2>
-          <div>Props</div>
-          {metadata.composes && (
-            <small style={{ fontStyle: 'italic', fontSize: '70%' }}>
-              Accepts all props from{' '}
-              {metadata.composes
-                .map(p => `<${p.replace('./', '')}>`)
-                .join(', ')}{' '}
-              unless otherwise noted.
-            </small>
-          )}
-        </h2>
+          <h2>
+            <div>Props</div>
+            {metadata.composes && (
+              <small style={{ fontStyle: 'italic', fontSize: '70%' }}>
+                Accepts all props from{' '}
+                {metadata.composes
+                  .map(p => `<${p.replace('./', '')}>`)
+                  .join(', ')}{' '}
+                unless otherwise noted.
+              </small>
+            )}
+          </h2>
 
-        {metadata.props.map(p => this.renderProp(p, metadata.displayName))}
-      </div>
+          {metadata.props.map(p => this.renderProp(p, metadata.displayName))}
+        </div>
+      </Layout>
     );
   }
 
@@ -209,6 +213,7 @@ function simpleType(prop) {
 
 export const query = graphql`
   query ComponentMetadata($displayName: String!) {
+    ...Layout_site
     metadata: componentMetadata(displayName: { eq: $displayName }) {
       displayName
       composes
