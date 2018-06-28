@@ -1,6 +1,4 @@
 
-globals:
-  graphql: false
 extends:
   - prettier
   - prettier/react
