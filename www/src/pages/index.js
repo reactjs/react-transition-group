@@ -1,8 +1,11 @@
+import { graphql, Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Link from 'gatsby-link';
+
+import Layout from '../components/Layout';
 
 const propTypes = {
+  location: PropTypes.object.isRequired,
   data: PropTypes.shape({
     site: PropTypes.shape({
       siteMetadata: PropTypes.shape({
@@ -19,10 +22,10 @@ const propTypes = {
 
 class Index extends React.Component {
   render() {
-    const { data } = this.props;
+    const { data, location } = this.props;
 
     return (
-      <div>
+      <Layout data={data} location={location}>
         <h1>React Transition Group</h1>
         <blockquote>
           <p>
@@ -70,7 +73,7 @@ yarn add react-transition-group`}
             )
           )}
         </ul>
-      </div>
+      </Layout>
     );
   }
 }
@@ -80,7 +83,9 @@ Index.propTypes = propTypes;
 export default Index;
 
 export const pageQuery = graphql`
-  query Home {
-    ...ComponentPages
+  query HomeQuery {
+    site {
+      ...Layout_site
+    }
   }
 `;
