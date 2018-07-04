@@ -71,7 +71,39 @@ const defaultProps = {
  * state machine for managing the mounting and unmounting of components over
  * time.
  *
- * Consider the example below using the `Fade` CSS transition from before.
+ * `<TransitionGroup>` clones its children with injected callbacks for the
+ * `<Transition>` component, so you should make sure to pass extra props through
+ * if your children are components that render a `<Transition>`.  For example:
+ *
+ * ```jsx
+ * const duration = 300;
+ *
+ * const defaultStyle = {
+ *   transition: `opacity ${duration}ms ease-in-out`,
+ * }
+ *
+ * const transitionStyles = {
+ *   entering: { opacity: 0 },
+ *   entered:  { opacity: 1 },
+ *   exiting: { opacity: 0 },
+ *   exited:  { opacity: 0 },
+ * };
+ *
+ * const Fade = ({ children, ...props }) => (
+ *   <Transition timeout={duration} {...props}>
+ *     {(state) => (
+ *       <div style={{
+ *         ...defaultStyle,
+ *         ...transitionStyles[state]
+ *       }}>
+ *         {children}
+ *       </div>
+ *     )}
+ *   </Transition>
+ * );
+ * ```
+ *
+ * Consider the example below using this `Fade` component.
  * As items are removed or added to the TodoList the `in` prop is toggled
  * automatically by the `<TransitionGroup>`. You can use _any_ `<Transition>`
  * component in a `<TransitionGroup>`, not just css.
