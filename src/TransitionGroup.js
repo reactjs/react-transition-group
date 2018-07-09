@@ -16,8 +16,8 @@ const propTypes = {
    * `<TransitionGroup>` renders a `<div>` by default. You can change this
    * behavior by providing a `component` prop.
    * If you use React v16+ and would like to avoid a wrapping `<div>` element
-   * you can pass in `component={null}`. This is useful if the wrapping div
-   * borks your css styles.
+   * you can invoke a function and return `null` to `component`. This is useful 
+   * if the wrapping div borks your css styles.
    */
   component: PropTypes.any,
   /**
