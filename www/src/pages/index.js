@@ -44,11 +44,13 @@ class Index extends React.Component {
           <h3 className="h4">Installation</h3>
           <pre className="language-bash">
             <code>
-              {`# npm
+              {`
+# npm
 npm install react-transition-group --save
 
 # yarn
-yarn add react-transition-group`}
+yarn add react-transition-group
+            `.trim()}
             </code>
           </pre>
 
