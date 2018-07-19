@@ -121,10 +121,6 @@ const propTypes = {
  * When the `in` prop is toggled to `true` the Component will get
  * the `example-enter` CSS class and the `example-enter-active` CSS class
  * added in the next tick. This is a convention based on the `classNames` prop.
- *
- * ## Example
- *
- * <iframe src="https://codesandbox.io/embed/m77l2vp00x?fontsize=14" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
  */
 class CSSTransition extends React.Component {
   onEnter = (node, appearing) => {

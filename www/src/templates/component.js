@@ -4,6 +4,7 @@ import React from 'react';
 import transform from 'lodash/transform';
 
 import Layout from '../components/Layout';
+import Example from '../components/Example';
 
 function displayObj(obj) {
   return JSON.stringify(obj, null, 2).replace(/"|'/g, '');
@@ -21,6 +22,16 @@ const extractMarkdown = ({ description }) =>
   description.childMarkdownRemark.html;
 
 const propTypes = {
+  site: PropTypes.shape({
+    siteMetadata: PropTypes.shape({
+      componentPages: PropTypes.arrayOf(
+        PropTypes.shape({
+          displayName: PropTypes.string.isRequired,
+          codeSandboxId: PropTypes.string.isRequired,
+        })
+      ).isRequired,
+    }).isRequired,
+  }).isRequired,
   location: PropTypes.object.isRequired,
   data: PropTypes.shape({
     metadata: PropTypes.shape({
@@ -35,11 +46,21 @@ class ComponentTemplate extends React.Component {
   render() {
     const { data, location } = this.props;
     const { metadata } = data;
+    const { componentPages } = data.site.siteMetadata;
     return (
       <Layout data={data} location={location}>
         <div>
           <h1 id={metadata.displayName}>{metadata.displayName}</h1>
           <p dangerouslySetInnerHTML={{ __html: extractMarkdown(metadata) }} />
+
+          <Example
+            codeSandbox={{
+              title: `${metadata.displayName} Component`,
+              id: componentPages.find(
+                page => page.displayName === metadata.displayName
+              ).codeSandboxId,
+            }}
+          />
 
           <h2>
             <div>Props</div>

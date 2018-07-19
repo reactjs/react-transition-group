@@ -82,6 +82,7 @@ export const exposedComponentsFragment = graphql`
       componentPages {
         path
         displayName
+        codeSandboxId
       }
     }
   }

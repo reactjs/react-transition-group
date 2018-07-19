@@ -74,10 +74,6 @@ const defaultProps = {
  * Consider the example below. As items are removed or added to the TodoList the
  * `in` prop is toggled automatically by the `<TransitionGroup>`.
  *
- * ## Example
- *
- * <iframe src="https://codesandbox.io/embed/00rqyo26kn?fontsize=14" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
- *
  * Note that `<TransitionGroup>`  does not define any animation behavior!
  * Exactly _how_ a list item animates is up to the individual transition
  * component. This means you can mix and match animations across different list
