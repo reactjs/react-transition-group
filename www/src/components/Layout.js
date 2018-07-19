@@ -69,7 +69,7 @@ class Layout extends React.Component {
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
-            <Nav pullRight>
+            <Nav pullLeft>
               {data.site.siteMetadata.componentPages.map(
                 ({ path, displayName }) => (
                   <NavItem key={path} to={path} location={location}>
@@ -78,9 +78,14 @@ class Layout extends React.Component {
                 )
               )}
             </Nav>
+            <Nav pullRight>
+              <NavItem to="/with-react-router" location={location}>
+                With React Router
+              </NavItem>
+            </Nav>
           </Navbar.Collapse>
         </Navbar>
-        <div style={{ paddingTop: '4rem', paddingBottom: '1rem' }}>
+        <div style={{ paddingTop: '4rem', paddingBottom: '1.5rem' }}>
           {children}
         </div>
       </div>
