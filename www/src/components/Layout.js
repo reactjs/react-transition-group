@@ -20,7 +20,9 @@ const propTypes = {
       }).isRequired,
     }).isRequired,
   }).isRequired,
-  location: PropTypes.object.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 const NavItem = ({ active, to, children }) => (

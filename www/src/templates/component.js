@@ -33,7 +33,9 @@ const propTypes = {
       ).isRequired,
     }).isRequired,
   }).isRequired,
-  location: PropTypes.object.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
   data: PropTypes.shape({
     metadata: PropTypes.shape({
       displayName: PropTypes.string,
