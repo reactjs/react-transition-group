@@ -1,4 +1,4 @@
-import { graphql, Link } from 'gatsby';
+import { graphql, Link, withPrefix } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -25,22 +25,40 @@ const propTypes = {
   }).isRequired,
 };
 
-const NavItem = ({ active, to, children }) => (
-  <li role="presentation" className={active ? 'active' : null}>
-    <Link aria-selected={active} to={to}>
+const NavItem = ({ to, location, children }) => (
+  <li role="presentation">
+    <Link
+      to={to}
+      location={location}
+      activeStyle={{
+        color: '#fff',
+        backgroundColor: '#080808',
+      }}
+    >
       {children}
     </Link>
   </li>
 );
 
 NavItem.propTypes = {
-  active: PropTypes.bool,
   to: PropTypes.string.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 class Layout extends React.Component {
+  isActive(path, location) {
+    return withPrefix(path) === withPrefix(location.pathname);
+  }
+
   render() {
-    const { data, location, children } = this.props;
+    const { data, children } = this.props;
+    const location = {
+      ...this.props.location,
+      pathname: withPrefix(this.props.location.pathname),
+    };
     return (
       <div>
         <Navbar fixedTop inverse collapseOnSelect>
@@ -54,11 +72,7 @@ class Layout extends React.Component {
             <Nav pullRight>
               {data.site.siteMetadata.componentPages.map(
                 ({ path, displayName }) => (
-                  <NavItem
-                    key={path}
-                    active={path === location.pathname}
-                    to={path}
-                  >
+                  <NavItem key={path} to={path} location={location}>
                     {displayName}
                   </NavItem>
                 )
