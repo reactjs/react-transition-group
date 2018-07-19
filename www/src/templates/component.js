@@ -1,6 +1,7 @@
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Grid } from 'react-bootstrap';
 import transform from 'lodash/transform';
 
 import Layout from '../components/Layout';
@@ -50,8 +51,12 @@ class ComponentTemplate extends React.Component {
     return (
       <Layout data={data} location={location}>
         <div>
-          <h1 id={metadata.displayName}>{metadata.displayName}</h1>
-          <p dangerouslySetInnerHTML={{ __html: extractMarkdown(metadata) }} />
+          <Grid>
+            <h1 id={metadata.displayName}>{metadata.displayName}</h1>
+            <p
+              dangerouslySetInnerHTML={{ __html: extractMarkdown(metadata) }}
+            />
+          </Grid>
 
           <Example
             codeSandbox={{
@@ -62,20 +67,21 @@ class ComponentTemplate extends React.Component {
             }}
           />
 
-          <h2>
-            <div>Props</div>
-            {metadata.composes && (
-              <small style={{ fontStyle: 'italic', fontSize: '70%' }}>
-                Accepts all props from{' '}
-                {metadata.composes
-                  .map(p => `<${p.replace('./', '')}>`)
-                  .join(', ')}{' '}
-                unless otherwise noted.
-              </small>
-            )}
-          </h2>
-
-          {metadata.props.map(p => this.renderProp(p, metadata.displayName))}
+          <Grid>
+            <h2>
+              <div>Props</div>
+              {metadata.composes && (
+                <small style={{ fontStyle: 'italic', fontSize: '70%' }}>
+                  Accepts all props from{' '}
+                  {metadata.composes
+                    .map(p => `<${p.replace('./', '')}>`)
+                    .join(', ')}{' '}
+                  unless otherwise noted.
+                </small>
+              )}
+            </h2>
+            {metadata.props.map(p => this.renderProp(p, metadata.displayName))}
+          </Grid>
         </div>
       </Layout>
     );

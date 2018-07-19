@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Grid } from 'react-bootstrap';
 
 const propTypes = {
   codeSandbox: PropTypes.shape({
@@ -10,7 +11,9 @@ const propTypes = {
 
 const Example = ({ codeSandbox }) => (
   <div>
-    <h2>Example</h2>
+    <Grid>
+      <h2>Example</h2>
+    </Grid>
     <div
       dangerouslySetInnerHTML={{
         __html: `

@@ -2,7 +2,7 @@ import { graphql, Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { Grid, Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav } from 'react-bootstrap';
 
 import '../css/bootstrap.scss';
 import '../css/prism-theme.scss';
@@ -64,9 +64,9 @@ class Layout extends React.Component {
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-        <Grid style={{ paddingTop: '4rem', paddingBottom: '1rem' }}>
+        <div style={{ paddingTop: '4rem', paddingBottom: '1rem' }}>
           {children}
-        </Grid>
+        </div>
       </div>
     );
   }
