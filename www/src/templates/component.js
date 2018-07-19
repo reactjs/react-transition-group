@@ -23,20 +23,20 @@ const extractMarkdown = ({ description }) =>
   description.childMarkdownRemark.html;
 
 const propTypes = {
-  site: PropTypes.shape({
-    siteMetadata: PropTypes.shape({
-      componentPages: PropTypes.arrayOf(
-        PropTypes.shape({
-          displayName: PropTypes.string.isRequired,
-          codeSandboxId: PropTypes.string.isRequired,
-        })
-      ).isRequired,
-    }).isRequired,
-  }).isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
   }).isRequired,
   data: PropTypes.shape({
+    site: PropTypes.shape({
+      siteMetadata: PropTypes.shape({
+        componentPages: PropTypes.arrayOf(
+          PropTypes.shape({
+            displayName: PropTypes.string.isRequired,
+            codeSandboxId: PropTypes.string.isRequired,
+          })
+        ).isRequired,
+      }).isRequired,
+    }).isRequired,
     metadata: PropTypes.shape({
       displayName: PropTypes.string,
       composes: PropTypes.arrayOf(PropTypes.string),
