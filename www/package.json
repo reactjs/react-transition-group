@@ -20,7 +20,9 @@
     "gatsby-transformer-react-docgen": "^2.1.1-beta.3",
     "gatsby-transformer-remark": "^1.0.0",
     "lodash": "^4.17.4",
-    "react-bootstrap": "^0.32.1"
+    "react": "^16.4.1",
+    "react-bootstrap": "^0.32.1",
+    "react-dom": "^16.4.1"
   },
   "devDependencies": {
     "gh-pages": "^1.0.0",

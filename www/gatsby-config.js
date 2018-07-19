@@ -6,9 +6,21 @@ module.exports = {
     title: 'React Transition Group Documentation',
     author: 'Jason Quense',
     componentPages: [
-      { path: '/transition', displayName: 'Transition' },
-      { path: '/css-transition', displayName: 'CSSTransition' },
-      { path: '/transition-group', displayName: 'TransitionGroup' },
+      {
+        path: '/transition',
+        displayName: 'Transition',
+        codeSandboxId: '741op4mmj0',
+      },
+      {
+        path: '/css-transition',
+        displayName: 'CSSTransition',
+        codeSandboxId: 'm77l2vp00x',
+      },
+      {
+        path: '/transition-group',
+        displayName: 'TransitionGroup',
+        codeSandboxId: '00rqyo26kn',
+      },
     ],
   },
   plugins: [

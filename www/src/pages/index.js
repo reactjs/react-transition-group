@@ -1,7 +1,7 @@
 import { graphql, Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
-
+import { Grid } from 'react-bootstrap';
 import Layout from '../components/Layout';
 
 const propTypes = {
@@ -26,53 +26,59 @@ class Index extends React.Component {
 
     return (
       <Layout data={data} location={location}>
-        <h1>React Transition Group</h1>
-        <blockquote>
-          <p>
-            Exposes simple components useful for defining entering and exiting
-            transitions. React Transition Group is not an animation library like{' '}
-            <a href="https://github.com/chenglou/react-motion">React-Motion</a>,
-            it does not animate styles by itself. Instead it exposes transition
-            stages, manages classes and group elements and manipulates the DOM
-            in useful ways, making the implementation of actual visual
-            transitions much easier.
-          </p>
-        </blockquote>
-        <section>
-          <h2>Getting Started</h2>
-          <p />
-          <h3 className="h4">Installation</h3>
-          <pre className="language-bash">
-            <code>
-              {`# npm
+        <Grid>
+          <h1>React Transition Group</h1>
+          <blockquote>
+            <p>
+              Exposes simple components useful for defining entering and exiting
+              transitions. React Transition Group is not an animation library
+              like{' '}
+              <a href="https://github.com/chenglou/react-motion">
+                React-Motion
+              </a>, it does not animate styles by itself. Instead it exposes
+              transition stages, manages classes and group elements and
+              manipulates the DOM in useful ways, making the implementation of
+              actual visual transitions much easier.
+            </p>
+          </blockquote>
+          <section>
+            <h2>Getting Started</h2>
+            <p />
+            <h3 className="h4">Installation</h3>
+            <pre className="language-bash">
+              <code>
+                {`
+# npm
 npm install react-transition-group --save
 
 # yarn
-yarn add react-transition-group`}
-            </code>
-          </pre>
+yarn add react-transition-group
+              `.trim()}
+              </code>
+            </pre>
 
-          <h3 className="h4">CDN / External</h3>
-          <p>
-            Since react-transition-group is fairly small, the overhead of
-            including the library in your application is negligible. However, in
-            situations where it may be useful to benefit from an external CDN
-            when bundling, link to the following CDN:{' '}
-            <a href="https://unpkg.com/react-transition-group/dist/react-transition-group.min.js">
-              https://unpkg.com/react-transition-group/dist/react-transition-group.min.js
-            </a>
-          </p>
-        </section>
-        <h2>Components</h2>
-        <ul>
-          {data.site.siteMetadata.componentPages.map(
-            ({ path, displayName }) => (
-              <li key={path}>
-                <Link to={path}>{displayName}</Link>
-              </li>
-            )
-          )}
-        </ul>
+            <h3 className="h4">CDN / External</h3>
+            <p>
+              Since react-transition-group is fairly small, the overhead of
+              including the library in your application is negligible. However,
+              in situations where it may be useful to benefit from an external
+              CDN when bundling, link to the following CDN:{' '}
+              <a href="https://unpkg.com/react-transition-group/dist/react-transition-group.min.js">
+                https://unpkg.com/react-transition-group/dist/react-transition-group.min.js
+              </a>
+            </p>
+          </section>
+          <h2>Components</h2>
+          <ul>
+            {data.site.siteMetadata.componentPages.map(
+              ({ path, displayName }) => (
+                <li key={path}>
+                  <Link to={path}>{displayName}</Link>
+                </li>
+              )
+            )}
+          </ul>
+        </Grid>
       </Layout>
     );
   }
