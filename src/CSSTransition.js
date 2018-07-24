@@ -25,6 +25,7 @@ const propTypes = {
    * classNames={{
    *  appear: 'my-appear',
    *  appearActive: 'my-active-appear',
+   *  appearDone: 'my-done-appear',
    *  enter: 'my-enter',
    *  enterActive: 'my-active-enter',
    *  enterDone: 'my-done-enter',
@@ -50,6 +51,7 @@ const propTypes = {
    * @type {string | {
    *  appear?: string,
    *  appearActive?: string,
+   *  appearDone?: string,
    *  enter?: string,
    *  enterActive?: string,
    *  enterDone?: string,
@@ -147,7 +149,9 @@ class CSSTransition extends React.Component {
   }
 
   onEntered = (node, appearing) => {
-    const { doneClassName } = this.getClassNames('enter');
+    const { doneClassName } = this.getClassNames(
+      appearing ? 'appear' : 'enter'
+    );
 
     this.removeClasses(node, appearing ? 'appear' : 'enter');
     addClass(node, doneClassName);

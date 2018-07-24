@@ -113,6 +113,71 @@ describe('CSSTransition', () => {
     });
   });
 
+  describe('appearing', () => {
+
+    beforeEach(() => {
+    });
+
+    it('should apply classes at each transition state', done => {
+      let count = 0;
+
+      mount(
+        <CSSTransition
+          appear
+          in
+          timeout={10}
+          classNames="test"
+          onEnter={(node) => {
+            count++;
+            expect(node.className).toEqual('test-appear');
+          }}
+          onEntering={(node) => {
+            count++;
+            expect(node.className).toEqual('test-appear test-appear-active');
+          }}
+          onEntered={(node) => {
+            expect(node.className).toEqual('test-appear-done');
+            expect(count).toEqual(2);
+            done();
+          }}
+        >
+          <div/>
+        </CSSTransition>
+      )
+    });
+
+    it('should apply custom classNames names', done => {
+      let count = 0;
+      mount(
+        <CSSTransition
+          appear
+          in
+          timeout={10}
+          classNames={{
+            appear: 'custom',
+            appearActive: 'custom-super-active',
+            appearDone: 'custom-super-done',
+          }}
+          onEnter={(node) => {
+            count++;
+            expect(node.className).toEqual('custom');
+          }}
+          onEntering={(node) => {
+            count++;
+            expect(node.className).toEqual('custom custom-super-active');
+          }}
+          onEntered={(node) => {
+            expect(node.className).toEqual('custom-super-done');
+            expect(count).toEqual(2);
+            done();
+          }}
+        >
+          <div/>
+        </CSSTransition>
+      );
+    });
+  });
+
   describe('exiting', ()=> {
     let instance;
 
