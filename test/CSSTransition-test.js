@@ -127,7 +127,7 @@ describe('CSSTransition', () => {
 
           onEntered={(node, isAppearing) => {
             expect(isAppearing).toEqual(true);
-            expect(node.className).toEqual('appear-test-enter-done');
+            expect(node.className).toEqual('appear-test-appear-done appear-test-enter-done');
             expect(count).toEqual(2);
             done();
           }}
@@ -136,6 +136,35 @@ describe('CSSTransition', () => {
         </CSSTransition>
       );
     });
+
+    it('should lose the "*-appear-done" class after leaving and entering again', (done) => {
+      const wrapper = mount(
+        <CSSTransition
+          timeout={10}
+          classNames="appear-test"
+          in={true}
+          appear={true}
+          onEntered={() => {
+            wrapper.setProps({
+              in: false,
+              onEntered: () => {},
+              onExited: (node) => {
+                expect(node.className).toBe('appear-test-exit-done')
+                wrapper.setProps({
+                  in: true,
+                  onEntered: () => {
+                    expect(node.className).toBe('appear-test-enter-done')
+                    done()
+                  }
+                })
+              }
+            })
+          }}
+        >
+          <div />
+        </CSSTransition>
+      )
+    })
 
     it('should not be appearing in normal enter mode', done => {
       let count = 0;

@@ -98,7 +98,11 @@ class CSSTransition extends React.Component {
   }
 
   onEntered = (node, appearing) => {
-    const { doneClassName } = this.getClassNames('enter');
+    const appearClassName = this.getClassNames('appear').doneClassName;
+    const enterClassName = this.getClassNames('enter').doneClassName;
+    const doneClassName = appearing
+      ? `${appearClassName} ${enterClassName}`
+      : enterClassName;
 
     this.removeClasses(node, appearing ? 'appear' : 'enter');
     addClass(node, doneClassName);
@@ -203,17 +207,29 @@ CSSTransition.propTypes = {
   ...Transition.propTypes,
 
   /**
-   * The animation classNames applied to the component as it enters, exits or has finished the transition.
-   * A single name can be provided and it will be suffixed for each stage: e.g.
+   * The animation classNames applied to the component as it enters, exits or
+   * has finished the transition. A single name can be provided and it will be
+   * suffixed for each stage: e.g.
    *
-   * `classNames="fade"` applies `fade-enter`, `fade-enter-active`, `fade-enter-done`,
-   * `fade-exit`, `fade-exit-active`, `fade-exit-done`, `fade-appear`, and `fade-appear-active`.
+   * `classNames="fade"` applies `fade-enter`, `fade-enter-active`,
+   * `fade-enter-done`, `fade-exit`, `fade-exit-active`, `fade-exit-done`,
+   * `fade-appear`, `fade-appear-active`, and `fade-appear-done`.
+   *
+   * **Note**: `fade-appear-done` and `fade-enter-done` will _both_ be applied.
+   * This allows you to define different behavior for when appearing is done and
+   * when regular entering is done, using selectors like
+   * `.fade-enter-done:not(.fade-appear-done)`. For example, you could apply an
+   * epic entrance animation when element first appears in the DOM using
+   * [Animate.css](https://daneden.github.io/animate.css/). Otherwise you can
+   * simply use `fade-enter-done` for defining both cases.
+   *
    * Each individual classNames can also be specified independently like:
    *
    * ```js
    * classNames={{
    *  appear: 'my-appear',
    *  appearActive: 'my-active-appear',
+   *  appearDone: 'my-done-appear',
    *  enter: 'my-enter',
    *  enterActive: 'my-active-enter',
    *  enterDone: 'my-done-enter',
@@ -229,8 +245,8 @@ CSSTransition.propTypes = {
    * import styles from './styles.css';
    * ```
    *
-   * you might want to use camelCase in your CSS file, that way could simply spread
-   * them instead of listing them one by one:
+   * you might want to use camelCase in your CSS file, that way could simply
+   * spread them instead of listing them one by one:
    *
    * ```js
    * classNames={{ ...styles }}
@@ -239,6 +255,7 @@ CSSTransition.propTypes = {
    * @type {string | {
    *  appear?: string,
    *  appearActive?: string,
+   *  appearDone?: string,
    *  enter?: string,
    *  enterActive?: string,
    *  enterDone?: string,
@@ -272,7 +289,6 @@ CSSTransition.propTypes = {
    * @type Function(node: HtmlElement, isAppearing: bool)
    */
   onEntered: PropTypes.func,
-
 
   /**
    * A `<Transition>` callback fired immediately after the 'exit' class is
