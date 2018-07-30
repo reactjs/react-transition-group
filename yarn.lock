@@ -5513,6 +5513,12 @@ fastdom@^1.0.8:
   dependencies:
     strictdom "^1.0.1"
 
+fastdom@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/fastdom/-/fastdom-1.0.8.tgz#10f9d36998fd6efae30e529597d788e750c9febb"
+  dependencies:
+    strictdom "^1.0.1"
+
 fastparse@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/fastparse/-/fastparse-1.1.1.tgz#d1e2643b38a94d7583b479060e6c4affc94071f8"
@@ -11436,6 +11442,10 @@ strictdom@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/strictdom/-/strictdom-1.0.1.tgz#189de91649f73d44d59b8432efa68ef9d2659460"
   integrity sha1-GJ3pFkn3PUTVm4Qy76aO+dJllGA=
+
+strictdom@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/strictdom/-/strictdom-1.0.1.tgz#189de91649f73d44d59b8432efa68ef9d2659460"
 
 string-length@^2.0.0:
   version "2.0.0"
