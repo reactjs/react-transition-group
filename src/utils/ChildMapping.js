@@ -87,6 +87,8 @@ function getProp(child, prop, props) {
 
 export function getInitialChildMapping(props, onExited) {
   return getChildMapping(props.children, child => {
+    if (typeof child.type === 'string') return cloneElement(child)
+
     return cloneElement(child, {
       onExited: onExited.bind(null, child),
       in: true,

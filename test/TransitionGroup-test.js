@@ -72,6 +72,18 @@ describe('TransitionGroup', () => {
     ReactDOM.render(<TransitionGroup />, container)
   })
 
+  it('should work with html tag as child', () => {
+    console.error = jest.fn()
+    ReactDOM.render(
+      <TransitionGroup>
+        <span>foo</span>
+      </TransitionGroup>,
+      container
+    )
+    expect(console.error).not.toHaveBeenCalled()
+    console.error.mockRestore()
+  })
+
   it('should handle transitioning correctly', () => {
     function Parent({ count = 1 }) {
       let children = []
