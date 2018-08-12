@@ -107,7 +107,7 @@ describe('Transition', () => {
     inst.setProps({ in: true })
   })
 
-  it('should fallback to timeous with addEndListener ', done => {
+  it('should fallback to timeouts with addEndListener', done => {
     let calledEnd = false
     let listener = (node, end) =>
       setTimeout(() => {
