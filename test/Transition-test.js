@@ -90,7 +90,7 @@ describe('Transition', () => {
   })
 
   it('should allow addEndListener instead of timeouts', done => {
-    let listener = sinon.spy((node, end) => setTimeout(end, 0))
+    let listener = sinon.spy((_node, _status, end) => setTimeout(end, 0))
 
     let inst = mount(
       <Transition
@@ -109,7 +109,7 @@ describe('Transition', () => {
 
   it('should fallback to timeouts with addEndListener', done => {
     let calledEnd = false
-    let listener = (node, end) =>
+    let listener = (_node, _status, end) =>
       setTimeout(() => {
         calledEnd = true
         end()
@@ -143,21 +143,21 @@ describe('Transition', () => {
     })
 
     it('should fire callbacks', done => {
-      let onEnter = sinon.spy()
-      let onEntering = sinon.spy()
+      const onEnter = sinon.spy()
+      const onEntering = sinon.spy()
+      const addEndListener = sinon.spy()
 
       expect(wrapper.state('status')).toEqual(EXITED)
 
       wrapper.setProps({
         in: true,
-
         onEnter,
-
         onEntering,
-
+        addEndListener,
         onEntered() {
           expect(onEnter.calledOnce).toEqual(true)
           expect(onEntering.calledOnce).toEqual(true)
+          expect(addEndListener.calledOnce).toEqual(true)
           expect(onEnter.calledBefore(onEntering)).toEqual(true)
           done()
         },
@@ -189,6 +189,24 @@ describe('Transition', () => {
         },
       })
     })
+
+    it('should pass `entering` transition state to addEndListener', done => {
+      function enteringEndListener(_node, status, end) {
+        expect(status).toEqual(ENTERING)
+        end()
+      }
+
+      expect(wrapper.state('status')).toEqual(EXITED)
+
+      wrapper.setProps({
+        in: true,
+        addEndListener: enteringEndListener,
+        onEntered() {
+          expect(wrapper.state('status')).toEqual(ENTERED)
+          done()
+        },
+      })
+    })
   })
 
   describe('exiting', () => {
@@ -203,8 +221,9 @@ describe('Transition', () => {
     })
 
     it('should fire callbacks', done => {
-      let onExit = sinon.spy()
-      let onExiting = sinon.spy()
+      const onExit = sinon.spy()
+      const onExiting = sinon.spy()
+      const addEndListener = sinon.spy()
 
       expect(wrapper.state('status')).toEqual(ENTERED)
 
@@ -215,9 +234,12 @@ describe('Transition', () => {
 
         onExiting,
 
+        addEndListener,
+
         onExited() {
           expect(onExit.calledOnce).toEqual(true)
           expect(onExiting.calledOnce).toEqual(true)
+          expect(addEndListener.calledOnce).toEqual(true)
           expect(onExit.calledBefore(onExiting)).toEqual(true)
           done()
         },
@@ -245,6 +267,24 @@ describe('Transition', () => {
         onExited() {
           expect(wrapper.state('status')).toEqual(EXITED)
           expect(count).toEqual(2)
+          done()
+        },
+      })
+    })
+
+    it('should pass `exiting` transition state to addEndListener', done => {
+      function exitingEndListener(_node, status, end) {
+        expect(status).toEqual(EXITING)
+        end()
+      }
+
+      expect(wrapper.state('status')).toEqual(ENTERED)
+
+      wrapper.setProps({
+        in: false,
+        addEndListener: exitingEndListener,
+        onExited() {
+          expect(wrapper.state('status')).toEqual(EXITED)
           done()
         },
       })
