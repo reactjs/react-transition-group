@@ -260,7 +260,7 @@ class Transition extends React.Component {
         this.safeSetState({ status: ENTERED }, () => {
           this.props.onEntered(node, appearing)
         })
-      })
+      }, ENTERING)
     })
   }
 
@@ -284,7 +284,7 @@ class Transition extends React.Component {
         this.safeSetState({ status: EXITED }, () => {
           this.props.onExited(node)
         })
-      })
+      }, EXITING)
     })
   }
 
@@ -322,12 +322,12 @@ class Transition extends React.Component {
     return this.nextCallback
   }
 
-  onTransitionEnd(node, timeout, handler) {
+  onTransitionEnd(node, timeout, handler, status) {
     this.setNextCallback(handler)
 
     if (node) {
       if (this.props.addEndListener) {
-        this.props.addEndListener(node, this.nextCallback)
+        this.props.addEndListener(node, status, this.nextCallback)
       }
       if (timeout != null) {
         setTimeout(this.nextCallback, timeout)
@@ -451,15 +451,33 @@ Transition.propTypes = {
 
   /**
    * Add a custom transition end trigger. Called with the transitioning
-   * DOM node and a `done` callback. Allows for more fine grained transition end
-   * logic. **Note:** Timeouts are still used as a fallback if provided.
+   * DOM node, `entering` or `exiting` transition status and a `done` callback.
+   * Allows for more fine grained transition end logic.
    *
+   * Use this prop to attach `transitionend` event to a DOM node
    * ```jsx
-   * addEndListener={(node, done) => {
-   *   // use the css transitionend event to mark the finish of a transition
+   * addEndListener={(node, _status, done) => {
+   *   // Calling done on CSS transition end will switch to the next transition status.
    *   node.addEventListener('transitionend', done, false);
    * }}
    * ```
+   * or to integrate an animation library like GSAP or anime.js:
+   * ```jsx
+   * addEndListener={(_node, status, done) => {
+   *   const tl = new TimelineLite();
+   *   tl.eventCallback('onComplete', done);
+   *   switch (status) {
+   *     case 'entering':
+   *       tl.from('#main', 1, {opacity: 0})
+   *         .from('#sidebar', 1, {x: -300})
+   *     case 'exiting':
+   *       tl.to('#main', 1, {opacity: 0})
+   *         .to('#sidebar', 1, {x: -300})
+   *   }
+   * }}
+   * ```
+   *
+   * **Note:** `timeout` prop is still used as a fallback if provided.
    */
   addEndListener: PropTypes.func,
 
