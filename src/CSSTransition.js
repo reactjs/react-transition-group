@@ -192,16 +192,25 @@ class CSSTransition extends React.Component {
 
   getClassNames = (type) => {
     const { classNames } = this.props;
-
-    let className = typeof classNames !== 'string' ?
-      classNames[type] : classNames + '-' + type;
-
-    let activeClassName = typeof classNames !== 'string' ?
-      classNames[type + 'Active'] : className + '-active';
-
-    let doneClassName = typeof classNames !== 'string' ?
-      classNames[type + 'Done'] : className + '-done';
-
+    
+    let activeClassName;
+    let className;
+    let doneClassName;
+    switch(typeof classNames) {
+      case "string":
+        className = classNames + '-' + type;
+        activeClassName = className + '-active';
+        doneClassName = className + '-done';
+        break;
+      case "object":
+        className = classNames[type];
+        activeClassName = classNames[type + 'Active'];
+        doneClassName = classNames[type + 'Done'];
+        break;
+      default:
+        throw new ReferenceError(`classNames must be of type object or string, got ${typeof classNames}`);
+    }
+    
     return {
       className,
       activeClassName,
