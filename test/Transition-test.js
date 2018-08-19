@@ -149,7 +149,7 @@ describe('Transition', () => {
       )
     })
 
-    it('should appear ENTERED if enter transition is disabled', done => {
+    it('should mount `entered` when enter transition is disabled', done => {
       expect(wrapperWithoutTimeout.state('status')).toEqual(ENTERED)
       done()
     })
