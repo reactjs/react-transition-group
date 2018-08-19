@@ -143,15 +143,23 @@ describe('Transition', () => {
       )
 
       wrapperWithoutTimeout = mount(
-        <Transition in appear enter={false} timeout={10000}>
+        <Transition in appear timeout={10000}>
           <div />
         </Transition>
       )
     })
 
-    it('should mount `entered` when enter transition is disabled', done => {
-      expect(wrapperWithoutTimeout.state('status')).toEqual(ENTERED)
-      done()
+    it('should change to `entered` when transitions are switched off', done => {
+      expect(wrapperWithoutTimeout.state('status')).toEqual(ENTERING)
+
+      wrapperWithoutTimeout.setProps({
+        appear: false,
+        enter: false,
+        onEntered() {
+          expect(wrapperWithoutTimeout.state('status')).toEqual(ENTERED)
+          done()
+        }
+      })
     })
 
     it('should fire callbacks', done => {
