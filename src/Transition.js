@@ -117,35 +117,68 @@ class Transition extends React.Component {
   constructor(props, context) {
     super(props, context)
 
-    this.nextCallback = null
-
+    let parentGroup = context.transitionGroup
     // In the context of a TransitionGroup all enters are really appears
-    const parentGroup = context.transitionGroup
-    const isInsideTGroup = parentGroup && !parentGroup.isMounting
-    const enterTransitionEnabled = isInsideTGroup ? props.enter : props.appear
+    let appear =
+      parentGroup && !parentGroup.isMounting ? props.enter : props.appear
 
-    // status to transition from on mount (or just keep if statusAfterMount
-    // is the same or null)
-    const ifIn = enterTransitionEnabled ? EXITED : ENTERED
-    const ifOut = props.unmountOnExit || props.mountOnEnter ? UNMOUNTED : EXITED
-    const statusBeforeMount = props.in ? ifIn : ifOut
-    this.state = { status: statusBeforeMount }
+    let initialStatus
 
-    // status to transition to on mount
-    this.statusAfterMount = props.in && enterTransitionEnabled ? ENTERING : null
+    this.appearStatus = null
+
+    if (props.in) {
+      if (appear) {
+        initialStatus = EXITED
+        this.appearStatus = ENTERING
+      } else {
+        initialStatus = ENTERED
+      }
+    } else {
+      if (props.unmountOnExit || props.mountOnEnter) {
+        initialStatus = UNMOUNTED
+      } else {
+        initialStatus = EXITED
+      }
+    }
+
+    this.state = { status: initialStatus }
+
+    this.nextCallback = null
   }
 
   getChildContext() {
     return { transitionGroup: null } // allows for nested Transitions
   }
 
-  // static getDerivedStateFromProps({ in: nextIn }, prevState) {
-  //   if (nextIn && prevState.status === UNMOUNTED) return { status: EXITED }
-  //   return null
+  static getDerivedStateFromProps({ in: nextIn }, prevState) {
+    if (nextIn && prevState.status === UNMOUNTED) {
+      return { status: EXITED }
+    }
+    return null
+  }
+
+  // getSnapshotBeforeUpdate(prevProps) {
+  //   let nextStatus = null
+
+  //   if (prevProps !== this.props) {
+  //     const { status } = this.state
+
+  //     if (this.props.in) {
+  //       if (status !== ENTERING && status !== ENTERED) {
+  //         nextStatus = ENTERING
+  //       }
+  //     } else {
+  //       if (status === ENTERING || status === ENTERED) {
+  //         nextStatus = EXITING
+  //       }
+  //     }
+  //   }
+
+  //   return { nextStatus }
   // }
 
   componentDidMount() {
-    this.updateStatus(true, this.statusAfterMount)
+    this.updateStatus(true, this.appearStatus)
   }
 
   componentDidUpdate(prevProps) {

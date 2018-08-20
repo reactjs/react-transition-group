@@ -133,7 +133,6 @@ describe('Transition', () => {
 
   describe('entering', () => {
     let wrapper
-    let wrapperWithoutTimeout
 
     beforeEach(() => {
       wrapper = mount(
@@ -141,25 +140,6 @@ describe('Transition', () => {
           <div />
         </Transition>
       )
-
-      wrapperWithoutTimeout = mount(
-        <Transition in appear timeout={10000}>
-          <div />
-        </Transition>
-      )
-    })
-
-    it('should change to `entered` when transitions are switched off', done => {
-      expect(wrapperWithoutTimeout.state('status')).toEqual(ENTERING)
-
-      wrapperWithoutTimeout.setProps({
-        appear: false,
-        enter: false,
-        onEntered() {
-          expect(wrapperWithoutTimeout.state('status')).toEqual(ENTERED)
-          done()
-        }
-      })
     })
 
     it('should fire callbacks', done => {
