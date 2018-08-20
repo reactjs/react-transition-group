@@ -341,7 +341,7 @@ class Transition extends React.Component {
     this.setState(({status: prevStatus}) => {
       if (prevStatus === ENTERING) return { status: ENTERED }
       if (prevStatus === EXITING) return { status: EXITED }
-      throw Error(`Can't stop transition while in '${prevStatus}' stage`)
+      throw Error(`Can't finish transition while in '${prevStatus}' stage`)
     })
   }
 
