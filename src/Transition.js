@@ -337,6 +337,14 @@ class Transition extends React.Component {
     }
   }
 
+  doneRenderPropCallback = () => {
+    this.setState(({status: prevStatus}) => {
+      if (prevStatus === ENTERING) return { status: ENTERED }
+      if (prevStatus === EXITING) return { status: EXITED }
+      throw Error(`Can't stop transition while in '${prevStatus}' stage`)
+    })
+  }
+
   render() {
     const status = this.state.status
     if (status === UNMOUNTED) {
@@ -364,7 +372,7 @@ class Transition extends React.Component {
       return children(
         status,
         childProps,
-        () => this.setState({status: ENTERED})
+        this.doneRenderPropCallback
       )
     }
 
