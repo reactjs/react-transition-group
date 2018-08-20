@@ -131,6 +131,36 @@ describe('Transition', () => {
     inst.setProps({ in: true })
   })
 
+  describe('done render prop callback', () => {
+    it('should end entering transition when child triggers `done`', done => {
+      class DoneTrigger extends React.Component {
+        componentDidMount() {
+          this.props.done()
+        }
+
+        componentDidUpdate() {
+          if (this.props.status === ENTERED) done()
+        }
+
+        render() {
+          return <div />
+        }
+      }
+
+      mount(
+        <Transition
+          in
+          appear
+          timeout={10000}
+        >
+          {(status, _childProps, doneCB) => (
+            <DoneTrigger status={status} done={doneCB} />
+          )}
+        </Transition>
+      )
+    })
+  })
+
   describe('entering', () => {
     let wrapper
 

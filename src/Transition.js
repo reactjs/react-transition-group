@@ -361,7 +361,11 @@ class Transition extends React.Component {
     delete childProps.onExited
 
     if (typeof children === 'function') {
-      return children(status, childProps)
+      return children(
+        status,
+        childProps,
+        () => this.setState({status: ENTERED})
+      )
     }
 
     const child = React.Children.only(children)
