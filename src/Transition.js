@@ -117,33 +117,22 @@ class Transition extends React.Component {
   constructor(props, context) {
     super(props, context)
 
-    let parentGroup = context.transitionGroup
-    // In the context of a TransitionGroup all enters are really appears
-    let appear =
-      parentGroup && !parentGroup.isMounting ? props.enter : props.appear
-
-    let initialStatus
-
-    this.appearStatus = null
-
-    if (props.in) {
-      if (appear) {
-        initialStatus = EXITED
-        this.appearStatus = ENTERING
-      } else {
-        initialStatus = ENTERED
-      }
-    } else {
-      if (props.unmountOnExit || props.mountOnEnter) {
-        initialStatus = UNMOUNTED
-      } else {
-        initialStatus = EXITED
-      }
-    }
-
-    this.state = { status: initialStatus }
-
     this.nextCallback = null
+
+    // In the context of a TransitionGroup all enters are really appears
+    const parentGroup = context.transitionGroup
+    const isInsideTGroup = parentGroup && !parentGroup.isMounting
+    const enterTransitionEnabled = isInsideTGroup ? props.enter : props.appear
+
+    // status to transition from on mount (or just keep if statusAfterMount
+    // is the same or null)
+    const ifIn = enterTransitionEnabled ? EXITED : ENTERED
+    const ifOut = props.unmountOnExit || props.mountOnEnter ? UNMOUNTED : EXITED
+    const statusBeforeMount = props.in ? ifIn : ifOut
+    this.state = { status: statusBeforeMount }
+
+    // status to transition to on mount
+    this.statusAfterMount = props.in && enterTransitionEnabled ? ENTERING : null
   }
 
   getChildContext() {
@@ -151,9 +140,7 @@ class Transition extends React.Component {
   }
 
   static getDerivedStateFromProps({ in: nextIn }, prevState) {
-    if (nextIn && prevState.status === UNMOUNTED) {
-      return { status: EXITED }
-    }
+    if (nextIn && prevState.status === UNMOUNTED) return { status: EXITED }
     return null
   }
 
@@ -178,7 +165,7 @@ class Transition extends React.Component {
   // }
 
   componentDidMount() {
-    this.updateStatus(true, this.appearStatus)
+    this.updateStatus(true, this.statusAfterMount)
   }
 
   componentDidUpdate(prevProps) {
