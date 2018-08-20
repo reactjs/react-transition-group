@@ -139,29 +139,9 @@ class Transition extends React.Component {
     return { transitionGroup: null } // allows for nested Transitions
   }
 
-  static getDerivedStateFromProps({ in: nextIn }, prevState) {
-    if (nextIn && prevState.status === UNMOUNTED) return { status: EXITED }
-    return null
-  }
-
-  // getSnapshotBeforeUpdate(prevProps) {
-  //   let nextStatus = null
-
-  //   if (prevProps !== this.props) {
-  //     const { status } = this.state
-
-  //     if (this.props.in) {
-  //       if (status !== ENTERING && status !== ENTERED) {
-  //         nextStatus = ENTERING
-  //       }
-  //     } else {
-  //       if (status === ENTERING || status === ENTERED) {
-  //         nextStatus = EXITING
-  //       }
-  //     }
-  //   }
-
-  //   return { nextStatus }
+  // static getDerivedStateFromProps({ in: nextIn }, prevState) {
+  //   if (nextIn && prevState.status === UNMOUNTED) return { status: EXITED }
+  //   return null
   // }
 
   componentDidMount() {
