@@ -135,10 +135,11 @@ describe('Transition', () => {
     it('should end entering transition when child triggers `done`', done => {
       class DoneTrigger extends React.Component {
         componentDidMount() {
-          this.props.done()
+          if (this.props.status === 'entering') this.props.done()
         }
 
         componentDidUpdate() {
+          if (this.props.status === 'entering') this.props.done()
           if (this.props.status === ENTERED) done()
         }
 
@@ -152,6 +153,8 @@ describe('Transition', () => {
           in
           appear
           timeout={10000}
+          mountOnEnter
+          unmountOnExit
         >
           {(status, _childProps, doneCB) => (
             <DoneTrigger status={status} done={doneCB} />
