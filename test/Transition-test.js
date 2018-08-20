@@ -158,6 +158,37 @@ describe('Transition', () => {
         </Transition>
       )
     })
+
+    it('should end `exiting` transition when child triggers `done`', done => {
+      class DoneTrigger extends React.Component {
+        componentDidMount() {
+          expect(this.props.status).toEqual(ENTERED)
+        }
+
+        componentDidUpdate() {
+          if (this.props.status === EXITING) this.props.done()
+          if (this.props.status === EXITED) done()
+        }
+
+        render() {
+          return <div />
+        }
+      }
+
+      const wrapper = mount(
+        <Transition
+          in
+          timeout={10000}
+          mountOnEnter
+        >
+          {(status, _childProps, doneCB) => (
+            <DoneTrigger status={status} done={doneCB} />
+          )}
+        </Transition>
+      )
+
+      wrapper.setProps({in: false})
+    })
   })
 
   describe('entering', () => {
