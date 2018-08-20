@@ -131,15 +131,11 @@ describe('Transition', () => {
     inst.setProps({ in: true })
   })
 
-  describe('done render prop callback', () => {
+  describe('render prop `done` callback', () => {
     it('should end entering transition when child triggers `done`', done => {
       class DoneTrigger extends React.Component {
-        componentDidMount() {
-          if (this.props.status === 'entering') this.props.done()
-        }
-
         componentDidUpdate() {
-          if (this.props.status === 'entering') this.props.done()
+          if (this.props.status === ENTERING) this.props.done()
           if (this.props.status === ENTERED) done()
         }
 
