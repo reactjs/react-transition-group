@@ -337,11 +337,11 @@ class Transition extends React.Component {
     }
   }
 
-  doneRenderPropCallback = () => {
+  doneRenderProp = () => {
     this.setState(({status: prevStatus}) => {
       if (prevStatus === ENTERING) return { status: ENTERED }
       if (prevStatus === EXITING) return { status: EXITED }
-      throw Error(`Can't finish transition while in '${prevStatus}' stage`)
+      // do nothing if state is irrelevant
     })
   }
 
@@ -372,7 +372,7 @@ class Transition extends React.Component {
       return children(
         status,
         childProps,
-        this.doneRenderPropCallback
+        this.doneRenderProp
       )
     }
 
