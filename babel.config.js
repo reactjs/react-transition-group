@@ -1,6 +1,10 @@
+const targets = {
+  browsers: ['> 1%', 'last 2 versions']
+}
+
 module.exports = {
   presets: [
-    ['@babel/env', { loose: true }],
+    ['@babel/env', { loose: true, targets }],
     '@babel/react'
   ],
   plugins: [
