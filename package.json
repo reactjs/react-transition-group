@@ -55,7 +55,6 @@
   },
   "dependencies": {
     "dom-helpers": "^3.3.1",
-    "loose-envify": "^1.4.0",
     "prop-types": "^15.6.2",
     "react-lifecycles-compat": "^3.0.4"
   },
@@ -83,14 +82,12 @@
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-prettier": "^2.6.2",
     "eslint-plugin-react": "^7.11.1",
-    "husky": "^1.0.0-rc.15",
     "jest": "^23.6.0",
     "prettier": "^1.14.3",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-test-renderer": "^16.5.2",
     "release-script": "^1.0.2",
-    "rimraf": "^2.6.1",
     "semantic-release": "^15.9.16",
     "semantic-release-alt-publish-dir": "^2.1.1",
     "sinon": "^6.3.4",
@@ -112,11 +109,6 @@
       "semantic-release-alt-publish-dir",
       "@semantic-release/npm",
       "@semantic-release/git"
-    ]
-  },
-  "browserify": {
-    "transform": [
-      "loose-envify"
     ]
   }
 }
