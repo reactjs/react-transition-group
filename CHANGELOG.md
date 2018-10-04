@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/reactjs/react-transition-group/compare/v2.4.0...v2.5.0) (2018-09-26)
+
+
+### Features
+
+* update build and package dependencies ([#413](https://github.com/reactjs/react-transition-group/issues/413)) ([af3d45a](https://github.com/reactjs/react-transition-group/commit/af3d45a))
+
 # [2.4.0](https://github.com/reactjs/react-transition-group/compare/v2.3.1...v2.4.0) (2018-06-27)
 
 

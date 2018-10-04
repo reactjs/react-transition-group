@@ -1,9 +1,11 @@
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Grid } from 'react-bootstrap';
 import transform from 'lodash/transform';
 
 import Layout from '../components/Layout';
+import Example from '../components/Example';
 
 function displayObj(obj) {
   return JSON.stringify(obj, null, 2).replace(/"|'/g, '');
@@ -21,8 +23,20 @@ const extractMarkdown = ({ description }) =>
   description.childMarkdownRemark.html;
 
 const propTypes = {
-  location: PropTypes.object.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
   data: PropTypes.shape({
+    site: PropTypes.shape({
+      siteMetadata: PropTypes.shape({
+        componentPages: PropTypes.arrayOf(
+          PropTypes.shape({
+            displayName: PropTypes.string.isRequired,
+            codeSandboxId: PropTypes.string.isRequired,
+          })
+        ).isRequired,
+      }).isRequired,
+    }).isRequired,
     metadata: PropTypes.shape({
       displayName: PropTypes.string,
       composes: PropTypes.arrayOf(PropTypes.string),
@@ -35,26 +49,41 @@ class ComponentTemplate extends React.Component {
   render() {
     const { data, location } = this.props;
     const { metadata } = data;
+    const { componentPages } = data.site.siteMetadata;
     return (
       <Layout data={data} location={location}>
         <div>
-          <h1 id={metadata.displayName}>{metadata.displayName}</h1>
-          <p dangerouslySetInnerHTML={{ __html: extractMarkdown(metadata) }} />
+          <Grid>
+            <h1 id={metadata.displayName}>{metadata.displayName}</h1>
+            <p
+              dangerouslySetInnerHTML={{ __html: extractMarkdown(metadata) }}
+            />
+          </Grid>
 
-          <h2>
-            <div>Props</div>
-            {metadata.composes && (
-              <small style={{ fontStyle: 'italic', fontSize: '70%' }}>
-                Accepts all props from{' '}
-                {metadata.composes
-                  .map(p => `<${p.replace('./', '')}>`)
-                  .join(', ')}{' '}
-                unless otherwise noted.
-              </small>
-            )}
-          </h2>
+          <Example
+            codeSandbox={{
+              title: `${metadata.displayName} Component`,
+              id: componentPages.find(
+                page => page.displayName === metadata.displayName
+              ).codeSandboxId,
+            }}
+          />
 
-          {metadata.props.map(p => this.renderProp(p, metadata.displayName))}
+          <Grid>
+            <h2>
+              <div>Props</div>
+              {metadata.composes && (
+                <small style={{ fontStyle: 'italic', fontSize: '70%' }}>
+                  Accepts all props from{' '}
+                  {metadata.composes
+                    .map(p => `<${p.replace('./', '')}>`)
+                    .join(', ')}{' '}
+                  unless otherwise noted.
+                </small>
+              )}
+            </h2>
+            {metadata.props.map(p => this.renderProp(p, metadata.displayName))}
+          </Grid>
         </div>
       </Layout>
     );

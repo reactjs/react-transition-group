@@ -1,8 +1,8 @@
-import { graphql, Link } from 'gatsby';
+import { graphql, Link, withPrefix } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { Grid, Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav } from 'react-bootstrap';
 
 import '../css/bootstrap.scss';
 import '../css/prism-theme.scss';
@@ -20,25 +20,45 @@ const propTypes = {
       }).isRequired,
     }).isRequired,
   }).isRequired,
-  location: PropTypes.object.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
-const NavItem = ({ active, to, children }) => (
-  <li role="presentation" className={active ? 'active' : null}>
-    <Link aria-selected={active} to={to}>
+const NavItem = ({ to, location, children }) => (
+  <li role="presentation">
+    <Link
+      to={to}
+      location={location}
+      activeStyle={{
+        color: '#fff',
+        backgroundColor: '#080808',
+      }}
+    >
       {children}
     </Link>
   </li>
 );
 
 NavItem.propTypes = {
-  active: PropTypes.bool,
   to: PropTypes.string.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 class Layout extends React.Component {
+  isActive(path, location) {
+    return withPrefix(path) === withPrefix(location.pathname);
+  }
+
   render() {
-    const { data, location, children } = this.props;
+    const { data, children } = this.props;
+    const location = {
+      ...this.props.location,
+      pathname: withPrefix(this.props.location.pathname),
+    };
     return (
       <div>
         <Navbar fixedTop inverse collapseOnSelect>
@@ -49,24 +69,25 @@ class Layout extends React.Component {
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
-            <Nav pullRight>
+            <Nav pullLeft>
               {data.site.siteMetadata.componentPages.map(
                 ({ path, displayName }) => (
-                  <NavItem
-                    key={path}
-                    active={path === location.pathname}
-                    to={path}
-                  >
+                  <NavItem key={path} to={path} location={location}>
                     {displayName}
                   </NavItem>
                 )
               )}
             </Nav>
+            <Nav pullRight>
+              <NavItem to="/with-react-router" location={location}>
+                With React Router
+              </NavItem>
+            </Nav>
           </Navbar.Collapse>
         </Navbar>
-        <Grid style={{ paddingTop: '4rem', paddingBottom: '1rem' }}>
+        <div style={{ paddingTop: '4rem', paddingBottom: '1.5rem' }}>
           {children}
-        </Grid>
+        </div>
       </div>
     );
   }
@@ -82,6 +103,7 @@ export const exposedComponentsFragment = graphql`
       componentPages {
         path
         displayName
+        codeSandboxId
       }
     }
   }
