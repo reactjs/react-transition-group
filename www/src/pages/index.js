@@ -63,8 +63,8 @@ yarn add react-transition-group
               including the library in your application is negligible. However,
               in situations where it may be useful to benefit from an external
               CDN when bundling, link to the following CDN:{' '}
-              <a href="https://unpkg.com/react-transition-group/dist/react-transition-group.min.js">
-                https://unpkg.com/react-transition-group/dist/react-transition-group.min.js
+              <a href="https://unpkg.com/react-transition-group/dist/react-transition-group.js">
+                https://unpkg.com/react-transition-group/dist/react-transition-group.js
               </a>
             </p>
           </section>
