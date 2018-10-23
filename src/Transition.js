@@ -5,7 +5,7 @@ import { polyfill } from 'react-lifecycles-compat'
 
 import { timeoutsShape } from './utils/PropTypes'
 
-import { Provider as TransitionGroupContextProvider, withTransitionGroup } from './TransitionGroupContext'
+import { Provider as TransitionGroupContextProvider, withTransitionGroup, transitionGroupContextPropType } from './TransitionGroupContext'
 
 export const UNMOUNTED = 'unmounted'
 export const EXITED = 'exited'
@@ -516,9 +516,7 @@ TransitionWithContext.propTypes = {
 
 Transition.propTypes = {
   ...TransitionWithContext.propTypes,
-  transitionGroup: PropTypes.shape({
-    isMounting: PropTypes.bool.isRequired
-  }),
+  transitionGroup: transitionGroupContextPropType,
 }
 
 TransitionWithContext.defaultProps = {

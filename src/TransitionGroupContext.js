@@ -1,7 +1,33 @@
+import * as PropTypes from 'prop-types'
 import React from 'react'
-import createReactContext from 'create-react-context'
 
-const { Provider, Consumer } = createReactContext(null)
+const TransitionGroupContext = React.createContext && React.createContext(null)
+
+export const transitionGroupContextPropType = PropTypes.shape({
+  isMounting: PropTypes.bool.isRequired
+})
+
+const Consumer = (TransitionGroupContext && TransitionGroupContext.Consumer) || class Consumer extends React.Component {
+  static contextTypes = {
+    transitionGroup: PropTypes.object,
+  }
+  render() {
+    return this.props.children(this.context.transitionGroup)
+  }
+}
+
+const Provider = (TransitionGroupContext && TransitionGroupContext.Provider) || class Provider extends React.Component {
+  static childContextTypes = {
+    transitionGroup: transitionGroupContextPropType,
+  }
+  static propTypes = {
+    value: transitionGroupContextPropType
+  }
+  getChildContext() {
+    return { transitionGroup: this.props.value }
+  }
+  render() { return this.props.children }
+}
 
 export function withTransitionGroup(ComponentToWrap) {
   return class WithTransitionGroup extends React.Component {

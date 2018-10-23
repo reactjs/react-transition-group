@@ -54,7 +54,6 @@
     "react-dom": ">=15.0.0"
   },
   "dependencies": {
-    "create-react-context": "^0.2.3",
     "dom-helpers": "^3.3.1",
     "loose-envify": "^1.4.0",
     "prop-types": "^15.6.2",
