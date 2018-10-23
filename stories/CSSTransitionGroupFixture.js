@@ -4,8 +4,8 @@ import TransitionGroup from '../src/TransitionGroup';
 import StoryFixture from './StoryFixture';
 
 class CSSTransitionGroupFixture extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     let items = props.items || [];
 

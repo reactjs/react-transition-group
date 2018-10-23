@@ -9,6 +9,8 @@ import {
   getNextChildMapping,
 } from './utils/ChildMapping'
 
+import { Provider as TransitionGroupContextProvider } from './TransitionGroupContext'
+
 const values = Object.values || (obj => Object.keys(obj).map(k => obj[k]))
 
 const propTypes = {
@@ -80,12 +82,8 @@ const defaultProps = {
  * items.
  */
 class TransitionGroup extends React.Component {
-  static childContextTypes = {
-    transitionGroup: PropTypes.object.isRequired,
-  }
-
-  constructor(props, context) {
-    super(props, context)
+  constructor(props) {
+    super(props)
 
     const handleExited = this.handleExited.bind(this)
 
@@ -93,12 +91,6 @@ class TransitionGroup extends React.Component {
     this.state = {
       handleExited,
       firstRender: true,
-    }
-  }
-
-  getChildContext() {
-    return {
-      transitionGroup: { isMounting: !this.appeared },
     }
   }
 
@@ -144,9 +136,17 @@ class TransitionGroup extends React.Component {
     delete props.exit
 
     if (Component === null) {
-      return children
+      return (
+        <TransitionGroupContextProvider value={{ isMounting: !this.appeared }}>
+          {children}
+        </TransitionGroupContextProvider>
+      )
     }
-    return <Component {...props}>{children}</Component>
+    return (
+      <TransitionGroupContextProvider value={{ isMounting: !this.appeared }}>
+        <Component {...props}>{children}</Component>
+      </TransitionGroupContextProvider>
+    )
   }
 }
 

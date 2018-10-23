@@ -20,6 +20,10 @@ jasmine.addMatchers({
   }),
 })
 
+function findStatefulInstance(wrapper) {
+  return wrapper.find(Transition.__TestingStatefulComponent).instance()
+}
+
 describe('Transition', () => {
   it('should not transition on mount', () => {
     let wrapper = mount(
@@ -34,7 +38,7 @@ describe('Transition', () => {
       </Transition>
     )
 
-    expect(wrapper.state('status')).toEqual(ENTERED)
+    expect(findStatefulInstance(wrapper).state.status).toEqual(ENTERED)
   })
 
   it('should transition on mount with `appear`', done => {
@@ -146,7 +150,7 @@ describe('Transition', () => {
       let onEnter = sinon.spy()
       let onEntering = sinon.spy()
 
-      expect(wrapper.state('status')).toEqual(EXITED)
+      expect(findStatefulInstance(wrapper).state.status).toEqual(EXITED)
 
       wrapper.setProps({
         in: true,
@@ -167,23 +171,23 @@ describe('Transition', () => {
     it('should move to each transition state', done => {
       let count = 0
 
-      expect(wrapper.state('status')).toEqual(EXITED)
+      expect(findStatefulInstance(wrapper).state.status).toEqual(EXITED)
 
       wrapper.setProps({
         in: true,
 
         onEnter() {
           count++
-          expect(wrapper.state('status')).toEqual(EXITED)
+          expect(findStatefulInstance(wrapper).state.status).toEqual(EXITED)
         },
 
         onEntering() {
           count++
-          expect(wrapper.state('status')).toEqual(ENTERING)
+          expect(findStatefulInstance(wrapper).state.status).toEqual(ENTERING)
         },
 
         onEntered() {
-          expect(wrapper.state('status')).toEqual(ENTERED)
+          expect(findStatefulInstance(wrapper).state.status).toEqual(ENTERED)
           expect(count).toEqual(2)
           done()
         },
@@ -206,7 +210,7 @@ describe('Transition', () => {
       let onExit = sinon.spy()
       let onExiting = sinon.spy()
 
-      expect(wrapper.state('status')).toEqual(ENTERED)
+      expect(findStatefulInstance(wrapper).state.status).toEqual(ENTERED)
 
       wrapper.setProps({
         in: false,
@@ -227,23 +231,23 @@ describe('Transition', () => {
     it('should move to each transition state', done => {
       let count = 0
 
-      expect(wrapper.state('status')).toEqual(ENTERED)
+      expect(findStatefulInstance(wrapper).state.status).toEqual(ENTERED)
 
       wrapper.setProps({
         in: false,
 
         onExit() {
           count++
-          expect(wrapper.state('status')).toEqual(ENTERED)
+          expect(findStatefulInstance(wrapper).state.status).toEqual(ENTERED)
         },
 
         onExiting() {
           count++
-          expect(wrapper.state('status')).toEqual(EXITING)
+          expect(findStatefulInstance(wrapper).state.status).toEqual(EXITING)
         },
 
         onExited() {
-          expect(wrapper.state('status')).toEqual(EXITED)
+          expect(findStatefulInstance(wrapper).state.status).toEqual(EXITED)
           expect(count).toEqual(2)
           done()
         },
@@ -264,7 +268,7 @@ describe('Transition', () => {
 
         return (
           <Transition
-            ref="transition"
+            __testingRef={transition => this.transition = this.transition || transition}
             mountOnEnter
             in={this.state.in}
             timeout={10}
@@ -276,7 +280,7 @@ describe('Transition', () => {
       }
 
       getStatus = () => {
-        return this.refs.transition.state.status
+        return this.transition.state.status
       }
     }
 
@@ -337,7 +341,7 @@ describe('Transition', () => {
 
         return (
           <Transition
-            ref="transition"
+            __testingRef={transition => this.transition = this.transition || transition}
             unmountOnExit
             in={this.state.in}
             timeout={10}
@@ -349,7 +353,7 @@ describe('Transition', () => {
       }
 
       getStatus = () => {
-        return this.refs.transition.state.status
+        return this.transition.state.status
       }
     }
 

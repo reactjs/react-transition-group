@@ -5,6 +5,8 @@ import { polyfill } from 'react-lifecycles-compat'
 
 import { timeoutsShape } from './utils/PropTypes'
 
+import { Provider as TransitionGroupContextProvider, withTransitionGroup } from './TransitionGroupContext'
+
 export const UNMOUNTED = 'unmounted'
 export const EXITED = 'exited'
 export const ENTERING = 'entering'
@@ -107,17 +109,10 @@ export const EXITING = 'exiting'
  * > `CSSTransition`.
  */
 class Transition extends React.Component {
-  static contextTypes = {
-    transitionGroup: PropTypes.object,
-  }
-  static childContextTypes = {
-    transitionGroup: () => {},
-  }
+  constructor(props) {
+    super(props)
 
-  constructor(props, context) {
-    super(props, context)
-
-    let parentGroup = context.transitionGroup
+    let parentGroup = props.transitionGroup
     // In the context of a TransitionGroup all enters are really appears
     let appear =
       parentGroup && !parentGroup.isMounting ? props.enter : props.appear
@@ -144,10 +139,6 @@ class Transition extends React.Component {
     this.state = { status: initialStatus }
 
     this.nextCallback = null
-  }
-
-  getChildContext() {
-    return { transitionGroup: null } // allows for nested Transitions
   }
 
   static getDerivedStateFromProps({ in: nextIn }, prevState) {
@@ -235,8 +226,8 @@ class Transition extends React.Component {
 
   performEnter(node, mounting) {
     const { enter } = this.props
-    const appearing = this.context.transitionGroup
-      ? this.context.transitionGroup.isMounting
+    const appearing = this.props.transitionGroup
+      ? this.props.transitionGroup.isMounting
       : mounting
 
     const timeouts = this.getTimeouts()
@@ -359,17 +350,31 @@ class Transition extends React.Component {
     delete childProps.onExit
     delete childProps.onExiting
     delete childProps.onExited
+    delete childProps.transitionGroup
 
     if (typeof children === 'function') {
-      return children(status, childProps)
+      return (
+        <TransitionGroupContextProvider value={null}>
+          {children(status, childProps)}
+        </TransitionGroupContextProvider>
+      )
     }
 
     const child = React.Children.only(children)
-    return React.cloneElement(child, childProps)
+    return (
+      <TransitionGroupContextProvider value={null}>
+        {React.cloneElement(child, childProps)}
+      </TransitionGroupContextProvider>
+    )
   }
 }
 
-Transition.propTypes = {
+// Name the function so it is clearer in the documentation
+function noop() {}
+
+const TransitionWithContext = withTransitionGroup(polyfill(Transition))
+
+TransitionWithContext.propTypes = {
   /**
    * A `function` child can be used instead of a React element.
    * This function is called with the current transition status
@@ -509,10 +514,14 @@ Transition.propTypes = {
   onExited: PropTypes.func,
 }
 
-// Name the function so it is clearer in the documentation
-function noop() {}
+Transition.propTypes = {
+  ...TransitionWithContext.propTypes,
+  transitionGroup: PropTypes.shape({
+    isMounting: PropTypes.bool.isRequired
+  }),
+}
 
-Transition.defaultProps = {
+TransitionWithContext.defaultProps = {
   in: false,
   mountOnEnter: false,
   unmountOnExit: false,
@@ -529,10 +538,10 @@ Transition.defaultProps = {
   onExited: noop,
 }
 
-Transition.UNMOUNTED = 0
-Transition.EXITED = 1
-Transition.ENTERING = 2
-Transition.ENTERED = 3
-Transition.EXITING = 4
+TransitionWithContext.UNMOUNTED = 0
+TransitionWithContext.EXITED = 1
+TransitionWithContext.ENTERING = 2
+TransitionWithContext.ENTERED = 3
+TransitionWithContext.EXITING = 4
 
-export default polyfill(Transition)
+export default TransitionWithContext

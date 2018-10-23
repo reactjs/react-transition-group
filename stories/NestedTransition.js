@@ -25,8 +25,8 @@ const FadeAndScale = (props) => (
 
 
 export default class Example extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
     this.state = { showNested: false };
   }
 
