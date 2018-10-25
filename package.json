@@ -50,13 +50,14 @@
     ]
   },
   "peerDependencies": {
-    "react": ">=15.0.0",
-    "react-dom": ">=15.0.0"
+    "react": ">=16.3.0",
+    "react-dom": ">=16.3.0"
   },
   "dependencies": {
     "dom-helpers": "^3.3.1",
     "loose-envify": "^1.4.0",
     "prop-types": "^15.6.2",
+    "react-context-toolbox": "^1.2.2",
     "react-lifecycles-compat": "^3.0.4"
   },
   "devDependencies": {
@@ -86,9 +87,9 @@
     "husky": "^1.0.0-rc.15",
     "jest": "^23.6.0",
     "prettier": "^1.14.3",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "react-test-renderer": "^16.5.2",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
+    "react-test-renderer": "^16.6.0",
     "release-script": "^1.0.2",
     "rimraf": "^2.6.1",
     "semantic-release": "^15.9.16",

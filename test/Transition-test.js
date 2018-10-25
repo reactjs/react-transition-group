@@ -21,7 +21,7 @@ jasmine.addMatchers({
 })
 
 function findStatefulInstance(wrapper) {
-  return wrapper.find(Transition.__TestingStatefulComponent).instance()
+  return wrapper.find('Transition').instance()
 }
 
 describe('Transition', () => {
@@ -268,7 +268,7 @@ describe('Transition', () => {
 
         return (
           <Transition
-            __testingRef={transition => this.transition = this.transition || transition}
+            ref={transition => this.transition = this.transition || transition}
             mountOnEnter
             in={this.state.in}
             timeout={10}
@@ -341,7 +341,7 @@ describe('Transition', () => {
 
         return (
           <Transition
-            __testingRef={transition => this.transition = this.transition || transition}
+            ref={transition => this.transition = this.transition || transition}
             unmountOnExit
             in={this.state.in}
             timeout={10}
