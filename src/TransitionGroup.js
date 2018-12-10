@@ -104,6 +104,11 @@ class TransitionGroup extends React.Component {
 
   componentDidMount() {
     this.appeared = true
+    this.mounted = true
+  }
+
+  componentWillUnmount() {
+    this.mounted = false
   }
 
   static getDerivedStateFromProps(
@@ -127,12 +132,14 @@ class TransitionGroup extends React.Component {
       child.props.onExited(node)
     }
 
-    this.setState(state => {
-      let children = { ...state.children }
+    if (this.mounted) {
+      this.setState(state => {
+        let children = { ...state.children }
 
-      delete children[child.key]
-      return { children }
-    })
+        delete children[child.key]
+        return { children }
+      })
+    }
   }
 
   render() {
