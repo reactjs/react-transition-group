@@ -14,6 +14,12 @@ A set of components for managing component states (including mounting and unmoun
 - [Migration guide from v1](/Migration.md)
 
 ## Examples
+Some good examples can be found in the Main Documentation:
+- [Transition](http://reactcommunity.org/react-transition-group/transition/)
+- [CSS Transition](http://reactcommunity.org/react-transition-group/css-transition/)
+- [Transition Group](http://reactcommunity.org/react-transition-group/transition-group/)
+
+There is a React Storybook setup, [but there are currently issues with it](https://github.com/reactjs/react-transition-group/issues/369).
 
 Clone the repo first:
 
@@ -21,7 +27,7 @@ Clone the repo first:
 git@github.com:reactjs/react-transition-group.git
 ```
 
-Then run `npm install` (or `yarn`), and finally `npm run storybook` to start a storybook instance that you can navigate to in your browser to see the examples.
+Then run `npm install` (or `yarn`), ~~and finally `npm run storybook` to start a storybook instance that you can navigate to in your browser to see the examples.~~
 
 [npm-badge]: https://img.shields.io/npm/v/react-transition-group.svg
 [npm]: https://www.npmjs.org/package/react-transition-group

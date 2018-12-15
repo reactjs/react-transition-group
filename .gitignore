@@ -40,3 +40,6 @@ jspm_packages
 
 # Visual Studio Code configuration
 .vscode
+
+# Webstorm configuration
+.idea
