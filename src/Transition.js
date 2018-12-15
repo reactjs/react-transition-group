@@ -1,6 +1,5 @@
 import * as PropTypes from 'prop-types'
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { polyfill } from 'react-lifecycles-compat'
 
 import { timeoutsShape } from './utils/PropTypes'
@@ -144,6 +143,7 @@ class Transition extends React.Component {
     this.state = { status: initialStatus }
 
     this.nextCallback = null
+    this.childRef = React.createRef();
   }
 
   getChildContext() {
@@ -221,8 +221,7 @@ class Transition extends React.Component {
     if (nextStatus !== null) {
       // nextStatus will always be ENTERING or EXITING.
       this.cancelNextCallback()
-      const node = ReactDOM.findDOMNode(this)
-
+      const node = this.childRef.current
       if (nextStatus === ENTERING) {
         this.performEnter(node, mounting)
       } else {
@@ -360,8 +359,14 @@ class Transition extends React.Component {
     delete childProps.onExiting
     delete childProps.onExited
 
+    // Pass the ref to the child element
+    childProps.ref = this.childRef
+
     if (typeof children === 'function') {
-      return children(status, childProps)
+      return React.cloneElement(
+        children(status),
+        childProps
+      )
     }
 
     const child = React.Children.only(children)
