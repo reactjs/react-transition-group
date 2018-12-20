@@ -113,6 +113,97 @@ describe('CSSTransition', () => {
     });
   });
 
+  describe('appearing', () => {
+    it('should apply appear classes at each transition state', done => {
+      let count = 0;
+      mount(
+        <CSSTransition
+          timeout={10}
+          classNames='appear-test'
+          in={true}
+          appear={true}
+          onEnter={(node, isAppearing) => {
+            count++;
+            expect(isAppearing).toEqual(true);
+            expect(node.className).toEqual('appear-test-appear');
+          }}
+          onEntering={(node, isAppearing) => {
+            count++;
+            expect(isAppearing).toEqual(true);
+            expect(node.className).toEqual('appear-test-appear appear-test-appear-active');
+          }}
+
+          onEntered={(node, isAppearing) => {
+            expect(isAppearing).toEqual(true);
+            expect(node.className).toEqual('appear-test-enter-done');
+            expect(count).toEqual(2);
+            done();
+          }}
+        >
+          <div/>
+        </CSSTransition>
+      );
+    });
+
+    it('should not be appearing in normal enter mode', done => {
+      let count = 0;
+      mount(
+        <CSSTransition
+          timeout={10}
+          classNames='not-appear-test'
+          appear={true}
+        >
+          <div/>
+        </CSSTransition>
+      ).setProps({
+        in: true,
+
+        onEnter(node, isAppearing){
+          count++;
+          expect(isAppearing).toEqual(false);
+          expect(node.className).toEqual('not-appear-test-enter');
+        },
+
+        onEntering(node, isAppearing){
+          count++;
+          expect(isAppearing).toEqual(false);
+          expect(node.className).toEqual('not-appear-test-enter not-appear-test-enter-active');
+        },
+
+        onEntered(node, isAppearing){
+          expect(isAppearing).toEqual(false);
+          expect(node.className).toEqual('not-appear-test-enter-done');
+          expect(count).toEqual(2);
+          done();
+        }
+      });
+    });
+
+    it('should not enter the transition states when appear=false', () => {
+      mount(
+        <CSSTransition
+          timeout={10}
+          classNames='appear-fail-test'
+          in={true}
+          appear={false}
+          onEnter={() => {
+            throw Error('Enter called!')
+          }}
+          onEntering={() => {
+            throw Error('Entring called!')
+          }}
+          onEntered={() => {
+            throw Error('Entred called!')
+          }}
+        >
+          <div/>
+        </CSSTransition>
+      );
+    });
+
+
+  });
+
   describe('exiting', ()=> {
     let instance;
 
