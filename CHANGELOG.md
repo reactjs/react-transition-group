@@ -1,3 +1,10 @@
+## [2.5.2](https://github.com/reactjs/react-transition-group/compare/v2.5.1...v2.5.2) (2018-12-20)
+
+
+### Bug Fixes
+
+* pass appear to CSSTransition callbacks ([#441](https://github.com/reactjs/react-transition-group/issues/441)) ([df7adb4](https://github.com/reactjs/react-transition-group/commit/df7adb4)), closes [#143](https://github.com/reactjs/react-transition-group/issues/143)
+
 ## [2.5.1](https://github.com/reactjs/react-transition-group/compare/v2.5.0...v2.5.1) (2018-12-10)
 
 
