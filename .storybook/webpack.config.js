@@ -8,8 +8,8 @@ module.exports = (config) => {
     ],
   };
 
-  config.plugins.push(
-    plugins.extractText({ disable: true })
-  )
+  // config.plugins.push(
+  //   plugins.extractText({ disable: true })
+  // )
   return config;
 };
