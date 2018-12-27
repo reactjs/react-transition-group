@@ -9,7 +9,7 @@ module.exports = (config) => {
   };
 
   config.plugins.push(
-    plugins.extractText({ disable: true })
+    plugins.extractCss({ disable: true })
   )
   return config;
 };
