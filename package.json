@@ -21,6 +21,13 @@
     "travis-deploy-once": "travis-deploy-once",
     "semantic-release": "semantic-release"
   },
+  "size-limit": [
+    {
+      "gzip": false,
+      "path": "lib/index.js",
+      "limit": "16.66 KB"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/reactjs/react-transition-group.git"
@@ -94,6 +101,7 @@
     "semantic-release": "^15.9.16",
     "semantic-release-alt-publish-dir": "^2.1.1",
     "sinon": "^6.3.4",
+    "size-limit": "^0.21.1",
     "travis-deploy-once": "^5.0.8",
     "webpack": "^4.19.1",
     "webpack-atoms": "^8.0.0",
