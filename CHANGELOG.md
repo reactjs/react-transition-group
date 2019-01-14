@@ -1,3 +1,10 @@
+## [2.5.3](https://github.com/reactjs/react-transition-group/compare/v2.5.2...v2.5.3) (2019-01-14)
+
+
+### Bug Fixes
+
+* strip custom prop-types in production ([#448](https://github.com/reactjs/react-transition-group/issues/448)) ([46fa20f](https://github.com/reactjs/react-transition-group/commit/46fa20f))
+
 ## [2.5.2](https://github.com/reactjs/react-transition-group/compare/v2.5.1...v2.5.2) (2018-12-20)
 
 
