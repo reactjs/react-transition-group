@@ -9,7 +9,7 @@
     "tdd": "jest --watch",
     "build": "babel src --out-dir lib --delete-dir-on-start && npm run build:dist && cp README.md LICENSE ./lib",
     "build:docs": "npm -C www run build",
-    "build:dist": "cross-env NODE_ENV=esm yarn rollup -c",
+    "build:dist": "cross-env BABEL_ENV=esm yarn rollup -c",
     "bootstrap": "yarn && yarn --cwd www",
     "lint": "eslint src test",
     "release": "release",

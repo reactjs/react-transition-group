@@ -58,7 +58,7 @@ export default [
       commonjs(commonjsOptions),
       replace({ "process.env.NODE_ENV": JSON.stringify("production") }),
       sizeSnapshot(),
-      terser()
+      // terser()
     ]
   }
 ];
