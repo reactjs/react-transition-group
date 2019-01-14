@@ -28,7 +28,7 @@ export default [
   {
     input,
     output: {
-      file: "./dist/react-transition-group.js",
+      file: "./lib/dist/react-transition-group.js",
       format: "umd",
       name,
       globals
@@ -46,7 +46,7 @@ export default [
   {
     input,
     output: {
-      file: "./dist/react-transition-group.min.js",
+      file: "./lib/dist/react-transition-group.min.js",
       format: "umd",
       name,
       globals
