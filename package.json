@@ -9,7 +9,7 @@
     "tdd": "jest --watch",
     "build": "babel src --out-dir lib --delete-dir-on-start && npm run build:dist && cp README.md LICENSE ./lib",
     "build:docs": "npm -C www run build",
-    "build:dist": "webpack --mode production",
+    "build:dist": "cross-env BABEL_ENV=esm yarn rollup -c",
     "bootstrap": "yarn && yarn --cwd www",
     "lint": "eslint src test",
     "release": "release",
@@ -21,13 +21,6 @@
     "travis-deploy-once": "travis-deploy-once",
     "semantic-release": "semantic-release"
   },
-  "size-limit": [
-    {
-      "gzip": false,
-      "path": "lib/index.js",
-      "limit": "16.66 KB"
-    }
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/reactjs/react-transition-group.git"
@@ -81,6 +74,7 @@
     "babel-loader": "^8.0.2",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.18",
     "babel-preset-jason": "^6.0.1",
+    "cross-env": "^5.2.0",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "eslint": "^5.6.0",
@@ -98,14 +92,17 @@
     "react-test-renderer": "^16.5.2",
     "release-script": "^1.0.2",
     "rimraf": "^2.6.1",
+    "rollup": "^1.1.0",
+    "rollup-plugin-babel": "^4.3.0",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-replace": "^2.1.0",
+    "rollup-plugin-size-snapshot": "^0.8.0",
+    "rollup-plugin-terser": "^4.0.2",
     "semantic-release": "^15.9.16",
     "semantic-release-alt-publish-dir": "^2.1.1",
     "sinon": "^6.3.4",
-    "size-limit": "^0.21.1",
-    "travis-deploy-once": "^5.0.8",
-    "webpack": "^4.19.1",
-    "webpack-atoms": "^8.0.0",
-    "webpack-cli": "^3.1.1"
+    "travis-deploy-once": "^5.0.8"
   },
   "release": {
     "pkgRoot": "lib",
