@@ -469,4 +469,46 @@ describe('Transition', () => {
       wrapper.setState({ in: false })
     })
   })
+
+  describe('findDOMNode', () => {
+    it('can receive a custom findDOMNode method', done => {
+      class StrictModeTransition extends React.Component {
+        constructor(props) {
+          super(props);
+          this.childRef = React.createRef();
+          this.findDOMNode = this.findDOMNode.bind(this);
+        }
+
+        findDOMNode() {
+          return this.childRef.current;
+        }
+
+        render() {
+          return (
+            <Transition findDOMNode={this.findDOMNode} {...this.props}>
+              {status => <div><span ref={this.childRef}>{status}</span></div>}
+            </Transition>
+          );
+        }
+      }
+
+      const expectSpan = sinon.spy(node => expect(node.nodeName).toEqual('SPAN'));
+      const handleExited = () => {
+        expect(expectSpan.called).toBe(true);
+
+        done();
+      }
+
+      const wrapper = mount(
+        <StrictModeTransition
+          in
+          timeout={10}
+          onExiting={expectSpan}
+          onExited={handleExited}
+        />
+      );
+
+      wrapper.setProps({ in: false });
+    })
+  })
 })

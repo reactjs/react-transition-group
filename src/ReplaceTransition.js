@@ -28,7 +28,7 @@ class ReplaceTransition extends React.Component {
     const child = React.Children.toArray(children)[idx];
 
     if (child.props[handler]) child.props[handler](...originalArgs)
-    if (this.props[handler]) this.props[handler](findDOMNode(this))
+    if (this.props[handler]) this.props[handler](this.props.findDOMNode(this))
   }
 
   render() {
@@ -39,6 +39,7 @@ class ReplaceTransition extends React.Component {
     } = this.props;
     const [first, second] = React.Children.toArray(children);
 
+    delete props.findDOMNode;
     delete props.onEnter;
     delete props.onEntering;
     delete props.onEntered;
@@ -76,6 +77,11 @@ ReplaceTransition.propTypes = {
 
     return null;
   },
+  findDOMNode: PropTypes.func,
 };
+
+ReplaceTransition.defaultProps = {
+  findDOMNode,
+}
 
 export default ReplaceTransition;

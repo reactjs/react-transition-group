@@ -209,7 +209,7 @@ class Transition extends React.Component {
     if (nextStatus !== null) {
       // nextStatus will always be ENTERING or EXITING.
       this.cancelNextCallback()
-      const node = ReactDOM.findDOMNode(this)
+      const node = this.props.findDOMNode(this);
 
       if (nextStatus === ENTERING) {
         this.performEnter(node, mounting)
@@ -341,6 +341,7 @@ class Transition extends React.Component {
     delete childProps.appear
     delete childProps.enter
     delete childProps.exit
+    delete childProps.findDOMNode;
     delete childProps.timeout
     delete childProps.addEndListener
     delete childProps.onEnter
@@ -426,6 +427,14 @@ Transition.propTypes = {
    * Enable or disable exit transitions.
    */
   exit: PropTypes.bool,
+
+  /**
+   * The function to find the rendered DOM node that is passed to the transition callbacks.
+   *
+   * By default ReactDOM.findDOMNode is used. For `React.StrictMode` compatiblity
+   * another function must be provided.
+   */
+  findDOMNode: PropTypes.func,
 
   /**
    * The duration of the transition, in milliseconds.
@@ -529,6 +538,7 @@ Transition.defaultProps = {
   appear: false,
   enter: true,
   exit: true,
+  findDOMNode: ReactDOM.findDOMNode,
 
   onEnter: noop,
   onEntering: noop,
