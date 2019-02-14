@@ -1,3 +1,24 @@
+## [2.5.3](https://github.com/reactjs/react-transition-group/compare/v2.5.2...v2.5.3) (2019-01-14)
+
+
+### Bug Fixes
+
+* strip custom prop-types in production ([#448](https://github.com/reactjs/react-transition-group/issues/448)) ([46fa20f](https://github.com/reactjs/react-transition-group/commit/46fa20f))
+
+## [2.5.2](https://github.com/reactjs/react-transition-group/compare/v2.5.1...v2.5.2) (2018-12-20)
+
+
+### Bug Fixes
+
+* pass appear to CSSTransition callbacks ([#441](https://github.com/reactjs/react-transition-group/issues/441)) ([df7adb4](https://github.com/reactjs/react-transition-group/commit/df7adb4)), closes [#143](https://github.com/reactjs/react-transition-group/issues/143)
+
+## [2.5.1](https://github.com/reactjs/react-transition-group/compare/v2.5.0...v2.5.1) (2018-12-10)
+
+
+### Bug Fixes
+
+* prevent calling setState in TransitionGroup if it has been unmounted ([#435](https://github.com/reactjs/react-transition-group/issues/435)) ([6d46b69](https://github.com/reactjs/react-transition-group/commit/6d46b69))
+
 # [2.5.0](https://github.com/reactjs/react-transition-group/compare/v2.4.0...v2.5.0) (2018-09-26)
 
 
