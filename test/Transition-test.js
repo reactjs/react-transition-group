@@ -264,7 +264,7 @@ describe('Transition', () => {
 
         return (
           <Transition
-            ref="transition"
+            ref={transition => this.transition = this.transition || transition}
             mountOnEnter
             in={this.state.in}
             timeout={10}
@@ -276,7 +276,7 @@ describe('Transition', () => {
       }
 
       getStatus = () => {
-        return this.refs.transition.state.status
+        return this.transition.state.status
       }
     }
 
@@ -337,7 +337,7 @@ describe('Transition', () => {
 
         return (
           <Transition
-            ref="transition"
+            ref={transition => this.transition = this.transition || transition}
             unmountOnExit
             in={this.state.in}
             timeout={10}
@@ -349,7 +349,7 @@ describe('Transition', () => {
       }
 
       getStatus = () => {
-        return this.refs.transition.state.status
+        return this.transition.state.status
       }
     }
 
