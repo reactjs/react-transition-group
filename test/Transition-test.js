@@ -471,6 +471,28 @@ describe('Transition', () => {
   })
 
   describe('findDOMNode', () => {
+    it('uses ReactDOM.findDOMNode by default', done => {
+      const expectDiv = sinon.spy(node => expect(node.nodeName).toEqual('DIV'));
+      const handleExited = () => {
+        expect(expectDiv.called).toBe(true);
+
+        done();
+      }
+
+      const wrapper = mount(
+        <Transition
+          in
+          timeout={10}
+          onExiting={expectDiv}
+          onExited={handleExited}
+        >
+          {status => <div><span>{status}</span></div>}
+        </Transition>
+      );
+
+      wrapper.setProps({ in: false });
+    })
+
     it('can receive a custom findDOMNode method', done => {
       class StrictModeTransition extends React.Component {
         constructor(props) {
