@@ -6,7 +6,8 @@ export const timeoutsShape =
         PropTypes.number,
         PropTypes.shape({
           enter: PropTypes.number,
-          exit: PropTypes.number
+          exit: PropTypes.number,
+          appear: PropTypes.number,
         }).isRequired
       ])
     : null;
