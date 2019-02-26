@@ -131,6 +131,53 @@ describe('Transition', () => {
     inst.setProps({ in: true })
   })
 
+  describe('appearing timeout', () => {
+    it('should use enter timeout if appear not set', done => {
+      let calledBeforeEntered = false
+      setTimeout(() => {
+        calledBeforeEntered = true
+      }, 10)
+      const wrapper = mount(
+        <Transition in={true} timeout={{ enter: 20, exit: 10 }} appear>
+          <div />
+        </Transition>
+      )
+
+      wrapper.setProps({
+        onEntered() {
+          if (calledBeforeEntered) {
+            done()
+          } else {
+            throw new Error('wrong timeout')
+          }
+        },
+      })
+    })
+
+    it('should use appear timeout if appear is set', done => {
+      const wrapper = mount(
+        <Transition in={true} timeout={{ enter: 20, exit: 10, appear: 5 }} appear>
+          <div />
+        </Transition>
+      )
+
+      let isCausedLate = false
+      setTimeout(() => {
+        isCausedLate = true
+      }, 15)
+
+      wrapper.setProps({
+        onEntered() {
+          if (isCausedLate) {
+            throw new Error('wrong timeout')
+          } else {
+            done()
+          }
+        }
+      })
+    })
+  })
+
   describe('entering', () => {
     let wrapper
 

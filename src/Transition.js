@@ -212,7 +212,7 @@ class Transition extends React.Component {
     if (timeout != null && typeof timeout !== 'number') {
       exit = timeout.exit
       enter = timeout.enter
-      appear = timeout.appear
+      appear = timeout.appear !== undefined ? timeout.appear : enter
     }
     return { exit, enter, appear }
   }
@@ -240,7 +240,7 @@ class Transition extends React.Component {
       : mounting
 
     const timeouts = this.getTimeouts()
-
+    const enterTimeout = appearing ? timeouts.appear : timeouts.enter
     // no enter animation skip right to ENTERED
     // if we are mounting and running this it means appear _must_ be set
     if (!mounting && !enter) {
@@ -255,8 +255,7 @@ class Transition extends React.Component {
     this.safeSetState({ status: ENTERING }, () => {
       this.props.onEntering(node, appearing)
 
-      // FIXME: appear timeout?
-      this.onTransitionEnd(node, timeouts.enter, () => {
+      this.onTransitionEnd(node, enterTimeout, () => {
         this.safeSetState({ status: ENTERED }, () => {
           this.props.onEntered(node, appearing)
         })
