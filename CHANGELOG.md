@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/reactjs/react-transition-group/compare/v2.5.3...v2.6.0) (2019-02-26)
+
+
+### Features
+
+* add appear timeout ([#462](https://github.com/reactjs/react-transition-group/issues/462)) ([52cdc34](https://github.com/reactjs/react-transition-group/commit/52cdc34))
+
 ## [2.5.3](https://github.com/reactjs/react-transition-group/compare/v2.5.2...v2.5.3) (2019-01-14)
 
 
