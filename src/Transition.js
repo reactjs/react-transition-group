@@ -437,8 +437,11 @@ Transition.propTypes = {
    * timeout={{
    *  enter: 300,
    *  exit: 500,
+   *  appear: 500,
    * }}
    * ```
+   *
+   * If the value of appear is not set, then the value from enter is taken.
    *
    * @type {number | { enter?: number, exit?: number }}
    */
