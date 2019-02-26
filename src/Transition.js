@@ -212,6 +212,7 @@ class Transition extends React.Component {
     if (timeout != null && typeof timeout !== 'number') {
       exit = timeout.exit
       enter = timeout.enter
+      // TODO: remove fallback for next major
       appear = timeout.appear !== undefined ? timeout.appear : enter
     }
     return { exit, enter, appear }
