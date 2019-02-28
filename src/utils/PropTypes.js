@@ -5,8 +5,8 @@ export const timeoutsShape =
     ? PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.shape({
-          enter: PropTypes.number,
-          exit: PropTypes.number,
+          enter: PropTypes.number.isRequired,
+          exit: PropTypes.number.isRequired,
           appear: PropTypes.number,
         }).isRequired
       ])
