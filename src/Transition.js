@@ -326,7 +326,7 @@ class Transition extends React.Component {
     this.setNextCallback(handler)
 
     const doesNotHaveTimeoutOrListener = timeout == null && !this.props.addEndListener
-    if (!node || isNotHaveTimeoutOrListener) {
+    if (!node || doesNotHaveTimeoutOrListener) {
       setTimeout(this.nextCallback, 0)
       return
     }
@@ -449,7 +449,7 @@ Transition.propTypes = {
    *
    * If the `enter` or `exit` value is `null` or `undefined`, then the timer is set to `0`
    *
-   * @type {number | { enter: number, exit: number, appear?: number }}
+   * @type {number | { enter?: number, exit?: number, appear?: number }}
    */
   timeout: (props, ...args) => {
     let pt = timeoutsShape
