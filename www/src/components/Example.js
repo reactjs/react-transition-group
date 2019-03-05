@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 const propTypes = {
   codeSandbox: PropTypes.shape({
@@ -10,10 +10,10 @@ const propTypes = {
 };
 
 const Example = ({ codeSandbox }) => (
-  <div>
-    <Grid>
+  <div style={{ marginBottom: '1.5rem' }}>
+    <Container>
       <h2>Example</h2>
-    </Grid>
+    </Container>
     <iframe
       title={codeSandbox.title}
       src={`https://codesandbox.io/embed/${codeSandbox.id}?fontsize=14`}

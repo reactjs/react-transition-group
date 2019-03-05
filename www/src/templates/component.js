@@ -1,7 +1,7 @@
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Grid } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import transform from 'lodash/transform';
 
 import Layout from '../components/Layout';
@@ -53,12 +53,12 @@ class ComponentTemplate extends React.Component {
     return (
       <Layout data={data} location={location}>
         <div>
-          <Grid>
+          <Container>
             <h1 id={metadata.displayName}>{metadata.displayName}</h1>
             <p
               dangerouslySetInnerHTML={{ __html: extractMarkdown(metadata) }}
             />
-          </Grid>
+          </Container>
 
           <Example
             codeSandbox={{
@@ -69,7 +69,7 @@ class ComponentTemplate extends React.Component {
             }}
           />
 
-          <Grid>
+          <Container>
             <h2>
               <div>Props</div>
               {metadata.composes && (
@@ -83,7 +83,7 @@ class ComponentTemplate extends React.Component {
               )}
             </h2>
             {metadata.props.map(p => this.renderProp(p, metadata.displayName))}
-          </Grid>
+          </Container>
         </div>
       </Layout>
     );

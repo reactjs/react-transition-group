@@ -1,1 +1,5 @@
-module.exports = require('../.babelrc');
+module.exports = {
+  presets: [
+    'babel-preset-gatsby',
+  ],
+};
