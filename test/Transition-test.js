@@ -147,11 +147,10 @@ describe('Transition', () => {
       in: false,
       onExited() {
         expect(wrapper.state('status')).toEqual(EXITED)
-        if (calledAfterTimeout) {
-          throw new Error('wrong timeout')
-        } else {
-          done()
+        if (!calledAfterTimeout) {
+          return done()
         }
+        throw new Error('wrong timeout')
       }
     })
   })
