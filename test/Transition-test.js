@@ -131,6 +131,31 @@ describe('Transition', () => {
     inst.setProps({ in: true })
   })
 
+  it('should mount/unmount immediately if not have enter/exit timeout', (done) => {
+    const wrapper = mount(
+      <Transition in={true} timeout={{}}>
+        <div />
+      </Transition>
+    )
+
+    expect(wrapper.state('status')).toEqual(ENTERED)
+    let calledAfterTimeout = false
+    setTimeout(() => {
+      calledAfterTimeout = true
+    }, 10)
+    wrapper.setProps({
+      in: false,
+      onExited() {
+        expect(wrapper.state('status')).toEqual(EXITED)
+        if (calledAfterTimeout) {
+          throw new Error('wrong timeout')
+        } else {
+          done()
+        }
+      }
+    })
+  })
+
   describe('appearing timeout', () => {
     it('should use enter timeout if appear not set', done => {
       let calledBeforeEntered = false
@@ -423,49 +448,6 @@ describe('Transition', () => {
       const wrapper = mount(
         <UnmountTransition
           initialIn
-          onExited={() => {
-            setTimeout(() => {
-              expect(wrapper.getStatus()).toEqual(UNMOUNTED)
-              expect(ReactDOM.findDOMNode(wrapper)).not.toExist()
-              done()
-            })
-          }}
-        />
-      ).instance()
-
-      expect(wrapper.getStatus()).toEqual(ENTERED)
-      expect(ReactDOM.findDOMNode(wrapper)).toExist()
-
-      wrapper.setState({ in: false })
-    })
-
-
-    it('should unmount at once if not have enter timeout', done => {
-      const wrapper = mount(
-        <UnmountTransition
-          initialIn={false}
-          timeout={{ exit: 10 }}
-          onEnter={() => {
-            expect(wrapper.getStatus()).toEqual(EXITED)
-            expect(ReactDOM.findDOMNode(wrapper)).toExist()
-
-            done()
-          }}
-        />
-      ).instance()
-
-      expect(wrapper.getStatus()).toEqual(UNMOUNTED)
-      expect(ReactDOM.findDOMNode(wrapper)).toBeNull()
-
-      wrapper.setState({ in: true })
-    })
-
-
-    it('should unmount at once if not have exit timeout', done => {
-      const wrapper = mount(
-        <UnmountTransition
-          initialIn
-          timeout={{ enter: 10 }}
           onExited={() => {
             setTimeout(() => {
               expect(wrapper.getStatus()).toEqual(UNMOUNTED)
