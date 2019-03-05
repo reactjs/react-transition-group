@@ -325,15 +325,18 @@ class Transition extends React.Component {
   onTransitionEnd(node, timeout, handler) {
     this.setNextCallback(handler)
 
-    if (node) {
-      if (this.props.addEndListener) {
-        this.props.addEndListener(node, this.nextCallback)
-      }
-      if (timeout != null) {
-        setTimeout(this.nextCallback, timeout)
-      }
-    } else {
+    const doesNotHaveTimeoutOrListener = timeout == null && !this.props.addEndListener
+    if (!node || doesNotHaveTimeoutOrListener) {
       setTimeout(this.nextCallback, 0)
+      return
+    }
+
+    if (this.props.addEndListener) {
+      this.props.addEndListener(node, this.nextCallback)
+    }
+
+    if (timeout != null) {
+      setTimeout(this.nextCallback, timeout)
     }
   }
 
@@ -442,9 +445,11 @@ Transition.propTypes = {
    * }}
    * ```
    *
-   * If the value of appear is not set, then the value from enter is taken.
+   * If the value of `appear` is not set, then the value from enter is taken.
    *
-   * @type {number | { enter?: number, exit?: number }}
+   * If the `enter` or `exit` value is `null` or `undefined`, then the timer is set to `0`
+   *
+   * @type {number | { enter?: number, exit?: number, appear?: number }}
    */
   timeout: (props, ...args) => {
     let pt = timeoutsShape

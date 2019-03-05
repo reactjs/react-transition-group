@@ -131,6 +131,30 @@ describe('Transition', () => {
     inst.setProps({ in: true })
   })
 
+  it('should mount/unmount immediately if not have enter/exit timeout', (done) => {
+    const wrapper = mount(
+      <Transition in={true} timeout={{}}>
+        <div />
+      </Transition>
+    )
+
+    expect(wrapper.state('status')).toEqual(ENTERED)
+    let calledAfterTimeout = false
+    setTimeout(() => {
+      calledAfterTimeout = true
+    }, 10)
+    wrapper.setProps({
+      in: false,
+      onExited() {
+        expect(wrapper.state('status')).toEqual(EXITED)
+        if (!calledAfterTimeout) {
+          return done()
+        }
+        throw new Error('wrong timeout')
+      }
+    })
+  })
+
   describe('appearing timeout', () => {
     it('should use enter timeout if appear not set', done => {
       let calledBeforeEntered = false
