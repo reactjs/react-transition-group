@@ -325,7 +325,7 @@ class Transition extends React.Component {
   onTransitionEnd(node, timeout, handler) {
     this.setNextCallback(handler)
 
-    const isNotHaveTimeoutOrListener = timeout == null && !this.props.addEndListener
+    const doesNotHaveTimeoutOrListener = timeout == null && !this.props.addEndListener
     if (!node || isNotHaveTimeoutOrListener) {
       setTimeout(this.nextCallback, 0)
       return
