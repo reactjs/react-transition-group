@@ -100,7 +100,7 @@ describe('Transition', () => {
   })
 
   it('should allow addEndListener instead of timeouts', done => {
-    let listener = jest.fn(end => setTimeout(end, 0))
+    let listener = jest.fn((node, end) => setTimeout(end, 0))
 
     const nodeRef = React.createRef()
     let wrapper = mount(
@@ -121,7 +121,7 @@ describe('Transition', () => {
 
   it('should fallback to timeouts with addEndListener', done => {
     let calledEnd = false
-    let listener = (end) =>
+    let listener = (node, end) =>
       setTimeout(() => {
         calledEnd = true
         end()
@@ -512,13 +512,13 @@ describe('Transition', () => {
   })
 
   describe('node in callbacks', () => {
-    it('use stale nodes', done => {
+    it('does not use stale nodes', done => {
       const enteringNode = React.createRef();
       const enteredNode = React.createRef();
 
       function makeAssertions() {
-        expect(enteringNode.current.nodeName).toBe('H1');
-        expect(enteredNode.current.nodeName).toBe('H1');
+        expect(enteringNode.current.nodeName).toBe('H2');
+        expect(enteredNode.current.nodeName).toBe('H3');
 
         done();
       }

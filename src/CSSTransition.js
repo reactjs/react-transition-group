@@ -90,71 +90,60 @@ class CSSTransition extends React.Component {
     exit: {},
   }
 
-  onEnter = (maybeNode, maybeAppearing) => {
-    const [node, appearing] = this.resolveArguments(maybeNode, maybeAppearing)
+  onEnter = (node, appearing) => {
     this.removeClasses(node, 'exit');
     this.addClass(node, appearing ? 'appear' : 'enter', 'base');
 
     if (this.props.onEnter) {
-      this.props.onEnter(maybeNode, maybeAppearing)
+      this.props.onEnter(node, appearing)
     }
   }
 
-  onEntering = (maybeNode, maybeAppearing) => {
-    const [node, appearing] = this.resolveArguments(maybeNode, maybeAppearing)
+  onEntering = (node, appearing) => {
     const type = appearing ? 'appear' : 'enter';
     this.addClass(node, type, 'active')
 
     if (this.props.onEntering) {
-      this.props.onEntering(maybeNode, maybeAppearing)
+      this.props.onEntering(node, appearing)
     }
   }
 
-  onEntered = (maybeNode, maybeAppearing) => {
-    const [node, appearing] = this.resolveArguments(maybeNode, maybeAppearing)
+  onEntered = (node, appearing) => {
     const type = appearing ? 'appear' : 'enter'
     this.removeClasses(node, type);
     this.addClass(node, type, 'done');
 
     if (this.props.onEntered) {
-      this.props.onEntered(maybeNode, maybeAppearing)
+      this.props.onEntered(node, appearing)
     }
   }
 
-  onExit = (maybeNode) => {
-    const [node] = this.resolveArguments(maybeNode)
+  onExit = (node) => {
     this.removeClasses(node, 'appear');
     this.removeClasses(node, 'enter');
     this.addClass(node, 'exit', 'base')
 
     if (this.props.onExit) {
-      this.props.onExit(maybeNode)
+      this.props.onExit(node)
     }
   }
 
-  onExiting = (maybeNode) => {
-    const [node] = this.resolveArguments(maybeNode)
+  onExiting = (node) => {
     this.addClass(node, 'exit', 'active')
 
     if (this.props.onExiting) {
-      this.props.onExiting(maybeNode)
+      this.props.onExiting(node)
     }
   }
 
-  onExited = (maybeNode) => {
-    const [node] = this.resolveArguments(maybeNode)
+  onExited = (node) => {
     this.removeClasses(node, 'exit');
     this.addClass(node, 'exit', 'done');
 
     if (this.props.onExited) {
-      this.props.onExited(maybeNode)
+      this.props.onExited(node)
     }
   }
-
-  // when prop `nodeRef` is provided `node` is excluded
-  resolveArguments = (maybeNode, maybeAppearing) => this.props.nodeRef
-    ? [this.props.nodeRef.current, maybeNode] // here `maybeNode` is actually `appearing`
-    : [maybeNode, maybeAppearing] // `findDOMNode` was used
 
   getClassNames = (type) => {
     const { classNames } = this.props;
