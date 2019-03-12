@@ -510,4 +510,48 @@ describe('Transition', () => {
       instance.setState({ in: false })
     })
   })
+
+  describe('node in callbacks', () => {
+    it('use stale nodes', done => {
+      const enteringNode = React.createRef();
+      const enteredNode = React.createRef();
+
+      function makeAssertions() {
+        expect(enteringNode.current.nodeName).toBe('H1');
+        expect(enteredNode.current.nodeName).toBe('H1');
+
+        done();
+      }
+
+      const hosts = {
+        exited: 'h1',
+        entering: 'h2',
+        entered: 'h3'
+      }
+
+      const wrapper = mount(
+        <Transition
+          in={false}
+          onEntering={handleEntering}
+          onEntered={handleEntered}
+          timeout={0}
+        >
+          {state => {
+            const Component = hosts[state];
+            return <Component />
+          }}
+        </Transition>
+      );
+      wrapper.setProps({ in: true });
+
+      function handleEntering(node) {
+        enteringNode.current = node;
+      }
+
+      function handleEntered(node) {
+        enteredNode.current = node;
+        makeAssertions();
+      }
+    })
+  })
 })
