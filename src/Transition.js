@@ -209,7 +209,7 @@ class Transition extends React.Component {
     if (nextStatus !== null) {
       // nextStatus will always be ENTERING or EXITING.
       this.cancelNextCallback()
-      const node = ReactDOM.findDOMNode(this)
+      const node = this.needsNode() ? ReactDOM.findDOMNode(this) : null;
 
       if (nextStatus === ENTERING) {
         this.performEnter(node, mounting)
@@ -325,6 +325,19 @@ class Transition extends React.Component {
     if (timeout != null) {
       setTimeout(this.nextCallback, timeout)
     }
+  }
+
+  needsNode() {
+    return [
+      'addEndListener',
+      'onEnter',
+      'onEntering',
+      'onEntered',
+      'onExit'
+    ].some(callbackName => {
+      const callback = this.props[callbackName];
+      return callback && callback.length > 0
+    })
   }
 
   render() {
