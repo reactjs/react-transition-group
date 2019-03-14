@@ -1,7 +1,7 @@
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Grid } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import Layout from '../components/Layout';
 import Example from '../components/Example';
 
@@ -23,7 +23,7 @@ const propTypes = {
 
 const WithReactRouter = ({ data, location }) => (
   <Layout data={data} location={location}>
-    <Grid>
+    <Container>
       <h1>Usage with React Router</h1>
       <p>
         People often want to animate route transitions, which can result in
@@ -38,14 +38,15 @@ const WithReactRouter = ({ data, location }) => (
         The main challenge is the <strong>exit</strong> transition because React
         Router changes to a new route instantly, so we need to keep the old
         route around long enough to transition out of it. Fortunately,{' '}
-        <code>Route</code>'s <code>children</code> prop also accepts a{' '}
-        <em>function</em>, which should not be confused with the{' '}
-        <code>render</code> prop! Unlike the <code>render</code> prop,{' '}
-        <code>children</code> function runs whether the route is matched or not.
-        React Router passes the object containing a <code>match</code> object,
-        which exists if the route matches, otherwise it's <code>null</code>.
-        This enables us to manage the <code>in</code> prop of{' '}
-        <code>CSSTransition</code> based on the presence of <code>match</code>.
+        <code>Route</code>
+        's <code>children</code> prop also accepts a <em>function</em>, which
+        should not be confused with the <code>render</code> prop! Unlike the{' '}
+        <code>render</code> prop, <code>children</code> function runs whether
+        the route is matched or not. React Router passes the object containing a{' '}
+        <code>match</code> object, which exists if the route matches, otherwise
+        it's <code>null</code>. This enables us to manage the <code>in</code>{' '}
+        prop of <code>CSSTransition</code> based on the presence of{' '}
+        <code>match</code>.
       </p>
       <p>
         Exit transitions will cause the content of routes to linger until they
@@ -63,7 +64,7 @@ const WithReactRouter = ({ data, location }) => (
           won't execute.
         </p>
       </blockquote>
-    </Grid>
+    </Container>
     <Example
       codeSandbox={{
         title: 'CSSTransition + React Router',

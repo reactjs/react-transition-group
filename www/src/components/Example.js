@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 const propTypes = {
   codeSandbox: PropTypes.shape({
@@ -10,20 +10,22 @@ const propTypes = {
 };
 
 const Example = ({ codeSandbox }) => (
-  <div>
-    <Grid>
+  <div style={{ marginBottom: '1.5rem' }}>
+    <Container>
       <h2>Example</h2>
-    </Grid>
-    <div
-      dangerouslySetInnerHTML={{
-        __html: `
-          <iframe
-            title="${codeSandbox.title}"
-            src="https://codesandbox.io/embed/${codeSandbox.id}?fontsize=14"
-            style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
-            sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"
-          />`,
+    </Container>
+    <iframe
+      title={codeSandbox.title}
+      src={`https://codesandbox.io/embed/${codeSandbox.id}?fontsize=14`}
+      style={{
+        display: 'block',
+        width: '100%',
+        height: '500px',
+        border: 0,
+        borderRadius: 4,
+        overflow: 'hidden',
       }}
+      sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"
     />
   </div>
 );

@@ -1,4 +1,4 @@
-import { graphql, Link, withPrefix } from 'gatsby';
+import { graphql, Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -25,73 +25,33 @@ const propTypes = {
   }).isRequired,
 };
 
-const NavItem = ({ to, location, children }) => (
-  <li role="presentation">
-    <Link
-      to={to}
-      location={location}
-      activeStyle={{
-        color: '#fff',
-        backgroundColor: '#080808',
-      }}
-    >
-      {children}
-    </Link>
-  </li>
+const Layout = ({ data, children }) => (
+  <>
+    <Navbar fixed="top" bg="dark" variant="dark" expand="md" collapseOnSelect>
+      <Navbar.Brand as={Link} to="/">
+        React Transition Group
+      </Navbar.Brand>
+      <Navbar.Toggle />
+      <Navbar.Collapse>
+        <Nav className="mr-auto">
+          {data.site.siteMetadata.componentPages.map(
+            ({ path, displayName }) => (
+              <Nav.Link key={path} as={Link} to={path} activeClassName="active">
+                {displayName}
+              </Nav.Link>
+            )
+          )}
+        </Nav>
+        <Nav>
+          <Nav.Link as={Link} to="/with-react-router" activeClassName="active">
+            With React Router
+          </Nav.Link>
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
+    <div style={{ paddingTop: '5rem' }}>{children}</div>
+  </>
 );
-
-NavItem.propTypes = {
-  to: PropTypes.string.isRequired,
-  location: PropTypes.shape({
-    pathname: PropTypes.string.isRequired,
-  }).isRequired,
-  children: PropTypes.node.isRequired,
-};
-
-class Layout extends React.Component {
-  isActive(path, location) {
-    return withPrefix(path) === withPrefix(location.pathname);
-  }
-
-  render() {
-    const { data, children } = this.props;
-    const location = {
-      ...this.props.location,
-      pathname: withPrefix(this.props.location.pathname),
-    };
-    return (
-      <div>
-        <Navbar fixedTop inverse collapseOnSelect>
-          <Navbar.Header>
-            <Navbar.Brand>
-              <Link to="/">React Transition Group</Link>
-            </Navbar.Brand>
-            <Navbar.Toggle />
-          </Navbar.Header>
-          <Navbar.Collapse>
-            <Nav pullLeft>
-              {data.site.siteMetadata.componentPages.map(
-                ({ path, displayName }) => (
-                  <NavItem key={path} to={path} location={location}>
-                    {displayName}
-                  </NavItem>
-                )
-              )}
-            </Nav>
-            <Nav pullRight>
-              <NavItem to="/with-react-router" location={location}>
-                With React Router
-              </NavItem>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-        <div style={{ paddingTop: '4rem', paddingBottom: '1.5rem' }}>
-          {children}
-        </div>
-      </div>
-    );
-  }
-}
 
 Layout.propTypes = propTypes;
 
