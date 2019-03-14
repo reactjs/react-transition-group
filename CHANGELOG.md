@@ -3,6 +3,7 @@
 
 ### Bug Fixes
 
+* **Transition:** make `exit` key optional when passing an object to the `timeout` prop ([#464](https://github.com/reactjs/react-transition-group/pull/464)) ([3a4cf9c](https://github.com/reactjs/react-transition-group/commit/3a4cf9c91ab5f25caaa9501b129bce66ec9bb56b))
 * **package.json:** mark react-transition-group as side-effect free for webpack tree shaking ([#472](https://github.com/reactjs/react-transition-group/issues/472)) ([b81dc89](https://github.com/reactjs/react-transition-group/commit/b81dc89))
 
 # [2.6.0](https://github.com/reactjs/react-transition-group/compare/v2.5.3...v2.6.0) (2019-02-26)
