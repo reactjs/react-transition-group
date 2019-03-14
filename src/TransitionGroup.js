@@ -122,6 +122,13 @@ TransitionGroup.propTypes = {
    * leave. the `<TransitionGroup>` will inject specific transition props, so
    * remember to spread them through if you are wrapping the `<Transition>` as
    * with our `<Fade>` example.
+   *
+   * While this component is meant to make it easier to animate multiple
+   * `Transition` or `CSSTransition` children, sometimes you want to transition a
+   * single child by changing its content, e.g. routes, slides, images in a
+   * carousel etc. In that case you can change the `key` prop of the child
+   * component along with its content, that way `TransitionGroup` will know that
+   * it should transition the child.
    */
   children: PropTypes.node,
 
