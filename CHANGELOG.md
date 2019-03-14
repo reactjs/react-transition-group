@@ -1,3 +1,10 @@
+## [2.6.1](https://github.com/reactjs/react-transition-group/compare/v2.6.0...v2.6.1) (2019-03-14)
+
+
+### Bug Fixes
+
+* **package.json:** mark react-transition-group as side-effect free for webpack tree shaking ([#472](https://github.com/reactjs/react-transition-group/issues/472)) ([b81dc89](https://github.com/reactjs/react-transition-group/commit/b81dc89))
+
 # [2.6.0](https://github.com/reactjs/react-transition-group/compare/v2.5.3...v2.6.0) (2019-02-26)
 
 
