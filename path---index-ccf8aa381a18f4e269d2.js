@@ -1,2 +1,0 @@
-webpackJsonp([0x81b8806e4260],{413:function(a,t){a.exports={data:{site:{siteMetadata:{componentPages:[{path:"/transition",displayName:"Transition"},{path:"/css-transition",displayName:"CSSTransition"},{path:"/transition-group",displayName:"TransitionGroup"}]}}},pathContext:{}}}});
-//# sourceMappingURL=path---index-ccf8aa381a18f4e269d2.js.map
