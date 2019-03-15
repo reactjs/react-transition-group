@@ -21,7 +21,7 @@ export const EXITING = 'exiting'
  *
  * **Note**: `Transition` is a platform-agnostic base component. If you're using
  * transitions in CSS, you'll probably want to use
- * [`CSSTransition`](http://reactcommunity.org/react-transition-group/css-transition)
+ * [`CSSTransition`](https://reactcommunity.org/react-transition-group/css-transition)
  * instead. It inherits all the features of `Transition`, but contains
  * additional features necessary to play nice with CSS transitions (hence the
  * name of the component).
