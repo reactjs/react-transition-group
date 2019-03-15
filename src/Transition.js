@@ -17,13 +17,24 @@ export const EXITING = 'exiting'
  * it's used to animate the mounting and unmounting of a component, but can also
  * be used to describe in-place transition states as well.
  *
+ * ---
+ *
+ * **Note**: `Transition` is a platform-agnostic base component. If you're using
+ * transitions in CSS, you'll probably want to use
+ * [`CSSTransition`](http://reactcommunity.org/react-transition-group/css-transition)
+ * instead. It inherits all the features of `Transition`, but contains
+ * additional features necessary to play nice with CSS transitions (hence the
+ * name of the component).
+ *
+ * ---
+ *
  * By default the `Transition` component does not alter the behavior of the
- * component it renders, it only tracks "enter" and "exit" states for the components.
- * It's up to you to give meaning and effect to those states. For example we can
- * add styles to a component when it enters or exits:
+ * component it renders, it only tracks "enter" and "exit" states for the
+ * components. It's up to you to give meaning and effect to those states. For
+ * example we can add styles to a component when it enters or exits:
  *
  * ```jsx
- * import Transition from 'react-transition-group/Transition';
+ * import { Transition } from 'react-transition-group';
  *
  * const duration = 300;
  *
@@ -39,7 +50,7 @@ export const EXITING = 'exiting'
  *
  * const Fade = ({ in: inProp }) => (
  *   <Transition in={inProp} timeout={duration}>
- *     {(state) => (
+ *     {state => (
  *       <div style={{
  *         ...defaultStyle,
  *         ...transitionStyles[state]
@@ -51,20 +62,17 @@ export const EXITING = 'exiting'
  * );
  * ```
  *
- * As noted the `Transition` component doesn't _do_ anything by itself to its child component.
- * What it does do is track transition states over time so you can update the
- * component (such as by adding styles or classes) when it changes states.
- *
  * There are 4 main states a Transition can be in:
  *  - `'entering'`
  *  - `'entered'`
  *  - `'exiting'`
  *  - `'exited'`
  *
- * Transition state is toggled via the `in` prop. When `true` the component begins the
- * "Enter" stage. During this stage, the component will shift from its current transition state,
- * to `'entering'` for the duration of the transition and then to the `'entered'` stage once
- * it's complete. Let's take the following example:
+ * Transition state is toggled via the `in` prop. When `true` the component
+ * begins the "Enter" stage. During this stage, the component will shift from
+ * its current transition state, to `'entering'` for the duration of the
+ * transition and then to the `'entered'` stage once it's complete. Let's take
+ * the following example:
  *
  * ```jsx
  * state = { in: false };
@@ -75,36 +83,24 @@ export const EXITING = 'exiting'
  *
  * render() {
  *   return (
- *     <div>
- *       <Transition in={this.state.in} timeout={500} />
+ *     <>
+ *       <Transition in={this.state.in} timeout={500}>
+ *         {state => (
+ *           // ...
+ *         )}
+ *       </Transition>
  *       <button onClick={this.toggleEnterState}>Click to Enter</button>
- *     </div>
+ *     </>
  *   );
  * }
  * ```
  *
- * When the button is clicked the component will shift to the `'entering'` state and
- * stay there for 500ms (the value of `timeout`) before it finally switches to `'entered'`.
+ * When the button is clicked the component will shift to the `'entering'` state
+ * and stay there for 500ms (the value of `timeout`) before it finally switches
+ * to `'entered'`.
  *
- * When `in` is `false` the same thing happens except the state moves from `'exiting'` to `'exited'`.
- *
- * ## Timing
- *
- * Timing is often the trickiest part of animation, mistakes can result in slight delays
- * that are hard to pin down. A common example is when you want to add an exit transition,
- * you should set the desired final styles when the state is `'exiting'`. That's when the
- * transition to those styles will start and, if you matched the `timeout` prop with the
- * CSS Transition duration, it will end exactly when the state changes to `'exited'`.
- *
- * > **Note**: For simpler transitions the `Transition` component might be enough, but
- * > take into account that it's platform-agnostic, while the `CSSTransition` component
- * > [forces reflows](https://github.com/reactjs/react-transition-group/blob/5007303e729a74be66a21c3e2205e4916821524b/src/CSSTransition.js#L208-L215)
- * > in order to make more complex transitions more predictable. For example, even though
- * > classes `example-enter` and `example-enter-active` are applied immediately one after
- * > another, you can still transition from one to the other because of the forced reflow
- * > (read [this issue](https://github.com/reactjs/react-transition-group/issues/159#issuecomment-322761171)
- * > for more info). Take this into account when choosing between `Transition` and
- * > `CSSTransition`.
+ * When `in` is `false` the same thing happens except the state moves from
+ * `'exiting'` to `'exited'`.
  */
 class Transition extends React.Component {
   static contextTypes = {
@@ -374,15 +370,15 @@ class Transition extends React.Component {
 
 Transition.propTypes = {
   /**
-   * A `function` child can be used instead of a React element.
-   * This function is called with the current transition status
-   * ('entering', 'entered', 'exiting', 'exited', 'unmounted'), which can be used
-   * to apply context specific props to a component.
+   * A `function` child can be used instead of a React element. This function is
+   * called with the current transition status (`'entering'`, `'entered'`,
+   * `'exiting'`, `'exited'`, `'unmounted'`), which can be used to apply context
+   * specific props to a component.
    *
    * ```jsx
-   * <Transition timeout={150}>
-   *   {(status) => (
-   *     <MyComponent className={`fade fade-${status}`} />
+   * <Transition in={this.state.in} timeout={150}>
+   *   {state => (
+   *     <MyComponent className={`fade fade-${state}`} />
    *   )}
    * </Transition>
    * ```
@@ -432,22 +428,27 @@ Transition.propTypes = {
 
   /**
    * The duration of the transition, in milliseconds.
-   * Required unless `addEndListener` is provided
+   * Required unless `addEndListener` is provided.
    *
-   * You may specify a single timeout for all transitions like: `timeout={500}`,
-   * or individually like:
+   * You may specify a single timeout for all transitions:
+   *
+   * ```jsx
+   * timeout={500}
+   * ```
+   *
+   * or individually:
    *
    * ```jsx
    * timeout={{
+   *  appear: 500,
    *  enter: 300,
    *  exit: 500,
-   *  appear: 500,
    * }}
    * ```
    *
-   * If the value of `appear` is not set, then the value from enter is taken.
-   *
-   * If the `enter` or `exit` value is `null` or `undefined`, then the timer is set to `0`
+   * - `appear` defaults to the value of `enter`
+   * - `enter` defaults to `0`
+   * - `exit` defaults to `0`
    *
    * @type {number | { enter?: number, exit?: number, appear?: number }}
    */

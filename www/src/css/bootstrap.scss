@@ -21,6 +21,7 @@ code {
   color: $hue-3;
   a & {
     padding: 0;
+    color: inherit !important;
   }
 }
 
