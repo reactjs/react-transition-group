@@ -32,7 +32,7 @@ const propTypes = {
         componentPages: PropTypes.arrayOf(
           PropTypes.shape({
             displayName: PropTypes.string.isRequired,
-            codeSandboxId: PropTypes.string.isRequired,
+            codeSandboxId: PropTypes.string,
           })
         ).isRequired,
       }).isRequired,
