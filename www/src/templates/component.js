@@ -58,7 +58,7 @@ class ComponentTemplate extends React.Component {
         <div>
           <Container>
             <h1 id={metadata.displayName}>{metadata.displayName}</h1>
-            <p
+            <div
               dangerouslySetInnerHTML={{ __html: extractMarkdown(metadata) }}
             />
           </Container>
