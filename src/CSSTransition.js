@@ -23,6 +23,24 @@ const removeClass = (node, classes) => node && classes && classes.split(' ').for
  * transition, matching `*-done` class names are applied to persist the
  * transition state.
  *
+ * ```jsx
+ * function App() {
+ *   const [inProp, setInProp] = useState(false);
+ *   return (
+ *     <div>
+ *       <CSSTransition in={inProp} timeout={200} classNames="my-node">
+ *         <div>
+ *           {"I'll receive my-node-* classes"}
+ *         </div>
+ *       </CSSTransition>
+ *       <button type="button" onClick={() => setInProp(true)}>
+ *         Click to Enter
+ *       </button>
+ *     </div>
+ *   );
+ * }
+ * ```
+ *
  * When the `in` prop is set to `true`, the child component will first receive
  * the class `example-enter`, then the `example-enter-active` will be added in
  * the next tick. `CSSTransition` [forces a
@@ -32,6 +50,25 @@ const removeClass = (node, classes) => node && classes && classes.split(' ').for
  * `example-enter-active` even though they were added immediately one after
  * another. Most notably, this is what makes it possible for us to animate
  * _appearance_.
+ *
+ * ```css
+ * .my-node-enter {
+ *   opacity: 0;
+ * }
+ * .my-node-enter-active {
+ *   opacity: 1;
+ *   transition: opacity 200ms;
+ * }
+ * .my-node-exit {
+ *   opacity: 1;
+ * }
+ * .my-node-exit-active {
+ *   opacity: 0;
+ *   transition: opacity: 200ms;
+ * }
+ * ```
+ *
+ * `*-active` classes represent which styles you want to animate **to**.
  */
 class CSSTransition extends React.Component {
   onEnter = (node, appearing) => {
