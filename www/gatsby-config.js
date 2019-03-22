@@ -9,7 +9,7 @@ module.exports = {
       {
         path: '/transition',
         displayName: 'Transition',
-        codeSandboxId: '741op4mmj0',
+        codeSandboxId: null,
       },
       {
         path: '/css-transition',

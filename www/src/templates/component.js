@@ -50,6 +50,9 @@ class ComponentTemplate extends React.Component {
     const { data, location } = this.props;
     const { metadata } = data;
     const { componentPages } = data.site.siteMetadata;
+    const { codeSandboxId } = componentPages.find(
+      page => page.displayName === metadata.displayName
+    );
     return (
       <Layout data={data} location={location}>
         <div>
@@ -60,14 +63,14 @@ class ComponentTemplate extends React.Component {
             />
           </Container>
 
-          <Example
-            codeSandbox={{
-              title: `${metadata.displayName} Component`,
-              id: componentPages.find(
-                page => page.displayName === metadata.displayName
-              ).codeSandboxId,
-            }}
-          />
+          {codeSandboxId != null && (
+            <Example
+              codeSandbox={{
+                title: `${metadata.displayName} Component`,
+                id: codeSandboxId,
+              }}
+            />
+          )}
 
           <Container>
             <h2>
