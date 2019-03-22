@@ -72,25 +72,23 @@ export const EXITING = 'exiting'
  * begins the "Enter" stage. During this stage, the component will shift from
  * its current transition state, to `'entering'` for the duration of the
  * transition and then to the `'entered'` stage once it's complete. Let's take
- * the following example:
+ * the following example (we'll use the
+ * [useState](https://reactjs.org/docs/hooks-reference.html#usestate) hook):
  *
  * ```jsx
- * state = { in: false };
- *
- * toggleEnterState = () => {
- *   this.setState({ in: true });
- * }
- *
- * render() {
+ * function App() {
+ *   const [inProp, setInProp] = useState(false);
  *   return (
- *     <>
- *       <Transition in={this.state.in} timeout={500}>
+ *     <div>
+ *       <Transition in={inProp} timeout={500}>
  *         {state => (
  *           // ...
  *         )}
  *       </Transition>
- *       <button onClick={this.toggleEnterState}>Click to Enter</button>
- *     </>
+ *       <button onClick={() => setInProp(true)}>
+ *         Click to Enter
+ *       </button>
+ *     </div>
  *   );
  * }
  * ```
