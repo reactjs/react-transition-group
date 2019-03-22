@@ -1,3 +1,10 @@
+# [2.7.0](https://github.com/reactjs/react-transition-group/compare/v2.6.1...v2.7.0) (2019-03-22)
+
+
+### Features
+
+* support ESM (tree-shaking) ([#455](https://github.com/reactjs/react-transition-group/issues/455)) ([ef3e357](https://github.com/reactjs/react-transition-group/commit/ef3e357))
+
 ## [2.6.1](https://github.com/reactjs/react-transition-group/compare/v2.6.0...v2.6.1) (2019-03-14)
 
 
