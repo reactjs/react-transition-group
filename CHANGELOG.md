@@ -3,7 +3,7 @@
 
 ### Bug Fixes
 
-* trigger release ([2524b86](https://github.com/reactjs/react-transition-group/commit/2524b86))
+* revert tree-shaking support because it was a breaking change ([271364c](https://github.com/reactjs/react-transition-group/commit/271364c))
 
 # [2.7.0](https://github.com/reactjs/react-transition-group/compare/v2.6.1...v2.7.0) (2019-03-22)
 
