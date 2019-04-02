@@ -71,6 +71,9 @@ const removeClass = (node, classes) => node && classes && classes.split(' ').for
  * `*-active` classes represent which styles you want to animate **to**.
  */
 class CSSTransition extends React.Component {
+  static defaultProps = {
+    classNames: ''
+  }
   onEnter = (node, appearing) => {
     const { className } = this.getClassNames(appearing ? 'appear' : 'enter')
 
@@ -140,15 +143,17 @@ class CSSTransition extends React.Component {
 
   getClassNames = (type) => {
     const { classNames } = this.props;
+    const isStringClassNames = typeof classNames === 'string';
+    const prefix = isStringClassNames && classNames ? classNames + '-' : '';
 
-    let className = typeof classNames !== 'string' ?
-      classNames[type] : classNames + '-' + type;
+    let className = isStringClassNames ?
+      prefix + type : classNames[type]
 
-    let activeClassName = typeof classNames !== 'string' ?
-      classNames[type + 'Active'] : className + '-active';
+    let activeClassName = isStringClassNames ?
+      className + '-active' : classNames[type + 'Active'];
 
-    let doneClassName = typeof classNames !== 'string' ?
-      classNames[type + 'Done'] : className + '-done';
+    let doneClassName = isStringClassNames ?
+      className + '-done' : classNames[type + 'Done'];
 
     return {
       className,
