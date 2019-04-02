@@ -1,3 +1,10 @@
+# [2.8.0](https://github.com/reactjs/react-transition-group/compare/v2.7.1...v2.8.0) (2019-04-02)
+
+
+### Features
+
+* add support for empty classNames ([#481](https://github.com/reactjs/react-transition-group/issues/481)) ([d755dc6](https://github.com/reactjs/react-transition-group/commit/d755dc6))
+
 ## [2.7.1](https://github.com/reactjs/react-transition-group/compare/v2.7.0...v2.7.1) (2019-03-25)
 
 
