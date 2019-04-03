@@ -133,5 +133,5 @@ export class SwitchTransition extends React.Component {
 
 
 SwitchTransition.propTypes = {
-  mode: PropTypes.arrayOf([modes.in, modes.out]),
+  mode: PropTypes.oneOf([modes.in, modes.out]),
 }
