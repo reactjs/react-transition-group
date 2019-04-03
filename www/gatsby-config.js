@@ -9,7 +9,7 @@ module.exports = {
       {
         path: '/transition',
         displayName: 'Transition',
-        codeSandboxId: '741op4mmj0',
+        codeSandboxId: null,
       },
       {
         path: '/css-transition',
@@ -24,6 +24,7 @@ module.exports = {
     ],
   },
   plugins: [
+    'gatsby-plugin-react-helmet',
     {
       resolve: 'gatsby-source-filesystem',
       options: {

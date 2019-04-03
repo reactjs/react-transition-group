@@ -11,19 +11,69 @@ const addClass = (node, classes) => node && classes && classes.split(' ').forEac
 const removeClass = (node, classes) => node && classes && classes.split(' ').forEach(c => removeOneClass(node, c));
 
 /**
- * A `Transition` component using CSS transitions and animations.
- * It's inspired by the excellent [ng-animate](http://www.nganimate.org/) library.
+ * A transition component inspired by the excellent
+ * [ng-animate](http://www.nganimate.org/) library, you should use it if you're
+ * using CSS transitions or animations. It's built upon the
+ * [`Transition`](https://reactcommunity.org/react-transition-group/transition)
+ * component, so it inherits all of its props.
  *
  * `CSSTransition` applies a pair of class names during the `appear`, `enter`,
- * and `exit` stages of the transition. The first class is applied and then a
- * second "active" class in order to activate the css animation. After the animation,
- * matching `done` class names are applied to persist the animation state.
+ * and `exit` states of the transition. The first class is applied and then a
+ * second `*-active` class in order to activate the CSSS transition. After the
+ * transition, matching `*-done` class names are applied to persist the
+ * transition state.
  *
- * When the `in` prop is toggled to `true` the Component will get
- * the `example-enter` CSS class and the `example-enter-active` CSS class
- * added in the next tick. This is a convention based on the `classNames` prop.
+ * ```jsx
+ * function App() {
+ *   const [inProp, setInProp] = useState(false);
+ *   return (
+ *     <div>
+ *       <CSSTransition in={inProp} timeout={200} classNames="my-node">
+ *         <div>
+ *           {"I'll receive my-node-* classes"}
+ *         </div>
+ *       </CSSTransition>
+ *       <button type="button" onClick={() => setInProp(true)}>
+ *         Click to Enter
+ *       </button>
+ *     </div>
+ *   );
+ * }
+ * ```
+ *
+ * When the `in` prop is set to `true`, the child component will first receive
+ * the class `example-enter`, then the `example-enter-active` will be added in
+ * the next tick. `CSSTransition` [forces a
+ * reflow](https://github.com/reactjs/react-transition-group/blob/5007303e729a74be66a21c3e2205e4916821524b/src/CSSTransition.js#L208-L215)
+ * between before adding the `example-enter-active`. This is an important trick
+ * because it allows us to transition between `example-enter` and
+ * `example-enter-active` even though they were added immediately one after
+ * another. Most notably, this is what makes it possible for us to animate
+ * _appearance_.
+ *
+ * ```css
+ * .my-node-enter {
+ *   opacity: 0;
+ * }
+ * .my-node-enter-active {
+ *   opacity: 1;
+ *   transition: opacity 200ms;
+ * }
+ * .my-node-exit {
+ *   opacity: 1;
+ * }
+ * .my-node-exit-active {
+ *   opacity: 0;
+ *   transition: opacity: 200ms;
+ * }
+ * ```
+ *
+ * `*-active` classes represent which styles you want to animate **to**.
  */
 class CSSTransition extends React.Component {
+  static defaultProps = {
+    classNames: ''
+  }
   onEnter = (node, appearing) => {
     const { className } = this.getClassNames(appearing ? 'appear' : 'enter')
 
@@ -93,15 +143,17 @@ class CSSTransition extends React.Component {
 
   getClassNames = (type) => {
     const { classNames } = this.props;
+    const isStringClassNames = typeof classNames === 'string';
+    const prefix = isStringClassNames && classNames ? classNames + '-' : '';
 
-    let className = typeof classNames !== 'string' ?
-      classNames[type] : classNames + '-' + type;
+    let className = isStringClassNames ?
+      prefix + type : classNames[type]
 
-    let activeClassName = typeof classNames !== 'string' ?
-      classNames[type + 'Active'] : className + '-active';
+    let activeClassName = isStringClassNames ?
+      className + '-active' : classNames[type + 'Active'];
 
-    let doneClassName = typeof classNames !== 'string' ?
-      classNames[type + 'Done'] : className + '-done';
+    let doneClassName = isStringClassNames ?
+      className + '-done' : classNames[type + 'Done'];
 
     return {
       className,

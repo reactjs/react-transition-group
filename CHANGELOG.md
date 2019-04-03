@@ -1,3 +1,32 @@
+# [2.8.0](https://github.com/reactjs/react-transition-group/compare/v2.7.1...v2.8.0) (2019-04-02)
+
+
+### Features
+
+* add support for empty classNames ([#481](https://github.com/reactjs/react-transition-group/issues/481)) ([d755dc6](https://github.com/reactjs/react-transition-group/commit/d755dc6))
+
+## [2.7.1](https://github.com/reactjs/react-transition-group/compare/v2.7.0...v2.7.1) (2019-03-25)
+
+
+### Bug Fixes
+
+* revert tree-shaking support because it was a breaking change ([271364c](https://github.com/reactjs/react-transition-group/commit/271364c))
+
+# [2.7.0](https://github.com/reactjs/react-transition-group/compare/v2.6.1...v2.7.0) (2019-03-22)
+
+
+### Features
+
+* support ESM (tree-shaking) ([#455](https://github.com/reactjs/react-transition-group/issues/455)) ([ef3e357](https://github.com/reactjs/react-transition-group/commit/ef3e357))
+
+## [2.6.1](https://github.com/reactjs/react-transition-group/compare/v2.6.0...v2.6.1) (2019-03-14)
+
+
+### Bug Fixes
+
+* **Transition:** make `exit` key optional when passing an object to the `timeout` prop ([#464](https://github.com/reactjs/react-transition-group/pull/464)) ([3a4cf9c](https://github.com/reactjs/react-transition-group/commit/3a4cf9c91ab5f25caaa9501b129bce66ec9bb56b))
+* **package.json:** mark react-transition-group as side-effect free for webpack tree shaking ([#472](https://github.com/reactjs/react-transition-group/issues/472)) ([b81dc89](https://github.com/reactjs/react-transition-group/commit/b81dc89))
+
 # [2.6.0](https://github.com/reactjs/react-transition-group/compare/v2.5.3...v2.6.0) (2019-02-26)
 
 
