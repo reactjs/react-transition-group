@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { mount } from 'enzyme'
-import sinon from 'sinon'
 
 import Transition, {
   UNMOUNTED,
@@ -90,13 +89,13 @@ describe('Transition', () => {
   })
 
   it('should allow addEndListener instead of timeouts', done => {
-    let listener = sinon.spy((node, end) => setTimeout(end, 0))
+    let listener = jest.fn((node, end) => setTimeout(end, 0))
 
     let inst = mount(
       <Transition
         addEndListener={listener}
         onEntered={() => {
-          expect(listener.callCount).toEqual(1)
+          expect(listener).toHaveBeenCalledTimes(1)
           done()
         }}
       >
@@ -214,8 +213,9 @@ describe('Transition', () => {
     })
 
     it('should fire callbacks', done => {
-      let onEnter = sinon.spy()
-      let onEntering = sinon.spy()
+      let callOrder = []
+      let onEnter = jest.fn(() => callOrder.push('onEnter'))
+      let onEntering = jest.fn(() => callOrder.push('onEntering'))
 
       expect(wrapper.state('status')).toEqual(EXITED)
 
@@ -227,9 +227,9 @@ describe('Transition', () => {
         onEntering,
 
         onEntered() {
-          expect(onEnter.calledOnce).toEqual(true)
-          expect(onEntering.calledOnce).toEqual(true)
-          expect(onEnter.calledBefore(onEntering)).toEqual(true)
+          expect(onEnter).toHaveBeenCalledTimes(1)
+          expect(onEntering).toHaveBeenCalledTimes(1)
+          expect(callOrder).toEqual(['onEnter', 'onEntering'])
           done()
         },
       })
@@ -274,8 +274,9 @@ describe('Transition', () => {
     })
 
     it('should fire callbacks', done => {
-      let onExit = sinon.spy()
-      let onExiting = sinon.spy()
+      let callOrder = []
+      let onExit = jest.fn(() => callOrder.push('onExit'))
+      let onExiting = jest.fn(() => callOrder.push('onExiting'))
 
       expect(wrapper.state('status')).toEqual(ENTERED)
 
@@ -287,9 +288,9 @@ describe('Transition', () => {
         onExiting,
 
         onExited() {
-          expect(onExit.calledOnce).toEqual(true)
-          expect(onExiting.calledOnce).toEqual(true)
-          expect(onExit.calledBefore(onExiting)).toEqual(true)
+          expect(onExit).toHaveBeenCalledTimes(1)
+          expect(onExiting).toHaveBeenCalledTimes(1)
+          expect(callOrder).toEqual(['onExit', 'onExiting'])
           done()
         },
       })

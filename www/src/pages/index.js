@@ -1,7 +1,7 @@
 import { graphql, Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Grid } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import Layout from '../components/Layout';
 
 const propTypes = {
@@ -26,7 +26,7 @@ class Index extends React.Component {
 
     return (
       <Layout data={data} location={location}>
-        <Grid>
+        <Container>
           <h1>React Transition Group</h1>
           <blockquote>
             <p>
@@ -35,7 +35,8 @@ class Index extends React.Component {
               like{' '}
               <a href="https://github.com/chenglou/react-motion">
                 React-Motion
-              </a>, it does not animate styles by itself. Instead it exposes
+              </a>
+              , it does not animate styles by itself. Instead it exposes
               transition stages, manages classes and group elements and
               manipulates the DOM in useful ways, making the implementation of
               actual visual transitions much easier.
@@ -78,7 +79,7 @@ yarn add react-transition-group
               )
             )}
           </ul>
-        </Grid>
+        </Container>
       </Layout>
     );
   }

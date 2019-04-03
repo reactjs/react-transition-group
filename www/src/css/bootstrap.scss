@@ -21,6 +21,7 @@ code {
   color: $hue-3;
   a & {
     padding: 0;
+    color: inherit !important;
   }
 }
 
@@ -35,8 +36,4 @@ h1, h2, h3, h4, h5 {
   & > a:hover {
     color: inherit;
   }
-}
-
-iframe[src*=codesandbox] + p {
-  margin-top: 1rem;
 }

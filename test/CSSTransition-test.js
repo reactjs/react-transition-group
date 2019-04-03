@@ -279,5 +279,38 @@ describe('CSSTransition', () => {
         }
       });
     });
+
+    it('should support empty prefix', done => {
+      let count = 0;
+
+      const instance = mount(
+        <CSSTransition
+          in
+          timeout={10}
+        >
+          <div/>
+        </CSSTransition>
+      )
+
+      instance.setProps({
+        in: false,
+
+        onExit(node){
+          count++;
+          expect(node.className).toEqual('exit');
+        },
+
+        onExiting(node){
+          count++;
+          expect(node.className).toEqual('exit exit-active');
+        },
+
+        onExited(node){
+          expect(node.className).toEqual('exit-done');
+          expect(count).toEqual(2);
+          done();
+        }
+      });
+    });
   });
 });
