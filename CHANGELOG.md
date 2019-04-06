@@ -1,3 +1,15 @@
+# [2.9.0](https://github.com/reactjs/react-transition-group/compare/v2.8.0...v2.9.0) (2019-04-06)
+
+
+### Features
+
+* **CSSTransition:** add "done" class for appear ([fe3c156](https://github.com/reactjs/react-transition-group/commit/fe3c156)), closes [#383](https://github.com/reactjs/react-transition-group/issues/383) [#327](https://github.com/reactjs/react-transition-group/issues/327) [#327](https://github.com/reactjs/react-transition-group/issues/327)
+
+
+### Reverts
+
+* bump semantic release dependencies ([1bdcaec](https://github.com/reactjs/react-transition-group/commit/1bdcaec))
+
 # [2.8.0](https://github.com/reactjs/react-transition-group/compare/v2.7.1...v2.8.0) (2019-04-02)
 
 
