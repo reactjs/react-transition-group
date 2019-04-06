@@ -88,7 +88,6 @@
     "prettier": "^1.16.4",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "react-test-renderer": "^16.5.2",
     "release-script": "^1.0.2",
     "rimraf": "^2.6.3",
     "rollup": "^1.9.0",
