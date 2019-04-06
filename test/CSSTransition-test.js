@@ -3,14 +3,6 @@ import { mount } from 'enzyme';
 
 import CSSTransition from '../src/CSSTransition';
 
-jasmine.addMatchers({
-  toExist: () => ({
-    compare: actual => ({
-      pass: actual != null,
-    })
-  })
-});
-
 describe('CSSTransition', () => {
 
   it('should flush new props to the DOM before initiating a transition', (done) => {

@@ -11,12 +11,17 @@ import Transition, {
   EXITING,
 } from '../src/Transition'
 
-jasmine.addMatchers({
-  toExist: () => ({
-    compare: actual => ({
-      pass: actual != null,
-    }),
-  }),
+expect.extend({
+  toExist(received) {
+    const pass = received != null
+    return pass ? {
+      message: () => `expected ${received} to be null or undefined`,
+      pass: true,
+    } : {
+      message: () => `expected ${received} not to be null or undefined`,
+      pass: false,
+    }
+  },
 })
 
 describe('Transition', () => {
