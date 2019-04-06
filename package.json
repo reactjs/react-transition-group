@@ -62,10 +62,10 @@
   "devDependencies": {
     "@babel/cli": "^7.4.3",
     "@babel/core": "^7.4.3",
-    "@semantic-release/changelog": "^3.0.0",
-    "@semantic-release/git": "^7.0.4",
-    "@semantic-release/github": "^5.0.5",
-    "@semantic-release/npm": "^5.0.4",
+    "@semantic-release/changelog": "^3.0.2",
+    "@semantic-release/git": "^7.0.8",
+    "@semantic-release/github": "^5.2.10",
+    "@semantic-release/npm": "^5.1.4",
     "@storybook/addon-actions": "^4.1.4",
     "@storybook/react": "^4.1.4",
     "babel-core": "^7.0.0-bridge.0",
@@ -98,9 +98,9 @@
     "rollup-plugin-replace": "^2.1.0",
     "rollup-plugin-size-snapshot": "^0.8.0",
     "rollup-plugin-terser": "^4.0.2",
-    "semantic-release": "^15.9.16",
-    "semantic-release-alt-publish-dir": "^2.1.1",
-    "travis-deploy-once": "^5.0.8"
+    "semantic-release": "^15.13.3",
+    "semantic-release-alt-publish-dir": "^3.0.0",
+    "travis-deploy-once": "^5.0.11"
   },
   "release": {
     "pkgRoot": "lib",
