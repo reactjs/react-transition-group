@@ -472,9 +472,9 @@ describe('Transition', () => {
 
   describe('findDOMNode', () => {
     it('uses ReactDOM.findDOMNode by default', done => {
-      const expectDiv = sinon.spy(node => expect(node.nodeName).toEqual('DIV'));
+      const expectDiv = jest.fn(node => expect(node.nodeName).toEqual('DIV'));
       const handleExited = () => {
-        expect(expectDiv.called).toBe(true);
+        expect(expectDiv).toHaveBeenCalled()
 
         done();
       }
@@ -514,9 +514,9 @@ describe('Transition', () => {
         }
       }
 
-      const expectSpan = sinon.spy(node => expect(node.nodeName).toEqual('SPAN'));
+      const expectSpan = jest.fn(node => expect(node.nodeName).toEqual('SPAN'));
       const handleExited = () => {
-        expect(expectSpan.called).toBe(true);
+        expect(expectSpan).toHaveBeenCalled();
 
         done();
       }
