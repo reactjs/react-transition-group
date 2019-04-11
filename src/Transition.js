@@ -1,6 +1,5 @@
 import * as PropTypes from 'prop-types'
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { polyfill } from 'react-lifecycles-compat'
 
 import { timeoutsShape } from './utils/PropTypes'
@@ -140,6 +139,10 @@ class Transition extends React.Component {
     this.nextCallback = null
   }
 
+  setChildNode = node => {
+    this.childNode = node
+  }
+
   getChildContext() {
     return { transitionGroup: null } // allows for nested Transitions
   }
@@ -216,12 +219,13 @@ class Transition extends React.Component {
     if (nextStatus !== null) {
       // nextStatus will always be ENTERING or EXITING.
       this.cancelNextCallback()
-      const node = ReactDOM.findDOMNode(this)
-
-      if (nextStatus === ENTERING) {
-        this.performEnter(node, mounting)
-      } else {
-        this.performExit(node)
+      const node = this.childNode
+      if (node) {
+        if (nextStatus === ENTERING) {
+          this.performEnter(node, mounting)
+        } else {
+          this.performExit(node)
+        }
       }
     } else if (this.props.unmountOnExit && this.state.status === EXITED) {
       this.setState({ status: UNMOUNTED })
@@ -356,6 +360,8 @@ class Transition extends React.Component {
     delete childProps.onExit
     delete childProps.onExiting
     delete childProps.onExited
+
+    childProps.ref = this.setChildNode
 
     if (typeof children === 'function') {
       return children(status, childProps)

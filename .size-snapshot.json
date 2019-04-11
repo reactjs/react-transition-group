@@ -1,12 +1,12 @@
 {
   "./lib/dist/react-transition-group.js": {
-    "bundled": 80859,
-    "minified": 22686,
-    "gzipped": 6939
+    "bundled": 82017,
+    "minified": 22806,
+    "gzipped": 7001
   },
   "./lib/dist/react-transition-group.min.js": {
-    "bundled": 46875,
-    "minified": 15056,
-    "gzipped": 4715
+    "bundled": 47393,
+    "minified": 15176,
+    "gzipped": 4768
   }
 }
