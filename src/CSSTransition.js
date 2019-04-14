@@ -64,7 +64,7 @@ const removeClass = (node, classes) => node && classes && classes.split(' ').for
  * }
  * .my-node-exit-active {
  *   opacity: 0;
- *   transition: opacity: 200ms;
+ *   transition: opacity 200ms;
  * }
  * ```
  *
