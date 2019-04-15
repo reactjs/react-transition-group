@@ -1,3 +1,23 @@
+# [3.0.0](https://github.com/reactjs/react-transition-group/compare/v2.9.0...v3.0.0) (2019-04-15)
+
+
+### Features
+
+* use stable context API ([#471](https://github.com/reactjs/react-transition-group/issues/471)) ([aee4901](https://github.com/reactjs/react-transition-group/commit/aee4901)), closes [#429](https://github.com/reactjs/react-transition-group/issues/429)
+
+
+### BREAKING CHANGES
+
+* use new style react context
+
+```diff
+// package.json
+-"react": "^15.0.0",
++"react": "^16.6.0",
+-"react-dom": "^15.0.0", 
++"react-dom": "^16.6.0", 
+```
+
 # [2.9.0](https://github.com/reactjs/react-transition-group/compare/v2.8.0...v2.9.0) (2019-04-06)
 
 
