@@ -2,6 +2,16 @@
 # yarn lockfile v1
 
 
+"@4c/file-butler@^2.1.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@4c/file-butler/-/file-butler-2.3.0.tgz#123b22a59496d974cc18e2debce0445857bc0cec"
+  integrity sha512-fGmitvq18UoSfKd0WfTZyG73JJZMV7Az9W/4QlsHt/zjssP2twvY2w3NAvzrDPHNezbsD3ufWJFyUQOL5mtfxQ==
+  dependencies:
+    cpy "^7.0.0"
+    fs-extra "^7.0.1"
+    globby "^9.0.0"
+    yargs "^13.2.1"
+
 "@babel/cli@^7.4.3":
   version "7.4.3"
   resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.4.3.tgz#353048551306ff42e5855b788b6ccd9477289774"
@@ -3712,6 +3722,16 @@ cheerio@^1.0.0-rc.2:
     lodash "^4.15.0"
     parse5 "^3.0.1"
 
+cherry-pick@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/cherry-pick/-/cherry-pick-0.3.0.tgz#b52626016c41197e6bffa0fc27074ae07988804a"
+  integrity sha512-N/+3l1f9yvD6Qpsj3jkBvSt5skLudVXGoSSQUy+yWoM13RjfVCvOiYLFr/JczOhTMwBPBuzE4WKCSxmYE1FFBg==
+  dependencies:
+    chalk "^2.4.1"
+    rimraf "^2.6.2"
+    tiny-glob "^0.2.0"
+    yargs "^11.0.0"
+
 child-process-promise@^2.2.1:
   version "2.2.1"
   resolved "http://storage.mds.yandex.net/get-npm/38095/child-process-promise-2.2.1.tgz#4730a11ef610fad450b8f223c79d31d7bdad8074"
@@ -5872,6 +5892,11 @@ get-caller-file@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.2.tgz#f702e63127e7e231c160a80c1554acb70d5047e5"
 
+get-caller-file@^2.0.1:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-2.0.5.tgz#4f94412a82db32f36e3b0b9741f8a97feb031f7e"
+  integrity sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==
+
 get-stdin@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/get-stdin/-/get-stdin-6.0.0.tgz#9e09bf712b360ab9225e812048f71fde9c89657b"
@@ -6007,6 +6032,11 @@ globals@^11.1.0, globals@^11.7.0:
   version "11.7.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-11.7.0.tgz#a583faa43055b1aca771914bf68258e2fc125673"
 
+globalyzer@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/globalyzer/-/globalyzer-0.1.0.tgz#cb76da79555669a1519d5a8edf093afaa0bf1465"
+  integrity sha512-40oNTM9UfG6aBmuKxk/giHn5nQ8RVz/SS4Ir6zgzOv9/qC3kKZ9v4etGTcJbEl/NyVQH7FGU7d+X1egr57Md2Q==
+
 globby@8.0.1, globby@^8.0.0, globby@^8.0.1:
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/globby/-/globby-8.0.1.tgz#b5ad48b8aa80b35b814fc1281ecc851f1d2b5b50"
@@ -6019,7 +6049,7 @@ globby@8.0.1, globby@^8.0.0, globby@^8.0.1:
     pify "^3.0.0"
     slash "^1.0.0"
 
-globby@^9.2.0:
+globby@^9.0.0, globby@^9.2.0:
   version "9.2.0"
   resolved "https://registry.yarnpkg.com/globby/-/globby-9.2.0.tgz#fd029a706c703d29bdd170f4b6db3a3f7a7cb63d"
   integrity sha512-ollPHROa5mcxDEkwg6bPt3QbEf4pDQSNtd6JPL1YvOvAo/7/0VAm9TccUeoTmarjPw4pfUthSCqcyfNB1I3ZSg==
@@ -6032,6 +6062,11 @@ globby@^9.2.0:
     ignore "^4.0.3"
     pify "^4.0.1"
     slash "^2.0.0"
+
+globrex@^0.1.1:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/globrex/-/globrex-0.1.2.tgz#dd5d9ec826232730cd6793a5e33a9302985e6098"
+  integrity sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==
 
 got@^6.7.1:
   version "6.7.1"
@@ -9096,6 +9131,15 @@ os-locale@^3.0.0:
     lcid "^2.0.0"
     mem "^4.0.0"
 
+os-locale@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/os-locale/-/os-locale-3.1.0.tgz#a802a6ee17f24c10483ab9935719cef4ed16bf1a"
+  integrity sha512-Z8l3R4wYWM40/52Z+S265okfFj8Kt2cC2MKY+xNi3kFs+XGI7WXu/I309QQQYbRW4ijiZ+yxs9pqEhJh0DqW3Q==
+  dependencies:
+    execa "^1.0.0"
+    lcid "^2.0.0"
+    mem "^4.0.0"
+
 os-tmpdir@^1.0.0, os-tmpdir@~1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/os-tmpdir/-/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
@@ -10504,6 +10548,11 @@ require-main-filename@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-1.0.1.tgz#97f717b69d48784f5f526a6c5aa8ffdda055a4d1"
 
+require-main-filename@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-2.0.0.tgz#d0b329ecc7cc0f61649f62215be69af54aa8989b"
+  integrity sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==
+
 requires-port@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
@@ -10805,10 +10854,12 @@ schema-utils@^1.0.0:
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
 
-semantic-release-alt-publish-dir@^2.1.1:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/semantic-release-alt-publish-dir/-/semantic-release-alt-publish-dir-2.1.2.tgz#c96337ca619f8127b28688e004d89094807306f1"
+semantic-release-alt-publish-dir@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/semantic-release-alt-publish-dir/-/semantic-release-alt-publish-dir-3.0.0.tgz#3bac0fe7e9785696da64a3df4dbb8771d114b2d4"
+  integrity sha512-biwFhrNAX8uopreidrUUlJU+O7clxTB373Sb5Fh6wN+hn5dPtBoxXykiy59OivAWVcr4T1erM9WJDmIDlMXliQ==
   dependencies:
+    "@4c/file-butler" "^2.1.0"
     cpy "^7.0.0"
     fs-extra "^6.0.1"
 
@@ -11689,6 +11740,14 @@ timers-browserify@^2.0.4:
   dependencies:
     setimmediate "^1.0.4"
 
+tiny-glob@^0.2.0:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/tiny-glob/-/tiny-glob-0.2.6.tgz#9e056e169d9788fe8a734dfa1ff02e9b92ed7eda"
+  integrity sha512-A7ewMqPu1B5PWwC3m7KVgAu96Ch5LA0w4SnEN/LbDREj/gAD0nPWboRbn8YoP9ISZXqeNAlMvKSKoEuhcfK3Pw==
+  dependencies:
+    globalyzer "^0.1.0"
+    globrex "^0.1.1"
+
 tiny-relative-date@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/tiny-relative-date/-/tiny-relative-date-1.3.0.tgz#fa08aad501ed730f31cc043181d995c39a935e07"
@@ -12503,6 +12562,14 @@ yargs-parser@^11.1.1:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
+yargs-parser@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-13.0.0.tgz#3fc44f3e76a8bdb1cc3602e860108602e5ccde8b"
+  integrity sha512-w2LXjoL8oRdRQN+hOyppuXs+V/fVAYtpcrRxZuF7Kt/Oc+Jr2uAcVntaUTNT6w5ihoWfFDpNY8CPx1QskxZ/pw==
+  dependencies:
+    camelcase "^5.0.0"
+    decamelize "^1.2.0"
+
 yargs-parser@^9.0.2:
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-9.0.2.tgz#9ccf6a43460fe4ed40a9bb68f48d43b8a68cc077"
@@ -12560,6 +12627,23 @@ yargs@^12.0.2:
     which-module "^2.0.0"
     y18n "^3.2.1 || ^4.0.0"
     yargs-parser "^11.1.1"
+
+yargs@^13.2.1:
+  version "13.2.2"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-13.2.2.tgz#0c101f580ae95cea7f39d927e7770e3fdc97f993"
+  integrity sha512-WyEoxgyTD3w5XRpAQNYUB9ycVH/PQrToaTXdYXRdOXvEy1l19br+VJsc0vcO8PTGg5ro/l/GY7F/JMEBmI0BxA==
+  dependencies:
+    cliui "^4.0.0"
+    find-up "^3.0.0"
+    get-caller-file "^2.0.1"
+    os-locale "^3.1.0"
+    require-directory "^2.1.1"
+    require-main-filename "^2.0.0"
+    set-blocking "^2.0.0"
+    string-width "^3.0.0"
+    which-module "^2.0.0"
+    y18n "^4.0.0"
+    yargs-parser "^13.0.0"
 
 yargs@^3.15.0:
   version "3.32.0"
