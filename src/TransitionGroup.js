@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { polyfill } from 'react-lifecycles-compat'
+import TransitionGroupContext from './TransitionGroupContext'
 
 
 import {
@@ -31,10 +32,6 @@ const defaultProps = {
  * items.
  */
 class TransitionGroup extends React.Component {
-  static childContextTypes = {
-    transitionGroup: PropTypes.object.isRequired,
-  }
-
   constructor(props, context) {
     super(props, context)
 
@@ -42,20 +39,17 @@ class TransitionGroup extends React.Component {
 
     // Initial children should all be entering, dependent on appear
     this.state = {
+      contextValue: { isMounting: true },
       handleExited,
       firstRender: true,
     }
   }
 
-  getChildContext() {
-    return {
-      transitionGroup: { isMounting: !this.appeared },
-    }
-  }
-
   componentDidMount() {
-    this.appeared = true
     this.mounted = true
+    this.setState({
+      contextValue: { isMounting: false },
+    })
   }
 
   componentWillUnmount() {
@@ -95,6 +89,7 @@ class TransitionGroup extends React.Component {
 
   render() {
     const { component: Component, childFactory, ...props } = this.props
+    const { contextValue } = this.state
     const children = values(this.state.children).map(childFactory)
 
     delete props.appear
@@ -102,9 +97,17 @@ class TransitionGroup extends React.Component {
     delete props.exit
 
     if (Component === null) {
-      return children
+      return (
+        <TransitionGroupContext.Provider value={contextValue}>
+          {children}
+        </TransitionGroupContext.Provider>
+      )
     }
-    return <Component {...props}>{children}</Component>
+    return (
+      <TransitionGroupContext.Provider value={contextValue}>
+        <Component {...props}>{children}</Component>
+      </TransitionGroupContext.Provider>
+    )
   }
 }
 

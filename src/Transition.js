@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import { polyfill } from 'react-lifecycles-compat'
 
 import { timeoutsShape } from './utils/PropTypes'
+import TransitionGroupContext from './TransitionGroupContext'
 
 export const UNMOUNTED = 'unmounted'
 export const EXITED = 'exited'
@@ -103,17 +104,12 @@ export const EXITING = 'exiting'
  * `'exiting'` to `'exited'`.
  */
 class Transition extends React.Component {
-  static contextTypes = {
-    transitionGroup: PropTypes.object,
-  }
-  static childContextTypes = {
-    transitionGroup: () => {},
-  }
+  static contextType = TransitionGroupContext
 
   constructor(props, context) {
     super(props, context)
 
-    let parentGroup = context.transitionGroup
+    let parentGroup = context
     // In the context of a TransitionGroup all enters are really appears
     let appear =
       parentGroup && !parentGroup.isMounting ? props.enter : props.appear
@@ -140,10 +136,6 @@ class Transition extends React.Component {
     this.state = { status: initialStatus }
 
     this.nextCallback = null
-  }
-
-  getChildContext() {
-    return { transitionGroup: null } // allows for nested Transitions
   }
 
   static getDerivedStateFromProps({ in: nextIn }, prevState) {
@@ -232,8 +224,8 @@ class Transition extends React.Component {
 
   performEnter(node, mounting) {
     const { enter } = this.props
-    const appearing = this.context.transitionGroup
-      ? this.context.transitionGroup.isMounting
+    const appearing = this.context
+      ? this.context.isMounting
       : mounting
 
     const timeouts = this.getTimeouts()
@@ -360,11 +352,21 @@ class Transition extends React.Component {
     delete childProps.onExited
 
     if (typeof children === 'function') {
-      return children(status, childProps)
+      // allows for nested Transitions
+      return (
+        <TransitionGroupContext.Provider value={null}>
+          {children(status, childProps)}
+        </TransitionGroupContext.Provider>
+      )
     }
 
     const child = React.Children.only(children)
-    return React.cloneElement(child, childProps)
+    return (
+      // allows for nested Transitions
+      <TransitionGroupContext.Provider value={null}>
+        {React.cloneElement(child, childProps)}
+      </TransitionGroupContext.Provider>
+    )
   }
 }
 
