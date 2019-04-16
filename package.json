@@ -56,8 +56,7 @@
   "dependencies": {
     "dom-helpers": "^3.4.0",
     "loose-envify": "^1.4.0",
-    "prop-types": "^15.6.2",
-    "react-lifecycles-compat": "^3.0.4"
+    "prop-types": "^15.6.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.3",
