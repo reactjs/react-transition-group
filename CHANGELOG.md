@@ -1,3 +1,15 @@
+# [4.0.0](https://github.com/reactjs/react-transition-group/compare/v3.0.0...v4.0.0) (2019-04-16)
+
+
+### Features
+
+* support esm via package.json routes ([#488](https://github.com/reactjs/react-transition-group/issues/488)) ([6337bf5](https://github.com/reactjs/react-transition-group/commit/6337bf5)), closes [#77](https://github.com/reactjs/react-transition-group/issues/77)
+
+
+### BREAKING CHANGES
+
+* in environments where esm is supported importing from commonjs requires explicitly adding the `.default` after `require()` when resolving to the esm build
+
 # [3.0.0](https://github.com/reactjs/react-transition-group/compare/v2.9.0...v3.0.0) (2019-04-15)
 
 
