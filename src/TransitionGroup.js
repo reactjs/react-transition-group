@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { polyfill } from 'react-lifecycles-compat'
 import TransitionGroupContext from './TransitionGroupContext'
-
 
 import {
   getChildMapping,
@@ -169,4 +167,4 @@ TransitionGroup.propTypes = {
 
 TransitionGroup.defaultProps = defaultProps
 
-export default polyfill(TransitionGroup)
+export default TransitionGroup
