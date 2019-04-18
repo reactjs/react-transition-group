@@ -1,7 +1,6 @@
 
 env:
   jest: true
-  jasmine: true
 rules:
   no-require: off
   global-require: off
