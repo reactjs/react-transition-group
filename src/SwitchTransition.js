@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ENTERED, ENTERING, EXITING } from './Transition'
+import TransitionGroupContext from './TransitionGroupContext';
 
 function areChildrenDifferent(oldChildren, newChildren) {
   if (oldChildren === newChildren) return false;
@@ -96,16 +97,6 @@ const enterRenders = {
  * ```
  */
 export class SwitchTransition extends React.Component {
-  static childContextTypes = {
-    transitionGroup: PropTypes.object.isRequired
-  };
-
-  getChildContext() {
-    return {
-      transitionGroup: { isMounting: !this.appeared }
-    };
-  }
-
   state = {
     status: ENTERED,
     current: null
@@ -157,14 +148,23 @@ export class SwitchTransition extends React.Component {
     } = this;
 
     const data = { children, current, changeState: this.changeState, status };
+    let component
     switch (status) {
       case ENTERING:
-        return enterRenders[mode](data);
+        component = enterRenders[mode](data);
+        break;
       case EXITING:
-        return leaveRenders[mode](data)
+        component = leaveRenders[mode](data)
+        break;
       case ENTERED:
-        return current;
+        component = current;
     }
+
+    return (
+      <TransitionGroupContext.Provider value={{ isMounting: !this.appeared }}>
+        {component}
+      </TransitionGroupContext.Provider>
+    )
   }
 }
 
