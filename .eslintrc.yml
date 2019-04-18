@@ -3,6 +3,9 @@ parser: babel-eslint
 extends:
   - jason/react
   - plugin:jsx-a11y/recommended
+settings:
+  react:
+    version: detect
 env:
   node: true
   browser: true

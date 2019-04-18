@@ -9,6 +9,7 @@ let TransitionGroup;
 // makes sure we're wired up correctly.
 describe('CSSTransitionGroup', () => {
   let container;
+  let consoleErrorSpy;
 
   function YoloTransition({ id, ...props }) {
     return (
@@ -28,7 +29,11 @@ describe('CSSTransitionGroup', () => {
     TransitionGroup = require('../src/TransitionGroup');
 
     container = document.createElement('div');
-    spyOn(console, 'error');
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleErrorSpy.mockRestore();
   });
 
 
@@ -55,7 +60,7 @@ describe('CSSTransitionGroup', () => {
     jest.runAllTimers();
 
     // No warnings
-    expect(console.error.calls.count()).toBe(0);
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
 
     // The leaving child has been removed
     expect(ReactDOM.findDOMNode(a).childNodes.length).toBe(1);

@@ -5,7 +5,7 @@ import replace from 'rollup-plugin-replace';
 import { sizeSnapshot } from 'rollup-plugin-size-snapshot';
 import { terser } from 'rollup-plugin-terser';
 
-const input = './src/umd.js';
+const input = './src/index.js';
 const name = 'ReactTransitionGroup';
 const globals = {
   react: 'React',
