@@ -12,8 +12,7 @@ storiesOf('Css Transition Group', module)
   .add('Animates on all', () => (
     <CSSTransitionGroupFixture
       description={`
-        Should animate when items are added to the list but not when they are
-        removed or on initial appear
+        Should animate on appear, add, and remove
       `}
       appear
       items={[ 'Item number: 1' ]}
@@ -37,7 +36,7 @@ storiesOf('Css Transition Group', module)
   .add('Animates on exit', () => (
     <CSSTransitionGroupFixture
       description={`
-        Should animate when items are removed to the list but not when they are
+        Should animate when items are removed from the list but not when they are
         added or on initial appear
       `}
       items={[
