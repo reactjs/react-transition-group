@@ -12,7 +12,6 @@ export function removeClass(node, classes, immediate = false) {
 function mutateClass(node, classes, fn, immediate) {
   if (!node) return;
   if (classes && typeof classes === 'string') {
-    console.log(classes);
     const run = () => classes.split(' ').forEach(c => fn(node, c));
     // If possible, on browsers, batch these mutations as to avoid synchronous layouts.
     // But watch out - if we are batching them, and the page is inactive, we can end up
