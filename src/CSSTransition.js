@@ -95,7 +95,7 @@ class CSSTransition extends React.Component {
   onEntered = (node, appearing) => {
     const appearClassName = this.getClassNames('appear').doneClassName;
     const enterClassName = this.getClassNames('enter').doneClassName;
-    const doneClassName = appearing
+    const doneClassName = (appearing && appearClassName && enterClassName)
       ? `${appearClassName} ${enterClassName}`
       : enterClassName;
 
