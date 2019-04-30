@@ -85,7 +85,7 @@ class CSSTransition extends React.Component {
       appearing ? 'appear' : 'enter'
     );
 
-    addClass(node, activeClassName)
+    addClass(node, activeClassName, true /* reflow */)
 
     if (this.props.onEntering) {
       this.props.onEntering(node, appearing)

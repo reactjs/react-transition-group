@@ -2,22 +2,20 @@ import fastdom from 'fastdom';
 import addOneClass from 'dom-helpers/class/addClass';
 import removeOneClass from 'dom-helpers/class/removeClass';
 
-export function addClass(node, classes) {
-  mutateClass(node, classes, addOneClass);
+export function addClass(node, classes, reflow) {
+  mutateClass(node, classes, reflow, addOneClass);
 }
-export function removeClass(node, classes) {
-  mutateClass(node, classes, removeOneClass);
+export function removeClass(node, classes, reflow) {
+  mutateClass(node, classes, reflow, removeOneClass);
 }
 
-function mutateClass(node, classes, fn) {
+function mutateClass(node, classes, reflow, fn) {
   if (!node) return;
   if (classes && typeof classes === 'string') {
     const run = () => {
       // A reflow is necessary to get the browser to respect the transition. However, it doesn't
       // need to be done on every single class change, only when the 'active' class is added.
-      if (classes.indexOf('active') !== -1) {
-        forceReflow(node);
-      }
+      if (reflow) forceReflow(node);
       classes.split(' ').forEach(c => fn(node, c));
     }
     // If possible, on browsers, batch these mutations as to avoid synchronous layouts.
