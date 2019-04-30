@@ -103,7 +103,8 @@
     "rollup-plugin-terser": "^4.0.2",
     "semantic-release": "^15.9.16",
     "semantic-release-alt-publish-dir": "^3.0.0",
-    "travis-deploy-once": "^5.0.8"
+    "travis-deploy-once": "^5.0.8",
+    "webpack-atoms": "^10.0.2"
   },
   "release": {
     "pkgRoot": "lib",
