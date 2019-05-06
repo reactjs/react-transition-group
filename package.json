@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "dom-helpers": "^3.4.0",
+    "fastdom": "^1.0.8",
     "loose-envify": "^1.4.0",
     "prop-types": "^15.6.2"
   },
