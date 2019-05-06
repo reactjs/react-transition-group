@@ -15,7 +15,9 @@ function mutateClass(node, classes, reflow, fn) {
     const run = () => {
       // A reflow is necessary to get the browser to respect the transition. However, it doesn't
       // need to be done on every single class change, only when the 'active' class is added.
-      if (reflow) forceReflow(node);
+      // Batching reflows allows us to avoid read-write-read context switches, by reading
+      // (node.scrollTop) completely before we write.
+      if (reflow) emptyReflow();
       classes.split(' ').forEach(c => fn(node, c));
     }
     // If possible, on browsers, batch these mutations as to avoid synchronous layouts.
@@ -23,11 +25,21 @@ function mutateClass(node, classes, reflow, fn) {
     // hitching up the page for a very long time as these callbacks queue up on
     // requestAnimationFrame. So only queue them up if the page is visible.
     if (process.browser && document.hidden === false) {
+      // Is this an entering animation where we'll need to force a reflow?
+      if (reflow) reflowNodes.push(node);
+      // Schedule the modification for next tick.
       fastdom.mutate(run);
     } else {
       run();
     }
   }
+}
+
+const reflowNodes = [];
+// Empty the `reflowNodes` array completely and reflow all of them at once.
+function emptyReflow() {
+  let node;
+  while (node = reflowNodes.pop()) forceReflow(node);
 }
 
 // This is for to force a repaint,
