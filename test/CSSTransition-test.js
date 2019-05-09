@@ -2,6 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import CSSTransition from '../src/CSSTransition';
+import TransitionGroup from '../src/TransitionGroup';
 
 describe('CSSTransition', () => {
 
@@ -331,6 +332,85 @@ describe('CSSTransition', () => {
           expect(count).toEqual(2);
           done();
         }
+      });
+    });
+  });
+
+  describe('reentering', () => {
+    it('should remove dynamically applied classes', done => {
+      let count = 0;
+      class Test extends React.Component {
+        render() {
+          const { direction, text, ...props } = this.props;
+
+          return (
+            <TransitionGroup
+              component={null}
+              childFactory={child =>
+                React.cloneElement(child, {
+                  classNames: direction
+                })
+              }
+            >
+              <CSSTransition
+                key={text}
+                timeout={100}
+                {...props}
+              >
+                <span>{text}</span>
+              </CSSTransition>
+            </TransitionGroup>
+          )
+        }
+      }
+
+      const instance = mount(<Test direction="down" text="foo" />)
+
+      const rerender = getProps => new Promise(resolve =>
+        instance.setProps({
+          onEnter: undefined,
+          onEntering: undefined,
+          onEntered: undefined,
+          onExit: undefined,
+          onExiting: undefined,
+          onExited: undefined,
+          ...getProps(resolve)
+        })
+      );
+
+      Promise.resolve().then(() =>
+        rerender(resolve => ({
+          direction: 'up',
+          text: 'bar',
+
+          onEnter(node) {
+            count++;
+            expect(node.className).toEqual('up-enter');
+          },
+          onEntering(node) {
+            count++;
+            expect(node.className).toEqual('up-enter up-enter-active');
+            resolve()
+          }
+        }))
+      ).then(() => {
+        return rerender(resolve => ({
+          direction: 'down',
+          text: 'foo',
+
+          onEntering(node) {
+            count++;
+            expect(node.className).toEqual('down-enter down-enter-active');
+          },
+          onEntered(node) {
+            count++;
+            expect(node.className).toEqual('down-enter-done');
+            resolve();
+          }
+        }))
+      }).then(() => {
+        expect(count).toEqual(4);
+        done();
       });
     });
   });
