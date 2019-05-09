@@ -1,3 +1,10 @@
+## [4.0.1](https://github.com/reactjs/react-transition-group/compare/v4.0.0...v4.0.1) (2019-05-09)
+
+
+### Bug Fixes
+
+* issue with dynamically applied classes not being properly removed for reentering items ([#499](https://github.com/reactjs/react-transition-group/issues/499)) ([129cb11](https://github.com/reactjs/react-transition-group/commit/129cb11))
+
 # [4.0.0](https://github.com/reactjs/react-transition-group/compare/v3.0.0...v4.0.0) (2019-04-16)
 
 
