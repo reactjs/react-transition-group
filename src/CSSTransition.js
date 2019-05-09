@@ -182,6 +182,8 @@ class CSSTransition extends React.Component {
       done: doneClassName
     } = this.appliedClasses[type]
 
+    this.appliedClasses[type] = {};
+
     if (baseClassName) {
       removeClass(node, baseClassName);
     }
