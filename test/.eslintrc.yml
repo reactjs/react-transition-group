@@ -1,6 +1,7 @@
 
 env:
   jest: true
+  es6: true
 rules:
   no-require: off
   global-require: off
