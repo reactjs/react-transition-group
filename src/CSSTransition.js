@@ -83,7 +83,7 @@ class CSSTransition extends React.Component {
 
   onEnter = (node, appearing) => {
     this.removeClasses(node, 'exit');
-    this.addClass(node, appearing ? 'appear' : 'enter');
+    this.addClass(node, appearing ? 'appear' : 'enter', 'base');
 
     if (this.props.onEnter) {
       this.props.onEnter(node, appearing)
@@ -112,7 +112,7 @@ class CSSTransition extends React.Component {
   onExit = (node) => {
     this.removeClasses(node, 'appear');
     this.removeClasses(node, 'enter');
-    this.addClass(node, 'exit')
+    this.addClass(node, 'exit','base')
 
     if (this.props.onExit) {
       this.props.onExit(node)
@@ -139,16 +139,21 @@ class CSSTransition extends React.Component {
   getClassNames = (type) => {
     const { classNames } = this.props;
     const isStringClassNames = typeof classNames === 'string';
-    const prefix = isStringClassNames && classNames ? classNames + '-' : '';
+    const prefix = isStringClassNames && classNames
+      ? `${classNames}-`
+      : '';
 
-    let baseClassName = isStringClassNames ?
-      prefix + type : classNames[type]
+    let baseClassName = isStringClassNames
+      ? `${prefix}${type}`
+      : classNames[type]
 
-    let activeClassName = isStringClassNames ?
-      baseClassName + '-active' : classNames[type + 'Active'];
+    let activeClassName = isStringClassNames
+      ? `${baseClassName}-active`
+      : classNames[`${type}Active`];
 
-    let doneClassName = isStringClassNames ?
-      baseClassName + '-done' : classNames[type + 'Done'];
+    let doneClassName = isStringClassNames
+      ? `${baseClassName}-done`
+      : classNames[`${type}Done`];
 
     return {
       baseClassName,
@@ -157,7 +162,7 @@ class CSSTransition extends React.Component {
     };
   }
 
-  addClass(node, type, phase = 'base') {
+  addClass(node, type, phase) {
     let className = this.getClassNames(type)[`${phase}ClassName`];
 
     if (type === 'appear' && phase === 'done') {
