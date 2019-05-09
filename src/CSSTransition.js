@@ -74,11 +74,16 @@ class CSSTransition extends React.Component {
   static defaultProps = {
     classNames: ''
   }
-  onEnter = (node, appearing) => {
-    const { className } = this.getClassNames(appearing ? 'appear' : 'enter')
 
+  appliedClasses = {
+    appear: {},
+    enter: {},
+    exit: {},
+  }
+
+  onEnter = (node, appearing) => {
     this.removeClasses(node, 'exit');
-    addClass(node, className)
+    this.addClass(node, appearing ? 'appear' : 'enter', 'base');
 
     if (this.props.onEnter) {
       this.props.onEnter(node, appearing)
@@ -86,11 +91,8 @@ class CSSTransition extends React.Component {
   }
 
   onEntering = (node, appearing) => {
-    const { activeClassName } = this.getClassNames(
-      appearing ? 'appear' : 'enter'
-    );
-
-    this.reflowAndAddClass(node, activeClassName)
+    const type = appearing ? 'appear' : 'enter';
+    this.addClass(node, type, 'active')
 
     if (this.props.onEntering) {
       this.props.onEntering(node, appearing)
@@ -98,14 +100,9 @@ class CSSTransition extends React.Component {
   }
 
   onEntered = (node, appearing) => {
-    const appearClassName = this.getClassNames('appear').doneClassName;
-    const enterClassName = this.getClassNames('enter').doneClassName;
-    const doneClassName = appearing
-      ? `${appearClassName} ${enterClassName}`
-      : enterClassName;
-
-    this.removeClasses(node, appearing ? 'appear' : 'enter');
-    addClass(node, doneClassName);
+    const type = appearing ? 'appear' : 'enter'
+    this.removeClasses(node, type);
+    this.addClass(node, type, 'done');
 
     if (this.props.onEntered) {
       this.props.onEntered(node, appearing)
@@ -113,11 +110,9 @@ class CSSTransition extends React.Component {
   }
 
   onExit = (node) => {
-    const { className } = this.getClassNames('exit')
-
     this.removeClasses(node, 'appear');
     this.removeClasses(node, 'enter');
-    addClass(node, className)
+    this.addClass(node, 'exit', 'base')
 
     if (this.props.onExit) {
       this.props.onExit(node)
@@ -125,9 +120,7 @@ class CSSTransition extends React.Component {
   }
 
   onExiting = (node) => {
-    const { activeClassName } = this.getClassNames('exit')
-
-    this.reflowAndAddClass(node, activeClassName)
+    this.addClass(node, 'exit', 'active')
 
     if (this.props.onExiting) {
       this.props.onExiting(node)
@@ -135,10 +128,8 @@ class CSSTransition extends React.Component {
   }
 
   onExited = (node) => {
-    const { doneClassName } = this.getClassNames('exit');
-
     this.removeClasses(node, 'exit');
-    addClass(node, doneClassName);
+    this.addClass(node, 'exit', 'done');
 
     if (this.props.onExited) {
       this.props.onExited(node)
@@ -148,46 +139,69 @@ class CSSTransition extends React.Component {
   getClassNames = (type) => {
     const { classNames } = this.props;
     const isStringClassNames = typeof classNames === 'string';
-    const prefix = isStringClassNames && classNames ? classNames + '-' : '';
+    const prefix = isStringClassNames && classNames
+      ? `${classNames}-`
+      : '';
 
-    let className = isStringClassNames ?
-      prefix + type : classNames[type]
+    let baseClassName = isStringClassNames
+      ? `${prefix}${type}`
+      : classNames[type]
 
-    let activeClassName = isStringClassNames ?
-      className + '-active' : classNames[type + 'Active'];
+    let activeClassName = isStringClassNames
+      ? `${baseClassName}-active`
+      : classNames[`${type}Active`];
 
-    let doneClassName = isStringClassNames ?
-      className + '-done' : classNames[type + 'Done'];
+    let doneClassName = isStringClassNames
+      ? `${baseClassName}-done`
+      : classNames[`${type}Done`];
 
     return {
-      className,
+      baseClassName,
       activeClassName,
       doneClassName
     };
   }
 
-  removeClasses(node, type) {
-    const { className, activeClassName, doneClassName } = this.getClassNames(type)
-    className && removeClass(node, className);
-    activeClassName && removeClass(node, activeClassName);
-    doneClassName && removeClass(node, doneClassName);
-  }
+  addClass(node, type, phase) {
+    let className = this.getClassNames(type)[`${phase}ClassName`];
 
-  reflowAndAddClass(node, className) {
+    if (type === 'appear' && phase === 'done') {
+      className += ` ${this.getClassNames('enter').doneClassName}`;
+    }
+
     // This is for to force a repaint,
     // which is necessary in order to transition styles when adding a class name.
-    if (className) {
+    if (phase === 'active') {
       /* eslint-disable no-unused-expressions */
       node && node.scrollTop;
-      /* eslint-enable no-unused-expressions */
-      addClass(node, className);
+    }
+
+    this.appliedClasses[type][phase] = className
+    addClass(node, className)
+  }
+
+  removeClasses(node, type) {
+    const {
+      base: baseClassName,
+      active: activeClassName,
+      done: doneClassName
+    } = this.appliedClasses[type]
+
+    this.appliedClasses[type] = {};
+
+    if (baseClassName) {
+      removeClass(node, baseClassName);
+    }
+    if (activeClassName) {
+      removeClass(node, activeClassName);
+    }
+    if (doneClassName) {
+      removeClass(node, doneClassName);
     }
   }
 
   render() {
-    const props = { ...this.props };
-
-    delete props.classNames;
+    const { classNames: _, ...props } = this.props;
 
     return (
       <Transition
