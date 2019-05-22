@@ -201,10 +201,6 @@ class CSSTransition extends React.Component {
     if (doneClassName) {
       removeClass(node, doneClassName);
     }
-    // Remove class atribute if it is empty
-    if(node && !node.className.trim()) {
-      node.removeAttribute('class');
-    }
   }
 
   render() {
