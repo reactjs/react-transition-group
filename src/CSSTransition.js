@@ -19,7 +19,7 @@ const removeClass = (node, classes) => node && classes && classes.split(' ').for
  *
  * `CSSTransition` applies a pair of class names during the `appear`, `enter`,
  * and `exit` states of the transition. The first class is applied and then a
- * second `*-active` class in order to activate the CSSS transition. After the
+ * second `*-active` class in order to activate the CSS transition. After the
  * transition, matching `*-done` class names are applied to persist the
  * transition state.
  *
