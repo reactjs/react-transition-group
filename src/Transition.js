@@ -2,6 +2,7 @@ import * as PropTypes from 'prop-types'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import config from './config'
 import { timeoutsShape } from './utils/PropTypes'
 import TransitionGroupContext from './TransitionGroupContext'
 
@@ -223,15 +224,13 @@ class Transition extends React.Component {
 
   performEnter(node, mounting) {
     const { enter } = this.props
-    const appearing = this.context
-      ? this.context.isMounting
-      : mounting
+    const appearing = this.context ? this.context.isMounting : mounting
 
     const timeouts = this.getTimeouts()
     const enterTimeout = appearing ? timeouts.appear : timeouts.enter
     // no enter animation skip right to ENTERED
     // if we are mounting and running this it means appear _must_ be set
-    if (!mounting && !enter) {
+    if ((!mounting && !enter) || config.disabled) {
       this.safeSetState({ status: ENTERED }, () => {
         this.props.onEntered(node)
       })
@@ -256,7 +255,7 @@ class Transition extends React.Component {
     const timeouts = this.getTimeouts()
 
     // no exit animation skip right to EXITED
-    if (!exit) {
+    if (!exit || config.disabled) {
       this.safeSetState({ status: EXITED }, () => {
         this.props.onExited(node)
       })
@@ -312,7 +311,8 @@ class Transition extends React.Component {
   onTransitionEnd(node, timeout, handler) {
     this.setNextCallback(handler)
 
-    const doesNotHaveTimeoutOrListener = timeout == null && !this.props.addEndListener
+    const doesNotHaveTimeoutOrListener =
+      timeout == null && !this.props.addEndListener
     if (!node || doesNotHaveTimeoutOrListener) {
       setTimeout(this.nextCallback, 0)
       return

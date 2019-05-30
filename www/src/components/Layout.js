@@ -50,6 +50,9 @@ const Layout = ({ data, children }) => (
           <Nav.Link as={Link} to="/with-react-router" activeClassName="active">
             With React Router
           </Nav.Link>
+          <Nav.Link as={Link} to="/testing" activeClassName="active">
+            Testing
+          </Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
