@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/reactjs/react-transition-group/compare/v4.0.1...v4.1.0) (2019-05-30)
+
+
+### Features
+
+* add global transition disable switch ([#506](https://github.com/reactjs/react-transition-group/issues/506)) ([4c5ba98](https://github.com/reactjs/react-transition-group/commit/4c5ba98))
+
 ## [4.0.1](https://github.com/reactjs/react-transition-group/compare/v4.0.0...v4.0.1) (2019-05-09)
 
 
