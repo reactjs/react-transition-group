@@ -58,6 +58,7 @@
     "react-dom": ">=16.6.0"
   },
   "dependencies": {
+    "@babel/runtime": "^7.4.5",
     "dom-helpers": "^3.4.0",
     "loose-envify": "^1.4.0",
     "prop-types": "^15.6.2"
