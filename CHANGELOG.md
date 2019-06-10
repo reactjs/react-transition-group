@@ -1,3 +1,10 @@
+## [4.1.1](https://github.com/reactjs/react-transition-group/compare/v4.1.0...v4.1.1) (2019-06-10)
+
+
+### Bug Fixes
+
+* adds missing dependency [@babel](https://github.com/babel)/runtime ([#507](https://github.com/reactjs/react-transition-group/issues/507)) ([228bf5f](https://github.com/reactjs/react-transition-group/commit/228bf5f))
+
 # [4.1.0](https://github.com/reactjs/react-transition-group/compare/v4.0.1...v4.1.0) (2019-05-30)
 
 
