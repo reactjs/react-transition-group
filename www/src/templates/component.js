@@ -73,8 +73,8 @@ class ComponentTemplate extends React.Component {
           )}
 
           <Container>
-            <h2>
-              <div>Props</div>
+            <h2 id={`${metadata.displayName}-props`}>
+              <a href={`#${metadata.displayName}-props`}>Props</a>
               {metadata.composes && (
                 <small style={{ fontStyle: 'italic', fontSize: '70%' }}>
                   Accepts all props from{' '}
