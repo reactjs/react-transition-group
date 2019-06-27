@@ -469,4 +469,30 @@ describe('Transition', () => {
       wrapper.setState({ in: false })
     })
   })
+
+  describe('transition node', () => {
+    it('delegates to findDOMNode when a transntionNode is not provided', () => {
+      const findDOMNodeSpy = jest.spyOn(ReactDOM, 'findDOMNode');
+      mount(
+        <Transition in appear timeout={0}>
+          <div />
+        </Transition>
+      )
+
+      expect(findDOMNodeSpy).toHaveBeenCalledTimes(1);
+      findDOMNodeSpy.mockRestore();
+    })
+
+    it('uses transitionNode when provided', () => {
+      const onEnterSpy = jest.fn();
+      const transitionNode = document.createElement('span');
+      mount(
+        <Transition  in appear timeout={0} onEnter={onEnterSpy} transitionNode={transitionNode}>
+          <div />
+        </Transition>
+      )
+
+      expect(onEnterSpy).toHaveBeenCalledWith(transitionNode, true);
+    })
+  })
 })

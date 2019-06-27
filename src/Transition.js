@@ -210,7 +210,7 @@ class Transition extends React.Component {
     if (nextStatus !== null) {
       // nextStatus will always be ENTERING or EXITING.
       this.cancelNextCallback()
-      const node = ReactDOM.findDOMNode(this)
+      const node = this.props.transitionNode || ReactDOM.findDOMNode(this)
 
       if (nextStatus === ENTERING) {
         this.performEnter(node, mounting)
@@ -349,6 +349,7 @@ class Transition extends React.Component {
     delete childProps.onExit
     delete childProps.onExiting
     delete childProps.onExited
+    delete childProps.transitionNode
 
     if (typeof children === 'function') {
       // allows for nested Transitions
@@ -517,6 +518,13 @@ Transition.propTypes = {
    * @type Function(node: HtmlElement) -> void
    */
   onExited: PropTypes.func,
+
+  /**
+   * The DOM node that is passed to the transition callbacks.
+   *
+   * @type HtmlElement
+   */
+  transitionNode: PropTypes.instanceOf(Element),
 }
 
 // Name the function so it is clearer in the documentation
@@ -537,6 +545,8 @@ Transition.defaultProps = {
   onExit: noop,
   onExiting: noop,
   onExited: noop,
+
+  transitionNode: null,
 }
 
 Transition.UNMOUNTED = 0

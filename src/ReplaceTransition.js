@@ -24,11 +24,11 @@ class ReplaceTransition extends React.Component {
   handleExited = (...args) => this.handleLifecycle('onExited', 1, args)
 
   handleLifecycle(handler, idx, originalArgs) {
-    const { children } = this.props;
+    const { children, transitionNode } = this.props;
     const child = React.Children.toArray(children)[idx];
 
     if (child.props[handler]) child.props[handler](...originalArgs)
-    if (this.props[handler]) this.props[handler](findDOMNode(this))
+    if (this.props[handler]) this.props[handler](transitionNode || findDOMNode(this))
   }
 
   render() {
@@ -45,6 +45,7 @@ class ReplaceTransition extends React.Component {
     delete props.onExit;
     delete props.onExiting;
     delete props.onExited;
+    delete props.transitionNode;
 
     return (
       <TransitionGroup {...props}>
@@ -76,6 +77,7 @@ ReplaceTransition.propTypes = {
 
     return null;
   },
+  transitionNode: PropTypes.instanceOf(Element),
 };
 
 export default ReplaceTransition;
