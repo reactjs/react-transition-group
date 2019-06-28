@@ -1,3 +1,10 @@
+# [4.2.0](https://github.com/reactjs/react-transition-group/compare/v4.1.1...v4.2.0) (2019-06-28)
+
+
+### Features
+
+* add SwitchTransition component ([#470](https://github.com/reactjs/react-transition-group/issues/470)) ([c5e379d](https://github.com/reactjs/react-transition-group/commit/c5e379d))
+
 ## [4.1.1](https://github.com/reactjs/react-transition-group/compare/v4.1.0...v4.1.1) (2019-06-10)
 
 
