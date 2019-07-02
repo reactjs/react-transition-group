@@ -96,7 +96,7 @@ const enterRenders = {
  * }
  * ```
  */
-export class SwitchTransition extends React.Component {
+class SwitchTransition extends React.Component {
   state = {
     status: ENTERED,
     current: null
@@ -189,3 +189,5 @@ SwitchTransition.propTypes = {
 SwitchTransition.defaultProps = {
   mode: modes.out
 }
+
+export default SwitchTransition;
