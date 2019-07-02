@@ -1,3 +1,10 @@
+## [4.2.1](https://github.com/reactjs/react-transition-group/compare/v4.2.0...v4.2.1) (2019-07-02)
+
+
+### Bug Fixes
+
+* updated SwitchTransition component to be default export and exported from index.js ([#516](https://github.com/reactjs/react-transition-group/issues/516)) ([cfd0070](https://github.com/reactjs/react-transition-group/commit/cfd0070))
+
 # [4.2.0](https://github.com/reactjs/react-transition-group/compare/v4.1.1...v4.2.0) (2019-06-28)
 
 
