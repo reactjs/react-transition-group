@@ -3,7 +3,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import Transition, { ENTERED } from '../src/Transition';
-import { SwitchTransition, modes } from '../src/SwitchTransition';
+import SwitchTransition, { modes } from '../src/SwitchTransition';
 
 describe('SwitchTransition', () => {
   let log, Parent;
