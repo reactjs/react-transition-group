@@ -69,6 +69,10 @@ const removeClass = (node, classes) => node && classes && classes.split(' ').for
  * ```
  *
  * `*-active` classes represent which styles you want to animate **to**.
+ *
+ * **Note**: If you're using the
+ * [`appear`](http://reactcommunity.org/react-transition-group/transition#Transition-prop-appear)
+ * prop, make sure to define styles for `.appear-*` classes as well.
  */
 class CSSTransition extends React.Component {
   static defaultProps = {
@@ -221,13 +225,13 @@ CSSTransition.propTypes = {
   ...Transition.propTypes,
 
   /**
-   * The animation classNames applied to the component as it enters, exits or
-   * has finished the transition. A single name can be provided and it will be
-   * suffixed for each stage: e.g.
+   * The animation classNames applied to the component as it appears, enters,
+   * exits or has finished the transition. A single name can be provided and it
+   * will be suffixed for each stage: e.g.
    *
-   * `classNames="fade"` applies `fade-enter`, `fade-enter-active`,
-   * `fade-enter-done`, `fade-exit`, `fade-exit-active`, `fade-exit-done`,
-   * `fade-appear`, `fade-appear-active`, and `fade-appear-done`.
+   * `classNames="fade"` applies `fade-appear`, `fade-appear-active`,
+   * `fade-appear-done`, `fade-enter`, `fade-enter-active`, `fade-enter-done`,
+   * `fade-exit`, `fade-exit-active`, and `fade-exit-done`.
    *
    * **Note**: `fade-appear-done` and `fade-enter-done` will _both_ be applied.
    * This allows you to define different behavior for when appearing is done and
