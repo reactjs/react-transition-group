@@ -76,13 +76,24 @@ class ComponentTemplate extends React.Component {
             <h2 id={`${metadata.displayName}-props`}>
               <a href={`#${metadata.displayName}-props`}>Props</a>
               {metadata.composes && (
-                <small style={{ fontStyle: 'italic', fontSize: '70%' }}>
-                  Accepts all props from{' '}
-                  {metadata.composes
-                    .map(p => `<${p.replace('./', '')}>`)
-                    .join(', ')}{' '}
-                  unless otherwise noted.
-                </small>
+                <>
+                  {' '}
+                  <small style={{ fontStyle: 'italic', fontSize: '70%' }}>
+                    Accepts all props from{' '}
+                    {metadata.composes
+                      .map(p => (
+                        <code key={p}>{`<${p.replace('./', '')}>`}</code>
+                      ))
+                      .reduce((acc, el, i) => {
+                        acc.push(el);
+                        if (i < metadata.composes.length - 1) {
+                          acc.push(', ');
+                        }
+                        return acc;
+                      }, [])}{' '}
+                    unless otherwise noted.
+                  </small>
+                </>
               )}
             </h2>
             {metadata.props.map(p => this.renderProp(p, metadata.displayName))}
