@@ -17,11 +17,11 @@ A set of components for managing component states (including mounting and unmoun
 
 Clone the repo first:
 
-```plain
+```
 git@github.com:reactjs/react-transition-group.git
 ```
 
-Then run `npm install` or `yarn`, and finally `npm run storybook` or `yarn storybook` to start a storybook instance that you can navigate to in your browser to see the examples.
+Then run `npm install` (or `yarn`), and finally `npm run storybook` to start a storybook instance that you can navigate to in your browser to see the examples.
 
 [npm-badge]: https://img.shields.io/npm/v/react-transition-group.svg
 [npm]: https://www.npmjs.org/package/react-transition-group
