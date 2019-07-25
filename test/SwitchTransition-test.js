@@ -46,7 +46,7 @@ describe('SwitchTransition', () => {
   it('should have default status ENTERED', () => {
     const wrapper = mount(
       <SwitchTransition>
-        <Transition timeout={0} key=null>
+        <Transition timeout={0} key={null}>
           <span />
         </Transition>
       </SwitchTransition>
