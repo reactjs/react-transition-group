@@ -43,6 +43,18 @@ describe('SwitchTransition', () => {
     expect(wrapper.state('status')).toBe(ENTERED);
   });
 
+  it('should have default status ENTERED', () => {
+    const wrapper = mount(
+      <SwitchTransition>
+        <Transition timeout={0} key=null>
+          <span />
+        </Transition>
+      </SwitchTransition>
+    );
+
+    expect(wrapper.state('status')).toBe(ENTERED);
+  });
+
   it('should have default mode: out-in', () => {
     const wrapper = mount(
       <SwitchTransition>
