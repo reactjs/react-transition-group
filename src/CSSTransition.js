@@ -1,4 +1,4 @@
-import * as PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import addOneClass from 'dom-helpers/class/addClass';
 
 import removeOneClass from 'dom-helpers/class/removeClass';
