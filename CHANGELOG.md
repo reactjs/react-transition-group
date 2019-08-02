@@ -1,3 +1,10 @@
+## [4.2.2](https://github.com/reactjs/react-transition-group/compare/v4.2.1...v4.2.2) (2019-08-02)
+
+
+### Bug Fixes
+
+* Fix imports to play nicely with rollup ([#530](https://github.com/reactjs/react-transition-group/issues/530)) ([3d9003e](https://github.com/reactjs/react-transition-group/commit/3d9003e))
+
 ## [4.2.1](https://github.com/reactjs/react-transition-group/compare/v4.2.0...v4.2.1) (2019-07-02)
 
 
