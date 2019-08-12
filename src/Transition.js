@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import ReactDOM from 'react-dom'
 
 import config from './config'
 import { timeoutsShape } from './utils/PropTypes'
