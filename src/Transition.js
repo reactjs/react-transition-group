@@ -117,6 +117,7 @@ class Transition extends React.Component {
     let initialStatus
 
     this.appearStatus = null
+    this.ref = React.createRef();
 
     if (props.in) {
       if (appear) {
@@ -210,7 +211,7 @@ class Transition extends React.Component {
     if (nextStatus !== null) {
       // nextStatus will always be ENTERING or EXITING.
       this.cancelNextCallback()
-      const node = ReactDOM.findDOMNode(this)
+      const node = this.ref;
 
       if (nextStatus === ENTERING) {
         this.performEnter(node, mounting)
@@ -362,7 +363,7 @@ class Transition extends React.Component {
     const child = React.Children.only(children)
     return (
       // allows for nested Transitions
-      <TransitionGroupContext.Provider value={null}>
+      <TransitionGroupContext.Provider value={{ ref: this.ref }}>
         {React.cloneElement(child, childProps)}
       </TransitionGroupContext.Provider>
     )
