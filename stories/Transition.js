@@ -1,6 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 
+import Transition, { ENTERED, ENTERING } from '../src/Transition';
 import { Fade, Collapse } from './transitions/Bootstrap'
 import StoryFixture from './StoryFixture'
 
@@ -51,3 +52,35 @@ storiesOf('Transition', module)
       </Collapse>
     </ToggleFixture>
   ))
+  .add('Appearing Animation', () => {
+    const duration = 300;
+    const defaultStyle = {
+      position: 'absolute',
+      transition: `left ${duration}ms ease-in-out`,
+      left: 0,
+    };
+
+     const transitionStyles = {
+      [ENTERING]: { left: '50%' },
+      [ENTERED]: { left: '50%' },
+    };
+
+     return (
+      <Transition
+      in={true}
+      appear={true}
+      timeout={duration}
+    >
+      {state => (
+          <div
+            style={{
+              ...defaultStyle,
+              ...transitionStyles[state],
+            }}
+          >
+            This is an appearing animation
+          </div>
+      )}
+    </Transition>
+    )
+  })

@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 
 import config from './config'
 import { timeoutsShape } from './utils/PropTypes'
+import { reflow } from './utils/dom'
 import TransitionGroupContext from './TransitionGroupContext'
 
 export const UNMOUNTED = 'unmounted'
@@ -166,6 +167,9 @@ class Transition extends React.Component {
   // }
 
   componentDidMount() {
+    const node = ReactDOM.findDOMNode(this)
+    // This is necessary to make a transition happen
+    reflow(node)
     this.updateStatus(true, this.appearStatus)
   }
 
