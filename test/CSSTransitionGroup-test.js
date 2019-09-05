@@ -1,4 +1,4 @@
-import hasClass from 'dom-helpers/class/hasClass';
+import hasClass from 'dom-helpers/hasClass';
 import CSSTransition from '../src/CSSTransition';
 
 let React;

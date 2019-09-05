@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import addOneClass from 'dom-helpers/class/addClass';
+import addOneClass from 'dom-helpers/addClass';
 
-import removeOneClass from 'dom-helpers/class/removeClass';
+import removeOneClass from 'dom-helpers/removeClass';
 import React from 'react';
 
 import Transition from './Transition';
