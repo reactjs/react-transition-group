@@ -167,9 +167,11 @@ class Transition extends React.Component {
   // }
 
   componentDidMount() {
-    const node = ReactDOM.findDOMNode(this)
     // This is necessary to make a transition happen
-    reflow(node)
+    if (this.appearStatus === ENTERING) {
+      const node = ReactDOM.findDOMNode(this)
+      reflow(node)
+    }
     this.updateStatus(true, this.appearStatus)
   }
 
