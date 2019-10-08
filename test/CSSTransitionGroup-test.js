@@ -10,14 +10,7 @@ let TransitionGroup;
 describe('CSSTransitionGroup', () => {
   let container;
   let consoleErrorSpy;
-
-  function YoloTransition({ id, ...props }) {
-    return (
-      <CSSTransition classNames="yolo" timeout={0} {...props}>
-        <span id={id} />
-      </CSSTransition>
-    )
-  }
+  let YoloTransition;
 
   beforeEach(() => {
     jest.resetModuleRegistry();
@@ -27,6 +20,18 @@ describe('CSSTransitionGroup', () => {
     ReactDOM = require('react-dom');
 
     TransitionGroup = require('../src/TransitionGroup');
+
+    YoloTransition = class extends React.Component {
+      nodeRef = React.createRef()
+      render() {
+        let { id, ...props } = this.props
+        return (
+          <CSSTransition nodeRef={this.nodeRef} classNames="yolo" timeout={0} {...props}>
+            <span ref={this.nodeRef} id={id} />
+          </CSSTransition>
+        )
+      }
+    }
 
     container = document.createElement('div');
     consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});

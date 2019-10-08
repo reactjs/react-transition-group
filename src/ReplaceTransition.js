@@ -28,7 +28,13 @@ class ReplaceTransition extends React.Component {
     const child = React.Children.toArray(children)[idx];
 
     if (child.props[handler]) child.props[handler](...originalArgs)
-    if (this.props[handler]) this.props[handler](ReactDOM.findDOMNode(this))
+    if (this.props[handler]) {
+      const nodeRef = idx === 0
+        ? this.props.firstNodeRef
+        : this.props.secondNodeRef
+
+      this.props[handler](nodeRef ? undefined : ReactDOM.findDOMNode(this))
+    }
   }
 
   render() {
@@ -45,6 +51,8 @@ class ReplaceTransition extends React.Component {
     delete props.onExit;
     delete props.onExiting;
     delete props.onExited;
+    delete props.firstNodeRef;
+    delete props.secondNodeRef;
 
     return (
       <TransitionGroup {...props}>
@@ -76,6 +84,13 @@ ReplaceTransition.propTypes = {
 
     return null;
   },
+
+  /**
+   * A react reference to DOM element that need to transition
+   * https://stackoverflow.com/a/51127130/4671932
+   */
+  firstNodeRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  secondNodeRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) })
 };
 
 export default ReplaceTransition;

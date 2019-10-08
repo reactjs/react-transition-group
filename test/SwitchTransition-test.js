@@ -10,20 +10,21 @@ describe('SwitchTransition', () => {
   beforeEach(() => {
     log = [];
     let events = {
-      onEnter: (_, m) => log.push(m ? 'appear' : 'enter'),
-      onEntering: (_, m) => log.push(m ? 'appearing' : 'entering'),
-      onEntered: (_, m) => log.push(m ? 'appeared' : 'entered'),
+      onEnter: (m) => log.push(m ? 'appear' : 'enter'),
+      onEntering: (m) => log.push(m ? 'appearing' : 'entering'),
+      onEntered: (m) => log.push(m ? 'appeared' : 'entered'),
       onExit: () => log.push('exit'),
       onExiting: () => log.push('exiting'),
       onExited: () => log.push('exited')
     };
 
+    const nodeRef = React.createRef()
     Parent = function Parent({ on, rendered = true }) {
       return (
         <SwitchTransition>
           {rendered ? (
-            <Transition timeout={0} key={on ? 'first' : 'second'} {...events}>
-              <span />
+            <Transition nodeRef={nodeRef} timeout={0} key={on ? 'first' : 'second'} {...events}>
+              <span ref={nodeRef} />
             </Transition>
           ) : null}
         </SwitchTransition>
@@ -32,10 +33,11 @@ describe('SwitchTransition', () => {
   });
 
   it('should have default status ENTERED', () => {
+    const nodeRef = React.createRef()
     const wrapper = mount(
       <SwitchTransition>
-        <Transition timeout={0} key="first">
-          <span />
+        <Transition nodeRef={nodeRef} timeout={0} key="first">
+          <span ref={nodeRef} />
         </Transition>
       </SwitchTransition>
     );
@@ -44,10 +46,11 @@ describe('SwitchTransition', () => {
   });
 
   it('should have default mode: out-in', () => {
+    const nodeRef = React.createRef()
     const wrapper = mount(
       <SwitchTransition>
-        <Transition timeout={0} key="first">
-          <span />
+        <Transition nodeRef={nodeRef} timeout={0} key="first">
+          <span ref={nodeRef} />
         </Transition>
       </SwitchTransition>
     );
@@ -56,11 +59,12 @@ describe('SwitchTransition', () => {
   });
 
   it('should work without childs', () => {
+    const nodeRef = React.createRef()
     expect(() => {
       mount(
         <SwitchTransition>
-          <Transition timeout={0} key="first">
-            <span />
+          <Transition nodeRef={nodeRef} timeout={0} key="first">
+            <span ref={nodeRef} />
           </Transition>
         </SwitchTransition>
       );

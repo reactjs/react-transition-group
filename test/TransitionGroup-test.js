@@ -20,18 +20,19 @@ describe('TransitionGroup', () => {
 
     log = []
     let events = {
-      onEnter: (_, m) => log.push(m ? 'appear' : 'enter'),
-      onEntering: (_, m) => log.push(m ? 'appearing' : 'entering'),
-      onEntered: (_, m) => log.push(m ? 'appeared' : 'entered'),
+      onEnter: (m) => log.push(m ? 'appear' : 'enter'),
+      onEntering: (m) => log.push(m ? 'appearing' : 'entering'),
+      onEntered: (m) => log.push(m ? 'appeared' : 'entered'),
       onExit: () => log.push('exit'),
       onExiting: () => log.push('exiting'),
       onExited: () => log.push('exited'),
     }
 
+    const nodeRef = React.createRef()
     Child = function Child(props) {
       return (
-        <Transition timeout={0} {...props} {...events}>
-          <span />
+        <Transition nodeRef={nodeRef} timeout={0} {...props} {...events}>
+          <span ref={nodeRef} />
         </Transition>
       )
     }

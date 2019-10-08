@@ -90,60 +90,71 @@ class CSSTransition extends React.Component {
     exit: {},
   }
 
-  onEnter = (node, appearing) => {
+  onEnter = (maybeNode, maybeAppearing) => {
+    const [node, appearing] = this.resolveArguments(maybeNode, maybeAppearing)
     this.removeClasses(node, 'exit');
     this.addClass(node, appearing ? 'appear' : 'enter', 'base');
 
     if (this.props.onEnter) {
-      this.props.onEnter(node, appearing)
+      this.props.onEnter(maybeNode, maybeAppearing)
     }
   }
 
-  onEntering = (node, appearing) => {
+  onEntering = (maybeNode, maybeAppearing) => {
+    const [node, appearing] = this.resolveArguments(maybeNode, maybeAppearing)
     const type = appearing ? 'appear' : 'enter';
     this.addClass(node, type, 'active')
 
     if (this.props.onEntering) {
-      this.props.onEntering(node, appearing)
+      this.props.onEntering(maybeNode, maybeAppearing)
     }
   }
 
-  onEntered = (node, appearing) => {
+  onEntered = (maybeNode, maybeAppearing) => {
+    const [node, appearing] = this.resolveArguments(maybeNode, maybeAppearing)
     const type = appearing ? 'appear' : 'enter'
     this.removeClasses(node, type);
     this.addClass(node, type, 'done');
 
     if (this.props.onEntered) {
-      this.props.onEntered(node, appearing)
+      this.props.onEntered(maybeNode, maybeAppearing)
     }
   }
 
-  onExit = (node) => {
+  onExit = (maybeNode) => {
+    const [node] = this.resolveArguments(maybeNode)
     this.removeClasses(node, 'appear');
     this.removeClasses(node, 'enter');
     this.addClass(node, 'exit', 'base')
 
     if (this.props.onExit) {
-      this.props.onExit(node)
+      this.props.onExit(maybeNode)
     }
   }
 
-  onExiting = (node) => {
+  onExiting = (maybeNode) => {
+    const [node] = this.resolveArguments(maybeNode)
     this.addClass(node, 'exit', 'active')
 
     if (this.props.onExiting) {
-      this.props.onExiting(node)
+      this.props.onExiting(maybeNode)
     }
   }
 
-  onExited = (node) => {
+  onExited = (maybeNode) => {
+    const [node] = this.resolveArguments(maybeNode)
     this.removeClasses(node, 'exit');
     this.addClass(node, 'exit', 'done');
 
     if (this.props.onExited) {
-      this.props.onExited(node)
+      this.props.onExited(maybeNode)
     }
   }
+
+  // when prop `nodeRef` is provided `node` is excluded
+  resolveArguments = (maybeNode, maybeAppearing) => this.props.nodeRef
+    ? [this.props.nodeRef.current, maybeNode] // here `maybeNode` is actually `appearing`
+    : [maybeNode, maybeAppearing] // `findDOMNode` was used
 
   getClassNames = (type) => {
     const { classNames } = this.props;
@@ -305,6 +316,7 @@ CSSTransition.propTypes = {
   /**
    * A `<Transition>` callback fired immediately after the 'enter' or 'appear' class is
    * applied.
+   * Note: when `nodeRef` prop is passed, `node` is not passed
    *
    * @type Function(node: HtmlElement, isAppearing: bool)
    */
@@ -313,6 +325,7 @@ CSSTransition.propTypes = {
   /**
    * A `<Transition>` callback fired immediately after the 'enter-active' or
    * 'appear-active' class is applied.
+   * Note: when `nodeRef` prop is passed, `node` is not passed
    *
    * @type Function(node: HtmlElement, isAppearing: bool)
    */
@@ -321,6 +334,7 @@ CSSTransition.propTypes = {
   /**
    * A `<Transition>` callback fired immediately after the 'enter' or
    * 'appear' classes are **removed** and the `done` class is added to the DOM node.
+   * Note: when `nodeRef` prop is passed, `node` is not passed
    *
    * @type Function(node: HtmlElement, isAppearing: bool)
    */
@@ -329,6 +343,7 @@ CSSTransition.propTypes = {
   /**
    * A `<Transition>` callback fired immediately after the 'exit' class is
    * applied.
+   * Note: when `nodeRef` prop is passed, `node` is not passed
    *
    * @type Function(node: HtmlElement)
    */
@@ -336,6 +351,7 @@ CSSTransition.propTypes = {
 
   /**
    * A `<Transition>` callback fired immediately after the 'exit-active' is applied.
+   * Note: when `nodeRef` prop is passed, `node` is not passed
    *
    * @type Function(node: HtmlElement)
    */
@@ -344,6 +360,7 @@ CSSTransition.propTypes = {
   /**
    * A `<Transition>` callback fired immediately after the 'exit' classes
    * are **removed** and the `exit-done` class is added to the DOM node.
+   * Note: when `nodeRef` prop is passed, `node` is not passed
    *
    * @type Function(node: HtmlElement)
    */

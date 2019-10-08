@@ -169,7 +169,7 @@ class Transition extends React.Component {
     this.updateStatus(true, this.appearStatus)
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, _prevState, _snapshot) {
     let nextStatus = null
     if (prevProps !== this.props) {
       const { status } = this.state
@@ -210,21 +210,23 @@ class Transition extends React.Component {
     if (nextStatus !== null) {
       // nextStatus will always be ENTERING or EXITING.
       this.cancelNextCallback()
-      const node = ReactDOM.findDOMNode(this)
 
       if (nextStatus === ENTERING) {
-        this.performEnter(node, mounting)
+        this.performEnter(mounting)
       } else {
-        this.performExit(node)
+        this.performExit()
       }
     } else if (this.props.unmountOnExit && this.state.status === EXITED) {
       this.setState({ status: UNMOUNTED })
     }
   }
 
-  performEnter(node, mounting) {
+  performEnter(mounting) {
     const { enter } = this.props
     const appearing = this.context ? this.context.isMounting : mounting
+    const [maybeNode, maybeAppearing] = this.props.nodeRef
+      ? [appearing]
+      : [ReactDOM.findDOMNode(this), appearing]
 
     const timeouts = this.getTimeouts()
     const enterTimeout = appearing ? timeouts.appear : timeouts.enter
@@ -232,43 +234,47 @@ class Transition extends React.Component {
     // if we are mounting and running this it means appear _must_ be set
     if ((!mounting && !enter) || config.disabled) {
       this.safeSetState({ status: ENTERED }, () => {
-        this.props.onEntered(node)
+        this.props.onEntered(maybeNode)
       })
       return
     }
 
-    this.props.onEnter(node, appearing)
+    this.props.onEnter(maybeNode, maybeAppearing)
 
     this.safeSetState({ status: ENTERING }, () => {
-      this.props.onEntering(node, appearing)
+      this.props.onEntering(maybeNode, maybeAppearing)
 
-      this.onTransitionEnd(node, enterTimeout, () => {
+      this.onTransitionEnd(enterTimeout, () => {
         this.safeSetState({ status: ENTERED }, () => {
-          this.props.onEntered(node, appearing)
+          this.props.onEntered(maybeNode, maybeAppearing)
         })
       })
     })
   }
 
-  performExit(node) {
+  performExit() {
     const { exit } = this.props
     const timeouts = this.getTimeouts()
+    const maybeNode = this.props.nodeRef
+      ? undefined
+      : ReactDOM.findDOMNode(this)
 
     // no exit animation skip right to EXITED
     if (!exit || config.disabled) {
       this.safeSetState({ status: EXITED }, () => {
-        this.props.onExited(node)
+        this.props.onExited(maybeNode)
       })
       return
     }
-    this.props.onExit(node)
+
+    this.props.onExit(maybeNode)
 
     this.safeSetState({ status: EXITING }, () => {
-      this.props.onExiting(node)
+      this.props.onExiting(maybeNode)
 
-      this.onTransitionEnd(node, timeouts.exit, () => {
+      this.onTransitionEnd(timeouts.exit, () => {
         this.safeSetState({ status: EXITED }, () => {
-          this.props.onExited(node)
+          this.props.onExited(maybeNode)
         })
       })
     })
@@ -308,8 +314,11 @@ class Transition extends React.Component {
     return this.nextCallback
   }
 
-  onTransitionEnd(node, timeout, handler) {
+  onTransitionEnd(timeout, handler) {
     this.setNextCallback(handler)
+    const node = this.props.nodeRef
+      ? this.props.nodeRef.current
+      : ReactDOM.findDOMNode(this)
 
     const doesNotHaveTimeoutOrListener =
       timeout == null && !this.props.addEndListener
@@ -319,7 +328,10 @@ class Transition extends React.Component {
     }
 
     if (this.props.addEndListener) {
-      this.props.addEndListener(node, this.nextCallback)
+      const [maybeNode, maybeNextCallback] = this.props.nodeRef
+        ? [this.nextCallback]
+        : [node, this.nextCallback]
+      this.props.addEndListener(maybeNode, maybeNextCallback)
     }
 
     if (timeout != null) {
@@ -349,6 +361,7 @@ class Transition extends React.Component {
     delete childProps.onExit
     delete childProps.onExiting
     delete childProps.onExited
+    delete childProps.nodeRef
 
     if (typeof children === 'function') {
       // allows for nested Transitions
@@ -467,6 +480,7 @@ Transition.propTypes = {
    * Add a custom transition end trigger. Called with the transitioning
    * DOM node and a `done` callback. Allows for more fine grained transition end
    * logic. **Note:** Timeouts are still used as a fallback if provided.
+   * Note: when `nodeRef` prop is passed, `node` is not passed
    *
    * ```jsx
    * addEndListener={(node, done) => {
@@ -480,6 +494,7 @@ Transition.propTypes = {
   /**
    * Callback fired before the "entering" status is applied. An extra parameter
    * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
+   * Note: when `nodeRef` prop is passed, `node` is not passed
    *
    * @type Function(node: HtmlElement, isAppearing: bool) -> void
    */
@@ -488,6 +503,7 @@ Transition.propTypes = {
   /**
    * Callback fired after the "entering" status is applied. An extra parameter
    * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
+   * Note: when `nodeRef` prop is passed, `node` is not passed
    *
    * @type Function(node: HtmlElement, isAppearing: bool)
    */
@@ -496,6 +512,7 @@ Transition.propTypes = {
   /**
    * Callback fired after the "entered" status is applied. An extra parameter
    * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
+   * Note: when `nodeRef` prop is passed, `node` is not passed
    *
    * @type Function(node: HtmlElement, isAppearing: bool) -> void
    */
@@ -503,6 +520,7 @@ Transition.propTypes = {
 
   /**
    * Callback fired before the "exiting" status is applied.
+   * Note: when `nodeRef` prop is passed, `node` is not passed
    *
    * @type Function(node: HtmlElement) -> void
    */
@@ -510,6 +528,7 @@ Transition.propTypes = {
 
   /**
    * Callback fired after the "exiting" status is applied.
+   * Note: when `nodeRef` prop is passed, `node` is not passed
    *
    * @type Function(node: HtmlElement) -> void
    */
@@ -517,10 +536,17 @@ Transition.propTypes = {
 
   /**
    * Callback fired after the "exited" status is applied.
+   * Note: when `nodeRef` prop is passed, `node` is not passed
    *
    * @type Function(node: HtmlElement) -> void
    */
   onExited: PropTypes.func,
+
+  /**
+   * A react reference to DOM element that need to transition
+   * https://stackoverflow.com/a/51127130/4671932
+   */
+  nodeRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) })
 }
 
 // Name the function so it is clearer in the documentation
