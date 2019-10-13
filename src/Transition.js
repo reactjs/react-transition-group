@@ -190,6 +190,12 @@ class Transition extends React.Component {
         }
       }
     }
+    // if mountOnEnter is true, this is the time that children is mounted.
+    // so we have to trigger reflow the same as cDM
+    if (this.props.mountOnEnter && nextStatus === ENTERING) {
+      const node = ReactDOM.findDOMNode(this)
+      reflow(node)
+    }
     this.updateStatus(false, nextStatus)
   }
 

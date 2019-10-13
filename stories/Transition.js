@@ -41,6 +41,13 @@ storiesOf('Transition', module)
       </Fade>
     </ToggleFixture>
   ))
+  .add('Bootstrap Fadelazy mounting', () => (
+    <ToggleFixture>
+      <Fade mountOnEnter unmountOnExit>
+        <div>asaghasg asgasg</div>
+      </Fade>
+    </ToggleFixture>
+  ))
   .add('Bootstrap Collapse', () => (
     <ToggleFixture>
       <Collapse>
