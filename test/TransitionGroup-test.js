@@ -102,7 +102,7 @@ describe('TransitionGroup', () => {
 
   it('should not throw when enter callback is called and is now leaving', () => {
     class Child extends React.Component {
-      componentWillReceiveProps() {
+      UNSAFE_componentWillReceiveProps() {
         if (this.callback) {
           this.callback()
         }
@@ -139,7 +139,7 @@ describe('TransitionGroup', () => {
 
   it('should not throw when leave callback is called and is now entering', () => {
     class Child extends React.Component {
-      componentWillReceiveProps() {
+      UNSAFE_componentWillReceiveProps() {
         if (this.callback) {
           this.callback()
         }
