@@ -454,7 +454,7 @@ var TransitionGroup = function (_React$Component) {
     return _this;
   }
 
-  TransitionGroup.prototype.componentWillMount = function componentWillMount() {
+  TransitionGroup.prototype.UNSAFE_componentWillMount = function UNSAFE_componentWillMount() {
     this.currentlyTransitioningKeys = {};
     this.keysToEnter = [];
     this.keysToLeave = [];
@@ -469,7 +469,7 @@ var TransitionGroup = function (_React$Component) {
     }
   };
 
-  TransitionGroup.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+  TransitionGroup.prototype.UNSAFE_componentWillReceiveProps = function UNSAFE_componentWillReceiveProps(nextProps) {
     var nextChildMapping = (0, _ChildMapping.getChildMapping)(nextProps.children);
     var prevChildMapping = this.state.children;
 
@@ -1922,7 +1922,7 @@ var CSSTransitionGroupChild = function (_React$Component) {
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
-  CSSTransitionGroupChild.prototype.componentWillMount = function componentWillMount() {
+  CSSTransitionGroupChild.prototype.UNSAFE_componentWillMount = function UNSAFE_componentWillMount() {
     this.classNameAndNodeQueue = [];
     this.transitionTimeouts = [];
   };
