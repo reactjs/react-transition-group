@@ -84,10 +84,10 @@ const enterRenders = {
  *  const [state, setState] = useState(false);
  *  return (
  *    <SwitchTransition>
- *      <CSSTransition 
+ *      <CSSTransition
  *        key={state ? "Goodbye, world!" : "Hello, world!"}
  *        addEndListener={(node, done) => node.addEventListener("transitionend", done, false)}
- *        classNames='fade' 
+ *        classNames='fade'
  *       >
  *        <button onClick={() => setState(state => !state)}>
  *          {state ? "Goodbye, world!" : "Hello, world!"}
@@ -97,7 +97,7 @@ const enterRenders = {
  *  )
  * }
  * ```
- * 
+ *
  * ```css
  * .fade-enter{
  *    opacity: 0;
