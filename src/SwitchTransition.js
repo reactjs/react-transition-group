@@ -1,6 +1,8 @@
+/** @format */
+
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ENTERED, ENTERING, EXITING } from './Transition'
+import { ENTERED, ENTERING, EXITING } from './Transition';
 import TransitionGroupContext from './TransitionGroupContext';
 
 function areChildrenDifferent(oldChildren, newChildren) {
@@ -22,13 +24,13 @@ function areChildrenDifferent(oldChildren, newChildren) {
  */
 export const modes = {
   out: 'out-in',
-  in: 'in-out'
+  in: 'in-out',
 };
 
 const callHook = (element, name, cb) => (...args) => {
-  element.props[name] && element.props[name](...args)
-  cb()
-}
+  element.props[name] && element.props[name](...args);
+  cb();
+};
 
 const leaveRenders = {
   [modes.out]: ({ current, changeState }) =>
@@ -36,7 +38,7 @@ const leaveRenders = {
       in: false,
       onExited: callHook(current, 'onExited', () => {
         changeState(ENTERING, null);
-      })
+      }),
     }),
   [modes.in]: ({ current, changeState, children }) => [
     current,
@@ -44,9 +46,9 @@ const leaveRenders = {
       in: true,
       onEntered: callHook(children, 'onEntered', () => {
         changeState(ENTERING);
-      })
-    })
-  ]
+      }),
+    }),
+  ],
 };
 
 const enterRenders = {
@@ -55,19 +57,19 @@ const enterRenders = {
       in: true,
       onEntered: callHook(children, 'onEntered', () => {
         changeState(ENTERED, React.cloneElement(children, { in: true }));
-      })
+      }),
     }),
   [modes.in]: ({ current, children, changeState }) => [
     React.cloneElement(current, {
       in: false,
       onExited: callHook(current, 'onExited', () => {
         changeState(ENTERED, React.cloneElement(children, { in: true }));
-      })
+      }),
     }),
     React.cloneElement(children, {
-      in: true
-    })
-  ]
+      in: true,
+    }),
+  ],
 };
 
 /**
@@ -84,22 +86,43 @@ const enterRenders = {
  *  const [state, setState] = useState(false);
  *  return (
  *    <SwitchTransition>
- *      <FadeTransition key={state ? "Goodbye, world!" : "Hello, world!"}
+ *      <CSSTransition
+ *        key={state ? "Goodbye, world!" : "Hello, world!"}
  *        addEndListener={(node, done) => node.addEventListener("transitionend", done, false)}
- *        classNames='fade' >
+ *        classNames='fade'
+ *      >
  *        <button onClick={() => setState(state => !state)}>
  *          {state ? "Goodbye, world!" : "Hello, world!"}
  *        </button>
- *      </FadeTransition>
+ *      </CSSTransition>
  *    </SwitchTransition>
  *  )
+ * }
+ * ```
+ *
+ * ```css
+ * .fade-enter{
+ *    opacity: 0;
+ * }
+ * .fade-enter-active{
+ *    opacity: 1;
+ * }
+ * .fade-exit{
+ *    opacity: 1;
+ * }
+ * .fade-exit-active{
+ *    opacity: 0;
+ * }
+ * .fade-enter-active,
+ * .fade-exit-active{
+ *    transition: opacity 500ms;
  * }
  * ```
  */
 class SwitchTransition extends React.Component {
   state = {
     status: ENTERED,
-    current: null
+    current: null,
   };
 
   appeared = false;
@@ -111,50 +134,50 @@ class SwitchTransition extends React.Component {
   static getDerivedStateFromProps(props, state) {
     if (props.children == null) {
       return {
-        current: null
-      }
+        current: null,
+      };
     }
 
     if (state.status === ENTERING && props.mode === modes.in) {
       return {
-        status: ENTERING
+        status: ENTERING,
       };
     }
 
     if (state.current && areChildrenDifferent(state.current, props.children)) {
       return {
-        status: EXITING
+        status: EXITING,
       };
     }
 
     return {
       current: React.cloneElement(props.children, {
-        in: true
-      })
+        in: true,
+      }),
     };
   }
 
   changeState = (status, current = this.state.current) => {
     this.setState({
       status,
-      current
+      current,
     });
   };
 
   render() {
     const {
       props: { children, mode },
-      state: { status, current }
+      state: { status, current },
     } = this;
 
     const data = { children, current, changeState: this.changeState, status };
-    let component
+    let component;
     switch (status) {
       case ENTERING:
         component = enterRenders[mode](data);
         break;
       case EXITING:
-        component = leaveRenders[mode](data)
+        component = leaveRenders[mode](data);
         break;
       case ENTERED:
         component = current;
@@ -164,10 +187,9 @@ class SwitchTransition extends React.Component {
       <TransitionGroupContext.Provider value={{ isMounting: !this.appeared }}>
         {component}
       </TransitionGroupContext.Provider>
-    )
+    );
   }
 }
-
 
 SwitchTransition.propTypes = {
   /**
@@ -181,13 +203,11 @@ SwitchTransition.propTypes = {
   /**
    * Any `Transition` or `CSSTransition` component
    */
-  children: PropTypes.oneOfType([
-    PropTypes.element.isRequired,
-  ]),
-}
+  children: PropTypes.oneOfType([PropTypes.element.isRequired]),
+};
 
 SwitchTransition.defaultProps = {
-  mode: modes.out
-}
+  mode: modes.out,
+};
 
 export default SwitchTransition;
