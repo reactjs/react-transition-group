@@ -110,7 +110,7 @@ class CSSTransition extends React.Component {
     this.removeClasses(node, type);
     this.addClass(node, type, 'done');
 
-    if(this.config.disabled) {
+    if (config.disabled) {
       this.removeClasses(node, 'exit');
     }
 
@@ -141,7 +141,7 @@ class CSSTransition extends React.Component {
     this.removeClasses(node, 'exit');
     this.addClass(node, 'exit', 'done');
 
-    if(this.config.disabled) {
+    if (config.disabled) {
       this.removeClasses(node, 'enter');
     }
 
