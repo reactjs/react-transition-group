@@ -4,6 +4,8 @@ import addOneClass from 'dom-helpers/addClass';
 import removeOneClass from 'dom-helpers/removeClass';
 import React from 'react';
 
+import config from './config';
+
 import Transition from './Transition';
 import { classNamesShape } from './utils/PropTypes';
 
@@ -108,6 +110,10 @@ class CSSTransition extends React.Component {
     this.removeClasses(node, type);
     this.addClass(node, type, 'done');
 
+    if(this.config.disabled) {
+      this.removeClasses(node, 'exit');
+    }
+
     if (this.props.onEntered) {
       this.props.onEntered(node, appearing)
     }
@@ -134,6 +140,10 @@ class CSSTransition extends React.Component {
   onExited = (node) => {
     this.removeClasses(node, 'exit');
     this.addClass(node, 'exit', 'done');
+
+    if(this.config.disabled) {
+      this.removeClasses(node, 'enter');
+    }
 
     if (this.props.onExited) {
       this.props.onExited(node)
