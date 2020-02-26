@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 
 import { mount } from 'enzyme'
 
@@ -402,11 +401,8 @@ describe('Transition', () => {
 
   describe('unmountOnExit', () => {
     class UnmountTransition extends React.Component {
-      constructor(props) {
-        super(props)
-
-        this.state = { in: props.initialIn }
-      }
+      divRef = React.createRef()
+      state = { in: this.props.initialIn }
 
       render() {
         const { ...props } = this.props
@@ -420,7 +416,7 @@ describe('Transition', () => {
             timeout={10}
             {...props}
           >
-            <div />
+            <div ref={this.divRef} />
           </Transition>
         )
       }
@@ -436,7 +432,7 @@ describe('Transition', () => {
           initialIn={false}
           onEnter={() => {
             expect(wrapper.getStatus()).toEqual(EXITED)
-            expect(ReactDOM.findDOMNode(wrapper)).toExist()
+            expect(wrapper.divRef.current).toExist()
 
             done()
           }}
@@ -444,7 +440,7 @@ describe('Transition', () => {
       ).instance()
 
       expect(wrapper.getStatus()).toEqual(UNMOUNTED)
-      expect(ReactDOM.findDOMNode(wrapper)).toBeNull()
+      expect(wrapper.divRef.current).toBeNull()
 
       wrapper.setState({ in: true })
     })
@@ -456,7 +452,7 @@ describe('Transition', () => {
           onExited={() => {
             setTimeout(() => {
               expect(wrapper.getStatus()).toEqual(UNMOUNTED)
-              expect(ReactDOM.findDOMNode(wrapper)).not.toExist()
+              expect(wrapper.divRef.current).not.toExist()
               done()
             })
           }}
@@ -464,7 +460,7 @@ describe('Transition', () => {
       ).instance()
 
       expect(wrapper.getStatus()).toEqual(ENTERED)
-      expect(ReactDOM.findDOMNode(wrapper)).toExist()
+      expect(wrapper.divRef.current).toExist()
 
       wrapper.setState({ in: false })
     })
