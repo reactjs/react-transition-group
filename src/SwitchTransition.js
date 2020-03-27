@@ -78,22 +78,47 @@ const enterRenders = {
  * If the `out-in` mode is selected, the `SwitchTransition` waits until the old child leaves and then inserts a new child.
  * If the `in-out` mode is selected, the `SwitchTransition` inserts a new child first, waits for the new child to enter and then removes the old child.
  *
+ * **Note**: If you want the animation to happen simultaneously 
+ * (that is, to have the old child removed and a new child inserted **at the same time**),
+ * you should use 
+ * [`TransitionGroup`](https://reactcommunity.org/react-transition-group/transition-group)
+ * instead.
+ *
  * ```jsx
  * function App() {
- *   const [state, setState] = useState(false);
- *   return (
- *     <SwitchTransition>
- *       <FadeTransition
- *         key={state ? "Goodbye, world!" : "Hello, world!"}
- *         addEndListener={(node, done) => node.addEventListener("transitionend", done, false)}
- *         classNames='fade'>
- *       >
- *         <button onClick={() => setState(state => !state)}>
- *           {state ? "Goodbye, world!" : "Hello, world!"}
- *         </button>
- *       </FadeTransition>
- *     </SwitchTransition>
- *   );
+ *  const [state, setState] = useState(false);
+ *  return (
+ *    <SwitchTransition>
+ *      <CSSTransition
+ *        key={state ? "Goodbye, world!" : "Hello, world!"}
+ *        addEndListener={(node, done) => node.addEventListener("transitionend", done, false)}
+ *        classNames='fade'
+ *      >
+ *        <button onClick={() => setState(state => !state)}>
+ *          {state ? "Goodbye, world!" : "Hello, world!"}
+ *        </button>
+ *      </CSSTransition>
+ *    </SwitchTransition>
+ *  );
+ * }
+ * ```
+ *
+ * ```css
+ * .fade-enter{
+ *    opacity: 0;
+ * }
+ * .fade-exit{
+ *    opacity: 1;
+ * }
+ * .fade-enter-active{
+ *    opacity: 1;
+ * }
+ * .fade-exit-active{
+ *    opacity: 0;
+ * }
+ * .fade-enter-active,
+ * .fade-exit-active{
+ *    transition: opacity 500ms;
  * }
  * ```
  */

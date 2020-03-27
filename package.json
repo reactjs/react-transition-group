@@ -1,6 +1,6 @@
 {
   "name": "react-transition-group",
-  "version": "4.2.1",
+  "version": "4.3.0",
   "description": "A react component toolset for managing animations",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -12,7 +12,7 @@
     "build:docs": "npm -C www run build",
     "build:cjs": "babel src --out-dir lib/cjs",
     "build:esm": "cross-env BABEL_ENV=esm babel src --out-dir lib/esm",
-    "build:pick": "cherry-pick --name=react-transition-group --cwd=lib --input-dir=../src --cjs-dir=cjs --esm-dir=esm",
+    "build:pick": "cherry-pick --cwd=lib --input-dir=../src --cjs-dir=cjs --esm-dir=esm",
     "build:dist": "cross-env BABEL_ENV=esm rollup -c",
     "bootstrap": "yarn && yarn --cwd www",
     "lint": "eslint src test",
@@ -58,8 +58,8 @@
     "react-dom": ">=16.6.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.5",
-    "dom-helpers": "^3.4.0",
+    "@babel/runtime": "^7.5.5",
+    "dom-helpers": "^5.0.1",
     "loose-envify": "^1.4.0",
     "prop-types": "^15.6.2"
   },
@@ -77,7 +77,7 @@
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "babel-preset-jason": "^6.0.1",
-    "cherry-pick": "^0.3.0",
+    "cherry-pick": "^0.5.0",
     "cross-env": "^5.2.0",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.0",

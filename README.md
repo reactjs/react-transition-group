@@ -13,6 +13,13 @@ A set of components for managing component states (including mounting and unmoun
 - [**Main documentation**](https://reactcommunity.org/react-transition-group/)
 - [Migration guide from v1](/Migration.md)
 
+## TypeScript
+TypeScript definitions are published via [**DefinitelyTyped**](https://github.com/DefinitelyTyped/DefinitelyTyped) and can be installed via the following command:
+
+```
+npm install @types/react-transition-group
+```
+
 ## Examples
 
 Clone the repo first:

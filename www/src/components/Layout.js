@@ -30,6 +30,7 @@ const Layout = ({ data, children }) => (
   <>
     <Helmet>
       <html lang="en" />
+      <title>React Transition Group</title>
     </Helmet>
     <Navbar fixed="top" bg="dark" variant="dark" expand="md" collapseOnSelect>
       <Navbar.Brand as={Link} to="/">

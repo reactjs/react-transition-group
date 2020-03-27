@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { findDOMNode } from 'react-dom'
+import ReactDOM from 'react-dom'
 import TransitionGroup from './TransitionGroup';
 
 /**
@@ -28,7 +28,7 @@ class ReplaceTransition extends React.Component {
     const child = React.Children.toArray(children)[idx];
 
     if (child.props[handler]) child.props[handler](...originalArgs)
-    if (this.props[handler]) this.props[handler](findDOMNode(this))
+    if (this.props[handler]) this.props[handler](ReactDOM.findDOMNode(this))
   }
 
   render() {

@@ -1,7 +1,7 @@
-import * as PropTypes from 'prop-types';
-import addOneClass from 'dom-helpers/class/addClass';
+import PropTypes from 'prop-types';
+import addOneClass from 'dom-helpers/addClass';
 
-import removeOneClass from 'dom-helpers/class/removeClass';
+import removeOneClass from 'dom-helpers/removeClass';
 import React from 'react';
 
 import Transition from './Transition';
@@ -12,7 +12,7 @@ const removeClass = (node, classes) => node && classes && classes.split(' ').for
 
 /**
  * A transition component inspired by the excellent
- * [ng-animate](http://www.nganimate.org/) library, you should use it if you're
+ * [ng-animate](https://docs.angularjs.org/api/ngAnimate) library, you should use it if you're
  * using CSS transitions or animations. It's built upon the
  * [`Transition`](https://reactcommunity.org/react-transition-group/transition)
  * component, so it inherits all of its props.

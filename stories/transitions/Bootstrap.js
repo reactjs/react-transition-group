@@ -1,5 +1,5 @@
 import React from 'react';
-import style from 'dom-helpers/style';
+import style from 'dom-helpers/css';
 
 import Transition, { EXITED, ENTERED, ENTERING, EXITING }
   from '../../src/Transition';

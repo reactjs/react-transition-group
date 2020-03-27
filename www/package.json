@@ -23,7 +23,7 @@
     "gatsby-source-filesystem": "^2.0.23",
     "gatsby-transformer-react-docgen": "^3.0.5",
     "gatsby-transformer-remark": "^2.3.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "prismjs": "^1.15.0",
     "react": "^16.8.3",
     "react-bootstrap": "^1.0.0-beta.5",
