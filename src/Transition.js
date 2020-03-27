@@ -544,10 +544,10 @@ Transition.defaultProps = {
   onExited: noop,
 }
 
-Transition.UNMOUNTED = 0
-Transition.EXITED = 1
-Transition.ENTERING = 2
-Transition.ENTERED = 3
-Transition.EXITING = 4
+Transition.UNMOUNTED = UNMOUNTED
+Transition.EXITED = EXITED
+Transition.ENTERING = ENTERING
+Transition.ENTERED = ENTERED
+Transition.EXITING = EXITING
 
 export default Transition
