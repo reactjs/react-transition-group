@@ -90,15 +90,36 @@ const enterRenders = {
  *  const [state, setState] = useState(false);
  *  return (
  *    <SwitchTransition>
- *      <FadeTransition key={state ? "Goodbye, world!" : "Hello, world!"}
+ *      <CSSTransition
+ *        key={state ? "Goodbye, world!" : "Hello, world!"}
  *        addEndListener={(node, done) => node.addEventListener("transitionend", done, false)}
- *        classNames='fade' >
+ *        classNames='fade'
+ *       >
  *        <button onClick={() => setState(state => !state)}>
  *          {state ? "Goodbye, world!" : "Hello, world!"}
  *        </button>
- *      </FadeTransition>
+ *      </CSSTransition>
  *    </SwitchTransition>
  *  )
+ * }
+ * ```
+ *
+ * ```css
+ * .fade-enter{
+ *    opacity: 0;
+ * }
+ * .fade-exit{
+ *    opacity: 1;
+ * }
+ * .fade-enter-active{
+ *    opacity: 1;
+ * }
+ * .fade-exit-active{
+ *    opacity: 0;
+ * }
+ * .fade-enter-active,
+ * .fade-exit-active{
+ *    transition: opacity 500ms;
  * }
  * ```
  */
