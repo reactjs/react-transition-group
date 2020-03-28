@@ -19,6 +19,7 @@ module.exports = {
       {
         path: '/switch-transition',
         displayName: 'SwitchTransition',
+        codeSandboxId: 'switchtransition-component-iqm0d',
       },
       {
         path: '/transition-group',
