@@ -78,9 +78,9 @@ const enterRenders = {
  * If the `out-in` mode is selected, the `SwitchTransition` waits until the old child leaves and then inserts a new child.
  * If the `in-out` mode is selected, the `SwitchTransition` inserts a new child first, waits for the new child to enter and then removes the old child.
  *
- * **Note**: If you want the animation to happen simultaneously 
+ * **Note**: If you want the animation to happen simultaneously
  * (that is, to have the old child removed and a new child inserted **at the same time**),
- * you should use 
+ * you should use
  * [`TransitionGroup`](https://reactcommunity.org/react-transition-group/transition-group)
  * instead.
  *
