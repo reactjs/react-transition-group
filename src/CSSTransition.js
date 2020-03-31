@@ -12,8 +12,8 @@ const removeClass = (node, classes) => node && classes && classes.split(' ').for
 
 /**
  * A transition component inspired by the excellent
- * [ng-animate](https://docs.angularjs.org/api/ngAnimate) library, you should use it if you're
- * using CSS transitions or animations. It's built upon the
+ * [ng-animate](https://docs.angularjs.org/api/ngAnimate) library, you should
+ * use it if you're using CSS transitions or animations. It's built upon the
  * [`Transition`](https://reactcommunity.org/react-transition-group/transition)
  * component, so it inherits all of its props.
  *
@@ -68,7 +68,12 @@ const removeClass = (node, classes) => node && classes && classes.split(' ').for
  * }
  * ```
  *
- * `*-active` classes represent which styles you want to animate **to**.
+ * `*-active` classes represent which styles you want to animate **to**, so it's
+ * important to add `transition` declaration only to them, otherwise transitions
+ * might not behave as intended! This might not be obvious when the transitions
+ * are symmetrical, i.e. when `*-enter-active` is the same as `*-exit`, like in
+ * the example above (minus `transition`), but it becomes apparent in more
+ * complex transitions.
  *
  * **Note**: If you're using the
  * [`appear`](http://reactcommunity.org/react-transition-group/transition#Transition-prop-appear)
