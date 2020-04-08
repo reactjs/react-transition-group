@@ -61,18 +61,16 @@ class ComponentTemplate extends React.Component {
             <div
               dangerouslySetInnerHTML={{ __html: extractMarkdown(metadata) }}
             />
-          </Container>
 
-          {codeSandboxId != null && (
-            <Example
-              codeSandbox={{
-                title: `${metadata.displayName} Component`,
-                id: codeSandboxId,
-              }}
-            />
-          )}
+            {codeSandboxId != null && (
+              <Example
+                codeSandbox={{
+                  title: `${metadata.displayName} Component`,
+                  id: codeSandboxId,
+                }}
+              />
+            )}
 
-          <Container>
             <h2 id={`${metadata.displayName}-props`}>
               <a href={`#${metadata.displayName}-props`}>Props</a>
               {metadata.composes && (
