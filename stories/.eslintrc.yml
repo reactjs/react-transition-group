@@ -1,5 +1,3 @@
-globals:
-  css: false
 rules:
   react/prop-types: off
   no-unused-vars:

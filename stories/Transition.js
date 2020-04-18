@@ -1,35 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { storiesOf } from '@storybook/react'
 
-import { Fade, Collapse } from './transitions/Bootstrap'
 import StoryFixture from './StoryFixture'
+import { Fade, Collapse } from './transitions/Bootstrap'
 
-import { config } from '../src/index'
+function ToggleFixture({ defaultIn, description, children }) {
+  const [show, setShow] = useState(defaultIn);
 
-config.disabled = true
-
-class ToggleFixture extends React.Component {
-  state = { show: this.props.defaultIn }
-  render() {
-    return (
-      <StoryFixture description={this.props.description}>
-        <div style={{ marginBottom: 10 }}>
-          <button
-            onClick={() =>
-              this.setState(({ show }) => ({
-                show: !show,
-              }))
-            }
-          >
-            Toggle
-          </button>
-        </div>
-        {React.cloneElement(this.props.children, {
-          in: this.state.show,
-        })}
-      </StoryFixture>
-    )
-  }
+  return (
+    <StoryFixture description={description}>
+      <div style={{ marginBottom: 10 }}>
+        <button
+          onClick={() => {
+            setShow(!show);
+          }}
+        >
+          Toggle
+        </button>
+      </div>
+      {React.cloneElement(children, { in: show })}
+    </StoryFixture>
+  );
 }
 
 storiesOf('Transition', module)

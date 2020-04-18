@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { storiesOf } from '@storybook/react';
 
 import TransitionGroup from '../src/TransitionGroup';
+
 import CSSTransitionGroupFixture from './CSSTransitionGroupFixture';
 import NestedTransition from './NestedTransition'
 import StoryFixture from './StoryFixture';
 import Fade, { FADE_TIMEOUT } from './transitions/Fade';
-
 
 storiesOf('Css Transition Group', module)
   .add('Animates on all', () => (
@@ -76,10 +76,10 @@ storiesOf('Css Transition Group', module)
   .add('Re-entering while leaving', () => (
     <StoryFixture
       description={`
-        Should animate when items first mount but not when added or removed
+        Should animate on enter even while exiting
       `}
     >
-      <RenterTransition />
+      <ReEnterTransition />
     </StoryFixture>
   ))
   .add('Nested Transitions', () => (
@@ -117,28 +117,34 @@ class DynamicTransition extends React.Component {
   }
 }
 
-class RenterTransition extends React.Component {
-  handleClick = () => {
-    this.setState({ hide: true }, () => {
+function ReEnterTransition() {
+  const [hide, setHide] = useState(false);
+
+  useEffect(() => {
+    if (hide) {
       setTimeout(() => {
         console.log('re-entering!')
-        this.setState({ hide: false })
-      }, FADE_TIMEOUT / 2);
-    })
-  }
-  render() {
-    const { hide } = this.state || {}
-    return (
-      <div>
-        <button onClick={this.handleClick}>Remove and re-add</button>
-        <TransitionGroup timeout={FADE_TIMEOUT}>
-          {!hide &&
-            <Fade key='item'>
-              <div>I'm entering!</div>
-            </Fade>
-          }
-        </TransitionGroup>
-      </div>
-    )
-  }
+        setHide(false);
+      }, 0.5 * FADE_TIMEOUT);
+    }
+  }, [hide]);
+
+  return (
+    <div>
+      <button
+        onClick={() => {
+          setHide(true);
+        }}
+      >
+        Remove and re-add
+      </button>
+      <TransitionGroup timeout={FADE_TIMEOUT}>
+        {!hide && (
+          <Fade key='item'>
+            <div>I'm entering!</div>
+          </Fade>
+        )}
+      </TransitionGroup>
+    </div>
+  );
 }

@@ -5,18 +5,14 @@ const propTypes = {
   description: PropTypes.string,
 };
 
-class StoryFixture extends React.Component {
-  render() {
-    const { children, description } = this.props;
+function StoryFixture({ description, children }) {
+  return (
+    <div>
+      <p>{description}</p>
 
-    return (
-      <div>
-        <p>{description}</p>
-
-        {children}
-      </div>
-    );
-  }
+      {children}
+    </div>
+  );
 }
 
 StoryFixture.propTypes = propTypes;

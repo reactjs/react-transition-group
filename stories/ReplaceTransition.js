@@ -1,4 +1,5 @@
-import React from 'react';
+import { css } from 'astroturf';
+import React, { useState } from 'react';
 import { storiesOf } from '@storybook/react';
 
 import ReplaceTransition from '../src/ReplaceTransition';
@@ -6,7 +7,7 @@ import CSSTransition from '../src/CSSTransition';
 
 const FADE_TIMEOUT = 1000;
 
-let styles = css`
+const styles = css`
   .enter {
     opacity: 0.01;
   }
@@ -37,36 +38,41 @@ let styles = css`
   }
 `;
 
-export default class Fade extends React.Component {
-  static defaultProps = {
-    in: false,
-    delay: false,
-    timeout: FADE_TIMEOUT * 2,
-  };
-  render() {
-    const { ...props } = this.props;
-    return (
-      <CSSTransition
-        {...props}
-        className={styles.box}
-        classNames={styles}
-      />
-    );
-  }
+const defaultProps = {
+  in: false,
+  delay: false,
+  timeout: FADE_TIMEOUT * 2,
 }
 
-class Example extends React.Component {
-  state = { in: false }
-  render() {
-    return (
-      <div>
-        <button onClick={() => this.setState(p => ({ in: !p.in })) }>
-          toggle (in: "{String(this.state.in)}")
-        </button>
-        {React.cloneElement(this.props.children, this.state)}
-      </div>
-    );
-  }
+function Fade(props) {
+  return (
+    <CSSTransition
+      {...props}
+      className={styles.box}
+      classNames={styles}
+    />
+  );
+}
+
+Fade.defaultProps = defaultProps;
+
+export default Fade;
+
+function Example({ children }) {
+  const [show, setShow] = useState(false);
+
+  return (
+    <div>
+      <button
+        onClick={() => {
+          setShow(!show);
+        }}
+      >
+        toggle (in: "{String(show)}")
+      </button>
+      {React.cloneElement(children, { in: show })}
+    </div>
+  );
 }
 
 
