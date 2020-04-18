@@ -1,9 +1,9 @@
+import { css } from 'astroturf';
 import React from 'react';
 import style from 'dom-helpers/css';
 
 import Transition, { EXITED, ENTERED, ENTERING, EXITING }
   from '../../src/Transition';
-
 
 const styles = css`
   .fade {

@@ -14,6 +14,7 @@ class CSSTransitionGroupFixture extends React.Component {
       items,
     };
   }
+
   handleAddItem = () => {
     this.setState(({ items }) => ({
       items: [

@@ -1,10 +1,11 @@
+import { css } from 'astroturf';
 import React from 'react';
 
 import CSSTransition from '../../src/CSSTransition';
 
 export const SCALE_TIMEOUT = 1000;
 
-let styles = css`
+const styles = css`
   .enter,
   .appear {
     transform: scale(0);
@@ -25,17 +26,15 @@ let styles = css`
   }
 `;
 
-export default class Scale extends React.Component {
-  static defaultProps = {
-    in: false,
-    timeout: SCALE_TIMEOUT,
-  };
-  render() {
-    return (
-      <CSSTransition
-        {...this.props}
-        classNames={styles}
-      />
-    );
-  }
+const defaultProps = {
+  in: false,
+  timeout: SCALE_TIMEOUT,
+};
+
+function Scale(props) {
+  return <CSSTransition {...props} classNames={styles} />;
 }
+
+Scale.defaultProps = defaultProps;
+
+export default Scale;
