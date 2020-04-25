@@ -26,19 +26,15 @@ function ToggleFixture({ defaultIn, description, children }) {
 storiesOf('Transition', module)
   .add('Bootstrap Fade', () => (
     <ToggleFixture>
-      <Fade>
-        <div>asaghasg asgasg</div>
-      </Fade>
+      <Fade>asaghasg asgasg</Fade>
     </ToggleFixture>
   ))
   .add('Bootstrap Collapse', () => (
     <ToggleFixture>
       <Collapse>
-        <div>
-          asaghasg asgasg
-          <div>foo</div>
-          <div>bar</div>
-        </div>
+        asaghasg asgasg
+        <div>foo</div>
+        <div>bar</div>
       </Collapse>
     </ToggleFixture>
   ))

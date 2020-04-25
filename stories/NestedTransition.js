@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react'
 
 import StoryFixture from './StoryFixture';
 import Fade from './transitions/Fade';
@@ -7,9 +7,8 @@ import Scale from './transitions/Scale';
 function FadeAndScale(props) {
   return (
     <Fade {...props}>
-      <div>
-        <div>I will fade</div>
-        {/*
+      <div>I will fade</div>
+      {/*
           We also want to scale in at the same time so we pass the `in` state here as well, so it enters
           at the same time as the Fade.
 
@@ -17,10 +16,9 @@ function FadeAndScale(props) {
           will mount at the same time as the div we want to scale, so we need to tell it to animate as
           it _appears_.
         */}
-        <Scale in={props.in} appear>
-          <div>I should scale</div>
-        </Scale>
-      </div>
+      <Scale in={props.in} appear>
+        I should scale
+      </Scale>
     </Fade>
   );
 }
