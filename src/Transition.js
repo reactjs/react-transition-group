@@ -545,6 +545,10 @@ Transition.propTypes = {
   /**
    * A react reference to DOM element that need to transition
    * https://stackoverflow.com/a/51127130/4671932
+   * Be aware when changing `key` prop of `Transition` in a `TransitionGroup`
+   * a new `nodeRef` need to be provided to `Transition` with changed `key` prop
+   * e.g. test/CSSTransition-test.js
+   * CSSTransition > reentering > should remove dynamically applied classes
    */
   nodeRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) })
 }

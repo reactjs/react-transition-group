@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 
 import { mount } from 'enzyme'
 
@@ -167,6 +168,35 @@ describe('Transition', () => {
         throw new Error('wrong timeout')
       }
     })
+  })
+
+  it('should use `React.findDOMNode` when `nodeRef` is not provided', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+    const findDOMNodeSpy = jest.spyOn(ReactDOM, 'findDOMNode')
+
+    mount(
+      <Transition in appear timeout={0}>
+        <div />
+      </Transition>
+    )
+
+    expect(findDOMNodeSpy).toHaveBeenCalled();
+    findDOMNodeSpy.mockRestore()
+    consoleSpy.mockRestore()
+  })
+
+  it('should not use `React.findDOMNode` when `nodeRef` is provided', () => {
+    const findDOMNodeSpy = jest.spyOn(ReactDOM, 'findDOMNode')
+
+    const nodeRef = React.createRef()
+    mount(
+      <Transition nodeRef={nodeRef} in appear timeout={0}>
+        <div ref={nodeRef} />
+      </Transition>
+    )
+
+    expect(findDOMNodeSpy).not.toHaveBeenCalled();
+    findDOMNodeSpy.mockRestore()
   })
 
   describe('appearing timeout', () => {
