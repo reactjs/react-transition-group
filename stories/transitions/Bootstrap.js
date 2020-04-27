@@ -1,5 +1,5 @@
 import { css } from 'astroturf';
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import style from 'dom-helpers/css';
 
 import Transition, { EXITED, ENTERED, ENTERING, EXITING }
@@ -117,4 +117,48 @@ export class Collapse extends React.Component {
       </Transition>
     );
   }
+}
+
+export function FadeInnerRef(props) {
+  const nodeRef = useMergedRef(props.innerRef)
+  return (
+    <Transition
+      {...props}
+      nodeRef={nodeRef}
+      className={styles.fade}
+      timeout={150}>
+      {status => (
+        <div ref={nodeRef} className={`${styles.fade} ${fadeStyles[status] || ''}`}>
+          {props.children}
+        </div>
+      )}
+    </Transition>
+  )
+}
+
+export const FadeForwardRef = React.forwardRef((props, ref) => {
+  return <FadeInnerRef {...props} innerRef={ref} />
+})
+
+/**
+ * Compose multiple refs, there may be different implementations
+ * This one is derived from
+ * e.g. https://github.com/react-restart/hooks/blob/ed37bf3dfc8fc1d9234a6d8fe0af94d69fad3b74/src/useMergedRefs.ts
+ * Also here are good discussion about this
+ * https://github.com/facebook/react/issues/13029
+ * @param ref
+ * @returns {React.MutableRefObject<undefined>}
+ */
+function useMergedRef(ref) {
+  const nodeRef = React.useRef()
+  useEffect(function () {
+    if (ref) {
+      if (typeof ref === 'function') {
+        ref(nodeRef.current)
+      } else {
+        ref.current = nodeRef.current
+      }
+    }
+  })
+  return nodeRef
 }
