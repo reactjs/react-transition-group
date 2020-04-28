@@ -173,9 +173,10 @@ class CSSTransition extends React.Component {
 
   addClass(node, type, phase) {
     let className = this.getClassNames(type)[`${phase}ClassName`];
+    const { doneClassName } = this.getClassNames('enter');
 
-    if (type === 'appear' && phase === 'done') {
-      className += ` ${this.getClassNames('enter').doneClassName}`;
+    if (type === 'appear' && phase === 'done' && doneClassName) {
+      className += ` ${doneClassName}`;
     }
 
     // This is for to force a repaint,
@@ -185,8 +186,10 @@ class CSSTransition extends React.Component {
       node && node.scrollTop;
     }
 
-    this.appliedClasses[type][phase] = className
-    addClass(node, className)
+    if (className) {
+      this.appliedClasses[type][phase] = className
+      addClass(node, className)
+    }
   }
 
   removeClasses(node, type) {

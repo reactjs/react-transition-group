@@ -165,7 +165,29 @@ describe('CSSTransition', () => {
           <div />
         </CSSTransition>
       )
-    })
+    });
+
+    it('should not add undefined when appearDone is not defined', done => {
+      mount(
+        <CSSTransition
+          timeout={10}
+          classNames={{ appear: 'appear-test' }}
+          in={true}
+          appear={true}
+          onEnter={(node, isAppearing) => {
+            expect(isAppearing).toEqual(true);
+            expect(node.className).toEqual('appear-test');
+          }}
+          onEntered={(node, isAppearing) => {
+            expect(isAppearing).toEqual(true);
+            expect(node.className).toEqual('');
+            done();
+          }}
+        >
+          <div/>
+        </CSSTransition>
+      );
+    });
 
     it('should not be appearing in normal enter mode', done => {
       let count = 0;
