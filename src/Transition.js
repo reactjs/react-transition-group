@@ -319,7 +319,7 @@ class Transition extends React.Component {
     }
 
     if (this.props.addEndListener) {
-      this.props.addEndListener(node, this.nextCallback)
+      this.props.addEndListener(node, this.nextCallback, this.state.status)
     }
 
     if (timeout != null) {
