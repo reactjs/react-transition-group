@@ -177,23 +177,25 @@ describe('CSSTransition', () => {
     });
 
     it('should not add undefined when appearDone is not defined', done => {
+      const nodeRef = React.createRef()
       mount(
         <CSSTransition
           timeout={10}
+          nodeRef={nodeRef}
           classNames={{ appear: 'appear-test' }}
           in={true}
           appear={true}
-          onEnter={(node, isAppearing) => {
+          onEnter={(isAppearing) => {
             expect(isAppearing).toEqual(true);
-            expect(node.className).toEqual('appear-test');
+            expect(nodeRef.current.className).toEqual('appear-test');
           }}
-          onEntered={(node, isAppearing) => {
+          onEntered={(isAppearing) => {
             expect(isAppearing).toEqual(true);
-            expect(node.className).toEqual('');
+            expect(nodeRef.current.className).toEqual('');
             done();
           }}
         >
-          <div/>
+          <div ref={nodeRef}/>
         </CSSTransition>
       );
     });
@@ -406,8 +408,12 @@ describe('CSSTransition', () => {
         }
       }
 
-      let nodeRef = React.createRef()
-      const wrapper = mount(<Test direction="down" text="foo" nodeRef={nodeRef} />)
+      const nodeRef = {
+        foo: React.createRef(),
+        bar: React.createRef(),
+      }
+
+      const wrapper = mount(<Test direction="down" text="foo" nodeRef={nodeRef.foo} />)
 
       const rerender = getProps => new Promise(resolve =>
         wrapper.setProps({
@@ -421,38 +427,34 @@ describe('CSSTransition', () => {
         })
       );
 
-      nodeRef = React.createRef()
-
       await rerender(resolve => ({
         direction: 'up',
         text: 'bar',
-        nodeRef,
+        nodeRef: nodeRef.bar,
 
         onEnter() {
           count++;
-          expect(nodeRef.current.className).toEqual('up-enter');
+          expect(nodeRef.bar.current.className).toEqual('up-enter');
         },
         onEntering() {
           count++;
-          expect(nodeRef.current.className).toEqual('up-enter up-enter-active');
+          expect(nodeRef.bar.current.className).toEqual('up-enter up-enter-active');
           resolve()
         }
       }))
 
-      nodeRef = React.createRef()
-
       await rerender(resolve => ({
         direction: 'down',
         text: 'foo',
-        nodeRef,
+        nodeRef: nodeRef.foo,
 
         onEntering() {
           count++;
-          expect(nodeRef.current.className).toEqual('down-enter down-enter-active');
+          expect(nodeRef.foo.current.className).toEqual('down-enter down-enter-active');
         },
         onEntered() {
           count++;
-          expect(nodeRef.current.className).toEqual('down-enter-done');
+          expect(nodeRef.foo.current.className).toEqual('down-enter-done');
           resolve();
         }
       }))

@@ -1,12 +1,12 @@
-import { configure, addDecorator } from '@storybook/react'
-import { createElement, StrictMode } from 'react'
+import { configure, addDecorator } from '@storybook/react';
+import React from 'react';
 
 addDecorator(
-  storyFn => createElement(StrictMode, undefined, storyFn()),
+  storyFn => <React.StrictMode>{storyFn()}</React.StrictMode>,
 )
 
 function loadStories() {
-  require('../stories')
+  require('../stories');
 }
 
-configure(loadStories, module)
+configure(loadStories, module);

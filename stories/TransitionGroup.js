@@ -88,7 +88,6 @@ storiesOf('Css Transition Group', module)
   ;
 
 class DynamicTransition extends React.Component {
-  nodeRef = React.createRef()
   state = { count: 0 }
   handleClick = () => {
     this.setState({ hide: !this.state.hide })
@@ -107,11 +106,7 @@ class DynamicTransition extends React.Component {
       <div>
         <button onClick={this.handleClick}>Toggle item</button>
         <TransitionGroup timeout={FADE_TIMEOUT}>
-          {!hide &&
-            <Fade nodeRef={this.nodeRef} key='item'>
-              <div ref={this.nodeRef}>Changing! {count}</div>
-            </Fade>
-          }
+          {!hide && <Fade key='item'>Changing! {count}</Fade>}
         </TransitionGroup>
       </div>
     )
@@ -120,7 +115,6 @@ class DynamicTransition extends React.Component {
 
 function ReEnterTransition() {
   const [hide, setHide] = useState(false);
-  const nodeRef = useRef()
 
   useEffect(() => {
     if (hide) {
@@ -142,9 +136,7 @@ function ReEnterTransition() {
       </button>
       <TransitionGroup timeout={FADE_TIMEOUT}>
         {!hide && (
-          <Fade nodeRef={nodeRef} key='item'>
-            <div ref={nodeRef}>I'm entering!</div>
-          </Fade>
+          <Fade key='item'>I'm entering!</Fade>
         )}
       </TransitionGroup>
     </div>

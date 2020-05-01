@@ -169,7 +169,7 @@ class Transition extends React.Component {
     this.updateStatus(true, this.appearStatus)
   }
 
-  componentDidUpdate(prevProps, _prevState, _snapshot) {
+  componentDidUpdate(prevProps) {
     let nextStatus = null
     if (prevProps !== this.props) {
       const { status } = this.state
@@ -384,6 +384,18 @@ class Transition extends React.Component {
 
 Transition.propTypes = {
   /**
+   * A react reference to DOM element that need to transition
+   * https://stackoverflow.com/a/51127130/4671932
+   * Note: When `nodeRef` prop is used, `node` is not passed to callback functions (e.g. `onEnter`)
+   * because user already has direct access to the node
+   * Note: When changing `key` prop of `Transition` in a `TransitionGroup`
+   * a new `nodeRef` need to be provided to `Transition` with changed `key` prop
+   * (see [test/CSSTransition-test.js](https://github.com/reactjs/react-transition-group/blob/master/test/CSSTransition-test.js))
+   * CSSTransition > reentering > should remove dynamically applied classes
+   */
+  nodeRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+
+  /**
    * A `function` child can be used instead of a React element. This function is
    * called with the current transition status (`'entering'`, `'entered'`,
    * `'exiting'`, `'exited'`), which can be used to apply context
@@ -541,16 +553,6 @@ Transition.propTypes = {
    * @type Function(node: HtmlElement) -> void
    */
   onExited: PropTypes.func,
-
-  /**
-   * A react reference to DOM element that need to transition
-   * https://stackoverflow.com/a/51127130/4671932
-   * Be aware when changing `key` prop of `Transition` in a `TransitionGroup`
-   * a new `nodeRef` need to be provided to `Transition` with changed `key` prop
-   * e.g. test/CSSTransition-test.js
-   * CSSTransition > reentering > should remove dynamically applied classes
-   */
-  nodeRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) })
 }
 
 // Name the function so it is clearer in the documentation

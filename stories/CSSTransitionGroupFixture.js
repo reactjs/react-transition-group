@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 
 import TransitionGroup from '../src/TransitionGroup';
 import StoryFixture from './StoryFixture';
@@ -38,7 +38,8 @@ class CSSTransitionGroupFixture extends React.Component {
 
   render() {
     const { items: _, description, children, ...rest } = this.props;
-    const { type: Transition, props: transitionProps } = React.Children.only(children)
+    // e.g. `Fade`, see where `CSSTransitionGroupFixture` is used
+    const { type: TransitionType, props: transitionTypeProps } = React.Children.only(children)
 
     return (
       <StoryFixture description={description}>
@@ -53,10 +54,10 @@ class CSSTransitionGroupFixture extends React.Component {
         </div>
         <TransitionGroup component="div" {...rest}>
           {this.state.items.map(item => (
-            <Transition {...transitionProps} key={item}>
+            <TransitionType {...transitionTypeProps} key={item}>
               {item}
               <button onClick={() => this.handleRemoveItem(item)}>&times;</button>
-            </Transition>
+            </TransitionType>
           ))}
         </TransitionGroup>
       </StoryFixture>
