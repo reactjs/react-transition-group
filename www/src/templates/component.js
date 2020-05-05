@@ -11,11 +11,8 @@ function displayObj(obj) {
   return JSON.stringify(obj, null, 2).replace(/"|'/g, '');
 }
 
-let cleanDocletValue = str =>
-  str
-    .trim()
-    .replace(/^\{/, '')
-    .replace(/\}$/, '');
+let cleanDocletValue = (str) =>
+  str.trim().replace(/^\{/, '').replace(/\}$/, '');
 
 const extractMarkdown = ({ description }) =>
   description &&
@@ -51,7 +48,7 @@ class ComponentTemplate extends React.Component {
     const { metadata } = data;
     const { componentPages } = data.site.siteMetadata;
     const { codeSandboxId } = componentPages.find(
-      page => page.displayName === metadata.displayName
+      (page) => page.displayName === metadata.displayName
     );
     return (
       <Layout data={data} location={location}>
@@ -79,7 +76,7 @@ class ComponentTemplate extends React.Component {
                   <small style={{ fontStyle: 'italic', fontSize: '70%' }}>
                     Accepts all props from{' '}
                     {metadata.composes
-                      .map(p => (
+                      .map((p) => (
                         <code key={p}>{`<${p.replace('./', '')}>`}</code>
                       ))
                       .reduce((acc, el, i) => {
@@ -94,7 +91,9 @@ class ComponentTemplate extends React.Component {
                 </>
               )}
             </h2>
-            {metadata.props.map(p => this.renderProp(p, metadata.displayName))}
+            {metadata.props.map((p) =>
+              this.renderProp(p, metadata.displayName)
+            )}
           </Container>
         </div>
       </Layout>
