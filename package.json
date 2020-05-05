@@ -15,7 +15,7 @@
     "build:pick": "cherry-pick --cwd=lib --input-dir=../src --cjs-dir=cjs --esm-dir=esm",
     "build:dist": "cross-env BABEL_ENV=esm rollup -c",
     "bootstrap": "yarn && yarn --cwd www",
-    "lint": "eslint src test",
+    "lint": "eslint .",
     "release": "release",
     "release:next": "release --preid beta --tag next",
     "deploy-docs": "yarn --cwd www run deploy",
