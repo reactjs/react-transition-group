@@ -316,7 +316,8 @@ CSSTransition.propTypes = {
   /**
    * A `<Transition>` callback fired immediately after the 'enter' or 'appear' class is
    * applied.
-   * Note: when `nodeRef` prop is passed, `node` is not passed
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
    *
    * @type Function(node: HtmlElement, isAppearing: bool)
    */
@@ -325,7 +326,8 @@ CSSTransition.propTypes = {
   /**
    * A `<Transition>` callback fired immediately after the 'enter-active' or
    * 'appear-active' class is applied.
-   * Note: when `nodeRef` prop is passed, `node` is not passed
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
    *
    * @type Function(node: HtmlElement, isAppearing: bool)
    */
@@ -334,7 +336,8 @@ CSSTransition.propTypes = {
   /**
    * A `<Transition>` callback fired immediately after the 'enter' or
    * 'appear' classes are **removed** and the `done` class is added to the DOM node.
-   * Note: when `nodeRef` prop is passed, `node` is not passed
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
    *
    * @type Function(node: HtmlElement, isAppearing: bool)
    */
@@ -343,7 +346,8 @@ CSSTransition.propTypes = {
   /**
    * A `<Transition>` callback fired immediately after the 'exit' class is
    * applied.
-   * Note: when `nodeRef` prop is passed, `node` is not passed
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed
    *
    * @type Function(node: HtmlElement)
    */
@@ -351,7 +355,8 @@ CSSTransition.propTypes = {
 
   /**
    * A `<Transition>` callback fired immediately after the 'exit-active' is applied.
-   * Note: when `nodeRef` prop is passed, `node` is not passed
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed
    *
    * @type Function(node: HtmlElement)
    */
@@ -360,7 +365,8 @@ CSSTransition.propTypes = {
   /**
    * A `<Transition>` callback fired immediately after the 'exit' classes
    * are **removed** and the `exit-done` class is added to the DOM node.
-   * Note: when `nodeRef` prop is passed, `node` is not passed
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed
    *
    * @type Function(node: HtmlElement)
    */

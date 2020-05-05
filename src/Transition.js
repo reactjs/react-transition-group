@@ -384,14 +384,15 @@ class Transition extends React.Component {
 
 Transition.propTypes = {
   /**
-   * A react reference to DOM element that need to transition
+   * A React reference to DOM element that need to transition:
    * https://stackoverflow.com/a/51127130/4671932
-   * Note: When `nodeRef` prop is used, `node` is not passed to callback functions (e.g. `onEnter`)
-   * because user already has direct access to the node
-   * Note: When changing `key` prop of `Transition` in a `TransitionGroup`
-   * a new `nodeRef` need to be provided to `Transition` with changed `key` prop
-   * (see [test/CSSTransition-test.js](https://github.com/reactjs/react-transition-group/blob/master/test/CSSTransition-test.js))
-   * CSSTransition > reentering > should remove dynamically applied classes
+   *
+   *   - When `nodeRef` prop is used, `node` is not passed to callback functions
+   *      (e.g. `onEnter`) because user already has direct access to the node.
+   *   - When changing `key` prop of `Transition` in a `TransitionGroup` a new
+   *     `nodeRef` need to be provided to `Transition` with changed `key` prop
+   *     (see
+   *     [test/CSSTransition-test.js](https://github.com/reactjs/react-transition-group/blob/13435f897b3ab71f6e19d724f145596f5910581c/test/CSSTransition-test.js#L362-L437)).
    */
   nodeRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
 
@@ -491,8 +492,9 @@ Transition.propTypes = {
   /**
    * Add a custom transition end trigger. Called with the transitioning
    * DOM node and a `done` callback. Allows for more fine grained transition end
-   * logic. **Note:** Timeouts are still used as a fallback if provided.
-   * Note: when `nodeRef` prop is passed, `node` is not passed
+   * logic. Timeouts are still used as a fallback if provided.
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
    *
    * ```jsx
    * addEndListener={(node, done) => {
@@ -506,7 +508,8 @@ Transition.propTypes = {
   /**
    * Callback fired before the "entering" status is applied. An extra parameter
    * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
-   * Note: when `nodeRef` prop is passed, `node` is not passed
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
    *
    * @type Function(node: HtmlElement, isAppearing: bool) -> void
    */
@@ -515,7 +518,8 @@ Transition.propTypes = {
   /**
    * Callback fired after the "entering" status is applied. An extra parameter
    * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
-   * Note: when `nodeRef` prop is passed, `node` is not passed
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
    *
    * @type Function(node: HtmlElement, isAppearing: bool)
    */
@@ -524,7 +528,8 @@ Transition.propTypes = {
   /**
    * Callback fired after the "entered" status is applied. An extra parameter
    * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
-   * Note: when `nodeRef` prop is passed, `node` is not passed
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
    *
    * @type Function(node: HtmlElement, isAppearing: bool) -> void
    */
@@ -532,7 +537,8 @@ Transition.propTypes = {
 
   /**
    * Callback fired before the "exiting" status is applied.
-   * Note: when `nodeRef` prop is passed, `node` is not passed
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
    *
    * @type Function(node: HtmlElement) -> void
    */
@@ -540,7 +546,8 @@ Transition.propTypes = {
 
   /**
    * Callback fired after the "exiting" status is applied.
-   * Note: when `nodeRef` prop is passed, `node` is not passed
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
    *
    * @type Function(node: HtmlElement) -> void
    */
@@ -548,7 +555,8 @@ Transition.propTypes = {
 
   /**
    * Callback fired after the "exited" status is applied.
-   * Note: when `nodeRef` prop is passed, `node` is not passed
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed
    *
    * @type Function(node: HtmlElement) -> void
    */
