@@ -12,9 +12,10 @@ describe('CSSTransitionGroup', () => {
   let consoleErrorSpy;
 
   function YoloTransition({ id, ...props }) {
+    const nodeRef = React.useRef()
     return (
-      <CSSTransition classNames="yolo" timeout={0} {...props}>
-        <span id={id} />
+      <CSSTransition nodeRef={nodeRef} classNames="yolo" timeout={0} {...props}>
+        <span ref={nodeRef} id={id} />
       </CSSTransition>
     )
   }

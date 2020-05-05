@@ -1,5 +1,5 @@
 import { css } from 'astroturf';
-import React from 'react';
+import React, { useRef } from 'react'
 
 import CSSTransition from '../../src/CSSTransition';
 
@@ -32,7 +32,12 @@ const defaultProps = {
 };
 
 function Fade(props) {
-  return <CSSTransition {...props} classNames={styles} />;
+  const nodeRef = useRef()
+  return (
+    <CSSTransition {...props} classNames={styles} nodeRef={nodeRef}>
+      <div ref={nodeRef}>{props.children}</div>
+    </CSSTransition>
+  );
 }
 
 Fade.defaultProps = defaultProps;

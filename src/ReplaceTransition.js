@@ -28,7 +28,13 @@ class ReplaceTransition extends React.Component {
     const child = React.Children.toArray(children)[idx];
 
     if (child.props[handler]) child.props[handler](...originalArgs)
-    if (this.props[handler]) this.props[handler](ReactDOM.findDOMNode(this))
+    if (this.props[handler]) {
+      const maybeNode = child.props.nodeRef
+        ? undefined
+        : ReactDOM.findDOMNode(this)
+
+      this.props[handler](maybeNode)
+    }
   }
 
   render() {

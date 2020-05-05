@@ -7,40 +7,43 @@ import TransitionGroup from '../src/TransitionGroup';
 describe('CSSTransition', () => {
 
   it('should flush new props to the DOM before initiating a transition', (done) => {
-    mount(
+    const nodeRef = React.createRef()
+    const wrapper = mount(
       <CSSTransition
         in={false}
+        nodeRef={nodeRef}
         timeout={0}
         classNames="test"
-        onEnter={node => {
-          expect(node.classList.contains('test-class')).toEqual(true)
-          expect(node.classList.contains('test-entering')).toEqual(false)
+        onEnter={() => {
+          expect(nodeRef.current.classList.contains('test-class')).toEqual(true)
+          expect(nodeRef.current.classList.contains('test-entering')).toEqual(false)
           done()
         }}
       >
-        <div></div>
+        <div ref={nodeRef} />
       </CSSTransition>
     )
-    .tap(inst => {
 
-      expect(inst.getDOMNode().classList.contains('test-class')).toEqual(false)
-    })
-    .setProps({
+    expect(nodeRef.current.classList.contains('test-class')).toEqual(false)
+
+    wrapper.setProps({
       in: true,
       className: 'test-class'
     })
   });
 
   describe('entering', () => {
-    let instance;
+    let wrapper, nodeRef;
 
     beforeEach(() => {
-      instance = mount(
+      nodeRef = React.createRef()
+      wrapper = mount(
         <CSSTransition
+          nodeRef={nodeRef}
           timeout={10}
           classNames="test"
         >
-          <div/>
+          <div ref={nodeRef} />
         </CSSTransition>
       )
     });
@@ -48,21 +51,21 @@ describe('CSSTransition', () => {
     it('should apply classes at each transition state', done => {
       let count = 0;
 
-      instance.setProps({
+      wrapper.setProps({
         in: true,
 
-        onEnter(node) {
+        onEnter() {
           count++;
-          expect(node.className).toEqual('test-enter');
+          expect(nodeRef.current.className).toEqual('test-enter');
         },
 
-        onEntering(node){
+        onEntering() {
           count++;
-          expect(node.className).toEqual('test-enter test-enter-active');
+          expect(nodeRef.current.className).toEqual('test-enter test-enter-active');
         },
 
-        onEntered(node){
-          expect(node.className).toEqual('test-enter-done');
+        onEntered() {
+          expect(nodeRef.current.className).toEqual('test-enter-done');
           expect(count).toEqual(2);
           done();
         }
@@ -71,34 +74,36 @@ describe('CSSTransition', () => {
 
     it('should apply custom classNames names', done => {
       let count = 0;
-      instance = mount(
+      const nodeRef = React.createRef()
+      wrapper = mount(
         <CSSTransition
           timeout={10}
+          nodeRef={nodeRef}
           classNames={{
             enter: 'custom',
             enterActive: 'custom-super-active',
             enterDone: 'custom-super-done',
           }}
         >
-          <div/>
+          <div ref={nodeRef} />
         </CSSTransition>
       );
 
-      instance.setProps({
+      wrapper.setProps({
         in: true,
 
-        onEnter(node){
+        onEnter(){
           count++;
-          expect(node.className).toEqual('custom');
+          expect(nodeRef.current.className).toEqual('custom');
         },
 
-        onEntering(node){
+        onEntering(){
           count++;
-          expect(node.className).toEqual('custom custom-super-active');
+          expect(nodeRef.current.className).toEqual('custom custom-super-active');
         },
 
-        onEntered(node){
-          expect(node.className).toEqual('custom-super-done');
+        onEntered(){
+          expect(nodeRef.current.className).toEqual('custom-super-done');
           expect(count).toEqual(2);
           done();
         }
@@ -109,39 +114,43 @@ describe('CSSTransition', () => {
   describe('appearing', () => {
     it('should apply appear classes at each transition state', done => {
       let count = 0;
+      const nodeRef = React.createRef()
       mount(
         <CSSTransition
           timeout={10}
+          nodeRef={nodeRef}
           classNames='appear-test'
           in={true}
           appear={true}
-          onEnter={(node, isAppearing) => {
+          onEnter={(isAppearing) => {
             count++;
             expect(isAppearing).toEqual(true);
-            expect(node.className).toEqual('appear-test-appear');
+            expect(nodeRef.current.className).toEqual('appear-test-appear');
           }}
-          onEntering={(node, isAppearing) => {
+          onEntering={(isAppearing) => {
             count++;
             expect(isAppearing).toEqual(true);
-            expect(node.className).toEqual('appear-test-appear appear-test-appear-active');
+            expect(nodeRef.current.className).toEqual('appear-test-appear appear-test-appear-active');
           }}
 
-          onEntered={(node, isAppearing) => {
+          onEntered={(isAppearing) => {
             expect(isAppearing).toEqual(true);
-            expect(node.className).toEqual('appear-test-appear-done appear-test-enter-done');
+            expect(nodeRef.current.className).toEqual('appear-test-appear-done appear-test-enter-done');
             expect(count).toEqual(2);
             done();
           }}
         >
-          <div/>
+          <div ref={nodeRef} />
         </CSSTransition>
       );
     });
 
     it('should lose the "*-appear-done" class after leaving and entering again', (done) => {
+      const nodeRef = React.createRef()
       const wrapper = mount(
         <CSSTransition
           timeout={10}
+          nodeRef={nodeRef}
           classNames="appear-test"
           in={true}
           appear={true}
@@ -149,12 +158,12 @@ describe('CSSTransition', () => {
             wrapper.setProps({
               in: false,
               onEntered: () => {},
-              onExited: (node) => {
-                expect(node.className).toBe('appear-test-exit-done')
+              onExited: () => {
+                expect(nodeRef.current.className).toBe('appear-test-exit-done')
                 wrapper.setProps({
                   in: true,
                   onEntered: () => {
-                    expect(node.className).toBe('appear-test-enter-done')
+                    expect(nodeRef.current.className).toBe('appear-test-enter-done')
                     done()
                   }
                 })
@@ -162,61 +171,65 @@ describe('CSSTransition', () => {
             })
           }}
         >
-          <div />
+          <div ref={nodeRef} />
         </CSSTransition>
       )
     });
 
     it('should not add undefined when appearDone is not defined', done => {
+      const nodeRef = React.createRef()
       mount(
         <CSSTransition
           timeout={10}
+          nodeRef={nodeRef}
           classNames={{ appear: 'appear-test' }}
           in={true}
           appear={true}
-          onEnter={(node, isAppearing) => {
+          onEnter={(isAppearing) => {
             expect(isAppearing).toEqual(true);
-            expect(node.className).toEqual('appear-test');
+            expect(nodeRef.current.className).toEqual('appear-test');
           }}
-          onEntered={(node, isAppearing) => {
+          onEntered={(isAppearing) => {
             expect(isAppearing).toEqual(true);
-            expect(node.className).toEqual('');
+            expect(nodeRef.current.className).toEqual('');
             done();
           }}
         >
-          <div/>
+          <div ref={nodeRef}/>
         </CSSTransition>
       );
     });
 
     it('should not be appearing in normal enter mode', done => {
       let count = 0;
+      const nodeRef = React.createRef()
       mount(
         <CSSTransition
           timeout={10}
+          nodeRef={nodeRef}
           classNames='not-appear-test'
           appear={true}
         >
-          <div/>
+          <div ref={nodeRef} />
         </CSSTransition>
       ).setProps({
         in: true,
 
-        onEnter(node, isAppearing){
+        onEnter(isAppearing){
           count++;
           expect(isAppearing).toEqual(false);
-          expect(node.className).toEqual('not-appear-test-enter');
+          expect(nodeRef.current.className).toEqual('not-appear-test-enter');
         },
 
-        onEntering(node, isAppearing){
+        onEntering(isAppearing){
           count++;
           expect(isAppearing).toEqual(false);
-          expect(node.className).toEqual('not-appear-test-enter not-appear-test-enter-active');
+          expect(nodeRef.current.className).toEqual('not-appear-test-enter not-appear-test-enter-active');
         },
 
-        onEntered(node, isAppearing){
+        onEntered(isAppearing){
           expect(isAppearing).toEqual(false);
-          expect(node.className).toEqual('not-appear-test-enter-done');
+          expect(nodeRef.current.className).toEqual('not-appear-test-enter-done');
           expect(count).toEqual(2);
           done();
         }
@@ -224,9 +237,11 @@ describe('CSSTransition', () => {
     });
 
     it('should not enter the transition states when appear=false', () => {
+      const nodeRef = React.createRef()
       mount(
         <CSSTransition
           timeout={10}
+          nodeRef={nodeRef}
           classNames='appear-fail-test'
           in={true}
           appear={false}
@@ -240,7 +255,7 @@ describe('CSSTransition', () => {
             throw Error('Entred called!')
           }}
         >
-          <div/>
+          <div ref={nodeRef} />
         </CSSTransition>
       );
     });
@@ -249,16 +264,18 @@ describe('CSSTransition', () => {
   });
 
   describe('exiting', ()=> {
-    let instance;
+    let wrapper, nodeRef;
 
     beforeEach(() => {
-      instance = mount(
+      nodeRef = React.createRef()
+      wrapper = mount(
         <CSSTransition
           in
+          nodeRef={nodeRef}
           timeout={10}
           classNames="test"
         >
-          <div/>
+          <div ref={nodeRef} />
         </CSSTransition>
       )
     });
@@ -266,21 +283,21 @@ describe('CSSTransition', () => {
     it('should apply classes at each transition state', done => {
       let count = 0;
 
-      instance.setProps({
+      wrapper.setProps({
         in: false,
 
-        onExit(node){
+        onExit(){
           count++;
-          expect(node.className).toEqual('test-exit');
+          expect(nodeRef.current.className).toEqual('test-exit');
         },
 
-        onExiting(node){
+        onExiting(){
           count++;
-          expect(node.className).toEqual('test-exit test-exit-active');
+          expect(nodeRef.current.className).toEqual('test-exit test-exit-active');
         },
 
-        onExited(node){
-          expect(node.className).toEqual('test-exit-done');
+        onExited(){
+          expect(nodeRef.current.className).toEqual('test-exit-done');
           expect(count).toEqual(2);
           done();
         }
@@ -289,9 +306,11 @@ describe('CSSTransition', () => {
 
     it('should apply custom classNames names', done => {
       let count = 0;
-      instance = mount(
+      const nodeRef = React.createRef()
+      wrapper = mount(
         <CSSTransition
           in
+          nodeRef={nodeRef}
           timeout={10}
           classNames={{
             exit: 'custom',
@@ -299,25 +318,25 @@ describe('CSSTransition', () => {
             exitDone: 'custom-super-done',
           }}
         >
-          <div/>
+          <div ref={nodeRef} />
         </CSSTransition>
       );
 
-      instance.setProps({
+      wrapper.setProps({
         in: false,
 
-        onExit(node){
+        onExit() {
           count++;
-          expect(node.className).toEqual('custom');
+          expect(nodeRef.current.className).toEqual('custom');
         },
 
-        onExiting(node){
+        onExiting() {
           count++;
-          expect(node.className).toEqual('custom custom-super-active');
+          expect(nodeRef.current.className).toEqual('custom custom-super-active');
         },
 
-        onExited(node){
-          expect(node.className).toEqual('custom-super-done');
+        onExited() {
+          expect(nodeRef.current.className).toEqual('custom-super-done');
           expect(count).toEqual(2);
           done();
         }
@@ -327,30 +346,32 @@ describe('CSSTransition', () => {
     it('should support empty prefix', done => {
       let count = 0;
 
-      const instance = mount(
+      const nodeRef = React.createRef()
+      const wrapper = mount(
         <CSSTransition
           in
+          nodeRef={nodeRef}
           timeout={10}
         >
-          <div/>
+          <div ref={nodeRef} />
         </CSSTransition>
       )
 
-      instance.setProps({
+      wrapper.setProps({
         in: false,
 
-        onExit(node){
+        onExit() {
           count++;
-          expect(node.className).toEqual('exit');
+          expect(nodeRef.current.className).toEqual('exit');
         },
 
-        onExiting(node){
+        onExiting() {
           count++;
-          expect(node.className).toEqual('exit exit-active');
+          expect(nodeRef.current.className).toEqual('exit exit-active');
         },
 
-        onExited(node){
-          expect(node.className).toEqual('exit-done');
+        onExited() {
+          expect(nodeRef.current.className).toEqual('exit-done');
           expect(count).toEqual(2);
           done();
         }
@@ -359,11 +380,11 @@ describe('CSSTransition', () => {
   });
 
   describe('reentering', () => {
-    it('should remove dynamically applied classes', done => {
+    it('should remove dynamically applied classes', async () => {
       let count = 0;
       class Test extends React.Component {
         render() {
-          const { direction, text, ...props } = this.props;
+          const { direction, text, nodeRef, ...props } = this.props;
 
           return (
             <TransitionGroup
@@ -377,19 +398,25 @@ describe('CSSTransition', () => {
               <CSSTransition
                 key={text}
                 timeout={100}
+                nodeRef={nodeRef}
                 {...props}
               >
-                <span>{text}</span>
+                <span ref={nodeRef}>{text}</span>
               </CSSTransition>
             </TransitionGroup>
           )
         }
       }
 
-      const instance = mount(<Test direction="down" text="foo" />)
+      const nodeRef = {
+        foo: React.createRef(),
+        bar: React.createRef(),
+      }
+
+      const wrapper = mount(<Test direction="down" text="foo" nodeRef={nodeRef.foo} />)
 
       const rerender = getProps => new Promise(resolve =>
-        instance.setProps({
+        wrapper.setProps({
           onEnter: undefined,
           onEntering: undefined,
           onEntered: undefined,
@@ -400,40 +427,39 @@ describe('CSSTransition', () => {
         })
       );
 
-      Promise.resolve().then(() =>
-        rerender(resolve => ({
-          direction: 'up',
-          text: 'bar',
+      await rerender(resolve => ({
+        direction: 'up',
+        text: 'bar',
+        nodeRef: nodeRef.bar,
 
-          onEnter(node) {
-            count++;
-            expect(node.className).toEqual('up-enter');
-          },
-          onEntering(node) {
-            count++;
-            expect(node.className).toEqual('up-enter up-enter-active');
-            resolve()
-          }
-        }))
-      ).then(() => {
-        return rerender(resolve => ({
-          direction: 'down',
-          text: 'foo',
+        onEnter() {
+          count++;
+          expect(nodeRef.bar.current.className).toEqual('up-enter');
+        },
+        onEntering() {
+          count++;
+          expect(nodeRef.bar.current.className).toEqual('up-enter up-enter-active');
+          resolve()
+        }
+      }))
 
-          onEntering(node) {
-            count++;
-            expect(node.className).toEqual('down-enter down-enter-active');
-          },
-          onEntered(node) {
-            count++;
-            expect(node.className).toEqual('down-enter-done');
-            resolve();
-          }
-        }))
-      }).then(() => {
-        expect(count).toEqual(4);
-        done();
-      });
+      await rerender(resolve => ({
+        direction: 'down',
+        text: 'foo',
+        nodeRef: nodeRef.foo,
+
+        onEntering() {
+          count++;
+          expect(nodeRef.foo.current.className).toEqual('down-enter down-enter-active');
+        },
+        onEntered() {
+          count++;
+          expect(nodeRef.foo.current.className).toEqual('down-enter-done');
+          resolve();
+        }
+      }))
+
+      expect(count).toEqual(4);
     });
   });
 });

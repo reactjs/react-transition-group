@@ -66,6 +66,7 @@ class TransitionGroup extends React.Component {
     }
   }
 
+  // node is `undefined` when user provided `nodeRef` prop
   handleExited(child, node) {
     let currentChildMapping = getChildMapping(this.props.children)
 

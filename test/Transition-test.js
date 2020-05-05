@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 
 import { mount } from 'enzyme'
 
@@ -25,15 +26,17 @@ expect.extend({
 
 describe('Transition', () => {
   it('should not transition on mount', () => {
+    const nodeRef = React.createRef()
     let wrapper = mount(
       <Transition
         in
+        nodeRef={nodeRef}
         timeout={0}
         onEnter={() => {
           throw new Error('should not Enter')
         }}
       >
-        <div />
+        <div ref={nodeRef} />
       </Transition>
     )
 
@@ -41,21 +44,23 @@ describe('Transition', () => {
   })
 
   it('should transition on mount with `appear`', done => {
+    const nodeRef = React.createRef()
     mount(
       <Transition
         in
+        nodeRef={nodeRef}
         timeout={0}
         onEnter={() => {
           throw Error('Animated!')
         }}
       >
-        <div />
+        <div ref={nodeRef} />
       </Transition>
     )
 
     mount(
-      <Transition in appear timeout={0} onEnter={() => done()}>
-        <div />
+      <Transition nodeRef={nodeRef} in appear timeout={0} onEnter={() => done()}>
+        <div ref={nodeRef} />
       </Transition>
     )
   })
@@ -63,14 +68,16 @@ describe('Transition', () => {
   it('should pass filtered props to children', () => {
     class Child extends React.Component {
       render() {
-        return <div>child</div>
+        return <div ref={this.props.nodeRef}>child</div>
       }
     }
+    const nodeRef = React.createRef()
     const child = mount(
       <Transition
         foo="foo"
         bar="bar"
         in
+        nodeRef={nodeRef}
         mountOnEnter
         unmountOnExit
         appear
@@ -85,59 +92,64 @@ describe('Transition', () => {
         onExiting={() => {}}
         onExited={() => {}}
       >
-        <Child />
+        <Child nodeRef={nodeRef} />
       </Transition>
     ).find(Child)
 
-    expect(child.props()).toEqual({ foo: 'foo', bar: 'bar' })
+    expect(child.props()).toEqual({ foo: 'foo', bar: 'bar', nodeRef })
   })
 
   it('should allow addEndListener instead of timeouts', done => {
-    let listener = jest.fn((node, end) => setTimeout(end, 0))
+    let listener = jest.fn(end => setTimeout(end, 0))
 
-    let inst = mount(
+    const nodeRef = React.createRef()
+    let wrapper = mount(
       <Transition
+        nodeRef={nodeRef}
         addEndListener={listener}
         onEntered={() => {
           expect(listener).toHaveBeenCalledTimes(1)
           done()
         }}
       >
-        <div />
+        <div ref={nodeRef} />
       </Transition>
     )
 
-    inst.setProps({ in: true })
+    wrapper.setProps({ in: true })
   })
 
   it('should fallback to timeouts with addEndListener', done => {
     let calledEnd = false
-    let listener = (node, end) =>
+    let listener = (end) =>
       setTimeout(() => {
         calledEnd = true
         end()
       }, 100)
 
-    let inst = mount(
+    const nodeRef = React.createRef()
+    let wrapper = mount(
       <Transition
         timeout={0}
+        nodeRef={nodeRef}
         addEndListener={listener}
         onEntered={() => {
           expect(calledEnd).toEqual(false)
           done()
         }}
       >
-        <div />
+        <div ref={nodeRef} />
       </Transition>
     )
 
-    inst.setProps({ in: true })
+    wrapper.setProps({ in: true })
   })
 
   it('should mount/unmount immediately if not have enter/exit timeout', (done) => {
+    const nodeRef = React.createRef()
     const wrapper = mount(
-      <Transition in={true} timeout={{}}>
-        <div />
+      <Transition nodeRef={nodeRef} in={true} timeout={{}}>
+        <div ref={nodeRef} />
       </Transition>
     )
 
@@ -158,15 +170,45 @@ describe('Transition', () => {
     })
   })
 
+  it('should use `React.findDOMNode` when `nodeRef` is not provided', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+    const findDOMNodeSpy = jest.spyOn(ReactDOM, 'findDOMNode')
+
+    mount(
+      <Transition in appear timeout={0}>
+        <div />
+      </Transition>
+    )
+
+    expect(findDOMNodeSpy).toHaveBeenCalled();
+    findDOMNodeSpy.mockRestore()
+    consoleSpy.mockRestore()
+  })
+
+  it('should not use `React.findDOMNode` when `nodeRef` is provided', () => {
+    const findDOMNodeSpy = jest.spyOn(ReactDOM, 'findDOMNode')
+
+    const nodeRef = React.createRef()
+    mount(
+      <Transition nodeRef={nodeRef} in appear timeout={0}>
+        <div ref={nodeRef} />
+      </Transition>
+    )
+
+    expect(findDOMNodeSpy).not.toHaveBeenCalled();
+    findDOMNodeSpy.mockRestore()
+  })
+
   describe('appearing timeout', () => {
     it('should use enter timeout if appear not set', done => {
       let calledBeforeEntered = false
       setTimeout(() => {
         calledBeforeEntered = true
       }, 10)
+      const nodeRef = React.createRef()
       const wrapper = mount(
-        <Transition in={true} timeout={{ enter: 20, exit: 10 }} appear>
-          <div />
+        <Transition nodeRef={nodeRef} in={true} timeout={{ enter: 20, exit: 10 }} appear>
+          <div ref={nodeRef} />
         </Transition>
       )
 
@@ -182,9 +224,10 @@ describe('Transition', () => {
     })
 
     it('should use appear timeout if appear is set', done => {
+      const nodeRef = React.createRef()
       const wrapper = mount(
-        <Transition in={true} timeout={{ enter: 20, exit: 10, appear: 5 }} appear>
-          <div />
+        <Transition nodeRef={nodeRef} in={true} timeout={{ enter: 20, exit: 10, appear: 5 }} appear>
+          <div ref={nodeRef} />
         </Transition>
       )
 
@@ -206,12 +249,13 @@ describe('Transition', () => {
   })
 
   describe('entering', () => {
-    let wrapper
+    let wrapper, nodeRef;
 
     beforeEach(() => {
+      nodeRef = React.createRef()
       wrapper = mount(
-        <Transition timeout={10}>
-          <div />
+        <Transition nodeRef={nodeRef} timeout={10}>
+          <div ref={nodeRef} />
         </Transition>
       )
     })
@@ -267,12 +311,13 @@ describe('Transition', () => {
   })
 
   describe('exiting', () => {
-    let wrapper
+    let wrapper, nodeRef;
 
     beforeEach(() => {
+      nodeRef = React.createRef()
       wrapper = mount(
-        <Transition in timeout={10}>
-          <div />
+        <Transition nodeRef={nodeRef} in timeout={10}>
+          <div ref={nodeRef} />
         </Transition>
       )
     })
@@ -329,10 +374,8 @@ describe('Transition', () => {
 
   describe('mountOnEnter', () => {
     class MountTransition extends React.Component {
-      constructor(props) {
-        super(props)
-        this.state = { in: props.initialIn }
-      }
+      nodeRef = React.createRef()
+      state = { in: this.props.initialIn }
 
       render() {
         const { ...props } = this.props
@@ -341,12 +384,13 @@ describe('Transition', () => {
         return (
           <Transition
             ref={transition => this.transition = this.transition || transition}
+            nodeRef={this.nodeRef}
             mountOnEnter
             in={this.state.in}
             timeout={10}
             {...props}
           >
-            <div />
+            <div ref={this.nodeRef} />
           </Transition>
         )
       }
@@ -362,7 +406,7 @@ describe('Transition', () => {
           initialIn={false}
           onEnter={() => {
             expect(wrapper.instance().getStatus()).toEqual(EXITED)
-            expect(wrapper.getDOMNode()).toExist()
+            expect(wrapper.instance().nodeRef.current).toExist()
             done()
           }}
         />
@@ -370,7 +414,7 @@ describe('Transition', () => {
 
       expect(wrapper.instance().getStatus()).toEqual(UNMOUNTED)
 
-      expect(wrapper.getDOMNode()).not.toExist()
+      expect(wrapper.instance().nodeRef.current).not.toExist()
 
       wrapper.setProps({ in: true })
     })
@@ -381,27 +425,27 @@ describe('Transition', () => {
           initialIn={false}
           onEntered={() => {
             expect(wrapper.instance().getStatus()).toEqual(ENTERED)
-            expect(wrapper.getDOMNode()).toExist()
+            expect(wrapper.instance().nodeRef.current).toExist()
 
             wrapper.setState({ in: false })
           }}
           onExited={() => {
             expect(wrapper.instance().getStatus()).toEqual(EXITED)
-            expect(wrapper.getDOMNode()).toExist()
+            expect(wrapper.instance().nodeRef.current).toExist()
 
             done()
           }}
         />
       )
 
-      expect(wrapper.getDOMNode()).not.toExist()
+      expect(wrapper.instance().nodeRef.current).not.toExist()
       wrapper.setState({ in: true })
     })
   })
 
   describe('unmountOnExit', () => {
     class UnmountTransition extends React.Component {
-      divRef = React.createRef()
+      nodeRef = React.createRef()
       state = { in: this.props.initialIn }
 
       render() {
@@ -411,12 +455,13 @@ describe('Transition', () => {
         return (
           <Transition
             ref={transition => this.transition = this.transition || transition}
+            nodeRef={this.nodeRef}
             unmountOnExit
             in={this.state.in}
             timeout={10}
             {...props}
           >
-            <div ref={this.divRef} />
+            <div ref={this.nodeRef} />
           </Transition>
         )
       }
@@ -427,42 +472,42 @@ describe('Transition', () => {
     }
 
     it('should mount when entering', done => {
-      const wrapper = mount(
+      const instance = mount(
         <UnmountTransition
           initialIn={false}
           onEnter={() => {
-            expect(wrapper.getStatus()).toEqual(EXITED)
-            expect(wrapper.divRef.current).toExist()
+            expect(instance.getStatus()).toEqual(EXITED)
+            expect(instance.nodeRef.current).toExist()
 
             done()
           }}
         />
       ).instance()
 
-      expect(wrapper.getStatus()).toEqual(UNMOUNTED)
-      expect(wrapper.divRef.current).toBeNull()
+      expect(instance.getStatus()).toEqual(UNMOUNTED)
+      expect(instance.nodeRef.current).toBeNull()
 
-      wrapper.setState({ in: true })
+      instance.setState({ in: true })
     })
 
     it('should unmount after exiting', done => {
-      const wrapper = mount(
+      const instance = mount(
         <UnmountTransition
           initialIn
           onExited={() => {
             setTimeout(() => {
-              expect(wrapper.getStatus()).toEqual(UNMOUNTED)
-              expect(wrapper.divRef.current).not.toExist()
+              expect(instance.getStatus()).toEqual(UNMOUNTED)
+              expect(instance.nodeRef.current).not.toExist()
               done()
             })
           }}
         />
       ).instance()
 
-      expect(wrapper.getStatus()).toEqual(ENTERED)
-      expect(wrapper.divRef.current).toExist()
+      expect(instance.getStatus()).toEqual(ENTERED)
+      expect(instance.nodeRef.current).toExist()
 
-      wrapper.setState({ in: false })
+      instance.setState({ in: false })
     })
   })
 })

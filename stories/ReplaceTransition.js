@@ -40,7 +40,6 @@ const styles = css`
 
 const defaultProps = {
   in: false,
-  delay: false,
   timeout: FADE_TIMEOUT * 2,
 }
 
@@ -55,8 +54,6 @@ function Fade(props) {
 }
 
 Fade.defaultProps = defaultProps;
-
-export default Fade;
 
 function Example({ children }) {
   const [show, setShow] = useState(false);
@@ -77,20 +74,27 @@ function Example({ children }) {
 
 
 storiesOf('Replace Transition', module)
-  .add('Animates on all', () => (
-
-    <Example>
-      <ReplaceTransition
-        className={styles.container}
-        onEnter={() => console.log('onEnter')}
-        onEntering={() => console.log('onEntering')}
-        onEntered={() => console.log('onEntered')}
-        onExit={() => console.log('onExit')}
-        onExiting={() => console.log('onExiting')}
-        onExited={() => console.log('onExited')}
-      >
-        <Fade><div>in True</div></Fade>
-        <Fade><div>in False</div></Fade>
-      </ReplaceTransition>
-    </Example>
-  ))
+  .add('Animates on all', () => {
+    const firstNodeRef = React.createRef()
+    const secondNodeRef = React.createRef()
+    return (
+      <Example>
+        <ReplaceTransition
+          in={false} // `Example` is overriding this prop
+          className={styles.container}
+          onEnter={() => console.log('onEnter')}
+          onEntering={() => console.log('onEntering')}
+          onEntered={() => console.log('onEntered')}
+          onExit={() => console.log('onExit')}
+          onExiting={() => console.log('onExiting')}
+          onExited={() => console.log('onExited')}>
+          <Fade nodeRef={firstNodeRef}>
+            <div ref={firstNodeRef}>in True</div>
+          </Fade>
+          <Fade nodeRef={secondNodeRef}>
+            <div ref={secondNodeRef}>in False</div>
+          </Fade>
+        </ReplaceTransition>
+      </Example>
+    )
+  })

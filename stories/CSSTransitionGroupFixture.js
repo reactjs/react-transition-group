@@ -1,18 +1,16 @@
-import React from 'react';
+import React from 'react'
 
 import TransitionGroup from '../src/TransitionGroup';
 import StoryFixture from './StoryFixture';
 
 class CSSTransitionGroupFixture extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+  static defaultProps = {
+    items: []
+  }
 
-    let items = props.items || [];
-
-    this.count = items.length;
-    this.state = {
-      items,
-    };
+  count = this.props.items.length
+  state = {
+    items: this.props.items
   }
 
   handleAddItem = () => {
@@ -39,7 +37,9 @@ class CSSTransitionGroupFixture extends React.Component {
   }
 
   render() {
-    const { items: _, description, children, ...props } = this.props;
+    const { items: _, description, children, ...rest } = this.props;
+    // e.g. `Fade`, see where `CSSTransitionGroupFixture` is used
+    const { type: TransitionType, props: transitionTypeProps } = React.Children.only(children)
 
     return (
       <StoryFixture description={description}>
@@ -52,18 +52,13 @@ class CSSTransitionGroupFixture extends React.Component {
             Remove a few
           </button>
         </div>
-        <TransitionGroup component="div" {...props}>
-          {this.state.items.map(item => React.cloneElement(children, {
-            key: item,
-            children: (
-              <div>
-                {item}
-                <button onClick={() => this.handleRemoveItem(item)}>
-                  &times;
-                </button>
-              </div>
-            )
-          }))}
+        <TransitionGroup component="div" {...rest}>
+          {this.state.items.map(item => (
+            <TransitionType {...transitionTypeProps} key={item}>
+              {item}
+              <button onClick={() => this.handleRemoveItem(item)}>&times;</button>
+            </TransitionType>
+          ))}
         </TransitionGroup>
       </StoryFixture>
     );

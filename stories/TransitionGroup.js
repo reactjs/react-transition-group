@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react'
 import { storiesOf } from '@storybook/react';
 
 import TransitionGroup from '../src/TransitionGroup';
@@ -106,11 +106,7 @@ class DynamicTransition extends React.Component {
       <div>
         <button onClick={this.handleClick}>Toggle item</button>
         <TransitionGroup timeout={FADE_TIMEOUT}>
-          {!hide &&
-            <Fade key='item'>
-              <div>Changing! {count}</div>
-            </Fade>
-          }
+          {!hide && <Fade key='item'>Changing! {count}</Fade>}
         </TransitionGroup>
       </div>
     )
@@ -140,9 +136,7 @@ function ReEnterTransition() {
       </button>
       <TransitionGroup timeout={FADE_TIMEOUT}>
         {!hide && (
-          <Fade key='item'>
-            <div>I'm entering!</div>
-          </Fade>
+          <Fade key='item'>I'm entering!</Fade>
         )}
       </TransitionGroup>
     </div>
