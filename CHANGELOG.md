@@ -4,6 +4,24 @@
 ### Features
 
 * add `nodeRef` alternative instead of internal `findDOMNode` ([#559](https://github.com/reactjs/react-transition-group/issues/559)) ([85016bf](https://github.com/reactjs/react-transition-group/commit/85016bfddd3831e6d7bb27926f9f178d25502913))
+  - react-transition-group internally uses `findDOMNode`, which is deprecated and produces warnings in [Strict Mode](https://reactjs.org/docs/strict-mode.html), so now you can optionally pass `nodeRef` to `Transition` and `CSSTransition`, it's a ref object that should point to the transitioning child:
+
+    ```jsx
+    import React from "react"
+    import { CSSTransition } from "react-transition-group"
+
+    const MyComponent = () => {
+      const nodeRef = React.useRef(null)
+      return (
+        <CSSTransition nodeRef={nodeRef} in timeout={200} classNames="fade">
+          <div ref={nodeRef}>Fade</div>
+        </CSSTransition>
+      )
+    }
+    ```
+### Bug Fixes
+
+* set the values of constants attached to `Transition` to match the exported ones ([#554](https://github.com/reactjs/react-transition-group/pull/554))
 
 # [4.3.0](https://github.com/reactjs/react-transition-group/compare/v4.2.2...v4.3.0) (2019-09-05)
 
