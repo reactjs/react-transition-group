@@ -81,8 +81,6 @@ storiesOf('Replace Transition', module)
       <Example>
         <ReplaceTransition
           in={false} // `Example` is overriding this prop
-          firstNodeRef={firstNodeRef}
-          secondNodeRef={secondNodeRef}
           className={styles.container}
           onEnter={() => console.log('onEnter')}
           onEntering={() => console.log('onEntering')}
