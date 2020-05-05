@@ -8,13 +8,19 @@ let Transition
 // Most of the real functionality is covered in other unit tests, this just
 // makes sure we're wired up correctly.
 describe('TransitionGroup', () => {
-  let container, log, Child
+  let container, log, Child, render;
 
   beforeEach(() => {
     React = require('react')
     ReactDOM = require('react-dom')
     Transition = require('../src/Transition').default
     TransitionGroup = require('../src/TransitionGroup')
+
+    render = (element, container, callback) => ReactDOM.render(
+      <React.StrictMode>{element}</React.StrictMode>,
+      container,
+      callback
+    )
 
     container = document.createElement('div')
 
@@ -70,7 +76,7 @@ describe('TransitionGroup', () => {
   })
 
   it('should work with no children', () => {
-    ReactDOM.render(<TransitionGroup />, container)
+    render(<TransitionGroup />, container)
   })
 
   it('should handle transitioning correctly', () => {
@@ -85,18 +91,18 @@ describe('TransitionGroup', () => {
     }
 
     jest.useFakeTimers()
-    ReactDOM.render(<Parent />, container)
+    render(<Parent />, container)
 
     jest.runAllTimers()
     expect(log).toEqual(['appear', 'appearing', 'appeared'])
 
     log = []
-    ReactDOM.render(<Parent count={2} />, container)
+    render(<Parent count={2} />, container)
     jest.runAllTimers()
     expect(log).toEqual(['enter', 'entering', 'entered'])
 
     log = []
-    ReactDOM.render(<Parent count={1} />, container)
+    render(<Parent count={1} />, container)
     jest.runAllTimers()
     expect(log).toEqual(['exit', 'exiting', 'exited'])
   })
