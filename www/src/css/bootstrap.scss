@@ -37,3 +37,9 @@ h1, h2, h3, h4, h5 {
     color: inherit;
   }
 }
+
+// https://twitter.com/hakimel/status/1257252729128435712?s=20
+// https://twitter.com/bramus/status/1257255545897132032?s=20
+:target {
+  scroll-margin-top: 4rem;
+}
