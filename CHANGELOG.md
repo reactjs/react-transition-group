@@ -1,3 +1,10 @@
+# [4.4.0](https://github.com/reactjs/react-transition-group/compare/v4.3.0...v4.4.0) (2020-05-05)
+
+
+### Features
+
+* add `nodeRef` alternative instead of internal `findDOMNode` ([#559](https://github.com/reactjs/react-transition-group/issues/559)) ([85016bf](https://github.com/reactjs/react-transition-group/commit/85016bfddd3831e6d7bb27926f9f178d25502913))
+
 # [4.3.0](https://github.com/reactjs/react-transition-group/compare/v4.2.2...v4.3.0) (2019-09-05)
 
 
