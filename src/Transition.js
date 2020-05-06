@@ -394,10 +394,10 @@ Transition.propTypes = {
    *     (see
    *     [test/CSSTransition-test.js](https://github.com/reactjs/react-transition-group/blob/13435f897b3ab71f6e19d724f145596f5910581c/test/CSSTransition-test.js#L362-L437)).
    */
-  nodeRef: PropTypes.shape({ 
-    current: typeof Element === 'undefined' 
+  nodeRef: PropTypes.shape({
+    current: typeof Element === 'undefined'
       ? PropTypes.any
-      : PropTypes.instanceOf(Element) 
+      : PropTypes.instanceOf(Element)
   }),
 
   /**
