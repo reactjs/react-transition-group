@@ -4,7 +4,8 @@ node_js:
   - "11.10"
 cache: yarn
 install:
-  - yarn install --cwd www
+  - yarn
+  - yarn --cwd www
 script:
   - yarn test
 
