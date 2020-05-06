@@ -1,3 +1,10 @@
+## [4.4.1](https://github.com/reactjs/react-transition-group/compare/v4.4.0...v4.4.1) (2020-05-06)
+
+
+### Bug Fixes
+
+* transition SSR ([#619](https://github.com/reactjs/react-transition-group/issues/619)) ([2722bb6](https://github.com/reactjs/react-transition-group/commit/2722bb6b755943b8292f0f2bc2fdca55df5c28f0))
+
 # [4.4.0](https://github.com/reactjs/react-transition-group/compare/v4.3.0...v4.4.0) (2020-05-05)
 
 

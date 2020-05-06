@@ -1,6 +1,6 @@
 {
   "name": "react-transition-group",
-  "version": "4.4.0",
+  "version": "4.4.1",
   "description": "A react component toolset for managing animations",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
