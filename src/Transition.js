@@ -341,42 +341,38 @@ class Transition extends React.Component {
 
   render() {
     const status = this.state.status
+
     if (status === UNMOUNTED) {
       return null
     }
 
-    const { children, ...childProps } = this.props
-    // filter props for Transtition
-    delete childProps.in
-    delete childProps.mountOnEnter
-    delete childProps.unmountOnExit
-    delete childProps.appear
-    delete childProps.enter
-    delete childProps.exit
-    delete childProps.timeout
-    delete childProps.addEndListener
-    delete childProps.onEnter
-    delete childProps.onEntering
-    delete childProps.onEntered
-    delete childProps.onExit
-    delete childProps.onExiting
-    delete childProps.onExited
-    delete childProps.nodeRef
+    const {
+      children,
+      // filter props for `Transition`
+      in: _in,
+      mountOnEnter: _mountOnEnter,
+      unmountOnExit: _unmountOnExit,
+      appear: _appear,
+      enter: _enter,
+      exit: _exit,
+      timeout: _timeout,
+      addEndListener: _addEndListener,
+      onEnter: _onEnter,
+      onEntering: _onEntering,
+      onEntered: _onEntered,
+      onExit: _onExit,
+      onExiting: _onExiting,
+      onExited: _onExited,
+      nodeRef: _nodeRef,
+      ...childProps
+    } = this.props
 
-    if (typeof children === 'function') {
-      // allows for nested Transitions
-      return (
-        <TransitionGroupContext.Provider value={null}>
-          {children(status, childProps)}
-        </TransitionGroupContext.Provider>
-      )
-    }
-
-    const child = React.Children.only(children)
     return (
       // allows for nested Transitions
       <TransitionGroupContext.Provider value={null}>
-        {React.cloneElement(child, childProps)}
+        {typeof children === 'function'
+          ? children(status, childProps)
+          : React.cloneElement(React.Children.only(children), childProps)}
       </TransitionGroupContext.Provider>
     )
   }
