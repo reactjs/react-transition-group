@@ -191,21 +191,6 @@ class Transition extends React.Component {
     this.cancelNextCallback()
   }
 
-  getTimeouts() {
-    const { timeout } = this.props
-    let exit, enter, appear
-
-    exit = enter = appear = timeout
-
-    if (timeout != null && typeof timeout !== 'number') {
-      exit = timeout.exit
-      enter = timeout.enter
-      // TODO: remove fallback for next major
-      appear = timeout.appear !== undefined ? timeout.appear : enter
-    }
-    return { exit, enter, appear }
-  }
-
   updateStatus(mounting = false, nextStatus) {
     if (nextStatus !== null) {
       // nextStatus will always be ENTERING or EXITING.
@@ -222,14 +207,19 @@ class Transition extends React.Component {
   }
 
   performEnter(mounting) {
-    const { enter } = this.props
+    const { enter, timeout } = this.props
     const appearing = this.context ? this.context.isMounting : mounting
     const [maybeNode, maybeAppearing] = this.props.nodeRef
       ? [appearing]
       : [ReactDOM.findDOMNode(this), appearing]
 
-    const timeouts = this.getTimeouts()
-    const enterTimeout = appearing ? timeouts.appear : timeouts.enter
+    const enterTimeout = typeof timeout !== 'number' && timeout
+      // TODO: Remove appear-to-enter fallback for next major.
+      ? appearing && timeout.appear !== undefined
+        ? timeout.appear
+        : timeout.enter
+      : timeout
+
     // no enter animation skip right to ENTERED
     // if we are mounting and running this it means appear _must_ be set
     if ((!mounting && !enter) || config.disabled) {
@@ -253,8 +243,11 @@ class Transition extends React.Component {
   }
 
   performExit() {
-    const { exit } = this.props
-    const timeouts = this.getTimeouts()
+    const { exit, timeout } = this.props
+    const exitTimeout = typeof timeout !== 'number' && timeout
+      ? timeout.exit
+      : timeout
+
     const maybeNode = this.props.nodeRef
       ? undefined
       : ReactDOM.findDOMNode(this)
@@ -272,7 +265,7 @@ class Transition extends React.Component {
     this.safeSetState({ status: EXITING }, () => {
       this.props.onExiting(maybeNode)
 
-      this.onTransitionEnd(timeouts.exit, () => {
+      this.onTransitionEnd(exitTimeout, () => {
         this.safeSetState({ status: EXITED }, () => {
           this.props.onExited(maybeNode)
         })
@@ -316,26 +309,19 @@ class Transition extends React.Component {
 
   onTransitionEnd(timeout, handler) {
     this.setNextCallback(handler)
+
     const node = this.props.nodeRef
       ? this.props.nodeRef.current
       : ReactDOM.findDOMNode(this)
 
-    const doesNotHaveTimeoutOrListener =
-      timeout == null && !this.props.addEndListener
-    if (!node || doesNotHaveTimeoutOrListener) {
-      setTimeout(this.nextCallback, 0)
-      return
-    }
-
-    if (this.props.addEndListener) {
+    if (node && this.props.addEndListener && timeout == null) {
       const [maybeNode, maybeNextCallback] = this.props.nodeRef
         ? [this.nextCallback]
         : [node, this.nextCallback]
-      this.props.addEndListener(maybeNode, maybeNextCallback)
-    }
 
-    if (timeout != null) {
-      setTimeout(this.nextCallback, timeout)
+      this.props.addEndListener(maybeNode, maybeNextCallback)
+    } else {
+      setTimeout(this.nextCallback, timeout == null ? 0 : timeout)
     }
   }
 
@@ -484,8 +470,9 @@ Transition.propTypes = {
    * @type {number | { enter?: number, exit?: number, appear?: number }}
    */
   timeout: (props, ...args) => {
-    let pt = timeoutsShape
-    if (!props.addEndListener) pt = pt.isRequired
+    const pt = props.addEndListener
+      ? timeoutsShape
+      : timeoutsShape.isRequired
     return pt(props, ...args)
   },
 
