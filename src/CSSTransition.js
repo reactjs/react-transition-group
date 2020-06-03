@@ -190,7 +190,7 @@ class CSSTransition extends React.Component {
       className += ` ${doneClassName}`;
     }
 
-    // This is for to force a repaint,
+    // This is to force a repaint,
     // which is necessary in order to transition styles when adding a class name.
     if (phase === 'active') {
       /* eslint-disable no-unused-expressions */
