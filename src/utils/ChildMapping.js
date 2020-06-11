@@ -90,7 +90,7 @@ export function mergeChildMappings(prev, next) {
     childMapping[nextKey] = getValueForKey(nextKey)
   }
 
-  // Finally, add the keys which didn't appear before any key in `next` if there were no new keys added
+  // Finally, add the keys which didn't appear before any key in `next` if there were no new keys added at the end
   for (i = 0; i < pendingKeys.length; i++) {
     childMapping[pendingKeys[i]] = getValueForKey(pendingKeys[i])
   }
