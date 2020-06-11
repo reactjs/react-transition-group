@@ -49,11 +49,14 @@ export function mergeChildMappings(prev, next) {
 
   let pendingKeys = []
 
-  let firstNewKey
+  let firstNewKeyAfterLastPrevKey
   for (let nextKey in next) {
     if (!(nextKey in prev)) {
-      firstNewKey = nextKey
-      break
+      if (!firstNewKeyAfterLastPrevKey) {
+        firstNewKeyAfterLastPrevKey = nextKey;
+      }
+    } else {
+      firstNewKeyAfterLastPrevKey = undefined;
     }
   }
 
@@ -68,8 +71,8 @@ export function mergeChildMappings(prev, next) {
     }
   }
 
-  if (firstNewKey && pendingKeys.length) {
-    nextKeysPending[firstNewKey] = pendingKeys
+  if (firstNewKeyAfterLastPrevKey && pendingKeys.length) {
+    nextKeysPending[firstNewKeyAfterLastPrevKey] = pendingKeys
     pendingKeys = []
   }
 
