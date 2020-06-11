@@ -49,17 +49,6 @@ export function mergeChildMappings(prev, next) {
 
   let pendingKeys = []
 
-  let firstNewKeyAfterLastPrevKey
-  for (let nextKey in next) {
-    if (!(nextKey in prev)) {
-      if (!firstNewKeyAfterLastPrevKey) {
-        firstNewKeyAfterLastPrevKey = nextKey
-      }
-    } else {
-      firstNewKeyAfterLastPrevKey = undefined
-    }
-  }
-
   for (let prevKey in prev) {
     if (prevKey in next) {
       if (pendingKeys.length) {
@@ -71,9 +60,23 @@ export function mergeChildMappings(prev, next) {
     }
   }
 
-  if (firstNewKeyAfterLastPrevKey && pendingKeys.length) {
-    nextKeysPending[firstNewKeyAfterLastPrevKey] = pendingKeys
-    pendingKeys = []
+  // If there are any pending keys left, check if there are new keys that they should be in front of
+  if (pendingKeys.length) {
+    let firstNewKeyAfterLastPrevKey
+    for (let nextKey in next) {
+      if (!(nextKey in prev)) {
+        if (!firstNewKeyAfterLastPrevKey) {
+          firstNewKeyAfterLastPrevKey = nextKey
+        }
+      } else {
+        firstNewKeyAfterLastPrevKey = undefined
+      }
+    }
+
+    if (firstNewKeyAfterLastPrevKey) {
+      nextKeysPending[firstNewKeyAfterLastPrevKey] = pendingKeys
+      pendingKeys = []
+    }
   }
 
   let i
