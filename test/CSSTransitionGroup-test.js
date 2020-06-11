@@ -65,8 +65,8 @@ describe('CSSTransitionGroup', () => {
     );
 
     expect(transitionGroupDiv.childNodes.length).toBe(2);
-    expect(transitionGroupDiv.childNodes[0].id).toBe('two');
-    expect(transitionGroupDiv.childNodes[1].id).toBe('one');
+    expect(transitionGroupDiv.childNodes[0].id).toBe('one');
+    expect(transitionGroupDiv.childNodes[1].id).toBe('two');
 
     jest.runAllTimers();
 
@@ -98,8 +98,8 @@ describe('CSSTransitionGroup', () => {
     );
 
     expect(transitionGroupDiv.childNodes.length).toBe(2);
-    expect(transitionGroupDiv.childNodes[0].id).toBe('two');
-    expect(transitionGroupDiv.childNodes[1].id).toBe('one');
+    expect(transitionGroupDiv.childNodes[0].id).toBe('one');
+    expect(transitionGroupDiv.childNodes[1].id).toBe('two');
   });
 
   it('should switch transitionLeave from false to true', () => {
@@ -133,8 +133,8 @@ describe('CSSTransitionGroup', () => {
     );
 
     expect(transitionGroupDiv.childNodes.length).toBe(2);
-    expect(transitionGroupDiv.childNodes[0].id).toBe('three');
-    expect(transitionGroupDiv.childNodes[1].id).toBe('two');
+    expect(transitionGroupDiv.childNodes[0].id).toBe('two');
+    expect(transitionGroupDiv.childNodes[1].id).toBe('three');
   });
 
 

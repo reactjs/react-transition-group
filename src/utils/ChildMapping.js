@@ -48,6 +48,15 @@ export function mergeChildMappings(prev, next) {
   let nextKeysPending = Object.create(null)
 
   let pendingKeys = []
+
+  let firstNewKey
+  for (let nextKey in next) {
+    if (!(nextKey in prev)) {
+      firstNewKey = nextKey
+      break
+    }
+  }
+
   for (let prevKey in prev) {
     if (prevKey in next) {
       if (pendingKeys.length) {
@@ -57,6 +66,11 @@ export function mergeChildMappings(prev, next) {
     } else {
       pendingKeys.push(prevKey)
     }
+  }
+
+  if (firstNewKey && pendingKeys.length) {
+    nextKeysPending[firstNewKey] = pendingKeys
+    pendingKeys = []
   }
 
   let i
@@ -73,7 +87,7 @@ export function mergeChildMappings(prev, next) {
     childMapping[nextKey] = getValueForKey(nextKey)
   }
 
-  // Finally, add the keys which didn't appear before any key in `next`
+  // Finally, add the keys which didn't appear before any key in `next` if there were no new keys added
   for (i = 0; i < pendingKeys.length; i++) {
     childMapping[pendingKeys[i]] = getValueForKey(pendingKeys[i])
   }
