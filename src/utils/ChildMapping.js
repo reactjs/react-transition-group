@@ -53,10 +53,10 @@ export function mergeChildMappings(prev, next) {
   for (let nextKey in next) {
     if (!(nextKey in prev)) {
       if (!firstNewKeyAfterLastPrevKey) {
-        firstNewKeyAfterLastPrevKey = nextKey;
+        firstNewKeyAfterLastPrevKey = nextKey
       }
     } else {
-      firstNewKeyAfterLastPrevKey = undefined;
+      firstNewKeyAfterLastPrevKey = undefined
     }
   }
 
