@@ -48,7 +48,6 @@ export function mergeChildMappings(prev, next) {
   let nextKeysPending = Object.create(null)
 
   let pendingKeys = []
-
   for (let prevKey in prev) {
     if (prevKey in next) {
       if (pendingKeys.length) {
