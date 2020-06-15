@@ -124,16 +124,21 @@ export function mergeChildMappings(prev, next, appendHints) {
   // place the new keys before or after the pending keys based on the value of their appendOnReplace prop
   prependKeys = []
   appendKeys = []
-  const finalAppendKeys = []
-  for (i = 0; i < pendingNewKeys.length; i++) {
-    if (!appendHints[pendingNewKeys[i]]) {
-      prependKeys.push(pendingNewKeys[i])
-    } else {
-      appendKeys.push(pendingNewKeys[i])
+  let finalPendingKeys = []
+  if (pendingKeys.length && pendingNewKeys.length) {
+    for (i = 0; i < pendingNewKeys.length; i++) {
+      if (!appendHints[pendingNewKeys[i]]) {
+        prependKeys.push(pendingNewKeys[i])
+      } else {
+        appendKeys.push(pendingNewKeys[i])
+      }
     }
+    finalPendingKeys = prependKeys.concat(pendingKeys).concat(appendKeys)
+  } else if (pendingKeys.length) {
+    finalPendingKeys = pendingKeys
+  } else if (pendingNewKeys.length) {
+    finalPendingKeys = pendingNewKeys
   }
-
-  const finalPendingKeys = prependKeys.concat(pendingKeys).concat(appendKeys)
 
   // Finally, add the remaining keys
   for (i = 0; i < finalPendingKeys.length; i++) {
