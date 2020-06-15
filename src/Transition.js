@@ -364,6 +364,7 @@ class Transition extends React.Component {
       onExiting: _onExiting,
       onExited: _onExited,
       nodeRef: _nodeRef,
+      appendOnReplace: _appendOnReplace,
       ...childProps
     } = this.props
 
@@ -561,6 +562,16 @@ Transition.propTypes = {
    * @type Function(node: HtmlElement) -> void
    */
   onExited: PropTypes.func,
+
+  /**
+   * Hint to tell whether the node should be placed before or after the pending items it replaces.
+   * Everything with appendOnReplace set to true will be placed after the removed keys,
+   * while everything else goes before the removed keys.
+   *
+   * **Note**: applies when replacing one or more consecutive existing items with one or more consecutive new items.
+   *
+   */
+  appendOnReplace: PropTypes.bool,
 }
 
 // Name the function so it is clearer in the documentation
