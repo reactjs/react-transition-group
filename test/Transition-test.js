@@ -522,12 +522,16 @@ describe('Transition', () => {
       console.error.mockRestore()
     })
 
-    it('does not error if nodeRef.current is null', () => {
+    it('does not error if nodeRef.current is nullish | Element', () => {
       PropTypes.checkPropTypes(Transition.propTypes, { nodeRef: { current: undefined }, children: <div />, timeout: 0  }, 'props', 'Transition')
 
       expect(console.error).toHaveBeenCalledTimes(0);
 
       PropTypes.checkPropTypes(Transition.propTypes, { nodeRef: { current: null }, children: <div />, timeout: 0 }, 'props', 'Transition')
+
+      expect(console.error).toHaveBeenCalledTimes(0);
+
+      PropTypes.checkPropTypes(Transition.propTypes, { nodeRef: { current: document.createElement('div') }, children: <div />, timeout: 0 }, 'props', 'Transition')
 
       expect(console.error).toHaveBeenCalledTimes(0);
     })

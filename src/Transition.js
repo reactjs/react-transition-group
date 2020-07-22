@@ -391,9 +391,19 @@ Transition.propTypes = {
    *     [test/CSSTransition-test.js](https://github.com/reactjs/react-transition-group/blob/13435f897b3ab71f6e19d724f145596f5910581c/test/CSSTransition-test.js#L362-L437)).
    */
   nodeRef: PropTypes.shape({
-    current: typeof Element === 'undefined'
-      ? PropTypes.any
-      : PropTypes.instanceOf(Element)
+    current: (propValue, key, componentName) => {
+      const instance = propValue[key];
+      if (instance === undefined || instance === null) {
+        return null
+      }
+      // Element.prototype.nodeType === 1
+      // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType#Node_type_constants
+      if (instance.nodeType === 1) {
+        return null;
+      }
+      const actualClassName = !instance.constructor || !instance.constructor.name ? '<<anonymous>>' : instance.constructor.name;
+      return new Error('Invalid props `nodeRef.current` of type `' + actualClassName + '` supplied to `' + componentName + '`, expected instance of `Element`.')
+    }
   }),
 
   /**
