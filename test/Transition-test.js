@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import * as PropTypes from 'prop-types'
 
 import { mount } from 'enzyme'
 
@@ -508,6 +509,33 @@ describe('Transition', () => {
       expect(instance.nodeRef.current).toExist()
 
       instance.setState({ in: false })
+    })
+  })
+
+  describe('propTypes', () => {
+    beforeEach(() => {
+      PropTypes.resetWarningCache()
+      jest.spyOn(console, 'error').mockImplementation(() => {})
+    })
+
+    afterEach(() => {
+      console.error.mockRestore()
+    })
+
+    it('does not error if nodeRef.current is null', () => {
+      PropTypes.checkPropTypes(Transition.propTypes, { nodeRef: { current: undefined }, children: <div />, timeout: 0  }, 'props', 'Transition')
+
+      expect(console.error).toHaveBeenCalledTimes(0);
+
+      PropTypes.checkPropTypes(Transition.propTypes, { nodeRef: { current: null }, children: <div />, timeout: 0 }, 'props', 'Transition')
+
+      expect(console.error).toHaveBeenCalledTimes(0);
+    })
+
+    it('errors if nodeRef.current is not an Element', () => {
+      PropTypes.checkPropTypes(Transition.propTypes, { nodeRef: { current: document }, children: <div />, timeout: 0 }, 'props', 'Transition')
+
+      expect(console.error).toHaveBeenCalledWith('Warning: Failed props type: Invalid props `nodeRef.current` of type `Document` supplied to `Transition`, expected instance of `Element`.')
     })
   })
 })
