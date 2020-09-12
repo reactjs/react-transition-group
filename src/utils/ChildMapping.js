@@ -134,6 +134,7 @@ export function getNextChildMapping(nextProps, prevChildMapping, onExited) {
         in: prevChild.props.in,
         exit: getProp(child, 'exit', nextProps),
         enter: getProp(child, 'enter', nextProps),
+        moving: Date.now()
       })
     }
   })
