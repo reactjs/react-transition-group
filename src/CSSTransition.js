@@ -3,6 +3,7 @@ import addOneClass from 'dom-helpers/addClass';
 
 import removeOneClass from 'dom-helpers/removeClass';
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import Transition from './Transition';
 import { classNamesShape } from './utils/PropTypes';
@@ -80,6 +81,13 @@ const removeClass = (node, classes) => node && classes && classes.split(' ').for
  * prop, make sure to define styles for `.appear-*` classes as well.
  */
 class CSSTransition extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      moving: 0
+    }
+  }
+
   static defaultProps = {
     classNames: ''
   }
@@ -88,6 +96,37 @@ class CSSTransition extends React.Component {
     appear: {},
     enter: {},
     exit: {},
+    move: {}
+  }
+
+  getSnapshotBeforeUpdate() {
+    const node = ReactDOM.findDOMNode(this);
+    const { top, left } = node.getBoundingClientRect();
+    return { top, left }
+  }
+
+  static getDerivedStateFromProps({ moving }, prevState) {
+    if (moving !== prevState.moving) {
+      return { moving }
+    }
+    return null
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const node = ReactDOM.findDOMNode(this);
+    const { top, left } = node.getBoundingClientRect();
+    node.style.transform = `translate(${snapshot.left - left}px, ${snapshot.top - top}px)`;
+
+    requestAnimationFrame(() => {
+      this.addClass(node, 'move', 'base');
+      node.style.transform = '';
+    });
+
+    const cleanup = () => {
+      this.removeClasses(node, 'move');
+      node.removeEventListener('transitionend', cleanup);
+    };
+    node.addEventListener('transitionend', cleanup);
   }
 
   onEnter = (maybeNode, maybeAppearing) => {
@@ -224,7 +263,7 @@ class CSSTransition extends React.Component {
   }
 
   render() {
-    const { classNames: _, ...props } = this.props;
+    const { classNames: _, moving, ...props } = this.props;
 
     return (
       <Transition
