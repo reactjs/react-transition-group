@@ -27,8 +27,8 @@ const WithReactRouter = ({ data, location }) => (
       <h1>Usage with React Router</h1>
       <p>
         People often want to animate route transitions, which can result in
-        delightful UX when used in moderation. The first instict might be to use
-        wrap all routes in <code>TransitionGroup</code>, but that approach
+        delightful UX when used in moderation. The first instinct might be to
+        use wrap all routes in <code>TransitionGroup</code>, but that approach
         requires hacks and falls apart easily when used with trickier components
         of React Router like <code>Redirect</code>. You should use{' '}
         <code>CSSTransition</code> for each route and manage their{' '}
