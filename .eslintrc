@@ -6,6 +6,7 @@ env:
   browser: true
 
 rules:
+  camelcase: off
   prefer-const: off
   prefer-template: off
   no-prototype-builtins: off
@@ -15,6 +16,7 @@ rules:
   react/jsx-filename-extension: off
   react/no-did-mount-set-state: off
   react/require-default-props: off
+  react/sort-comp: off
   no-plusplus: off
   guard-for-in: off
   no-restricted-syntax:

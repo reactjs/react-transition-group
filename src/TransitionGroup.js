@@ -31,7 +31,7 @@ class TransitionGroup extends React.Component {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.currentlyTransitioningKeys = {};
     this.keysToEnter = [];
     this.keysToLeave = [];
@@ -46,7 +46,7 @@ class TransitionGroup extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     let nextChildMapping = getChildMapping(nextProps.children);
     let prevChildMapping = this.state.children;
 

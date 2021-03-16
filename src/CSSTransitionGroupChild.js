@@ -45,7 +45,7 @@ class CSSTransitionGroupChild extends React.Component {
 
   static displayName = 'CSSTransitionGroupChild';
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.classNameAndNodeQueue = [];
     this.transitionTimeouts = [];
   }
