@@ -48,7 +48,7 @@ describe('CSSTransitionGroup', () => {
   it('should clean-up silently after the timeout elapses', () => {
     render(
       <TransitionGroup enter={false}>
-        <YoloTransition key="one" id="one"/>
+        <YoloTransition key="one" id="one" />
       </TransitionGroup>,
       container,
     );
@@ -59,7 +59,7 @@ describe('CSSTransitionGroup', () => {
 
     render(
       <TransitionGroup enter={false}>
-        <YoloTransition key="two" id="two"/>
+        <YoloTransition key="two" id="two" />
       </TransitionGroup>,
       container,
     );
@@ -137,6 +137,111 @@ describe('CSSTransitionGroup', () => {
     expect(transitionGroupDiv.childNodes[1].id).toBe('two');
   });
 
+  it('should place new node after the node it replaces when appendOnReplace is true', () => {
+    render(
+        <TransitionGroup>
+          <YoloTransition key="one" id="one" />
+        </TransitionGroup>,
+        container,
+    );
+
+    const transitionGroupDiv = container.childNodes[0]
+
+    expect(transitionGroupDiv.childNodes.length).toBe(1);
+
+    render(
+        <TransitionGroup>
+          <YoloTransition key="two" id="two" appendOnReplace />
+        </TransitionGroup>,
+        container,
+    );
+
+    expect(transitionGroupDiv.childNodes.length).toBe(2);
+    expect(transitionGroupDiv.childNodes[0].id).toBe('one');
+    expect(transitionGroupDiv.childNodes[1].id).toBe('two');
+  });
+
+  it('should place new node after last pending node when appendOnReplace is true', () => {
+    render(
+        <TransitionGroup enter={false} leave>
+          <YoloTransition key="one" id="one" />
+          <YoloTransition key="two" id="two" />
+        </TransitionGroup>,
+        container,
+    );
+
+    const transitionGroupDiv = container.childNodes[0]
+
+    render(
+        <TransitionGroup enter={false} leave>
+          <YoloTransition key="one" id="one" />
+          <YoloTransition key="three" id="three" appendOnReplace />
+        </TransitionGroup>,
+        container,
+    );
+
+    expect(transitionGroupDiv.childNodes.length).toBe(3);
+    expect(transitionGroupDiv.childNodes[1].id).toBe('two');
+    expect(transitionGroupDiv.childNodes[2].id).toBe('three');
+  });
+
+  it('should place new node after the pending node in the middle of the list when appendOnReplace is true', () => {
+    render(
+        <TransitionGroup enter={false} leave>
+          <YoloTransition key="one" id="one" />
+          <YoloTransition key="two" id="two" />
+          <YoloTransition key="three" id="three" />
+        </TransitionGroup>,
+        container,
+    );
+
+    const transitionGroupDiv = container.childNodes[0]
+
+    render(
+        <TransitionGroup enter={false} leave>
+          <YoloTransition key="one" id="one" />
+          <YoloTransition key="four" id="four" appendOnReplace />
+          <YoloTransition key="three" id="three" />
+        </TransitionGroup>,
+        container,
+    );
+
+    expect(transitionGroupDiv.childNodes.length).toBe(4);
+    expect(transitionGroupDiv.childNodes[0].id).toBe('one');
+    expect(transitionGroupDiv.childNodes[1].id).toBe('two');
+    expect(transitionGroupDiv.childNodes[2].id).toBe('four');
+    expect(transitionGroupDiv.childNodes[3].id).toBe('three');
+  });
+
+  it('should place pending nodes without appendOnReplace first, then new nodes, then pending nodes with appendOnReplace last', () => {
+    render(
+        <TransitionGroup enter={false} leave>
+          <YoloTransition key="one" id="one" />
+          <YoloTransition key="two" id="two" />
+          <YoloTransition key="three" id="three" />
+        </TransitionGroup>,
+        container,
+    );
+
+    const transitionGroupDiv = container.childNodes[0]
+
+    render(
+        <TransitionGroup enter={false} leave>
+          <YoloTransition key="one" id="one" />
+          <YoloTransition key="four" id="four" />
+          <YoloTransition key="five" id="five" appendOnReplace/>
+          <YoloTransition key="three" id="three" />
+        </TransitionGroup>,
+        container,
+    );
+
+    expect(transitionGroupDiv.childNodes.length).toBe(5);
+    expect(transitionGroupDiv.childNodes[0].id).toBe('one');
+    expect(transitionGroupDiv.childNodes[1].id).toBe('four');
+    expect(transitionGroupDiv.childNodes[2].id).toBe('two');
+    expect(transitionGroupDiv.childNodes[3].id).toBe('five');
+    expect(transitionGroupDiv.childNodes[4].id).toBe('three');
+  });
 
   it('should work with a null child', () => {
     render(
