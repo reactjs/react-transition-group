@@ -100,7 +100,7 @@ describe('Transition', () => {
   })
 
   it('should allow addEndListener instead of timeouts', done => {
-    let listener = jest.fn(end => setTimeout(end, 0))
+    let listener = jest.fn((node, end) => setTimeout(end, 0))
 
     const nodeRef = React.createRef()
     let wrapper = mount(
@@ -121,7 +121,7 @@ describe('Transition', () => {
 
   it('should fallback to timeouts with addEndListener', done => {
     let calledEnd = false
-    let listener = (end) =>
+    let listener = (node, end) =>
       setTimeout(() => {
         calledEnd = true
         end()
@@ -508,6 +508,50 @@ describe('Transition', () => {
       expect(instance.nodeRef.current).toExist()
 
       instance.setState({ in: false })
+    })
+  })
+
+  describe('node in callbacks', () => {
+    it('does not use stale nodes', done => {
+      const enteringNode = React.createRef();
+      const enteredNode = React.createRef();
+
+      function makeAssertions() {
+        expect(enteringNode.current.nodeName).toBe('H2');
+        expect(enteredNode.current.nodeName).toBe('H3');
+
+        done();
+      }
+
+      const hosts = {
+        exited: 'h1',
+        entering: 'h2',
+        entered: 'h3'
+      }
+
+      const wrapper = mount(
+        <Transition
+          in={false}
+          onEntering={handleEntering}
+          onEntered={handleEntered}
+          timeout={0}
+        >
+          {state => {
+            const Component = hosts[state];
+            return <Component />
+          }}
+        </Transition>
+      );
+      wrapper.setProps({ in: true });
+
+      function handleEntering(node) {
+        enteringNode.current = node;
+      }
+
+      function handleEntered(node) {
+        enteredNode.current = node;
+        makeAssertions();
+      }
     })
   })
 })

@@ -122,18 +122,21 @@ describe('CSSTransition', () => {
           classNames='appear-test'
           in={true}
           appear={true}
-          onEnter={(isAppearing) => {
+          onEnter={(node, isAppearing) => {
             count++;
+            expect(node).toEqual(nodeRef.current);
             expect(isAppearing).toEqual(true);
             expect(nodeRef.current.className).toEqual('appear-test-appear');
           }}
-          onEntering={(isAppearing) => {
+          onEntering={(node, isAppearing) => {
             count++;
+            expect(node).toEqual(nodeRef.current);
             expect(isAppearing).toEqual(true);
             expect(nodeRef.current.className).toEqual('appear-test-appear appear-test-appear-active');
           }}
 
-          onEntered={(isAppearing) => {
+          onEntered={(node, isAppearing) => {
+            expect(node).toEqual(nodeRef.current);
             expect(isAppearing).toEqual(true);
             expect(nodeRef.current.className).toEqual('appear-test-appear-done appear-test-enter-done');
             expect(count).toEqual(2);
@@ -185,11 +188,13 @@ describe('CSSTransition', () => {
           classNames={{ appear: 'appear-test' }}
           in={true}
           appear={true}
-          onEnter={(isAppearing) => {
+          onEnter={(node, isAppearing) => {
+            expect(node).toEqual(nodeRef.current);
             expect(isAppearing).toEqual(true);
             expect(nodeRef.current.className).toEqual('appear-test');
           }}
-          onEntered={(isAppearing) => {
+          onEntered={(node, isAppearing) => {
+            expect(node).toEqual(nodeRef.current);
             expect(isAppearing).toEqual(true);
             expect(nodeRef.current.className).toEqual('');
             done();
@@ -215,19 +220,22 @@ describe('CSSTransition', () => {
       ).setProps({
         in: true,
 
-        onEnter(isAppearing){
+        onEnter(node, isAppearing){
           count++;
+          expect(node).toEqual(nodeRef.current);
           expect(isAppearing).toEqual(false);
           expect(nodeRef.current.className).toEqual('not-appear-test-enter');
         },
 
-        onEntering(isAppearing){
+        onEntering(node, isAppearing){
           count++;
+          expect(node).toEqual(nodeRef.current);
           expect(isAppearing).toEqual(false);
           expect(nodeRef.current.className).toEqual('not-appear-test-enter not-appear-test-enter-active');
         },
 
-        onEntered(isAppearing){
+        onEntered(node, isAppearing){
+          expect(node).toEqual(nodeRef.current);
           expect(isAppearing).toEqual(false);
           expect(nodeRef.current.className).toEqual('not-appear-test-enter-done');
           expect(count).toEqual(2);
