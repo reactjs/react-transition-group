@@ -1,7 +1,7 @@
-import { css } from 'astroturf';
-import React, { useRef } from 'react'
+import { css } from "astroturf";
+import React, { useRef } from "react";
 
-import CSSTransition from '../../src/CSSTransition';
+import CSSTransition from "../../src/CSSTransition";
 
 export const SCALE_TIMEOUT = 1000;
 
@@ -32,7 +32,7 @@ const defaultProps = {
 };
 
 function Scale(props) {
-  const nodeRef = useRef()
+  const nodeRef = useRef();
   return (
     <CSSTransition {...props} classNames={styles} nodeRef={nodeRef}>
       <div ref={nodeRef}>{props.children}</div>

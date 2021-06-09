@@ -8,6 +8,7 @@ about: Something isn't working as expected.
 <!-- ... -->
 
 > What is the expected behavior?
+
 <!-- If your use case is complicated, please be as descriptive as possible. -->
 
 <!-- ... -->

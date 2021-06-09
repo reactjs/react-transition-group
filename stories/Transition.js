@@ -1,18 +1,23 @@
-import React, { useState } from 'react'
-import { storiesOf } from '@storybook/react'
+import React, { useState } from "react";
+import { storiesOf } from "@storybook/react";
 
-import StoryFixture from './StoryFixture'
-import { Fade, Collapse, FadeForwardRef, FadeInnerRef } from './transitions/Bootstrap'
+import StoryFixture from "./StoryFixture";
+import {
+  Fade,
+  Collapse,
+  FadeForwardRef,
+  FadeInnerRef,
+} from "./transitions/Bootstrap";
 
 function ToggleFixture({ defaultIn, description, children }) {
-  const [show, setShow] = useState(defaultIn)
+  const [show, setShow] = useState(defaultIn);
 
   return (
     <StoryFixture description={description}>
       <div style={{ marginBottom: 10 }}>
         <button
           onClick={() => {
-            setShow(!show)
+            setShow(!show);
           }}
         >
           Toggle
@@ -20,16 +25,16 @@ function ToggleFixture({ defaultIn, description, children }) {
       </div>
       {React.cloneElement(children, { in: show })}
     </StoryFixture>
-  )
+  );
 }
 
-storiesOf('Transition', module)
-  .add('Bootstrap Fade', () => (
+storiesOf("Transition", module)
+  .add("Bootstrap Fade", () => (
     <ToggleFixture>
       <Fade>asaghasg asgasg</Fade>
     </ToggleFixture>
   ))
-  .add('Bootstrap Collapse', () => (
+  .add("Bootstrap Collapse", () => (
     <ToggleFixture>
       <Collapse>
         asaghasg asgasg
@@ -38,20 +43,21 @@ storiesOf('Transition', module)
       </Collapse>
     </ToggleFixture>
   ))
-  .add('Fade using React.forwardRef', () => {
-    const nodeRef = React.createRef()
+  .add("Fade using React.forwardRef", () => {
+    const nodeRef = React.createRef();
     return (
       <ToggleFixture>
-        <FadeForwardRef ref={nodeRef}>Fade using React.forwardRef</FadeForwardRef>
+        <FadeForwardRef ref={nodeRef}>
+          Fade using React.forwardRef
+        </FadeForwardRef>
       </ToggleFixture>
-    )
+    );
   })
-  .add('Fade using innerRef', () => {
-    const nodeRef = React.createRef()
+  .add("Fade using innerRef", () => {
+    const nodeRef = React.createRef();
     return (
       <ToggleFixture>
         <FadeInnerRef innerRef={nodeRef}>Fade using innerRef</FadeInnerRef>
       </ToggleFixture>
-    )
-  })
-
+    );
+  });

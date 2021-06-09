@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
-import StoryFixture from './StoryFixture';
-import Fade from './transitions/Fade';
-import Scale from './transitions/Scale';
+import StoryFixture from "./StoryFixture";
+import Fade from "./transitions/Fade";
+import Scale from "./transitions/Scale";
 
 function FadeAndScale(props) {
   return (

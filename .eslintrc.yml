@@ -2,6 +2,7 @@ parser: babel-eslint
 extends:
   - jason/react
   - plugin:jsx-a11y/recommended
+  - prettier
 settings:
   react:
     version: detect
