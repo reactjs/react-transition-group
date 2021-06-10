@@ -1,7 +1,7 @@
 sudo: false
 language: node_js
 node_js:
-  - '12.19'
+  - 14
 env:
   - REACT_DIST=16
   - REACT_DIST=17
