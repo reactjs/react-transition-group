@@ -1,3 +1,10 @@
+## [4.4.2](https://github.com/reactjs/react-transition-group/compare/v4.4.1...v4.4.2) (2021-05-29)
+
+
+### Bug Fixes
+
+* `nodeRef` prop type for cross-realm elements ([#732](https://github.com/reactjs/react-transition-group/issues/732)) ([8710c01](https://github.com/reactjs/react-transition-group/commit/8710c01549e09f55eeefec2aadb3af0a23a00f82))
+
 ## [4.4.1](https://github.com/reactjs/react-transition-group/compare/v4.4.0...v4.4.1) (2020-05-06)
 
 

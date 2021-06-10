@@ -391,9 +391,18 @@ Transition.propTypes = {
    *     [test/CSSTransition-test.js](https://github.com/reactjs/react-transition-group/blob/13435f897b3ab71f6e19d724f145596f5910581c/test/CSSTransition-test.js#L362-L437)).
    */
   nodeRef: PropTypes.shape({
-    current: typeof Element === 'undefined'
-      ? PropTypes.any
-      : PropTypes.instanceOf(Element)
+    current:
+      typeof Element === 'undefined'
+        ? PropTypes.any
+        : (propValue, key, componentName, location, propFullName, secret) => {
+            const value = propValue[key];
+
+            return PropTypes.instanceOf(
+              value && 'ownerDocument' in value
+                ? value.ownerDocument.defaultView.Element
+                : Element
+            )(propValue, key, componentName, location, propFullName, secret);
+          },
   }),
 
   /**
