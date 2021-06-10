@@ -65,6 +65,7 @@
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
+    "@eps1lon/enzyme-adapter-react-17": "^0.1.0",
     "@restart/hooks": "^0.3.22",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
@@ -91,8 +92,8 @@
     "eslint-plugin-react-hooks": "^3.0.0",
     "jest": "^25.3.0",
     "prettier": "^2.0.4",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "release-script": "^1.0.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.6.1",
