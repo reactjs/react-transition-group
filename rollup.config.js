@@ -9,19 +9,19 @@ const input = './src/index.js';
 const name = 'ReactTransitionGroup';
 const globals = {
   react: 'React',
-  'react-dom': 'ReactDOM'
+  'react-dom': 'ReactDOM',
 };
 
 const babelOptions = {
   exclude: /node_modules/,
-  runtimeHelpers: true
-}
+  runtimeHelpers: true,
+};
 
 const commonjsOptions = {
   include: /node_modules/,
   namedExports: {
-    'prop-types': ['object', 'oneOfType', 'element', 'bool', 'func']
-  }
+    'prop-types': ['object', 'oneOfType', 'element', 'bool', 'func'],
+  },
 };
 
 export default [
@@ -31,7 +31,7 @@ export default [
       file: './lib/dist/react-transition-group.js',
       format: 'umd',
       name,
-      globals
+      globals,
     },
     external: Object.keys(globals),
     plugins: [
@@ -39,8 +39,8 @@ export default [
       babel(babelOptions),
       commonjs(commonjsOptions),
       replace({ 'process.env.NODE_ENV': JSON.stringify('development') }),
-      sizeSnapshot()
-    ]
+      sizeSnapshot(),
+    ],
   },
 
   {
@@ -49,7 +49,7 @@ export default [
       file: './lib/dist/react-transition-group.min.js',
       format: 'umd',
       name,
-      globals
+      globals,
     },
     external: Object.keys(globals),
     plugins: [
@@ -58,7 +58,7 @@ export default [
       commonjs(commonjsOptions),
       replace({ 'process.env.NODE_ENV': JSON.stringify('production') }),
       sizeSnapshot(),
-      terser()
-    ]
-  }
+      terser(),
+    ],
+  },
 ];

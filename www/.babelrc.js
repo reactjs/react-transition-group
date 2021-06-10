@@ -1,5 +1,3 @@
 module.exports = {
-  presets: [
-    'babel-preset-gatsby',
-  ],
+  presets: ['babel-preset-gatsby'],
 };

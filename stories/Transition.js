@@ -1,18 +1,23 @@
-import React, { useState } from 'react'
-import { storiesOf } from '@storybook/react'
+import React, { useState } from 'react';
+import { storiesOf } from '@storybook/react';
 
-import StoryFixture from './StoryFixture'
-import { Fade, Collapse, FadeForwardRef, FadeInnerRef } from './transitions/Bootstrap'
+import StoryFixture from './StoryFixture';
+import {
+  Fade,
+  Collapse,
+  FadeForwardRef,
+  FadeInnerRef,
+} from './transitions/Bootstrap';
 
 function ToggleFixture({ defaultIn, description, children }) {
-  const [show, setShow] = useState(defaultIn)
+  const [show, setShow] = useState(defaultIn);
 
   return (
     <StoryFixture description={description}>
       <div style={{ marginBottom: 10 }}>
         <button
           onClick={() => {
-            setShow(!show)
+            setShow(!show);
           }}
         >
           Toggle
@@ -20,7 +25,7 @@ function ToggleFixture({ defaultIn, description, children }) {
       </div>
       {React.cloneElement(children, { in: show })}
     </StoryFixture>
-  )
+  );
 }
 
 storiesOf('Transition', module)
@@ -39,19 +44,20 @@ storiesOf('Transition', module)
     </ToggleFixture>
   ))
   .add('Fade using React.forwardRef', () => {
-    const nodeRef = React.createRef()
+    const nodeRef = React.createRef();
     return (
       <ToggleFixture>
-        <FadeForwardRef ref={nodeRef}>Fade using React.forwardRef</FadeForwardRef>
+        <FadeForwardRef ref={nodeRef}>
+          Fade using React.forwardRef
+        </FadeForwardRef>
       </ToggleFixture>
-    )
+    );
   })
   .add('Fade using innerRef', () => {
-    const nodeRef = React.createRef()
+    const nodeRef = React.createRef();
     return (
       <ToggleFixture>
         <FadeInnerRef innerRef={nodeRef}>Fade using innerRef</FadeInnerRef>
       </ToggleFixture>
-    )
-  })
-
+    );
+  });

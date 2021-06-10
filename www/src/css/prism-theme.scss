@@ -6,9 +6,12 @@ Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/b
 */
 @import 'variables.scss';
 
-code[class*="language-"],
-pre[class*="language-"] {
-  font-family: Consolas, Menlo, Monaco, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", "Courier New", Courier, monospace;
+code[class*='language-'],
+pre[class*='language-'] {
+  font-family: Consolas, Menlo, Monaco, 'Andale Mono WT', 'Andale Mono',
+    'Lucida Console', 'Lucida Sans Typewriter', 'DejaVu Sans Mono',
+    'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L',
+    'Courier New', Courier, monospace;
   font-size: 14px;
   line-height: 1.375;
   direction: ltr;
@@ -27,29 +30,33 @@ pre[class*="language-"] {
   color: $syntax-fg;
 }
 
-pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
-code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+pre[class*='language-']::-moz-selection,
+pre[class*='language-'] ::-moz-selection,
+code[class*='language-']::-moz-selection,
+code[class*='language-'] ::-moz-selection {
   text-shadow: none;
-  background: darken($syntax-bg, 8%);;
+  background: darken($syntax-bg, 8%);
 }
 
-pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
-code[class*="language-"]::selection, code[class*="language-"] ::selection {
+pre[class*='language-']::selection,
+pre[class*='language-'] ::selection,
+code[class*='language-']::selection,
+code[class*='language-'] ::selection {
   text-shadow: none;
   background: darken($syntax-bg, 8%);
 }
 
 /* Code blocks */
-pre[class*="language-"] {
+pre[class*='language-'] {
   padding: 1em;
-  margin: .5em 0;
+  margin: 0.5em 0;
   overflow: auto;
 }
 
 /* Inline code */
-:not(pre) > code[class*="language-"] {
-  padding: .1em;
-  border-radius: .3em;
+:not(pre) > code[class*='language-'] {
+  padding: 0.1em;
+  border-radius: 0.3em;
 }
 
 .token.comment,
@@ -64,7 +71,7 @@ pre[class*="language-"] {
 }
 
 .token.namespace {
-  opacity: .7;
+  opacity: 0.7;
 }
 
 .token.operator,
@@ -151,7 +158,7 @@ pre[class*="language-"] {
 
 pre > code.highlight {
   outline: 0.4em solid $hue-5;
-  outline-offset: .4em;
+  outline-offset: 0.4em;
 }
 
 /* overrides color-values for the Line Numbers plugin

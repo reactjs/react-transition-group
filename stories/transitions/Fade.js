@@ -1,5 +1,5 @@
 import { css } from 'astroturf';
-import React, { useRef } from 'react'
+import React, { useRef } from 'react';
 
 import CSSTransition from '../../src/CSSTransition';
 
@@ -12,7 +12,7 @@ const styles = css`
   }
 
   .enter.enter-active,
-  .appear.appear-active  {
+  .appear.appear-active {
     opacity: 1;
     transition: opacity ${FADE_TIMEOUT}ms ease-in;
   }
@@ -32,7 +32,7 @@ const defaultProps = {
 };
 
 function Fade(props) {
-  const nodeRef = useRef()
+  const nodeRef = useRef();
   return (
     <CSSTransition {...props} classNames={styles} nodeRef={nodeRef}>
       <div ref={nodeRef}>{props.children}</div>

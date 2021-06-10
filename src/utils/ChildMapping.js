@@ -1,4 +1,4 @@
-import { Children, cloneElement, isValidElement } from 'react'
+import { Children, cloneElement, isValidElement } from 'react';
 
 /**
  * Given `this.props.children`, return an object mapping key to child.
@@ -7,15 +7,16 @@ import { Children, cloneElement, isValidElement } from 'react'
  * @return {object} Mapping of key to child
  */
 export function getChildMapping(children, mapFn) {
-  let mapper = child => (mapFn && isValidElement(child) ? mapFn(child) : child)
+  let mapper = (child) =>
+    mapFn && isValidElement(child) ? mapFn(child) : child;
 
-  let result = Object.create(null)
+  let result = Object.create(null);
   if (children)
-    Children.map(children, c => c).forEach(child => {
+    Children.map(children, (c) => c).forEach((child) => {
       // run the map function here instead so that the key is the computed one
-      result[child.key] = mapper(child)
-    })
-  return result
+      result[child.key] = mapper(child);
+    });
+  return result;
 }
 
 /**
@@ -36,81 +37,80 @@ export function getChildMapping(children, mapFn) {
  * in `next` in a reasonable order.
  */
 export function mergeChildMappings(prev, next) {
-  prev = prev || {}
-  next = next || {}
+  prev = prev || {};
+  next = next || {};
 
   function getValueForKey(key) {
-    return key in next ? next[key] : prev[key]
+    return key in next ? next[key] : prev[key];
   }
 
   // For each key of `next`, the list of keys to insert before that key in
   // the combined list
-  let nextKeysPending = Object.create(null)
+  let nextKeysPending = Object.create(null);
 
-  let pendingKeys = []
+  let pendingKeys = [];
   for (let prevKey in prev) {
     if (prevKey in next) {
       if (pendingKeys.length) {
-        nextKeysPending[prevKey] = pendingKeys
-        pendingKeys = []
+        nextKeysPending[prevKey] = pendingKeys;
+        pendingKeys = [];
       }
     } else {
-      pendingKeys.push(prevKey)
+      pendingKeys.push(prevKey);
     }
   }
 
-  let i
-  let childMapping = {}
+  let i;
+  let childMapping = {};
   for (let nextKey in next) {
     if (nextKeysPending[nextKey]) {
       for (i = 0; i < nextKeysPending[nextKey].length; i++) {
-        let pendingNextKey = nextKeysPending[nextKey][i]
-        childMapping[nextKeysPending[nextKey][i]] = getValueForKey(
-          pendingNextKey
-        )
+        let pendingNextKey = nextKeysPending[nextKey][i];
+        childMapping[nextKeysPending[nextKey][i]] =
+          getValueForKey(pendingNextKey);
       }
     }
-    childMapping[nextKey] = getValueForKey(nextKey)
+    childMapping[nextKey] = getValueForKey(nextKey);
   }
 
   // Finally, add the keys which didn't appear before any key in `next`
   for (i = 0; i < pendingKeys.length; i++) {
-    childMapping[pendingKeys[i]] = getValueForKey(pendingKeys[i])
+    childMapping[pendingKeys[i]] = getValueForKey(pendingKeys[i]);
   }
 
-  return childMapping
+  return childMapping;
 }
 
 function getProp(child, prop, props) {
-  return props[prop] != null ? props[prop] : child.props[prop]
+  return props[prop] != null ? props[prop] : child.props[prop];
 }
 
 export function getInitialChildMapping(props, onExited) {
-  return getChildMapping(props.children, child => {
+  return getChildMapping(props.children, (child) => {
     return cloneElement(child, {
       onExited: onExited.bind(null, child),
       in: true,
       appear: getProp(child, 'appear', props),
       enter: getProp(child, 'enter', props),
       exit: getProp(child, 'exit', props),
-    })
-  })
+    });
+  });
 }
 
 export function getNextChildMapping(nextProps, prevChildMapping, onExited) {
-  let nextChildMapping = getChildMapping(nextProps.children)
-  let children = mergeChildMappings(prevChildMapping, nextChildMapping)
+  let nextChildMapping = getChildMapping(nextProps.children);
+  let children = mergeChildMappings(prevChildMapping, nextChildMapping);
 
-  Object.keys(children).forEach(key => {
-    let child = children[key]
+  Object.keys(children).forEach((key) => {
+    let child = children[key];
 
-    if (!isValidElement(child)) return
+    if (!isValidElement(child)) return;
 
-    const hasPrev = key in prevChildMapping
-    const hasNext = key in nextChildMapping
+    const hasPrev = key in prevChildMapping;
+    const hasNext = key in nextChildMapping;
 
-    const prevChild = prevChildMapping[key]
-    const isLeaving = isValidElement(prevChild) && !prevChild.props.in
+    const prevChild = prevChildMapping[key];
+    const isLeaving = isValidElement(prevChild) && !prevChild.props.in;
 
     // item is new (entering)
     if (hasNext && (!hasPrev || isLeaving)) {
@@ -120,11 +120,11 @@ export function getNextChildMapping(nextProps, prevChildMapping, onExited) {
         in: true,
         exit: getProp(child, 'exit', nextProps),
         enter: getProp(child, 'enter', nextProps),
-      })
+      });
     } else if (!hasNext && hasPrev && !isLeaving) {
       // item is old (exiting)
       // console.log('leaving', key)
-      children[key] = cloneElement(child, { in: false })
+      children[key] = cloneElement(child, { in: false });
     } else if (hasNext && hasPrev && isValidElement(prevChild)) {
       // item hasn't changed transition states
       // copy over the last transition props;
@@ -134,9 +134,9 @@ export function getNextChildMapping(nextProps, prevChildMapping, onExited) {
         in: prevChild.props.in,
         exit: getProp(child, 'exit', nextProps),
         enter: getProp(child, 'enter', nextProps),
-      })
+      });
     }
-  })
+  });
 
-  return children
+  return children;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 import StoryFixture from './StoryFixture';
 import Fade from './transitions/Fade';

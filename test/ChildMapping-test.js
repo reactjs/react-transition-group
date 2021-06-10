@@ -10,9 +10,19 @@ describe('ChildMapping', () => {
   it('should support getChildMapping', () => {
     let oneone = <div key="oneone" />;
     let onetwo = <div key="onetwo" />;
-    let one = <div key="one">{oneone}{onetwo}</div>;
+    let one = (
+      <div key="one">
+        {oneone}
+        {onetwo}
+      </div>
+    );
     let two = <div key="two">foo</div>;
-    let component = <div>{one}{two}</div>;
+    let component = (
+      <div>
+        {one}
+        {two}
+      </div>
+    );
 
     let mapping = ChildMapping.getChildMapping(component.props.children);
 

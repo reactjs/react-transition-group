@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-global.requestAnimationFrame = function(callback) {
+global.requestAnimationFrame = function (callback) {
   setTimeout(callback, 0);
 };
 
@@ -12,5 +12,5 @@ const Adapter = React.version.startsWith('16.') ? Adapter16 : Adapter17;
 
 Enzyme.configure({
   adapter: new Adapter(),
-  wrappingComponent: props => <React.StrictMode {...props} />
-})
+  wrappingComponent: (props) => <React.StrictMode {...props} />,
+});

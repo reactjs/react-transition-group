@@ -15,15 +15,20 @@ describe('SwitchTransition', () => {
       onEntered: (m) => log.push(m ? 'appeared' : 'entered'),
       onExit: () => log.push('exit'),
       onExiting: () => log.push('exiting'),
-      onExited: () => log.push('exited')
+      onExited: () => log.push('exited'),
     };
 
-    const nodeRef = React.createRef()
+    const nodeRef = React.createRef();
     Parent = function Parent({ on, rendered = true }) {
       return (
         <SwitchTransition>
           {rendered ? (
-            <Transition nodeRef={nodeRef} timeout={0} key={on ? 'first' : 'second'} {...events}>
+            <Transition
+              nodeRef={nodeRef}
+              timeout={0}
+              key={on ? 'first' : 'second'}
+              {...events}
+            >
               <span ref={nodeRef} />
             </Transition>
           ) : null}
@@ -33,7 +38,7 @@ describe('SwitchTransition', () => {
   });
 
   it('should have default status ENTERED', () => {
-    const nodeRef = React.createRef()
+    const nodeRef = React.createRef();
     const wrapper = mount(
       <SwitchTransition>
         <Transition nodeRef={nodeRef} timeout={0} key="first">
@@ -46,7 +51,7 @@ describe('SwitchTransition', () => {
   });
 
   it('should have default mode: out-in', () => {
-    const nodeRef = React.createRef()
+    const nodeRef = React.createRef();
     const wrapper = mount(
       <SwitchTransition>
         <Transition nodeRef={nodeRef} timeout={0} key="first">
@@ -59,7 +64,7 @@ describe('SwitchTransition', () => {
   });
 
   it('should work without childs', () => {
-    const nodeRef = React.createRef()
+    const nodeRef = React.createRef();
     expect(() => {
       mount(
         <SwitchTransition>
@@ -87,7 +92,7 @@ describe('SwitchTransition', () => {
       'exited',
       'enter',
       'entering',
-      'entered'
+      'entered',
     ]);
     expect(wrapper.find(SwitchTransition).getElement().props.children.key).toBe(
       'second'
@@ -124,7 +129,7 @@ describe('SwitchTransition', () => {
       'exited',
       'enter',
       'entering',
-      'entered'
+      'entered',
     ]);
     expect(wrapper.find(SwitchTransition).getElement().props.children.key).toBe(
       'second'

@@ -1,19 +1,19 @@
-import PropTypes from 'prop-types'
-import React from 'react'
-import TransitionGroupContext from './TransitionGroupContext'
+import PropTypes from 'prop-types';
+import React from 'react';
+import TransitionGroupContext from './TransitionGroupContext';
 
 import {
   getChildMapping,
   getInitialChildMapping,
   getNextChildMapping,
-} from './utils/ChildMapping'
+} from './utils/ChildMapping';
 
-const values = Object.values || (obj => Object.keys(obj).map(k => obj[k]))
+const values = Object.values || ((obj) => Object.keys(obj).map((k) => obj[k]));
 
 const defaultProps = {
   component: 'div',
-  childFactory: child => child,
-}
+  childFactory: (child) => child,
+};
 
 /**
  * The `<TransitionGroup>` component manages a set of transition components
@@ -31,27 +31,27 @@ const defaultProps = {
  */
 class TransitionGroup extends React.Component {
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
 
-    const handleExited = this.handleExited.bind(this)
+    const handleExited = this.handleExited.bind(this);
 
     // Initial children should all be entering, dependent on appear
     this.state = {
       contextValue: { isMounting: true },
       handleExited,
       firstRender: true,
-    }
+    };
   }
 
   componentDidMount() {
-    this.mounted = true
+    this.mounted = true;
     this.setState({
       contextValue: { isMounting: false },
-    })
+    });
   }
 
   componentWillUnmount() {
-    this.mounted = false
+    this.mounted = false;
   }
 
   static getDerivedStateFromProps(
@@ -63,50 +63,50 @@ class TransitionGroup extends React.Component {
         ? getInitialChildMapping(nextProps, handleExited)
         : getNextChildMapping(nextProps, prevChildMapping, handleExited),
       firstRender: false,
-    }
+    };
   }
 
   // node is `undefined` when user provided `nodeRef` prop
   handleExited(child, node) {
-    let currentChildMapping = getChildMapping(this.props.children)
+    let currentChildMapping = getChildMapping(this.props.children);
 
-    if (child.key in currentChildMapping) return
+    if (child.key in currentChildMapping) return;
 
     if (child.props.onExited) {
-      child.props.onExited(node)
+      child.props.onExited(node);
     }
 
     if (this.mounted) {
-      this.setState(state => {
-        let children = { ...state.children }
+      this.setState((state) => {
+        let children = { ...state.children };
 
-        delete children[child.key]
-        return { children }
-      })
+        delete children[child.key];
+        return { children };
+      });
     }
   }
 
   render() {
-    const { component: Component, childFactory, ...props } = this.props
-    const { contextValue } = this.state
-    const children = values(this.state.children).map(childFactory)
+    const { component: Component, childFactory, ...props } = this.props;
+    const { contextValue } = this.state;
+    const children = values(this.state.children).map(childFactory);
 
-    delete props.appear
-    delete props.enter
-    delete props.exit
+    delete props.appear;
+    delete props.enter;
+    delete props.exit;
 
     if (Component === null) {
       return (
         <TransitionGroupContext.Provider value={contextValue}>
           {children}
         </TransitionGroupContext.Provider>
-      )
+      );
     }
     return (
       <TransitionGroupContext.Provider value={contextValue}>
         <Component {...props}>{children}</Component>
       </TransitionGroupContext.Provider>
-    )
+    );
   }
 }
 
@@ -164,8 +164,8 @@ TransitionGroup.propTypes = {
    * @type Function(child: ReactElement) -> ReactElement
    */
   childFactory: PropTypes.func,
-}
+};
 
-TransitionGroup.defaultProps = defaultProps
+TransitionGroup.defaultProps = defaultProps;
 
-export default TransitionGroup
+export default TransitionGroup;
