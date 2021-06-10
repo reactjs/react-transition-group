@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { ENTERED, ENTERING, EXITING } from "./Transition";
-import TransitionGroupContext from "./TransitionGroupContext";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { ENTERED, ENTERING, EXITING } from './Transition';
+import TransitionGroupContext from './TransitionGroupContext';
 
 function areChildrenDifferent(oldChildren, newChildren) {
   if (oldChildren === newChildren) return false;
@@ -21,8 +21,8 @@ function areChildrenDifferent(oldChildren, newChildren) {
  * @enum { string }
  */
 export const modes = {
-  out: "out-in",
-  in: "in-out",
+  out: 'out-in',
+  in: 'in-out',
 };
 
 const callHook =
@@ -36,7 +36,7 @@ const leaveRenders = {
   [modes.out]: ({ current, changeState }) =>
     React.cloneElement(current, {
       in: false,
-      onExited: callHook(current, "onExited", () => {
+      onExited: callHook(current, 'onExited', () => {
         changeState(ENTERING, null);
       }),
     }),
@@ -44,7 +44,7 @@ const leaveRenders = {
     current,
     React.cloneElement(children, {
       in: true,
-      onEntered: callHook(children, "onEntered", () => {
+      onEntered: callHook(children, 'onEntered', () => {
         changeState(ENTERING);
       }),
     }),
@@ -55,14 +55,14 @@ const enterRenders = {
   [modes.out]: ({ children, changeState }) =>
     React.cloneElement(children, {
       in: true,
-      onEntered: callHook(children, "onEntered", () => {
+      onEntered: callHook(children, 'onEntered', () => {
         changeState(ENTERED, React.cloneElement(children, { in: true }));
       }),
     }),
   [modes.in]: ({ current, children, changeState }) => [
     React.cloneElement(current, {
       in: false,
-      onExited: callHook(current, "onExited", () => {
+      onExited: callHook(current, 'onExited', () => {
         changeState(ENTERED, React.cloneElement(children, { in: true }));
       }),
     }),

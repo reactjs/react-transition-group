@@ -1,16 +1,16 @@
-import PropTypes from "prop-types";
-import React from "react";
-import ReactDOM from "react-dom";
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import config from "./config";
-import { timeoutsShape } from "./utils/PropTypes";
-import TransitionGroupContext from "./TransitionGroupContext";
+import config from './config';
+import { timeoutsShape } from './utils/PropTypes';
+import TransitionGroupContext from './TransitionGroupContext';
 
-export const UNMOUNTED = "unmounted";
-export const EXITED = "exited";
-export const ENTERING = "entering";
-export const ENTERED = "entered";
-export const EXITING = "exiting";
+export const UNMOUNTED = 'unmounted';
+export const EXITED = 'exited';
+export const ENTERING = 'entering';
+export const ENTERED = 'entered';
+export const EXITING = 'exiting';
 
 /**
  * The Transition component lets you describe a transition from one component
@@ -197,7 +197,7 @@ class Transition extends React.Component {
 
     exit = enter = appear = timeout;
 
-    if (timeout != null && typeof timeout !== "number") {
+    if (timeout != null && typeof timeout !== 'number') {
       exit = timeout.exit;
       enter = timeout.enter;
       // TODO: remove fallback for next major
@@ -370,7 +370,7 @@ class Transition extends React.Component {
     return (
       // allows for nested Transitions
       <TransitionGroupContext.Provider value={null}>
-        {typeof children === "function"
+        {typeof children === 'function'
           ? children(status, childProps)
           : React.cloneElement(React.Children.only(children), childProps)}
       </TransitionGroupContext.Provider>
@@ -392,13 +392,13 @@ Transition.propTypes = {
    */
   nodeRef: PropTypes.shape({
     current:
-      typeof Element === "undefined"
+      typeof Element === 'undefined'
         ? PropTypes.any
         : (propValue, key, componentName, location, propFullName, secret) => {
             const value = propValue[key];
 
             return PropTypes.instanceOf(
-              value && "ownerDocument" in value
+              value && 'ownerDocument' in value
                 ? value.ownerDocument.defaultView.Element
                 : Element
             )(propValue, key, componentName, location, propFullName, secret);

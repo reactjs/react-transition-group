@@ -1,7 +1,7 @@
-import PropTypes from "prop-types";
-import React from "react";
-import ReactDOM from "react-dom";
-import TransitionGroup from "./TransitionGroup";
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import TransitionGroup from './TransitionGroup';
 
 /**
  * The `<ReplaceTransition>` component is a specialized `Transition` component
@@ -15,13 +15,13 @@ import TransitionGroup from "./TransitionGroup";
  * ```
  */
 class ReplaceTransition extends React.Component {
-  handleEnter = (...args) => this.handleLifecycle("onEnter", 0, args);
-  handleEntering = (...args) => this.handleLifecycle("onEntering", 0, args);
-  handleEntered = (...args) => this.handleLifecycle("onEntered", 0, args);
+  handleEnter = (...args) => this.handleLifecycle('onEnter', 0, args);
+  handleEntering = (...args) => this.handleLifecycle('onEntering', 0, args);
+  handleEntered = (...args) => this.handleLifecycle('onEntered', 0, args);
 
-  handleExit = (...args) => this.handleLifecycle("onExit", 1, args);
-  handleExiting = (...args) => this.handleLifecycle("onExiting", 1, args);
-  handleExited = (...args) => this.handleLifecycle("onExited", 1, args);
+  handleExit = (...args) => this.handleLifecycle('onExit', 1, args);
+  handleExiting = (...args) => this.handleLifecycle('onExiting', 1, args);
+  handleExited = (...args) => this.handleLifecycle('onExited', 1, args);
 
   handleLifecycle(handler, idx, originalArgs) {
     const { children } = this.props;
@@ -52,13 +52,13 @@ class ReplaceTransition extends React.Component {
       <TransitionGroup {...props}>
         {inProp
           ? React.cloneElement(first, {
-              key: "first",
+              key: 'first',
               onEnter: this.handleEnter,
               onEntering: this.handleEntering,
               onEntered: this.handleEntered,
             })
           : React.cloneElement(second, {
-              key: "second",
+              key: 'second',
               onEnter: this.handleExit,
               onEntering: this.handleExiting,
               onEntered: this.handleExited,

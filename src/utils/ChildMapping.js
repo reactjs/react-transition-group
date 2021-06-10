@@ -1,4 +1,4 @@
-import { Children, cloneElement, isValidElement } from "react";
+import { Children, cloneElement, isValidElement } from 'react';
 
 /**
  * Given `this.props.children`, return an object mapping key to child.
@@ -90,9 +90,9 @@ export function getInitialChildMapping(props, onExited) {
     return cloneElement(child, {
       onExited: onExited.bind(null, child),
       in: true,
-      appear: getProp(child, "appear", props),
-      enter: getProp(child, "enter", props),
-      exit: getProp(child, "exit", props),
+      appear: getProp(child, 'appear', props),
+      enter: getProp(child, 'enter', props),
+      exit: getProp(child, 'exit', props),
     });
   });
 }
@@ -118,8 +118,8 @@ export function getNextChildMapping(nextProps, prevChildMapping, onExited) {
       children[key] = cloneElement(child, {
         onExited: onExited.bind(null, child),
         in: true,
-        exit: getProp(child, "exit", nextProps),
-        enter: getProp(child, "enter", nextProps),
+        exit: getProp(child, 'exit', nextProps),
+        enter: getProp(child, 'enter', nextProps),
       });
     } else if (!hasNext && hasPrev && !isLeaving) {
       // item is old (exiting)
@@ -132,8 +132,8 @@ export function getNextChildMapping(nextProps, prevChildMapping, onExited) {
       children[key] = cloneElement(child, {
         onExited: onExited.bind(null, child),
         in: prevChild.props.in,
-        exit: getProp(child, "exit", nextProps),
-        enter: getProp(child, "enter", nextProps),
+        exit: getProp(child, 'exit', nextProps),
+        enter: getProp(child, 'enter', nextProps),
       });
     }
   });

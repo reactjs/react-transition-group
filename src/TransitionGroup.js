@@ -1,17 +1,17 @@
-import PropTypes from "prop-types";
-import React from "react";
-import TransitionGroupContext from "./TransitionGroupContext";
+import PropTypes from 'prop-types';
+import React from 'react';
+import TransitionGroupContext from './TransitionGroupContext';
 
 import {
   getChildMapping,
   getInitialChildMapping,
   getNextChildMapping,
-} from "./utils/ChildMapping";
+} from './utils/ChildMapping';
 
 const values = Object.values || ((obj) => Object.keys(obj).map((k) => obj[k]));
 
 const defaultProps = {
-  component: "div",
+  component: 'div',
   childFactory: (child) => child,
 };
 

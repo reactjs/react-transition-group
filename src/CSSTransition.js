@@ -1,16 +1,16 @@
-import PropTypes from "prop-types";
-import addOneClass from "dom-helpers/addClass";
+import PropTypes from 'prop-types';
+import addOneClass from 'dom-helpers/addClass';
 
-import removeOneClass from "dom-helpers/removeClass";
-import React from "react";
+import removeOneClass from 'dom-helpers/removeClass';
+import React from 'react';
 
-import Transition from "./Transition";
-import { classNamesShape } from "./utils/PropTypes";
+import Transition from './Transition';
+import { classNamesShape } from './utils/PropTypes';
 
 const addClass = (node, classes) =>
-  node && classes && classes.split(" ").forEach((c) => addOneClass(node, c));
+  node && classes && classes.split(' ').forEach((c) => addOneClass(node, c));
 const removeClass = (node, classes) =>
-  node && classes && classes.split(" ").forEach((c) => removeOneClass(node, c));
+  node && classes && classes.split(' ').forEach((c) => removeOneClass(node, c));
 
 /**
  * A transition component inspired by the excellent
@@ -83,7 +83,7 @@ const removeClass = (node, classes) =>
  */
 class CSSTransition extends React.Component {
   static defaultProps = {
-    classNames: "",
+    classNames: '',
   };
 
   appliedClasses = {
@@ -94,8 +94,8 @@ class CSSTransition extends React.Component {
 
   onEnter = (maybeNode, maybeAppearing) => {
     const [node, appearing] = this.resolveArguments(maybeNode, maybeAppearing);
-    this.removeClasses(node, "exit");
-    this.addClass(node, appearing ? "appear" : "enter", "base");
+    this.removeClasses(node, 'exit');
+    this.addClass(node, appearing ? 'appear' : 'enter', 'base');
 
     if (this.props.onEnter) {
       this.props.onEnter(maybeNode, maybeAppearing);
@@ -104,8 +104,8 @@ class CSSTransition extends React.Component {
 
   onEntering = (maybeNode, maybeAppearing) => {
     const [node, appearing] = this.resolveArguments(maybeNode, maybeAppearing);
-    const type = appearing ? "appear" : "enter";
-    this.addClass(node, type, "active");
+    const type = appearing ? 'appear' : 'enter';
+    this.addClass(node, type, 'active');
 
     if (this.props.onEntering) {
       this.props.onEntering(maybeNode, maybeAppearing);
@@ -114,9 +114,9 @@ class CSSTransition extends React.Component {
 
   onEntered = (maybeNode, maybeAppearing) => {
     const [node, appearing] = this.resolveArguments(maybeNode, maybeAppearing);
-    const type = appearing ? "appear" : "enter";
+    const type = appearing ? 'appear' : 'enter';
     this.removeClasses(node, type);
-    this.addClass(node, type, "done");
+    this.addClass(node, type, 'done');
 
     if (this.props.onEntered) {
       this.props.onEntered(maybeNode, maybeAppearing);
@@ -125,9 +125,9 @@ class CSSTransition extends React.Component {
 
   onExit = (maybeNode) => {
     const [node] = this.resolveArguments(maybeNode);
-    this.removeClasses(node, "appear");
-    this.removeClasses(node, "enter");
-    this.addClass(node, "exit", "base");
+    this.removeClasses(node, 'appear');
+    this.removeClasses(node, 'enter');
+    this.addClass(node, 'exit', 'base');
 
     if (this.props.onExit) {
       this.props.onExit(maybeNode);
@@ -136,7 +136,7 @@ class CSSTransition extends React.Component {
 
   onExiting = (maybeNode) => {
     const [node] = this.resolveArguments(maybeNode);
-    this.addClass(node, "exit", "active");
+    this.addClass(node, 'exit', 'active');
 
     if (this.props.onExiting) {
       this.props.onExiting(maybeNode);
@@ -145,8 +145,8 @@ class CSSTransition extends React.Component {
 
   onExited = (maybeNode) => {
     const [node] = this.resolveArguments(maybeNode);
-    this.removeClasses(node, "exit");
-    this.addClass(node, "exit", "done");
+    this.removeClasses(node, 'exit');
+    this.addClass(node, 'exit', 'done');
 
     if (this.props.onExited) {
       this.props.onExited(maybeNode);
@@ -161,8 +161,8 @@ class CSSTransition extends React.Component {
 
   getClassNames = (type) => {
     const { classNames } = this.props;
-    const isStringClassNames = typeof classNames === "string";
-    const prefix = isStringClassNames && classNames ? `${classNames}-` : "";
+    const isStringClassNames = typeof classNames === 'string';
+    const prefix = isStringClassNames && classNames ? `${classNames}-` : '';
 
     let baseClassName = isStringClassNames
       ? `${prefix}${type}`
@@ -185,15 +185,15 @@ class CSSTransition extends React.Component {
 
   addClass(node, type, phase) {
     let className = this.getClassNames(type)[`${phase}ClassName`];
-    const { doneClassName } = this.getClassNames("enter");
+    const { doneClassName } = this.getClassNames('enter');
 
-    if (type === "appear" && phase === "done" && doneClassName) {
+    if (type === 'appear' && phase === 'done' && doneClassName) {
       className += ` ${doneClassName}`;
     }
 
     // This is to force a repaint,
     // which is necessary in order to transition styles when adding a class name.
-    if (phase === "active") {
+    if (phase === 'active') {
       /* eslint-disable no-unused-expressions */
       node && node.scrollTop;
     }

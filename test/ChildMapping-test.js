@@ -1,13 +1,13 @@
 let React;
 let ChildMapping;
 
-describe("ChildMapping", () => {
+describe('ChildMapping', () => {
   beforeEach(() => {
-    React = require("react");
-    ChildMapping = require("../src/utils/ChildMapping");
+    React = require('react');
+    ChildMapping = require('../src/utils/ChildMapping');
   });
 
-  it("should support getChildMapping", () => {
+  it('should support getChildMapping', () => {
     let oneone = <div key="oneone" />;
     let onetwo = <div key="onetwo" />;
     let one = (
@@ -26,11 +26,11 @@ describe("ChildMapping", () => {
 
     let mapping = ChildMapping.getChildMapping(component.props.children);
 
-    expect(mapping[".$one"].props).toEqual(one.props);
-    expect(mapping[".$two"].props).toEqual(two.props);
+    expect(mapping['.$one'].props).toEqual(one.props);
+    expect(mapping['.$two'].props).toEqual(two.props);
   });
 
-  it("should support mergeChildMappings for adding keys", () => {
+  it('should support mergeChildMappings for adding keys', () => {
     let prev = {
       one: true,
       two: true,
@@ -47,7 +47,7 @@ describe("ChildMapping", () => {
     });
   });
 
-  it("should support mergeChildMappings for removing keys", () => {
+  it('should support mergeChildMappings for removing keys', () => {
     let prev = {
       one: true,
       two: true,
@@ -64,7 +64,7 @@ describe("ChildMapping", () => {
     });
   });
 
-  it("should support mergeChildMappings for adding and removing", () => {
+  it('should support mergeChildMappings for adding and removing', () => {
     let prev = {
       one: true,
       two: true,
@@ -83,29 +83,29 @@ describe("ChildMapping", () => {
     });
   });
 
-  it("should reconcile overlapping insertions and deletions", () => {
+  it('should reconcile overlapping insertions and deletions', () => {
     let prev = {
       one: true,
       two: true,
-      four: true,
-      five: true,
-    };
-    let next = {
-      one: true,
-      two: true,
-      three: true,
-      five: true,
-    };
-    expect(ChildMapping.mergeChildMappings(prev, next)).toEqual({
-      one: true,
-      two: true,
-      three: true,
       four: true,
       five: true,
+    };
+    let next = {
+      one: true,
+      two: true,
+      three: true,
+      five: true,
+    };
+    expect(ChildMapping.mergeChildMappings(prev, next)).toEqual({
+      one: true,
+      two: true,
+      three: true,
+      four: true,
+      five: true,
     });
   });
 
-  it("should support mergeChildMappings with undefined input", () => {
+  it('should support mergeChildMappings with undefined input', () => {
     let prev = {
       one: true,
       two: true,

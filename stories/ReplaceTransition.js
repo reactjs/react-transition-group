@@ -1,9 +1,9 @@
-import { css } from "astroturf";
-import React, { useState } from "react";
-import { storiesOf } from "@storybook/react";
+import { css } from 'astroturf';
+import React, { useState } from 'react';
+import { storiesOf } from '@storybook/react';
 
-import ReplaceTransition from "../src/ReplaceTransition";
-import CSSTransition from "../src/CSSTransition";
+import ReplaceTransition from '../src/ReplaceTransition';
+import CSSTransition from '../src/CSSTransition';
 
 const FADE_TIMEOUT = 1000;
 
@@ -69,7 +69,7 @@ function Example({ children }) {
   );
 }
 
-storiesOf("Replace Transition", module).add("Animates on all", () => {
+storiesOf('Replace Transition', module).add('Animates on all', () => {
   const firstNodeRef = React.createRef();
   const secondNodeRef = React.createRef();
   return (
@@ -77,12 +77,12 @@ storiesOf("Replace Transition", module).add("Animates on all", () => {
       <ReplaceTransition
         in={false} // `Example` is overriding this prop
         className={styles.container}
-        onEnter={() => console.log("onEnter")}
-        onEntering={() => console.log("onEntering")}
-        onEntered={() => console.log("onEntered")}
-        onExit={() => console.log("onExit")}
-        onExiting={() => console.log("onExiting")}
-        onExited={() => console.log("onExited")}
+        onEnter={() => console.log('onEnter')}
+        onEntering={() => console.log('onEntering')}
+        onEntered={() => console.log('onEntered')}
+        onExit={() => console.log('onExit')}
+        onExiting={() => console.log('onExiting')}
+        onExited={() => console.log('onExited')}
       >
         <Fade nodeRef={firstNodeRef}>
           <div ref={firstNodeRef}>in True</div>

@@ -1,21 +1,21 @@
-import React from "react";
+import React from 'react';
 
-import { mount } from "enzyme";
+import { mount } from 'enzyme';
 
-import Transition, { ENTERED } from "../src/Transition";
-import SwitchTransition, { modes } from "../src/SwitchTransition";
+import Transition, { ENTERED } from '../src/Transition';
+import SwitchTransition, { modes } from '../src/SwitchTransition';
 
-describe("SwitchTransition", () => {
+describe('SwitchTransition', () => {
   let log, Parent;
   beforeEach(() => {
     log = [];
     let events = {
-      onEnter: (m) => log.push(m ? "appear" : "enter"),
-      onEntering: (m) => log.push(m ? "appearing" : "entering"),
-      onEntered: (m) => log.push(m ? "appeared" : "entered"),
-      onExit: () => log.push("exit"),
-      onExiting: () => log.push("exiting"),
-      onExited: () => log.push("exited"),
+      onEnter: (m) => log.push(m ? 'appear' : 'enter'),
+      onEntering: (m) => log.push(m ? 'appearing' : 'entering'),
+      onEntered: (m) => log.push(m ? 'appeared' : 'entered'),
+      onExit: () => log.push('exit'),
+      onExiting: () => log.push('exiting'),
+      onExited: () => log.push('exited'),
     };
 
     const nodeRef = React.createRef();
@@ -26,7 +26,7 @@ describe("SwitchTransition", () => {
             <Transition
               nodeRef={nodeRef}
               timeout={0}
-              key={on ? "first" : "second"}
+              key={on ? 'first' : 'second'}
               {...events}
             >
               <span ref={nodeRef} />
@@ -37,7 +37,7 @@ describe("SwitchTransition", () => {
     };
   });
 
-  it("should have default status ENTERED", () => {
+  it('should have default status ENTERED', () => {
     const nodeRef = React.createRef();
     const wrapper = mount(
       <SwitchTransition>
@@ -47,10 +47,10 @@ describe("SwitchTransition", () => {
       </SwitchTransition>
     );
 
-    expect(wrapper.state("status")).toBe(ENTERED);
+    expect(wrapper.state('status')).toBe(ENTERED);
   });
 
-  it("should have default mode: out-in", () => {
+  it('should have default mode: out-in', () => {
     const nodeRef = React.createRef();
     const wrapper = mount(
       <SwitchTransition>
@@ -60,10 +60,10 @@ describe("SwitchTransition", () => {
       </SwitchTransition>
     );
 
-    expect(wrapper.prop("mode")).toBe(modes.out);
+    expect(wrapper.prop('mode')).toBe(modes.out);
   });
 
-  it("should work without childs", () => {
+  it('should work without childs', () => {
     const nodeRef = React.createRef();
     expect(() => {
       mount(
@@ -76,30 +76,30 @@ describe("SwitchTransition", () => {
     }).not.toThrow();
   });
 
-  it("should switch between components on change state", () => {
+  it('should switch between components on change state', () => {
     const wrapper = mount(<Parent on={true} />);
 
     jest.useFakeTimers();
     expect(wrapper.find(SwitchTransition).getElement().props.children.key).toBe(
-      "first"
+      'first'
     );
     wrapper.setProps({ on: false });
-    expect(log).toEqual(["exit", "exiting"]);
+    expect(log).toEqual(['exit', 'exiting']);
     jest.runAllTimers();
     expect(log).toEqual([
-      "exit",
-      "exiting",
-      "exited",
-      "enter",
-      "entering",
-      "entered",
+      'exit',
+      'exiting',
+      'exited',
+      'enter',
+      'entering',
+      'entered',
     ]);
     expect(wrapper.find(SwitchTransition).getElement().props.children.key).toBe(
-      "second"
+      'second'
     );
   });
 
-  it("should switch between null and component", () => {
+  it('should switch between null and component', () => {
     const wrapper = mount(<Parent on={true} rendered={false} />);
 
     expect(
@@ -110,29 +110,29 @@ describe("SwitchTransition", () => {
 
     wrapper.setProps({ rendered: true });
     jest.runAllTimers();
-    expect(log).toEqual(["enter", "entering", "entered"]);
+    expect(log).toEqual(['enter', 'entering', 'entered']);
     expect(
       wrapper.find(SwitchTransition).getElement().props.children
     ).toBeTruthy();
     expect(wrapper.find(SwitchTransition).getElement().props.children.key).toBe(
-      "first"
+      'first'
     );
 
     wrapper.setProps({ on: false, rendered: true });
     jest.runAllTimers();
     expect(log).toEqual([
-      "enter",
-      "entering",
-      "entered",
-      "exit",
-      "exiting",
-      "exited",
-      "enter",
-      "entering",
-      "entered",
+      'enter',
+      'entering',
+      'entered',
+      'exit',
+      'exiting',
+      'exited',
+      'enter',
+      'entering',
+      'entered',
     ]);
     expect(wrapper.find(SwitchTransition).getElement().props.children.key).toBe(
-      "second"
+      'second'
     );
   });
 });

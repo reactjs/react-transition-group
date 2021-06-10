@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { mount } from 'enzyme';
 
 let React;
 let ReactDOM;
@@ -7,14 +7,14 @@ let Transition;
 
 // Most of the real functionality is covered in other unit tests, this just
 // makes sure we're wired up correctly.
-describe("TransitionGroup", () => {
+describe('TransitionGroup', () => {
   let container, log, Child, render;
 
   beforeEach(() => {
-    React = require("react");
-    ReactDOM = require("react-dom");
-    Transition = require("../src/Transition").default;
-    TransitionGroup = require("../src/TransitionGroup");
+    React = require('react');
+    ReactDOM = require('react-dom');
+    Transition = require('../src/Transition').default;
+    TransitionGroup = require('../src/TransitionGroup');
 
     render = (element, container, callback) =>
       ReactDOM.render(
@@ -23,16 +23,16 @@ describe("TransitionGroup", () => {
         callback
       );
 
-    container = document.createElement("div");
+    container = document.createElement('div');
 
     log = [];
     let events = {
-      onEnter: (m) => log.push(m ? "appear" : "enter"),
-      onEntering: (m) => log.push(m ? "appearing" : "entering"),
-      onEntered: (m) => log.push(m ? "appeared" : "entered"),
-      onExit: () => log.push("exit"),
-      onExiting: () => log.push("exiting"),
-      onExited: () => log.push("exited"),
+      onEnter: (m) => log.push(m ? 'appear' : 'enter'),
+      onEntering: (m) => log.push(m ? 'appearing' : 'entering'),
+      onEntered: (m) => log.push(m ? 'appeared' : 'entered'),
+      onExit: () => log.push('exit'),
+      onExiting: () => log.push('exiting'),
+      onExited: () => log.push('exited'),
     };
 
     const nodeRef = React.createRef();
@@ -45,7 +45,7 @@ describe("TransitionGroup", () => {
     };
   });
 
-  it("should allow null components", () => {
+  it('should allow null components', () => {
     function FirstChild(props) {
       const childrenArray = React.Children.toArray(props.children);
       return childrenArray[0] || null;
@@ -58,7 +58,7 @@ describe("TransitionGroup", () => {
     );
   });
 
-  it("should allow callback refs", () => {
+  it('should allow callback refs', () => {
     const ref = jest.fn();
 
     class Child extends React.Component {
@@ -76,11 +76,11 @@ describe("TransitionGroup", () => {
     expect(ref).toHaveBeenCalled();
   });
 
-  it("should work with no children", () => {
+  it('should work with no children', () => {
     render(<TransitionGroup />, container);
   });
 
-  it("should handle transitioning correctly", () => {
+  it('should handle transitioning correctly', () => {
     function Parent({ count = 1 }) {
       let children = [];
       for (let i = 0; i < count; i++) children.push(<Child key={i} />);
@@ -95,16 +95,16 @@ describe("TransitionGroup", () => {
     render(<Parent />, container);
 
     jest.runAllTimers();
-    expect(log).toEqual(["appear", "appearing", "appeared"]);
+    expect(log).toEqual(['appear', 'appearing', 'appeared']);
 
     log = [];
     render(<Parent count={2} />, container);
     jest.runAllTimers();
-    expect(log).toEqual(["enter", "entering", "entered"]);
+    expect(log).toEqual(['enter', 'entering', 'entered']);
 
     log = [];
     render(<Parent count={1} />, container);
     jest.runAllTimers();
-    expect(log).toEqual(["exit", "exiting", "exited"]);
+    expect(log).toEqual(['exit', 'exiting', 'exited']);
   });
 });

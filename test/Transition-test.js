@@ -1,7 +1,7 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import { mount } from "enzyme";
+import { mount } from 'enzyme';
 
 import Transition, {
   UNMOUNTED,
@@ -9,7 +9,7 @@ import Transition, {
   ENTERING,
   ENTERED,
   EXITING,
-} from "../src/Transition";
+} from '../src/Transition';
 
 expect.extend({
   toExist(received) {
@@ -26,8 +26,8 @@ expect.extend({
   },
 });
 
-describe("Transition", () => {
-  it("should not transition on mount", () => {
+describe('Transition', () => {
+  it('should not transition on mount', () => {
     const nodeRef = React.createRef();
     let wrapper = mount(
       <Transition
@@ -35,17 +35,17 @@ describe("Transition", () => {
         nodeRef={nodeRef}
         timeout={0}
         onEnter={() => {
-          throw new Error("should not Enter");
+          throw new Error('should not Enter');
         }}
       >
         <div ref={nodeRef} />
       </Transition>
     );
 
-    expect(wrapper.state("status")).toEqual(ENTERED);
+    expect(wrapper.state('status')).toEqual(ENTERED);
   });
 
-  it("should transition on mount with `appear`", (done) => {
+  it('should transition on mount with `appear`', (done) => {
     const nodeRef = React.createRef();
     mount(
       <Transition
@@ -53,7 +53,7 @@ describe("Transition", () => {
         nodeRef={nodeRef}
         timeout={0}
         onEnter={() => {
-          throw Error("Animated!");
+          throw Error('Animated!');
         }}
       >
         <div ref={nodeRef} />
@@ -73,7 +73,7 @@ describe("Transition", () => {
     );
   });
 
-  it("should pass filtered props to children", () => {
+  it('should pass filtered props to children', () => {
     class Child extends React.Component {
       render() {
         return <div ref={this.props.nodeRef}>child</div>;
@@ -104,10 +104,10 @@ describe("Transition", () => {
       </Transition>
     ).find(Child);
 
-    expect(child.props()).toEqual({ foo: "foo", bar: "bar", nodeRef });
+    expect(child.props()).toEqual({ foo: 'foo', bar: 'bar', nodeRef });
   });
 
-  it("should allow addEndListener instead of timeouts", (done) => {
+  it('should allow addEndListener instead of timeouts', (done) => {
     let listener = jest.fn((end) => setTimeout(end, 0));
 
     const nodeRef = React.createRef();
@@ -127,7 +127,7 @@ describe("Transition", () => {
     wrapper.setProps({ in: true });
   });
 
-  it("should fallback to timeouts with addEndListener", (done) => {
+  it('should fallback to timeouts with addEndListener', (done) => {
     let calledEnd = false;
     let listener = (end) =>
       setTimeout(() => {
@@ -153,7 +153,7 @@ describe("Transition", () => {
     wrapper.setProps({ in: true });
   });
 
-  it("should mount/unmount immediately if not have enter/exit timeout", (done) => {
+  it('should mount/unmount immediately if not have enter/exit timeout', (done) => {
     const nodeRef = React.createRef();
     const wrapper = mount(
       <Transition nodeRef={nodeRef} in={true} timeout={{}}>
@@ -161,7 +161,7 @@ describe("Transition", () => {
       </Transition>
     );
 
-    expect(wrapper.state("status")).toEqual(ENTERED);
+    expect(wrapper.state('status')).toEqual(ENTERED);
     let calledAfterTimeout = false;
     setTimeout(() => {
       calledAfterTimeout = true;
@@ -169,18 +169,18 @@ describe("Transition", () => {
     wrapper.setProps({
       in: false,
       onExited() {
-        expect(wrapper.state("status")).toEqual(EXITED);
+        expect(wrapper.state('status')).toEqual(EXITED);
         if (!calledAfterTimeout) {
           return done();
         }
-        throw new Error("wrong timeout");
+        throw new Error('wrong timeout');
       },
     });
   });
 
-  it("should use `React.findDOMNode` when `nodeRef` is not provided", () => {
-    const consoleSpy = jest.spyOn(console, "error").mockImplementation();
-    const findDOMNodeSpy = jest.spyOn(ReactDOM, "findDOMNode");
+  it('should use `React.findDOMNode` when `nodeRef` is not provided', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+    const findDOMNodeSpy = jest.spyOn(ReactDOM, 'findDOMNode');
 
     mount(
       <Transition in appear timeout={0}>
@@ -193,8 +193,8 @@ describe("Transition", () => {
     consoleSpy.mockRestore();
   });
 
-  it("should not use `React.findDOMNode` when `nodeRef` is provided", () => {
-    const findDOMNodeSpy = jest.spyOn(ReactDOM, "findDOMNode");
+  it('should not use `React.findDOMNode` when `nodeRef` is provided', () => {
+    const findDOMNodeSpy = jest.spyOn(ReactDOM, 'findDOMNode');
 
     const nodeRef = React.createRef();
     mount(
@@ -207,8 +207,8 @@ describe("Transition", () => {
     findDOMNodeSpy.mockRestore();
   });
 
-  describe("appearing timeout", () => {
-    it("should use enter timeout if appear not set", (done) => {
+  describe('appearing timeout', () => {
+    it('should use enter timeout if appear not set', (done) => {
       let calledBeforeEntered = false;
       setTimeout(() => {
         calledBeforeEntered = true;
@@ -230,13 +230,13 @@ describe("Transition", () => {
           if (calledBeforeEntered) {
             done();
           } else {
-            throw new Error("wrong timeout");
+            throw new Error('wrong timeout');
           }
         },
       });
     });
 
-    it("should use appear timeout if appear is set", (done) => {
+    it('should use appear timeout if appear is set', (done) => {
       const nodeRef = React.createRef();
       const wrapper = mount(
         <Transition
@@ -257,7 +257,7 @@ describe("Transition", () => {
       wrapper.setProps({
         onEntered() {
           if (isCausedLate) {
-            throw new Error("wrong timeout");
+            throw new Error('wrong timeout');
           } else {
             done();
           }
@@ -266,7 +266,7 @@ describe("Transition", () => {
     });
   });
 
-  describe("entering", () => {
+  describe('entering', () => {
     let wrapper, nodeRef;
 
     beforeEach(() => {
@@ -278,12 +278,12 @@ describe("Transition", () => {
       );
     });
 
-    it("should fire callbacks", (done) => {
+    it('should fire callbacks', (done) => {
       let callOrder = [];
-      let onEnter = jest.fn(() => callOrder.push("onEnter"));
-      let onEntering = jest.fn(() => callOrder.push("onEntering"));
+      let onEnter = jest.fn(() => callOrder.push('onEnter'));
+      let onEntering = jest.fn(() => callOrder.push('onEntering'));
 
-      expect(wrapper.state("status")).toEqual(EXITED);
+      expect(wrapper.state('status')).toEqual(EXITED);
 
       wrapper.setProps({
         in: true,
@@ -295,32 +295,32 @@ describe("Transition", () => {
         onEntered() {
           expect(onEnter).toHaveBeenCalledTimes(1);
           expect(onEntering).toHaveBeenCalledTimes(1);
-          expect(callOrder).toEqual(["onEnter", "onEntering"]);
+          expect(callOrder).toEqual(['onEnter', 'onEntering']);
           done();
         },
       });
     });
 
-    it("should move to each transition state", (done) => {
+    it('should move to each transition state', (done) => {
       let count = 0;
 
-      expect(wrapper.state("status")).toEqual(EXITED);
+      expect(wrapper.state('status')).toEqual(EXITED);
 
       wrapper.setProps({
         in: true,
 
         onEnter() {
           count++;
-          expect(wrapper.state("status")).toEqual(EXITED);
+          expect(wrapper.state('status')).toEqual(EXITED);
         },
 
         onEntering() {
           count++;
-          expect(wrapper.state("status")).toEqual(ENTERING);
+          expect(wrapper.state('status')).toEqual(ENTERING);
         },
 
         onEntered() {
-          expect(wrapper.state("status")).toEqual(ENTERED);
+          expect(wrapper.state('status')).toEqual(ENTERED);
           expect(count).toEqual(2);
           done();
         },
@@ -328,7 +328,7 @@ describe("Transition", () => {
     });
   });
 
-  describe("exiting", () => {
+  describe('exiting', () => {
     let wrapper, nodeRef;
 
     beforeEach(() => {
@@ -340,12 +340,12 @@ describe("Transition", () => {
       );
     });
 
-    it("should fire callbacks", (done) => {
+    it('should fire callbacks', (done) => {
       let callOrder = [];
-      let onExit = jest.fn(() => callOrder.push("onExit"));
-      let onExiting = jest.fn(() => callOrder.push("onExiting"));
+      let onExit = jest.fn(() => callOrder.push('onExit'));
+      let onExiting = jest.fn(() => callOrder.push('onExiting'));
 
-      expect(wrapper.state("status")).toEqual(ENTERED);
+      expect(wrapper.state('status')).toEqual(ENTERED);
 
       wrapper.setProps({
         in: false,
@@ -357,32 +357,32 @@ describe("Transition", () => {
         onExited() {
           expect(onExit).toHaveBeenCalledTimes(1);
           expect(onExiting).toHaveBeenCalledTimes(1);
-          expect(callOrder).toEqual(["onExit", "onExiting"]);
+          expect(callOrder).toEqual(['onExit', 'onExiting']);
           done();
         },
       });
     });
 
-    it("should move to each transition state", (done) => {
+    it('should move to each transition state', (done) => {
       let count = 0;
 
-      expect(wrapper.state("status")).toEqual(ENTERED);
+      expect(wrapper.state('status')).toEqual(ENTERED);
 
       wrapper.setProps({
         in: false,
 
         onExit() {
           count++;
-          expect(wrapper.state("status")).toEqual(ENTERED);
+          expect(wrapper.state('status')).toEqual(ENTERED);
         },
 
         onExiting() {
           count++;
-          expect(wrapper.state("status")).toEqual(EXITING);
+          expect(wrapper.state('status')).toEqual(EXITING);
         },
 
         onExited() {
-          expect(wrapper.state("status")).toEqual(EXITED);
+          expect(wrapper.state('status')).toEqual(EXITED);
           expect(count).toEqual(2);
           done();
         },
@@ -390,7 +390,7 @@ describe("Transition", () => {
     });
   });
 
-  describe("mountOnEnter", () => {
+  describe('mountOnEnter', () => {
     class MountTransition extends React.Component {
       nodeRef = React.createRef();
       state = { in: this.props.initialIn };
@@ -420,7 +420,7 @@ describe("Transition", () => {
       };
     }
 
-    it("should mount when entering", (done) => {
+    it('should mount when entering', (done) => {
       const wrapper = mount(
         <MountTransition
           initialIn={false}
@@ -439,7 +439,7 @@ describe("Transition", () => {
       wrapper.setProps({ in: true });
     });
 
-    it("should stay mounted after exiting", (done) => {
+    it('should stay mounted after exiting', (done) => {
       const wrapper = mount(
         <MountTransition
           initialIn={false}
@@ -463,7 +463,7 @@ describe("Transition", () => {
     });
   });
 
-  describe("unmountOnExit", () => {
+  describe('unmountOnExit', () => {
     class UnmountTransition extends React.Component {
       nodeRef = React.createRef();
       state = { in: this.props.initialIn };
@@ -493,7 +493,7 @@ describe("Transition", () => {
       };
     }
 
-    it("should mount when entering", (done) => {
+    it('should mount when entering', (done) => {
       const instance = mount(
         <UnmountTransition
           initialIn={false}
@@ -512,7 +512,7 @@ describe("Transition", () => {
       instance.setState({ in: true });
     });
 
-    it("should unmount after exiting", (done) => {
+    it('should unmount after exiting', (done) => {
       const instance = mount(
         <UnmountTransition
           initialIn

@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { storiesOf } from "@storybook/react";
+import React, { useState } from 'react';
+import { storiesOf } from '@storybook/react';
 
-import StoryFixture from "./StoryFixture";
+import StoryFixture from './StoryFixture';
 import {
   Fade,
   Collapse,
   FadeForwardRef,
   FadeInnerRef,
-} from "./transitions/Bootstrap";
+} from './transitions/Bootstrap';
 
 function ToggleFixture({ defaultIn, description, children }) {
   const [show, setShow] = useState(defaultIn);
@@ -28,13 +28,13 @@ function ToggleFixture({ defaultIn, description, children }) {
   );
 }
 
-storiesOf("Transition", module)
-  .add("Bootstrap Fade", () => (
+storiesOf('Transition', module)
+  .add('Bootstrap Fade', () => (
     <ToggleFixture>
       <Fade>asaghasg asgasg</Fade>
     </ToggleFixture>
   ))
-  .add("Bootstrap Collapse", () => (
+  .add('Bootstrap Collapse', () => (
     <ToggleFixture>
       <Collapse>
         asaghasg asgasg
@@ -43,7 +43,7 @@ storiesOf("Transition", module)
       </Collapse>
     </ToggleFixture>
   ))
-  .add("Fade using React.forwardRef", () => {
+  .add('Fade using React.forwardRef', () => {
     const nodeRef = React.createRef();
     return (
       <ToggleFixture>
@@ -53,7 +53,7 @@ storiesOf("Transition", module)
       </ToggleFixture>
     );
   })
-  .add("Fade using innerRef", () => {
+  .add('Fade using innerRef', () => {
     const nodeRef = React.createRef();
     return (
       <ToggleFixture>

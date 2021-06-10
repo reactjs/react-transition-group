@@ -1,13 +1,13 @@
-import { css } from "astroturf";
-import React, { useEffect, useRef } from "react";
-import style from "dom-helpers/css";
+import { css } from 'astroturf';
+import React, { useEffect, useRef } from 'react';
+import style from 'dom-helpers/css';
 
 import Transition, {
   EXITED,
   ENTERED,
   ENTERING,
   EXITING,
-} from "../../src/Transition";
+} from '../../src/Transition';
 
 const styles = css`
   .fade {
@@ -52,7 +52,7 @@ export function Fade(props) {
       {(status) => (
         <div
           ref={nodeRef}
-          className={`${styles.fade} ${fadeStyles[status] || ""}`}
+          className={`${styles.fade} ${fadeStyles[status] || ''}`}
         >
           {props.children}
         </div>
@@ -63,7 +63,7 @@ export function Fade(props) {
 
 function getHeight(elem) {
   let value = elem.offsetHeight;
-  let margins = ["marginTop", "marginBottom"];
+  let margins = ['marginTop', 'marginBottom'];
 
   return (
     value +
@@ -84,7 +84,7 @@ export class Collapse extends React.Component {
 
   /* -- Expanding -- */
   handleEnter = () => {
-    this.nodeRef.current.style.height = "0";
+    this.nodeRef.current.style.height = '0';
   };
 
   handleEntering = () => {
@@ -97,12 +97,12 @@ export class Collapse extends React.Component {
 
   /* -- Collapsing -- */
   handleExit = () => {
-    this.nodeRef.current.style.height = getHeight(this.nodeRef.current) + "px";
+    this.nodeRef.current.style.height = getHeight(this.nodeRef.current) + 'px';
     this.nodeRef.current.offsetHeight; // eslint-disable-line no-unused-expressions
   };
 
   handleExiting = () => {
-    this.nodeRef.current.style.height = "0";
+    this.nodeRef.current.style.height = '0';
   };
 
   render() {
@@ -140,7 +140,7 @@ export function FadeInnerRef(props) {
       {(status) => (
         <div
           ref={nodeRef}
-          className={`${styles.fade} ${fadeStyles[status] || ""}`}
+          className={`${styles.fade} ${fadeStyles[status] || ''}`}
         >
           {props.children}
         </div>
@@ -166,7 +166,7 @@ function useMergedRef(ref) {
   const nodeRef = React.useRef();
   useEffect(function () {
     if (ref) {
-      if (typeof ref === "function") {
+      if (typeof ref === 'function') {
         ref(nodeRef.current);
       } else {
         ref.current = nodeRef.current;

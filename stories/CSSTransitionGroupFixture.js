@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import TransitionGroup from "../src/TransitionGroup";
-import StoryFixture from "./StoryFixture";
+import TransitionGroup from '../src/TransitionGroup';
+import StoryFixture from './StoryFixture';
 
 class CSSTransitionGroupFixture extends React.Component {
   static defaultProps = {
@@ -42,7 +42,7 @@ class CSSTransitionGroupFixture extends React.Component {
     return (
       <StoryFixture description={description}>
         <div style={{ marginBottom: 10 }}>
-          <button onClick={this.handleAddItem}>Add Item</button>{" "}
+          <button onClick={this.handleAddItem}>Add Item</button>{' '}
           <button onClick={this.handleRemoveItems}>Remove a few</button>
         </div>
         <TransitionGroup component="div" {...rest}>

@@ -1,7 +1,7 @@
-import { css } from "astroturf";
-import React, { useRef } from "react";
+import { css } from 'astroturf';
+import React, { useRef } from 'react';
 
-import CSSTransition from "../../src/CSSTransition";
+import CSSTransition from '../../src/CSSTransition';
 
 export const SCALE_TIMEOUT = 1000;
 

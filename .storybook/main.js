@@ -1,4 +1,4 @@
-const { plugins, rules } = require("webpack-atoms");
+const { plugins, rules } = require('webpack-atoms');
 
 module.exports = {
   webpackFinal: (config) => {
