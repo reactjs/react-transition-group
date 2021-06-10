@@ -8,4 +8,4 @@ module.exports = {
       presets: [['babel-preset-jason', { modules: false }]],
     },
   },
-}
+};

@@ -1,0 +1,5 @@
+**/node_modules
+www/.cache/
+www/public/
+lib
+*.md

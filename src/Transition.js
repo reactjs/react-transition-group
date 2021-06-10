@@ -1,16 +1,16 @@
-import PropTypes from 'prop-types'
-import React from 'react'
-import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import config from './config'
-import { timeoutsShape } from './utils/PropTypes'
-import TransitionGroupContext from './TransitionGroupContext'
+import config from './config';
+import { timeoutsShape } from './utils/PropTypes';
+import TransitionGroupContext from './TransitionGroupContext';
 
-export const UNMOUNTED = 'unmounted'
-export const EXITED = 'exited'
-export const ENTERING = 'entering'
-export const ENTERED = 'entered'
-export const EXITING = 'exiting'
+export const UNMOUNTED = 'unmounted';
+export const EXITED = 'exited';
+export const ENTERING = 'entering';
+export const ENTERED = 'entered';
+export const EXITING = 'exiting';
 
 /**
  * The Transition component lets you describe a transition from one component
@@ -104,45 +104,45 @@ export const EXITING = 'exiting'
  * `'exiting'` to `'exited'`.
  */
 class Transition extends React.Component {
-  static contextType = TransitionGroupContext
+  static contextType = TransitionGroupContext;
 
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
 
-    let parentGroup = context
+    let parentGroup = context;
     // In the context of a TransitionGroup all enters are really appears
     let appear =
-      parentGroup && !parentGroup.isMounting ? props.enter : props.appear
+      parentGroup && !parentGroup.isMounting ? props.enter : props.appear;
 
-    let initialStatus
+    let initialStatus;
 
-    this.appearStatus = null
+    this.appearStatus = null;
 
     if (props.in) {
       if (appear) {
-        initialStatus = EXITED
-        this.appearStatus = ENTERING
+        initialStatus = EXITED;
+        this.appearStatus = ENTERING;
       } else {
-        initialStatus = ENTERED
+        initialStatus = ENTERED;
       }
     } else {
       if (props.unmountOnExit || props.mountOnEnter) {
-        initialStatus = UNMOUNTED
+        initialStatus = UNMOUNTED;
       } else {
-        initialStatus = EXITED
+        initialStatus = EXITED;
       }
     }
 
-    this.state = { status: initialStatus }
+    this.state = { status: initialStatus };
 
-    this.nextCallback = null
+    this.nextCallback = null;
   }
 
   static getDerivedStateFromProps({ in: nextIn }, prevState) {
     if (nextIn && prevState.status === UNMOUNTED) {
-      return { status: EXITED }
+      return { status: EXITED };
     }
-    return null
+    return null;
   }
 
   // getSnapshotBeforeUpdate(prevProps) {
@@ -166,124 +166,124 @@ class Transition extends React.Component {
   // }
 
   componentDidMount() {
-    this.updateStatus(true, this.appearStatus)
+    this.updateStatus(true, this.appearStatus);
   }
 
   componentDidUpdate(prevProps) {
-    let nextStatus = null
+    let nextStatus = null;
     if (prevProps !== this.props) {
-      const { status } = this.state
+      const { status } = this.state;
 
       if (this.props.in) {
         if (status !== ENTERING && status !== ENTERED) {
-          nextStatus = ENTERING
+          nextStatus = ENTERING;
         }
       } else {
         if (status === ENTERING || status === ENTERED) {
-          nextStatus = EXITING
+          nextStatus = EXITING;
         }
       }
     }
-    this.updateStatus(false, nextStatus)
+    this.updateStatus(false, nextStatus);
   }
 
   componentWillUnmount() {
-    this.cancelNextCallback()
+    this.cancelNextCallback();
   }
 
   getTimeouts() {
-    const { timeout } = this.props
-    let exit, enter, appear
+    const { timeout } = this.props;
+    let exit, enter, appear;
 
-    exit = enter = appear = timeout
+    exit = enter = appear = timeout;
 
     if (timeout != null && typeof timeout !== 'number') {
-      exit = timeout.exit
-      enter = timeout.enter
+      exit = timeout.exit;
+      enter = timeout.enter;
       // TODO: remove fallback for next major
-      appear = timeout.appear !== undefined ? timeout.appear : enter
+      appear = timeout.appear !== undefined ? timeout.appear : enter;
     }
-    return { exit, enter, appear }
+    return { exit, enter, appear };
   }
 
   updateStatus(mounting = false, nextStatus) {
     if (nextStatus !== null) {
       // nextStatus will always be ENTERING or EXITING.
-      this.cancelNextCallback()
+      this.cancelNextCallback();
 
       if (nextStatus === ENTERING) {
-        this.performEnter(mounting)
+        this.performEnter(mounting);
       } else {
-        this.performExit()
+        this.performExit();
       }
     } else if (this.props.unmountOnExit && this.state.status === EXITED) {
-      this.setState({ status: UNMOUNTED })
+      this.setState({ status: UNMOUNTED });
     }
   }
 
   performEnter(mounting) {
-    const { enter } = this.props
-    const appearing = this.context ? this.context.isMounting : mounting
+    const { enter } = this.props;
+    const appearing = this.context ? this.context.isMounting : mounting;
     const [maybeNode, maybeAppearing] = this.props.nodeRef
       ? [appearing]
-      : [ReactDOM.findDOMNode(this), appearing]
+      : [ReactDOM.findDOMNode(this), appearing];
 
-    const timeouts = this.getTimeouts()
-    const enterTimeout = appearing ? timeouts.appear : timeouts.enter
+    const timeouts = this.getTimeouts();
+    const enterTimeout = appearing ? timeouts.appear : timeouts.enter;
     // no enter animation skip right to ENTERED
     // if we are mounting and running this it means appear _must_ be set
     if ((!mounting && !enter) || config.disabled) {
       this.safeSetState({ status: ENTERED }, () => {
-        this.props.onEntered(maybeNode)
-      })
-      return
+        this.props.onEntered(maybeNode);
+      });
+      return;
     }
 
-    this.props.onEnter(maybeNode, maybeAppearing)
+    this.props.onEnter(maybeNode, maybeAppearing);
 
     this.safeSetState({ status: ENTERING }, () => {
-      this.props.onEntering(maybeNode, maybeAppearing)
+      this.props.onEntering(maybeNode, maybeAppearing);
 
       this.onTransitionEnd(enterTimeout, () => {
         this.safeSetState({ status: ENTERED }, () => {
-          this.props.onEntered(maybeNode, maybeAppearing)
-        })
-      })
-    })
+          this.props.onEntered(maybeNode, maybeAppearing);
+        });
+      });
+    });
   }
 
   performExit() {
-    const { exit } = this.props
-    const timeouts = this.getTimeouts()
+    const { exit } = this.props;
+    const timeouts = this.getTimeouts();
     const maybeNode = this.props.nodeRef
       ? undefined
-      : ReactDOM.findDOMNode(this)
+      : ReactDOM.findDOMNode(this);
 
     // no exit animation skip right to EXITED
     if (!exit || config.disabled) {
       this.safeSetState({ status: EXITED }, () => {
-        this.props.onExited(maybeNode)
-      })
-      return
+        this.props.onExited(maybeNode);
+      });
+      return;
     }
 
-    this.props.onExit(maybeNode)
+    this.props.onExit(maybeNode);
 
     this.safeSetState({ status: EXITING }, () => {
-      this.props.onExiting(maybeNode)
+      this.props.onExiting(maybeNode);
 
       this.onTransitionEnd(timeouts.exit, () => {
         this.safeSetState({ status: EXITED }, () => {
-          this.props.onExited(maybeNode)
-        })
-      })
-    })
+          this.props.onExited(maybeNode);
+        });
+      });
+    });
   }
 
   cancelNextCallback() {
     if (this.nextCallback !== null) {
-      this.nextCallback.cancel()
-      this.nextCallback = null
+      this.nextCallback.cancel();
+      this.nextCallback = null;
     }
   }
 
@@ -291,59 +291,59 @@ class Transition extends React.Component {
     // This shouldn't be necessary, but there are weird race conditions with
     // setState callbacks and unmounting in testing, so always make sure that
     // we can cancel any pending setState callbacks after we unmount.
-    callback = this.setNextCallback(callback)
-    this.setState(nextState, callback)
+    callback = this.setNextCallback(callback);
+    this.setState(nextState, callback);
   }
 
   setNextCallback(callback) {
-    let active = true
+    let active = true;
 
-    this.nextCallback = event => {
+    this.nextCallback = (event) => {
       if (active) {
-        active = false
-        this.nextCallback = null
+        active = false;
+        this.nextCallback = null;
 
-        callback(event)
+        callback(event);
       }
-    }
+    };
 
     this.nextCallback.cancel = () => {
-      active = false
-    }
+      active = false;
+    };
 
-    return this.nextCallback
+    return this.nextCallback;
   }
 
   onTransitionEnd(timeout, handler) {
-    this.setNextCallback(handler)
+    this.setNextCallback(handler);
     const node = this.props.nodeRef
       ? this.props.nodeRef.current
-      : ReactDOM.findDOMNode(this)
+      : ReactDOM.findDOMNode(this);
 
     const doesNotHaveTimeoutOrListener =
-      timeout == null && !this.props.addEndListener
+      timeout == null && !this.props.addEndListener;
     if (!node || doesNotHaveTimeoutOrListener) {
-      setTimeout(this.nextCallback, 0)
-      return
+      setTimeout(this.nextCallback, 0);
+      return;
     }
 
     if (this.props.addEndListener) {
       const [maybeNode, maybeNextCallback] = this.props.nodeRef
         ? [this.nextCallback]
-        : [node, this.nextCallback]
-      this.props.addEndListener(maybeNode, maybeNextCallback)
+        : [node, this.nextCallback];
+      this.props.addEndListener(maybeNode, maybeNextCallback);
     }
 
     if (timeout != null) {
-      setTimeout(this.nextCallback, timeout)
+      setTimeout(this.nextCallback, timeout);
     }
   }
 
   render() {
-    const status = this.state.status
+    const status = this.state.status;
 
     if (status === UNMOUNTED) {
-      return null
+      return null;
     }
 
     const {
@@ -365,7 +365,7 @@ class Transition extends React.Component {
       onExited: _onExited,
       nodeRef: _nodeRef,
       ...childProps
-    } = this.props
+    } = this.props;
 
     return (
       // allows for nested Transitions
@@ -374,7 +374,7 @@ class Transition extends React.Component {
           ? children(status, childProps)
           : React.cloneElement(React.Children.only(children), childProps)}
       </TransitionGroupContext.Provider>
-    )
+    );
   }
 }
 
@@ -493,9 +493,9 @@ Transition.propTypes = {
    * @type {number | { enter?: number, exit?: number, appear?: number }}
    */
   timeout: (props, ...args) => {
-    let pt = timeoutsShape
-    if (!props.addEndListener) pt = pt.isRequired
-    return pt(props, ...args)
+    let pt = timeoutsShape;
+    if (!props.addEndListener) pt = pt.isRequired;
+    return pt(props, ...args);
   },
 
   /**
@@ -570,7 +570,7 @@ Transition.propTypes = {
    * @type Function(node: HtmlElement) -> void
    */
   onExited: PropTypes.func,
-}
+};
 
 // Name the function so it is clearer in the documentation
 function noop() {}
@@ -590,12 +590,12 @@ Transition.defaultProps = {
   onExit: noop,
   onExiting: noop,
   onExited: noop,
-}
+};
 
-Transition.UNMOUNTED = UNMOUNTED
-Transition.EXITED = EXITED
-Transition.ENTERING = ENTERING
-Transition.ENTERED = ENTERED
-Transition.EXITING = EXITING
+Transition.UNMOUNTED = UNMOUNTED;
+Transition.EXITED = EXITED;
+Transition.ENTERING = ENTERING;
+Transition.ENTERED = ENTERED;
+Transition.EXITING = EXITING;
 
-export default Transition
+export default Transition;
