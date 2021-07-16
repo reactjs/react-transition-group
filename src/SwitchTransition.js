@@ -8,8 +8,7 @@ function areChildrenDifferent(oldChildren, newChildren) {
   if (
     React.isValidElement(oldChildren) &&
     React.isValidElement(newChildren) &&
-    oldChildren.key != null &&
-    oldChildren.key === newChildren.key
+    ((oldChildren.key == null && newChildren.key == null) || oldChildren.key === newChildren.key)
   ) {
     return false;
   }
