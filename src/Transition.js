@@ -126,7 +126,7 @@ class Transition extends React.Component {
         initialStatus = ENTERED;
       }
     } else {
-      if (props.unmountOnExit || props.mountOnEnter) {
+      if (props.unmountOnExit || !props.mountOnEnter) {
         initialStatus = UNMOUNTED;
       } else {
         initialStatus = EXITED;
