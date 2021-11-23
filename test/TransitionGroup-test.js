@@ -1,27 +1,22 @@
-import { mount } from 'enzyme';
-
 let React;
-let ReactDOM;
 let TransitionGroup;
 let Transition;
 
 // Most of the real functionality is covered in other unit tests, this just
 // makes sure we're wired up correctly.
 describe('TransitionGroup', () => {
-  let container, log, Child, render;
+  let act, container, log, Child, renderStrict, render;
 
   beforeEach(() => {
     React = require('react');
-    ReactDOM = require('react-dom');
     Transition = require('../src/Transition').default;
     TransitionGroup = require('../src/TransitionGroup');
+    const testUtils = require('./utils');
+    act = testUtils.act;
+    render = testUtils.render;
 
-    render = (element, container, callback) =>
-      ReactDOM.render(
-        <React.StrictMode>{element}</React.StrictMode>,
-        container,
-        callback
-      );
+    renderStrict = (element, container) =>
+      render(<React.StrictMode>{element}</React.StrictMode>, { container });
 
     container = document.createElement('div');
 
@@ -51,7 +46,7 @@ describe('TransitionGroup', () => {
       return childrenArray[0] || null;
     }
 
-    mount(
+    render(
       <TransitionGroup component={FirstChild}>
         <Child />
       </TransitionGroup>
@@ -67,7 +62,7 @@ describe('TransitionGroup', () => {
       }
     }
 
-    mount(
+    render(
       <TransitionGroup>
         <Child ref={ref} />
       </TransitionGroup>
@@ -77,7 +72,7 @@ describe('TransitionGroup', () => {
   });
 
   it('should work with no children', () => {
-    render(<TransitionGroup />, container);
+    renderStrict(<TransitionGroup />, container);
   });
 
   it('should handle transitioning correctly', () => {
@@ -92,19 +87,25 @@ describe('TransitionGroup', () => {
     }
 
     jest.useFakeTimers();
-    render(<Parent />, container);
+    renderStrict(<Parent />, container);
 
-    jest.runAllTimers();
+    act(() => {
+      jest.runAllTimers();
+    });
     expect(log).toEqual(['appear', 'appearing', 'appeared']);
 
     log = [];
-    render(<Parent count={2} />, container);
-    jest.runAllTimers();
+    renderStrict(<Parent count={2} />, container);
+    act(() => {
+      jest.runAllTimers();
+    });
     expect(log).toEqual(['enter', 'entering', 'entered']);
 
     log = [];
-    render(<Parent count={1} />, container);
-    jest.runAllTimers();
+    renderStrict(<Parent count={1} />, container);
+    act(() => {
+      jest.runAllTimers();
+    });
     expect(log).toEqual(['exit', 'exiting', 'exited']);
   });
 });

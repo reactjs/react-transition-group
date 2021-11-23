@@ -4,13 +4,14 @@ import CSSTransition from '../src/CSSTransition';
 let React;
 let ReactDOM;
 let TransitionGroup;
+let act;
+let render;
 
 // Most of the real functionality is covered in other unit tests, this just
 // makes sure we're wired up correctly.
 describe('CSSTransitionGroup', () => {
   let container;
   let consoleErrorSpy;
-  let render;
 
   function YoloTransition({ id, ...props }) {
     const nodeRef = React.useRef();
@@ -27,13 +28,12 @@ describe('CSSTransitionGroup', () => {
 
     React = require('react');
     ReactDOM = require('react-dom');
+    const testUtils = require('./utils');
+    act = testUtils.act;
+    const baseRender = testUtils.render;
 
-    render = (element, container, callback) =>
-      ReactDOM.render(
-        <React.StrictMode>{element}</React.StrictMode>,
-        container,
-        callback
-      );
+    render = (element, container) =>
+      baseRender(<React.StrictMode>{element}</React.StrictMode>, { container });
 
     TransitionGroup = require('../src/TransitionGroup');
 
@@ -43,6 +43,7 @@ describe('CSSTransitionGroup', () => {
 
   afterEach(() => {
     consoleErrorSpy.mockRestore();
+    jest.useRealTimers();
   });
 
   it('should clean-up silently after the timeout elapses', () => {
@@ -68,7 +69,9 @@ describe('CSSTransitionGroup', () => {
     expect(transitionGroupDiv.childNodes[0].id).toBe('two');
     expect(transitionGroupDiv.childNodes[1].id).toBe('one');
 
-    jest.runAllTimers();
+    act(() => {
+      jest.runAllTimers();
+    });
 
     // No warnings
     expect(consoleErrorSpy).not.toHaveBeenCalled();
@@ -121,7 +124,9 @@ describe('CSSTransitionGroup', () => {
       container
     );
 
-    jest.runAllTimers();
+    act(() => {
+      jest.runAllTimers();
+    });
 
     expect(transitionGroupDiv.childNodes.length).toBe(1);
 
@@ -243,7 +248,9 @@ describe('CSSTransitionGroup', () => {
     render(<Component />, container);
 
     // Testing that no exception is thrown here, as the timeout has been cleared.
-    jest.runAllTimers();
+    act(() => {
+      jest.runAllTimers();
+    });
   });
 
   it('should work with custom component wrapper cloning children', () => {
@@ -283,6 +290,8 @@ describe('CSSTransitionGroup', () => {
     });
 
     // Testing that no exception is thrown here, as the timeout has been cleared.
-    jest.runAllTimers();
+    act(() => {
+      jest.runAllTimers();
+    });
   });
 });

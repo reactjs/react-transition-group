@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render } from './utils';
 
 import CSSTransition from '../src/CSSTransition';
 import TransitionGroup from '../src/TransitionGroup';
@@ -7,7 +7,7 @@ import TransitionGroup from '../src/TransitionGroup';
 describe('CSSTransition', () => {
   it('should flush new props to the DOM before initiating a transition', (done) => {
     const nodeRef = React.createRef();
-    const wrapper = mount(
+    const { setProps } = render(
       <CSSTransition
         in={false}
         nodeRef={nodeRef}
@@ -29,28 +29,23 @@ describe('CSSTransition', () => {
 
     expect(nodeRef.current.classList.contains('test-class')).toEqual(false);
 
-    wrapper.setProps({
+    setProps({
       in: true,
       className: 'test-class',
     });
   });
 
   describe('entering', () => {
-    let wrapper, nodeRef;
-
-    beforeEach(() => {
-      nodeRef = React.createRef();
-      wrapper = mount(
+    it('should apply classes at each transition state', (done) => {
+      let count = 0;
+      const nodeRef = React.createRef();
+      const { setProps } = render(
         <CSSTransition nodeRef={nodeRef} timeout={10} classNames="test">
           <div ref={nodeRef} />
         </CSSTransition>
       );
-    });
 
-    it('should apply classes at each transition state', (done) => {
-      let count = 0;
-
-      wrapper.setProps({
+      setProps({
         in: true,
 
         onEnter() {
@@ -76,7 +71,7 @@ describe('CSSTransition', () => {
     it('should apply custom classNames names', (done) => {
       let count = 0;
       const nodeRef = React.createRef();
-      wrapper = mount(
+      const { setProps } = render(
         <CSSTransition
           timeout={10}
           nodeRef={nodeRef}
@@ -90,7 +85,7 @@ describe('CSSTransition', () => {
         </CSSTransition>
       );
 
-      wrapper.setProps({
+      setProps({
         in: true,
 
         onEnter() {
@@ -118,7 +113,7 @@ describe('CSSTransition', () => {
     it('should apply appear classes at each transition state', (done) => {
       let count = 0;
       const nodeRef = React.createRef();
-      mount(
+      render(
         <CSSTransition
           timeout={10}
           nodeRef={nodeRef}
@@ -153,7 +148,7 @@ describe('CSSTransition', () => {
 
     it('should lose the "*-appear-done" class after leaving and entering again', (done) => {
       const nodeRef = React.createRef();
-      const wrapper = mount(
+      const { setProps } = render(
         <CSSTransition
           timeout={10}
           nodeRef={nodeRef}
@@ -161,12 +156,12 @@ describe('CSSTransition', () => {
           in={true}
           appear={true}
           onEntered={() => {
-            wrapper.setProps({
+            setProps({
               in: false,
               onEntered: () => {},
               onExited: () => {
                 expect(nodeRef.current.className).toBe('appear-test-exit-done');
-                wrapper.setProps({
+                setProps({
                   in: true,
                   onEntered: () => {
                     expect(nodeRef.current.className).toBe(
@@ -186,7 +181,7 @@ describe('CSSTransition', () => {
 
     it('should not add undefined when appearDone is not defined', (done) => {
       const nodeRef = React.createRef();
-      mount(
+      render(
         <CSSTransition
           timeout={10}
           nodeRef={nodeRef}
@@ -211,7 +206,7 @@ describe('CSSTransition', () => {
     it('should not be appearing in normal enter mode', (done) => {
       let count = 0;
       const nodeRef = React.createRef();
-      mount(
+      render(
         <CSSTransition
           timeout={10}
           nodeRef={nodeRef}
@@ -250,7 +245,7 @@ describe('CSSTransition', () => {
 
     it('should not enter the transition states when appear=false', () => {
       const nodeRef = React.createRef();
-      mount(
+      render(
         <CSSTransition
           timeout={10}
           nodeRef={nodeRef}
@@ -274,21 +269,16 @@ describe('CSSTransition', () => {
   });
 
   describe('exiting', () => {
-    let wrapper, nodeRef;
-
-    beforeEach(() => {
-      nodeRef = React.createRef();
-      wrapper = mount(
+    it('should apply classes at each transition state', (done) => {
+      let count = 0;
+      const nodeRef = React.createRef();
+      const { setProps } = render(
         <CSSTransition in nodeRef={nodeRef} timeout={10} classNames="test">
           <div ref={nodeRef} />
         </CSSTransition>
       );
-    });
 
-    it('should apply classes at each transition state', (done) => {
-      let count = 0;
-
-      wrapper.setProps({
+      setProps({
         in: false,
 
         onExit() {
@@ -314,7 +304,7 @@ describe('CSSTransition', () => {
     it('should apply custom classNames names', (done) => {
       let count = 0;
       const nodeRef = React.createRef();
-      wrapper = mount(
+      const { setProps } = render(
         <CSSTransition
           in
           nodeRef={nodeRef}
@@ -329,7 +319,7 @@ describe('CSSTransition', () => {
         </CSSTransition>
       );
 
-      wrapper.setProps({
+      setProps({
         in: false,
 
         onExit() {
@@ -356,13 +346,13 @@ describe('CSSTransition', () => {
       let count = 0;
 
       const nodeRef = React.createRef();
-      const wrapper = mount(
+      const { setProps } = render(
         <CSSTransition in nodeRef={nodeRef} timeout={10}>
           <div ref={nodeRef} />
         </CSSTransition>
       );
 
-      wrapper.setProps({
+      setProps({
         in: false,
 
         onExit() {
@@ -418,13 +408,13 @@ describe('CSSTransition', () => {
         bar: React.createRef(),
       };
 
-      const wrapper = mount(
+      const { setProps } = render(
         <Test direction="down" text="foo" nodeRef={nodeRef.foo} />
       );
 
       const rerender = (getProps) =>
         new Promise((resolve) =>
-          wrapper.setProps({
+          setProps({
             onEnter: undefined,
             onEntering: undefined,
             onEntered: undefined,
