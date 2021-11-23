@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [master, gh-actions]
+  pull_request:
+    branches: [master, gh-actions]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        REACT_DIST: [16, 17]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          cache: 'npm'
+      - run: yarn
+      - run: yarn add react@${{ matrix.REACT_DIST }} react-dom@${{ matrix.REACT_DIST }}
+      - run: yarn --cwd www
+      - run: yarn test
+      - run: npm run build
+      - run: npm run semantic-release
