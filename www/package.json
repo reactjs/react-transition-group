@@ -24,7 +24,7 @@
     "gatsby-transformer-react-docgen": "^3.0.5",
     "gatsby-transformer-remark": "^2.3.0",
     "lodash": "^4.17.19",
-    "prismjs": "^1.21.0",
+    "prismjs": "^1.25.0",
     "react": "^16.8.3",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-dom": "^16.8.3",
