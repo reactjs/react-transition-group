@@ -37,10 +37,6 @@ jobs:
               'master',
               {name: 'alpha', prerelease: true}
             ]
-        env:
-          # These are not available on forks so we might as well remove them?
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   release:
     needs: test
