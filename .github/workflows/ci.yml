@@ -37,6 +37,11 @@ jobs:
               'master',
               {name: 'alpha', prerelease: true}
             ]
+        env:
+          # These are not available on forks but we need them on actual runs to verify everything is set up.
+          # Otherwise we might fail in the middle of a release
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   release:
     needs: test
