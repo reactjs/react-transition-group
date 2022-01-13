@@ -7,7 +7,7 @@ on:
     branches: [master]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -25,5 +25,45 @@ jobs:
       - run: yarn add react@${{ matrix.REACT_DIST }} react-dom@${{ matrix.REACT_DIST }}
       - run: yarn --cwd www
       - run: yarn test
-      - run: npm run build
-      - run: npm run semantic-release
+      - name: Dry release
+        uses: cycjimmy/semantic-release-action@v2
+        with:
+          dry_run: true
+          semantic_version: 17
+          branches: |
+            [
+              'master',
+              {name: 'alpha', prerelease: true}
+            ]
+        env:
+          # These are not available on forks so we might as well remove them?
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  release:
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'reactjs/react-transition-group' &&
+      contains('refs/heads/master,refs/heads/alpha',
+      github.ref) && github.event_name == 'push' }}
+    steps:
+      - uses: styfle/cancel-workflow-action@0.9.0
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          cache: 'npm'
+      - run: yarn
+      - name: Release
+        uses: cycjimmy/semantic-release-action@v2
+        with:
+          semantic_version: 17
+          branches: |
+            [
+              'master',
+              {name: 'alpha', prerelease: true}
+            ]
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
