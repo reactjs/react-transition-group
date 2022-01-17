@@ -449,25 +449,33 @@ describe('Transition', () => {
       setProps({ in: true });
     });
 
-    it('should stay mounted after exiting', (done) => {
+    it('should stay mounted after exiting', async () => {
+      let handleEntered;
+      const onEntered = new Promise((resolve) => {
+        handleEntered = resolve;
+      });
+      let handleExited;
+      const onExited = new Promise((resolve) => {
+        handleExited = resolve;
+      });
       const { container, setProps } = render(
         <MountTransition
           in={false}
-          onEntered={() => {
-            expect(container.textContent).toEqual(`status: ${ENTERED}`);
-
-            setProps({ in: false });
-          }}
-          onExited={() => {
-            expect(container.textContent).toEqual(`status: ${EXITED}`);
-
-            done();
-          }}
+          onEntered={handleEntered}
+          onExited={handleExited}
         />
       );
 
       expect(container.textContent).toEqual('');
       setProps({ in: true });
+
+      await onEntered;
+      expect(container.textContent).toEqual(`status: ${ENTERED}`);
+
+      setProps({ in: false });
+
+      await onExited;
+      expect(container.textContent).toEqual(`status: ${EXITED}`);
     });
   });
 

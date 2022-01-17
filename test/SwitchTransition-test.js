@@ -106,6 +106,9 @@ describe('SwitchTransition', () => {
     act(() => {
       jest.runAllTimers();
     });
+    act(() => {
+      jest.runAllTimers();
+    });
     expect(log).toEqual([
       'exit',
       'exiting',
@@ -134,6 +137,9 @@ describe('SwitchTransition', () => {
     expect(container.textContent).toBe('first');
 
     setProps({ on: false, rendered: true });
+    act(() => {
+      jest.runAllTimers();
+    });
     act(() => {
       jest.runAllTimers();
     });

@@ -146,8 +146,16 @@ describe('CSSTransition', () => {
       );
     });
 
-    it('should lose the "*-appear-done" class after leaving and entering again', (done) => {
+    it('should lose the "*-appear-done" class after leaving and entering again', async () => {
       const nodeRef = React.createRef();
+      let handleEntered;
+      let onEntered = new Promise((resolve) => {
+        handleEntered = resolve;
+      });
+      let handleExited;
+      const onExited = new Promise((resolve) => {
+        handleExited = resolve;
+      });
       const { setProps } = render(
         <CSSTransition
           timeout={10}
@@ -155,28 +163,31 @@ describe('CSSTransition', () => {
           classNames="appear-test"
           in={true}
           appear={true}
-          onEntered={() => {
-            setProps({
-              in: false,
-              onEntered: () => {},
-              onExited: () => {
-                expect(nodeRef.current.className).toBe('appear-test-exit-done');
-                setProps({
-                  in: true,
-                  onEntered: () => {
-                    expect(nodeRef.current.className).toBe(
-                      'appear-test-enter-done'
-                    );
-                    done();
-                  },
-                });
-              },
-            });
-          }}
+          onEntered={handleEntered}
         >
           <div ref={nodeRef} />
         </CSSTransition>
       );
+
+      await onEntered;
+      setProps({
+        in: false,
+        onEntered: () => {},
+        onExited: handleExited,
+      });
+
+      await onExited;
+      expect(nodeRef.current.className).toBe('appear-test-exit-done');
+      onEntered = new Promise((resolve) => {
+        handleEntered = resolve;
+      });
+      setProps({
+        in: true,
+        onEntered: handleEntered,
+      });
+
+      await onEntered;
+      expect(nodeRef.current.className).toBe('appear-test-enter-done');
     });
 
     it('should not add undefined when appearDone is not defined', (done) => {
