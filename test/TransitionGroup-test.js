@@ -75,7 +75,7 @@ describe('TransitionGroup', () => {
     renderStrict(<TransitionGroup />, container);
   });
 
-  it('should handle transitioning correctly', () => {
+  it.only('should handle transitioning correctly', () => {
     function Parent({ count = 1 }) {
       let children = [];
       for (let i = 0; i < count; i++) children.push(<Child key={i} />);
@@ -93,7 +93,7 @@ describe('TransitionGroup', () => {
       jest.runAllTimers();
     });
     expect(log).toEqual(
-      // FIXME: React 18 introduces an additional `onEnter` call.
+      // React 18 StrictEffects will call `componentDidMount` twice causing two `onEnter` calls.
       React.useTransition !== undefined
         ? ['appear', 'appear', 'appearing', 'appeared']
         : ['appear', 'appearing', 'appeared']
@@ -105,7 +105,7 @@ describe('TransitionGroup', () => {
       jest.runAllTimers();
     });
     expect(log).toEqual(
-      // FIXME: React 18 introduces an additional `onEnter` call.
+      // React 18 StrictEffects will call `componentDidMount` twice causing two `onEnter` calls.
       React.useTransition !== undefined
         ? ['enter', 'enter', 'entering', 'entered']
         : ['enter', 'entering', 'entered']
