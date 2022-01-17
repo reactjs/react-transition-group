@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      # Otherwise how would we know if a specific React version caused the failure?
+      fail-fast: false
+      matrix:
+        REACT_DIST: [16, 17]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          cache: 'npm'
+      - run: yarn
+      - run: yarn add react@${{ matrix.REACT_DIST }} react-dom@${{ matrix.REACT_DIST }}
+      - run: yarn --cwd www
+      - run: yarn test
+      - name: Dry release
+        uses: cycjimmy/semantic-release-action@v2
+        with:
+          dry_run: true
+          semantic_version: 17
+          branches: |
+            [
+              'master',
+              {name: 'alpha', prerelease: true}
+            ]
+        env:
+          # These are not available on forks but we need them on actual runs to verify everything is set up.
+          # Otherwise we might fail in the middle of a release
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  release:
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'reactjs/react-transition-group' &&
+      contains('refs/heads/master,refs/heads/alpha',
+      github.ref) && github.event_name == 'push' }}
+    steps:
+      - uses: styfle/cancel-workflow-action@0.9.0
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          cache: 'npm'
+      - run: yarn
+      - name: Release
+        uses: cycjimmy/semantic-release-action@v2
+        with:
+          semantic_version: 17
+          branches: |
+            [
+              'master',
+              {name: 'alpha', prerelease: true}
+            ]
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
