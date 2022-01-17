@@ -92,14 +92,24 @@ describe('TransitionGroup', () => {
     act(() => {
       jest.runAllTimers();
     });
-    expect(log).toEqual(['appear', 'appear', 'appearing', 'appeared']);
+    expect(log).toEqual(
+      // FIXME: React 18 introduces an additional `onEnter` call.
+      React.useTransition !== undefined
+        ? ['appear', 'appear', 'appearing', 'appeared']
+        : ['appear', 'appearing', 'appeared']
+    );
 
     log = [];
     renderStrict(<Parent count={2} />, container);
     act(() => {
       jest.runAllTimers();
     });
-    expect(log).toEqual(['enter', 'enter', 'entering', 'entered']);
+    expect(log).toEqual(
+      // FIXME: React 18 introduces an additional `onEnter` call.
+      React.useTransition !== undefined
+        ? ['enter', 'enter', 'entering', 'entered']
+        : ['enter', 'entering', 'entered']
+    );
 
     log = [];
     renderStrict(<Parent count={1} />, container);
