@@ -75,7 +75,7 @@ describe('TransitionGroup', () => {
     renderStrict(<TransitionGroup />, container);
   });
 
-  it.only('should handle transitioning correctly', () => {
+  it('should handle transitioning correctly', () => {
     function Parent({ count = 1 }) {
       let children = [];
       for (let i = 0; i < count; i++) children.push(<Child key={i} />);
