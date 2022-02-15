@@ -48,4 +48,4 @@ storiesOf('CSSTransition', module)
         <Fade unmountOnExit>Fade with unmountOnExit</Fade>
       </ToggleFixture>
     );
-  })
+  });

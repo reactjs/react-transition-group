@@ -41,7 +41,9 @@ function Fade(props) {
   const nodeRef = useRef();
   return (
     <CSSTransition {...props} classNames={styles} nodeRef={nodeRef}>
-      <div ref={nodeRef} className={styles.default}>{props.children}</div>
+      <div ref={nodeRef} className={styles.default}>
+        {props.children}
+      </div>
     </CSSTransition>
   );
 }

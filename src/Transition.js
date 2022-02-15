@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import config from './config';
 import { timeoutsShape } from './utils/PropTypes';
 import TransitionGroupContext from './TransitionGroupContext';
-import { nextTick } from "./utils/nextTick"
+import { nextTick } from './utils/nextTick';
 
 export const UNMOUNTED = 'unmounted';
 export const EXITED = 'exited';

@@ -59,7 +59,7 @@ storiesOf('Transition', module)
       <ToggleFixture>
         <FadeInnerRef innerRef={nodeRef}>Fade using innerRef</FadeInnerRef>
       </ToggleFixture>
-    )
+    );
   })
   .add('Fade with mountOnEnter', () => {
     return (
@@ -74,4 +74,4 @@ storiesOf('Transition', module)
         <Fade unmountOnExit>Fade with unmountOnExit</Fade>
       </ToggleFixture>
     );
-  })
+  });
