@@ -12,7 +12,7 @@ import Transition, {
 const styles = css`
   .fade {
     opacity: 0;
-    transition: opacity 0.15s linear;
+    transition: opacity 0.5s linear;
   }
   .fade.in {
     opacity: 1;
@@ -47,7 +47,7 @@ export function Fade(props) {
       {...props}
       nodeRef={nodeRef}
       className={styles.fade}
-      timeout={150}
+      timeout={500}
     >
       {(status) => (
         <div
