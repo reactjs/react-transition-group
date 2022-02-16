@@ -14,8 +14,9 @@ jobs:
       # Otherwise how would we know if a specific React version caused the failure?
       fail-fast: false
       matrix:
-        REACT_DIST: [16, 17]
-
+        REACT_DIST: [16, 17, next]
+    # Unstable release channel so let's not block a potential release of `react-transition-group`
+    continue-on-error: ${{ matrix.REACT_DIST == 'next' }}
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 14

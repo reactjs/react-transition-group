@@ -92,14 +92,24 @@ describe('TransitionGroup', () => {
     act(() => {
       jest.runAllTimers();
     });
-    expect(log).toEqual(['appear', 'appearing', 'appeared']);
+    expect(log).toEqual(
+      // React 18 StrictEffects will call `componentDidMount` twice causing two `onEnter` calls.
+      React.useTransition !== undefined
+        ? ['appear', 'appear', 'appearing', 'appeared']
+        : ['appear', 'appearing', 'appeared']
+    );
 
     log = [];
     renderStrict(<Parent count={2} />, container);
     act(() => {
       jest.runAllTimers();
     });
-    expect(log).toEqual(['enter', 'entering', 'entered']);
+    expect(log).toEqual(
+      // React 18 StrictEffects will call `componentDidMount` twice causing two `onEnter` calls.
+      React.useTransition !== undefined
+        ? ['enter', 'enter', 'entering', 'entered']
+        : ['enter', 'entering', 'entered']
+    );
 
     log = [];
     renderStrict(<Parent count={1} />, container);

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { render } from './utils';
+import { render, waitFor } from './utils';
 
 import Transition, {
   UNMOUNTED,
@@ -27,14 +27,6 @@ expect.extend({
 });
 
 describe('Transition', () => {
-  // beforeEach(() => {
-  //   jest.useFakeTimers();
-  // });
-
-  // afterEach(() => {
-  //   jest.useRealTimers();
-  // });
-
   it('should not transition on mount', () => {
     const nodeRef = React.createRef();
     render(
@@ -119,8 +111,9 @@ describe('Transition', () => {
     expect(nodeRef.current.textContent).toBe('foo: foo, bar: bar');
   });
 
-  it('should allow addEndListener instead of timeouts', (done) => {
+  it('should allow addEndListener instead of timeouts', async () => {
     let listener = jest.fn((end) => setTimeout(end, 0));
+    let done = false;
 
     const nodeRef = React.createRef();
     const { setProps } = render(
@@ -129,7 +122,7 @@ describe('Transition', () => {
         addEndListener={listener}
         onEntered={() => {
           expect(listener).toHaveBeenCalledTimes(1);
-          done();
+          done = true;
         }}
       >
         <div ref={nodeRef} />
@@ -137,10 +130,15 @@ describe('Transition', () => {
     );
 
     setProps({ in: true });
+
+    await waitFor(() => {
+      expect(done).toEqual(true);
+    });
   });
 
-  it('should fallback to timeouts with addEndListener', (done) => {
+  it('should fallback to timeouts with addEndListener', async () => {
     let calledEnd = false;
+    let done = false;
     let listener = (end) =>
       setTimeout(() => {
         calledEnd = true;
@@ -155,7 +153,7 @@ describe('Transition', () => {
         addEndListener={listener}
         onEntered={() => {
           expect(calledEnd).toEqual(false);
-          done();
+          done = true;
         }}
       >
         <div ref={nodeRef} />
@@ -163,10 +161,15 @@ describe('Transition', () => {
     );
 
     setProps({ in: true });
+
+    await waitFor(() => {
+      expect(done).toEqual(true);
+    });
   });
 
-  it('should mount/unmount immediately if not have enter/exit timeout', (done) => {
+  it('should mount/unmount immediately if not have enter/exit timeout', async () => {
     const nodeRef = React.createRef();
+    let done = false;
     const { setProps } = render(
       <Transition nodeRef={nodeRef} in={true} timeout={{}}>
         {(status) => <div ref={nodeRef}>status: {status}</div>}
@@ -182,11 +185,15 @@ describe('Transition', () => {
       in: false,
       onExited() {
         expect(nodeRef.current.textContent).toEqual(`status: ${EXITED}`);
-        if (!calledAfterTimeout) {
-          return done();
+        if (calledAfterTimeout) {
+          throw new Error('wrong timeout');
         }
-        throw new Error('wrong timeout');
+        done = true;
       },
+    });
+
+    await waitFor(() => {
+      expect(done).toEqual(true);
     });
   });
 
@@ -220,8 +227,9 @@ describe('Transition', () => {
   });
 
   describe('appearing timeout', () => {
-    it('should use enter timeout if appear not set', (done) => {
+    it('should use enter timeout if appear not set', async () => {
       let calledBeforeEntered = false;
+      let done = false;
       setTimeout(() => {
         calledBeforeEntered = true;
       }, 10);
@@ -240,15 +248,20 @@ describe('Transition', () => {
       setProps({
         onEntered() {
           if (calledBeforeEntered) {
-            done();
+            done = true;
           } else {
             throw new Error('wrong timeout');
           }
         },
       });
+
+      await waitFor(() => {
+        expect(done).toEqual(true);
+      });
     });
 
-    it('should use appear timeout if appear is set', (done) => {
+    it('should use appear timeout if appear is set', async () => {
+      let done = false;
       const nodeRef = React.createRef();
       const { setProps } = render(
         <Transition
@@ -271,16 +284,21 @@ describe('Transition', () => {
           if (isCausedLate) {
             throw new Error('wrong timeout');
           } else {
-            done();
+            done = true;
           }
         },
+      });
+
+      await waitFor(() => {
+        expect(done).toEqual(true);
       });
     });
   });
 
   describe('entering', () => {
-    it('should fire callbacks', (done) => {
+    it('should fire callbacks', async () => {
       let callOrder = [];
+      let done = false;
       let onEnter = jest.fn(() => callOrder.push('onEnter'));
       let onEntering = jest.fn(() => callOrder.push('onEntering'));
       const nodeRef = React.createRef();
@@ -303,12 +321,16 @@ describe('Transition', () => {
           expect(onEnter).toHaveBeenCalledTimes(1);
           expect(onEntering).toHaveBeenCalledTimes(1);
           expect(callOrder).toEqual(['onEnter', 'onEntering']);
-          done();
+          done = true;
         },
+      });
+
+      await waitFor(() => {
+        expect(done).toEqual(true);
       });
     });
 
-    it('should move to each transition state', (done) => {
+    it('should move to each transition state', async () => {
       let count = 0;
       const nodeRef = React.createRef();
       const { setProps } = render(
@@ -334,16 +356,19 @@ describe('Transition', () => {
 
         onEntered() {
           expect(nodeRef.current.textContent).toEqual(`status: ${ENTERED}`);
-          expect(count).toEqual(2);
-          done();
         },
+      });
+
+      await waitFor(() => {
+        expect(count).toEqual(2);
       });
     });
   });
 
   describe('exiting', () => {
-    it('should fire callbacks', (done) => {
+    it('should fire callbacks', async () => {
       let callOrder = [];
+      let done = false;
       let onExit = jest.fn(() => callOrder.push('onExit'));
       let onExiting = jest.fn(() => callOrder.push('onExiting'));
       const nodeRef = React.createRef();
@@ -366,13 +391,18 @@ describe('Transition', () => {
           expect(onExit).toHaveBeenCalledTimes(1);
           expect(onExiting).toHaveBeenCalledTimes(1);
           expect(callOrder).toEqual(['onExit', 'onExiting']);
-          done();
+          done = true;
         },
+      });
+
+      await waitFor(() => {
+        expect(done).toEqual(true);
       });
     });
 
-    it('should move to each transition state', (done) => {
+    it('should move to each transition state', async () => {
       let count = 0;
+      let done = false;
       const nodeRef = React.createRef();
       const { setProps } = render(
         <Transition nodeRef={nodeRef} in timeout={10}>
@@ -398,8 +428,12 @@ describe('Transition', () => {
         onExited() {
           expect(nodeRef.current.textContent).toEqual(`status: ${EXITED}`);
           expect(count).toEqual(2);
-          done();
+          done = true;
         },
+      });
+
+      await waitFor(() => {
+        expect(done).toEqual(true);
       });
     });
   });
@@ -449,25 +483,35 @@ describe('Transition', () => {
       setProps({ in: true });
     });
 
-    it('should stay mounted after exiting', (done) => {
+    it('should stay mounted after exiting', async () => {
+      let entered = false;
+      let exited = false;
       const { container, setProps } = render(
         <MountTransition
           in={false}
           onEntered={() => {
-            expect(container.textContent).toEqual(`status: ${ENTERED}`);
-
-            setProps({ in: false });
+            entered = true;
           }}
           onExited={() => {
-            expect(container.textContent).toEqual(`status: ${EXITED}`);
-
-            done();
+            exited = true;
           }}
         />
       );
 
       expect(container.textContent).toEqual('');
       setProps({ in: true });
+
+      await waitFor(() => {
+        expect(entered).toEqual(true);
+      });
+      expect(container.textContent).toEqual(`status: ${ENTERED}`);
+
+      setProps({ in: false });
+
+      await waitFor(() => {
+        expect(exited).toEqual(true);
+      });
+      expect(container.textContent).toEqual(`status: ${EXITED}`);
     });
   });
 
@@ -500,7 +544,8 @@ describe('Transition', () => {
       };
     }
 
-    it('should mount when entering', (done) => {
+    it('should mount when entering', async () => {
+      let done = false;
       const instanceRef = React.createRef();
       const { setProps } = render(
         <UnmountTransition
@@ -510,7 +555,7 @@ describe('Transition', () => {
             expect(instanceRef.current.getStatus()).toEqual(EXITED);
             expect(instanceRef.current.nodeRef.current).toExist();
 
-            done();
+            done = true;
           }}
         />
       );
@@ -519,9 +564,14 @@ describe('Transition', () => {
       expect(instanceRef.current.nodeRef.current).toBeNull();
 
       setProps({ in: true });
+
+      await waitFor(() => {
+        expect(done).toEqual(true);
+      });
     });
 
-    it('should unmount after exiting', (done) => {
+    it('should unmount after exiting', async () => {
+      let exited = false;
       const instanceRef = React.createRef();
       const { setProps } = render(
         <UnmountTransition
@@ -529,9 +579,7 @@ describe('Transition', () => {
           in
           onExited={() => {
             setTimeout(() => {
-              expect(instanceRef.current.getStatus()).toEqual(UNMOUNTED);
-              expect(instanceRef.current.nodeRef.current).not.toExist();
-              done();
+              exited = true;
             });
           }}
         />
@@ -541,6 +589,13 @@ describe('Transition', () => {
       expect(instanceRef.current.nodeRef.current).toExist();
 
       setProps({ in: false });
+
+      await waitFor(() => {
+        expect(exited).toEqual(true);
+      });
+
+      expect(instanceRef.current.getStatus()).toEqual(UNMOUNTED);
+      expect(instanceRef.current.nodeRef.current).not.toExist();
     });
   });
 });

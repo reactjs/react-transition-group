@@ -218,7 +218,9 @@ describe('CSSTransitionGroup', () => {
     ReactDOM.unmountComponentAtNode(container);
 
     // Testing that no exception is thrown here, as the timeout has been cleared.
-    jest.runAllTimers();
+    act(() => {
+      jest.runAllTimers();
+    });
   });
 
   it('should handle unmounted elements properly', () => {
