@@ -27,6 +27,8 @@ jobs:
       - run: yarn
       - run: yarn add react@${{ matrix.REACT_DIST }} react-dom@${{ matrix.REACT_DIST }}
       - run: yarn --cwd www
+      # Test whether the web page can be built successfully or not
+      - run: yarn --cwd www build
       - run: yarn test
       - name: Dry release
         uses: cycjimmy/semantic-release-action@v2
