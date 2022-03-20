@@ -35,7 +35,7 @@ const Testing = ({ data, location }) => (
       <pre className="language-js">
         <code>
           {`
-import { config } from 'react-transition-group
+import { config } from 'react-transition-group'
 
 config.disabled = true
               `.trim()}
