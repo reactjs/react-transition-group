@@ -26,6 +26,8 @@ jobs:
           cache: 'npm'
       - run: yarn
       - run: yarn add react@${{ matrix.REACT_DIST }} react-dom@${{ matrix.REACT_DIST }}
+      - run: yarn add @testing-library/react@alpha
+        if: matrix.REACT_DIST == 'next'
       - run: yarn --cwd www
       # Test whether the web page can be built successfully or not
       - run: yarn --cwd www build
