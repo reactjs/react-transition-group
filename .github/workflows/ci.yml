@@ -27,7 +27,7 @@ jobs:
       - run: yarn
       - run: yarn add react@${{ matrix.REACT_DIST }} react-dom@${{ matrix.REACT_DIST }}
       - run: yarn add @testing-library/react@alpha
-        if:  matrix.REACT_DIST == 'next'
+        if: matrix.REACT_DIST == 'next'
       - run: yarn --cwd www
       - run: yarn test
       - name: Dry release
