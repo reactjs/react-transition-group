@@ -1,3 +1,3 @@
 import React from 'react';
 
-export default React.createContext<{ isMounting: boolean } | null>(null);
+export default React.createContext(null);
