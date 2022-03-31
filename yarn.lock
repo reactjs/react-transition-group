@@ -3506,13 +3506,14 @@
     lz-string "^1.4.4"
     pretty-format "^27.0.2"
 
-"@testing-library/react@^13.0.0-alpha.6":
-  version "13.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-13.0.0-alpha.6.tgz#6bb543f524a8408bebe81f6c866a8f95951f6d43"
-  integrity sha512-AVJTnwLlnjvXDNe91P6Nt9pN2fMS4csAzTmIbOewja+LVKzhlr53EONhv3ck0J3GzSZ5MIN5qL3BfISX/Wf1Jg==
+"@testing-library/react@alpha":
+  version "13.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-13.0.0-alpha.7.tgz#0537af3a8d45edd925fd0275aee7d409285ef1fe"
+  integrity sha512-8Y1PvFczthSeow1WZ0Cq6WbOzpVGLGyEQTr+lL6BwXqAf2IykVY8ZN8V21Ch1cTlbZuZJI5UV3gOyrOHrw9YZQ==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@testing-library/dom" "^8.5.0"
+    "@types/react-dom" "*"
 
 "@tootallnate/once@1":
   version "1.0.0"
@@ -3763,6 +3764,13 @@
   version "1.3.8"
   resolved "https://registry.yarnpkg.com/@types/reach__router/-/reach__router-1.3.8.tgz#7b8607abf13704f918a9543257bcb7ec63028bfa"
   integrity sha512-cjjT0FPdwuvhLWpCDt2WCh4sdBqNzJe3XhxXmRQGsY3IvT58M8sE4E7A0QaFYuJs3ar+McSJTiJxdYKWAXbBhw==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-dom@*":
+  version "17.0.14"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-17.0.14.tgz#c8f917156b652ddf807711f5becbd2ab018dea9f"
+  integrity sha512-H03xwEP1oXmSfl3iobtmQ/2dHF5aBHr8aUMwyGZya6OW45G+xtdzmq6HkncefiBt5JU8DVyaWl/nWZbjZCnzAQ==
   dependencies:
     "@types/react" "*"
 
