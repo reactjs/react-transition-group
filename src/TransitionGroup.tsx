@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import type { ReactElement, ReactChild } from 'react';
 import TransitionGroupContext from './TransitionGroupContext';
 
 import {
@@ -8,11 +9,32 @@ import {
   getNextChildMapping,
 } from './utils/ChildMapping';
 
-const values = Object.values || ((obj) => Object.keys(obj).map((k) => obj[k]));
+const values =
+  Object.values ||
+  ((obj: Record<string, unknown>) => Object.keys(obj).map((k) => obj[k]));
 
 const defaultProps = {
   component: 'div',
-  childFactory: (child) => child,
+  childFactory: (child: ReactElement) => child,
+};
+
+type Props = {
+  component: any;
+  children: any;
+  appear: boolean;
+  enter: boolean;
+  exit: boolean;
+  childFactory: (child: ReactElement) => ReactElement;
+};
+
+type State = {
+  children: Record<string, ReactChild>;
+  contextValue: { isMounting: boolean };
+  handleExited: (
+    child: ReactElement<{ onExited: (node: HTMLElement) => void }>,
+    node: HTMLElement
+  ) => void;
+  firstRender: boolean;
 };
 
 /**
@@ -29,13 +51,17 @@ const defaultProps = {
  * component. This means you can mix and match animations across different list
  * items.
  */
-class TransitionGroup extends React.Component {
-  constructor(props, context) {
+class TransitionGroup extends React.Component<Props, State> {
+  static defaultProps = defaultProps;
+
+  mounted = false;
+  constructor(props: Props, context: any) {
     super(props, context);
 
     const handleExited = this.handleExited.bind(this);
 
     // Initial children should all be entering, dependent on appear
+    // @ts-expect-error FIXME: Property 'children' is missing in type '{ contextValue: { isMounting: true; }; handleExited: (child: React.ReactElement<{ onExited: (node: HTMLElement) => void; }, string | React.JSXElementConstructor<any>>, node: HTMLElement) => void; firstRender: true; }' but required in type 'Readonly<State>'.ts(2741)
     this.state = {
       contextValue: { isMounting: true },
       handleExited,
@@ -55,8 +81,8 @@ class TransitionGroup extends React.Component {
   }
 
   static getDerivedStateFromProps(
-    nextProps,
-    { children: prevChildMapping, handleExited, firstRender }
+    nextProps: Props,
+    { children: prevChildMapping, handleExited, firstRender }: State
   ) {
     return {
       children: firstRender
@@ -67,10 +93,12 @@ class TransitionGroup extends React.Component {
   }
 
   // node is `undefined` when user provided `nodeRef` prop
-  handleExited(child, node) {
+  handleExited(
+    child: ReactElement<{ onExited: (node: HTMLElement) => void }>,
+    node: HTMLElement
+  ) {
     let currentChildMapping = getChildMapping(this.props.children);
-
-    if (child.key in currentChildMapping) return;
+    if (child.key && child.key in currentChildMapping) return;
 
     if (child.props.onExited) {
       child.props.onExited(node);
@@ -79,8 +107,9 @@ class TransitionGroup extends React.Component {
     if (this.mounted) {
       this.setState((state) => {
         let children = { ...state.children };
-
-        delete children[child.key];
+        if (child.key) {
+          delete children[child.key];
+        }
         return { children };
       });
     }
@@ -89,11 +118,14 @@ class TransitionGroup extends React.Component {
   render() {
     const { component: Component, childFactory, ...props } = this.props;
     const { contextValue } = this.state;
+    // @ts-expect-error FIXME: Type 'undefined' is not assignable to type 'ReactElement<any, string | JSXElementConstructor<any>>'.ts(2345)
     const children = values(this.state.children).map(childFactory);
-
-    delete props.appear;
-    delete props.enter;
-    delete props.exit;
+    const {
+      appear: _appear,
+      enter: _enter,
+      exit: _exit,
+      ...delegatingProps
+    } = props;
 
     if (Component === null) {
       return (
@@ -104,12 +136,13 @@ class TransitionGroup extends React.Component {
     }
     return (
       <TransitionGroupContext.Provider value={contextValue}>
-        <Component {...props}>{children}</Component>
+        <Component {...delegatingProps}>{children}</Component>
       </TransitionGroupContext.Provider>
     );
   }
 }
 
+// @ts-expect-error To make TS migration diffs minimum, I've left propTypes here instead of defining a static property
 TransitionGroup.propTypes = {
   /**
    * `<TransitionGroup>` renders a `<div>` by default. You can change this
@@ -165,7 +198,5 @@ TransitionGroup.propTypes = {
    */
   childFactory: PropTypes.func,
 };
-
-TransitionGroup.defaultProps = defaultProps;
 
 export default TransitionGroup;

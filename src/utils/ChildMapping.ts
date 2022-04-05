@@ -1,4 +1,5 @@
 import { Children, cloneElement, isValidElement } from 'react';
+import type { ReactChild, ReactElement, ReactNode } from 'react';
 
 /**
  * Given `this.props.children`, return an object mapping key to child.
@@ -6,14 +7,19 @@ import { Children, cloneElement, isValidElement } from 'react';
  * @param {*} children `this.props.children`
  * @return {object} Mapping of key to child
  */
-export function getChildMapping(children, mapFn) {
-  let mapper = (child) =>
+export function getChildMapping(
+  children: ReactNode[] | ReactNode,
+  mapFn?: (child: ReactElement) => ReactElement
+) {
+  let mapper = (child: ReactNode) =>
     mapFn && isValidElement(child) ? mapFn(child) : child;
 
   let result = Object.create(null);
   if (children)
+    // @ts-expect-error FIXME: Object is possibly 'null' or 'undefined'.ts(2533)
     Children.map(children, (c) => c).forEach((child) => {
       // run the map function here instead so that the key is the computed one
+      // @ts-expect-error FIXME: Property 'key' does not exist on type 'string'.ts(2339)
       result[child.key] = mapper(child);
     });
   return result;
@@ -36,11 +42,14 @@ export function getChildMapping(children, mapFn) {
  * @return {object} a key set that contains all keys in `prev` and all keys
  * in `next` in a reasonable order.
  */
-export function mergeChildMappings(prev, next) {
+export function mergeChildMappings(
+  prev: Record<string, ReactChild>,
+  next: Record<string, ReactChild>
+) {
   prev = prev || {};
   next = next || {};
 
-  function getValueForKey(key) {
+  function getValueForKey(key: string) {
     return key in next ? next[key] : prev[key];
   }
 
@@ -61,7 +70,7 @@ export function mergeChildMappings(prev, next) {
   }
 
   let i;
-  let childMapping = {};
+  let childMapping: Record<string, ReactChild> = {};
   for (let nextKey in next) {
     if (nextKeysPending[nextKey]) {
       for (i = 0; i < nextKeysPending[nextKey].length; i++) {
@@ -81,12 +90,22 @@ export function mergeChildMappings(prev, next) {
   return childMapping;
 }
 
-function getProp(child, prop, props) {
+function getProp(
+  child: ReactElement,
+  prop: string,
+  props: Record<string, unknown>
+) {
   return props[prop] != null ? props[prop] : child.props[prop];
 }
 
-export function getInitialChildMapping(props, onExited) {
-  return getChildMapping(props.children, (child) => {
+export function getInitialChildMapping(
+  props: { children: ReactNode[] },
+  onExited: (
+    child: ReactElement<{ onExited: (node: HTMLElement) => void }>,
+    node: HTMLElement
+  ) => void
+) {
+  return getChildMapping(props.children, (child: ReactElement) => {
     return cloneElement(child, {
       onExited: onExited.bind(null, child),
       in: true,
@@ -97,7 +116,14 @@ export function getInitialChildMapping(props, onExited) {
   });
 }
 
-export function getNextChildMapping(nextProps, prevChildMapping, onExited) {
+export function getNextChildMapping(
+  nextProps: { children: ReactNode[] },
+  prevChildMapping: Record<string, ReactChild>,
+  onExited: (
+    child: ReactElement<{ onExited: (node: HTMLElement) => void }>,
+    node: HTMLElement
+  ) => void
+) {
   let nextChildMapping = getChildMapping(nextProps.children);
   let children = mergeChildMappings(prevChildMapping, nextChildMapping);
 

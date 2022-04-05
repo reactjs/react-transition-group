@@ -14,6 +14,7 @@ const globals = {
 
 const babelOptions = {
   exclude: /node_modules/,
+  extensions: ['.js', '.ts', '.tsx'],
   runtimeHelpers: true,
 };
 
