@@ -4,13 +4,31 @@ import addOneClass from 'dom-helpers/addClass';
 import removeOneClass from 'dom-helpers/removeClass';
 import React from 'react';
 
-import Transition from './Transition';
+import Transition, { Props as TransitionProps } from './Transition';
 import { classNamesShape } from './utils/PropTypes';
 
-const addClass = (node, classes) =>
+const addClass = (node: HTMLElement, classes: string) =>
   node && classes && classes.split(' ').forEach((c) => addOneClass(node, c));
-const removeClass = (node, classes) =>
+const removeClass = (node: HTMLElement, classes: string) =>
   node && classes && classes.split(' ').forEach((c) => removeOneClass(node, c));
+
+type TransitionClassNames = {
+  appear: string;
+  appearActive: string;
+  appearDone: string;
+  enter: string;
+  enterActive: string;
+  enterDone: string;
+  exit: string;
+  exitActive: string;
+  exitDone: string;
+};
+
+type Props = TransitionProps & {
+  classNames: string | Partial<TransitionClassNames>;
+};
+
+type TransitionClassNameKeys = 'appear' | 'enter' | 'exit';
 
 /**
  * A transition component inspired by the excellent
@@ -81,7 +99,7 @@ const removeClass = (node, classes) =>
  * [`appear`](http://reactcommunity.org/react-transition-group/transition#Transition-prop-appear)
  * prop, make sure to define styles for `.appear-*` classes as well.
  */
-class CSSTransition extends React.Component {
+class CSSTransition extends React.Component<Props> {
   static defaultProps = {
     classNames: '',
   };
@@ -92,7 +110,7 @@ class CSSTransition extends React.Component {
     exit: {},
   };
 
-  onEnter = (maybeNode, maybeAppearing) => {
+  onEnter = (maybeNode: HTMLElement | boolean, maybeAppearing?: boolean) => {
     const [node, appearing] = this.resolveArguments(maybeNode, maybeAppearing);
     this.removeClasses(node, 'exit');
     this.addClass(node, appearing ? 'appear' : 'enter', 'base');
@@ -102,7 +120,7 @@ class CSSTransition extends React.Component {
     }
   };
 
-  onEntering = (maybeNode, maybeAppearing) => {
+  onEntering = (maybeNode: HTMLElement | boolean, maybeAppearing?: boolean) => {
     const [node, appearing] = this.resolveArguments(maybeNode, maybeAppearing);
     const type = appearing ? 'appear' : 'enter';
     this.addClass(node, type, 'active');
@@ -112,7 +130,7 @@ class CSSTransition extends React.Component {
     }
   };
 
-  onEntered = (maybeNode, maybeAppearing) => {
+  onEntered = (maybeNode: HTMLElement | boolean, maybeAppearing?: boolean) => {
     const [node, appearing] = this.resolveArguments(maybeNode, maybeAppearing);
     const type = appearing ? 'appear' : 'enter';
     this.removeClasses(node, type);
@@ -123,7 +141,7 @@ class CSSTransition extends React.Component {
     }
   };
 
-  onExit = (maybeNode) => {
+  onExit = (maybeNode?: HTMLElement) => {
     const [node] = this.resolveArguments(maybeNode);
     this.removeClasses(node, 'appear');
     this.removeClasses(node, 'enter');
@@ -134,7 +152,7 @@ class CSSTransition extends React.Component {
     }
   };
 
-  onExiting = (maybeNode) => {
+  onExiting = (maybeNode?: HTMLElement) => {
     const [node] = this.resolveArguments(maybeNode);
     this.addClass(node, 'exit', 'active');
 
@@ -143,7 +161,7 @@ class CSSTransition extends React.Component {
     }
   };
 
-  onExited = (maybeNode) => {
+  onExited = (maybeNode?: HTMLElement) => {
     const [node] = this.resolveArguments(maybeNode);
     this.removeClasses(node, 'exit');
     this.addClass(node, 'exit', 'done');
@@ -154,12 +172,16 @@ class CSSTransition extends React.Component {
   };
 
   // when prop `nodeRef` is provided `node` is excluded
-  resolveArguments = (maybeNode, maybeAppearing) =>
+  resolveArguments = (
+    maybeNode: HTMLElement | boolean | undefined,
+    maybeAppearing?: boolean
+  ): [HTMLElement, boolean] =>
+    // @ts-expect-error FIXME: Type at position 1 in source is not compatible with type at position 1 in target. Type 'boolean | HTMLElement' is not assignable to type 'boolean'. Type 'HTMLElement' is not assignable to type 'boolean'.ts(2322)
     this.props.nodeRef
       ? [this.props.nodeRef.current, maybeNode] // here `maybeNode` is actually `appearing`
       : [maybeNode, maybeAppearing]; // `findDOMNode` was used
 
-  getClassNames = (type) => {
+  getClassNames = (type: TransitionClassNameKeys) => {
     const { classNames } = this.props;
     const isStringClassNames = typeof classNames === 'string';
     const prefix = isStringClassNames && classNames ? `${classNames}-` : '';
@@ -183,7 +205,11 @@ class CSSTransition extends React.Component {
     };
   };
 
-  addClass(node, type, phase) {
+  addClass(
+    node: HTMLElement | null,
+    type: TransitionClassNameKeys,
+    phase: 'base' | 'active' | 'done'
+  ) {
     let className = this.getClassNames(type)[`${phase}ClassName`];
     const { doneClassName } = this.getClassNames('enter');
 
@@ -194,32 +220,40 @@ class CSSTransition extends React.Component {
     // This is to force a repaint,
     // which is necessary in order to transition styles when adding a class name.
     if (phase === 'active') {
-      /* eslint-disable no-unused-expressions */
+      /* eslint-disable no-unused-expressions, @typescript-eslint/no-unused-expressions */
       node && node.scrollTop;
     }
 
     if (className) {
+      // @ts-expect-error FIXME: Property 'active' does not exist on type '{} | {} | {}'.ts(7053)
       this.appliedClasses[type][phase] = className;
+      // @ts-expect-error FIXME: Argument of type 'HTMLElement | null' is not assignable to parameter of type 'HTMLElement'. Type 'null' is not assignable to type 'HTMLElement'.ts(2345)
       addClass(node, className);
     }
   }
 
-  removeClasses(node, type) {
+  removeClasses(node: HTMLElement | null, type: TransitionClassNameKeys) {
     const {
+      // @ts-expect-error FIXME: Property 'base' does not exist on type '{} | {} | {}'.ts(2339)
       base: baseClassName,
+      // @ts-expect-error FIXME: Property 'active' does not exist on type '{} | {} | {}'.ts(2339)
       active: activeClassName,
+      // @ts-expect-error FIMXE: Property 'done' does not exist on type '{} | {} | {}'.ts(2339)
       done: doneClassName,
     } = this.appliedClasses[type];
 
     this.appliedClasses[type] = {};
 
     if (baseClassName) {
+      // @ts-expect-error FIXME: Argument of type 'HTMLElement | null' is not assignable to parameter of type 'HTMLElement'. Type 'null' is not assignable to type 'HTMLElement'.ts(2345)
       removeClass(node, baseClassName);
     }
     if (activeClassName) {
+      // @ts-expect-error FIXME: Argument of type 'HTMLElement | null' is not assignable to parameter of type 'HTMLElement'. Type 'null' is not assignable to type 'HTMLElement'.ts(2345)
       removeClass(node, activeClassName);
     }
     if (doneClassName) {
+      // @ts-expect-error FIXME: Argument of type 'HTMLElement | null' is not assignable to parameter of type 'HTMLElement'. Type 'null' is not assignable to type 'HTMLElement'.ts(2345)
       removeClass(node, doneClassName);
     }
   }
@@ -241,6 +275,7 @@ class CSSTransition extends React.Component {
   }
 }
 
+// @ts-expect-error To make TS migration diffs minimum, I've left propTypes here instead of defining a static property
 CSSTransition.propTypes = {
   ...Transition.propTypes,
 

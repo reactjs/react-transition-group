@@ -1,9 +1,13 @@
 import React from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { ENTERED, ENTERING, EXITING } from './Transition';
+import { ENTERED, ENTERING, EXITING, TransitionState } from './Transition';
 import TransitionGroupContext from './TransitionGroupContext';
 
-function areChildrenDifferent(oldChildren, newChildren) {
+function areChildrenDifferent(
+  oldChildren: ReactElement,
+  newChildren: ReactElement
+) {
   if (oldChildren === newChildren) return false;
   if (
     React.isValidElement(oldChildren) &&
@@ -26,21 +30,29 @@ export const modes = {
 };
 
 const callHook =
-  (element, name, cb) =>
-  (...args) => {
+  (element: ReactElement, name: string, cb: () => void) =>
+  (...args: unknown[]) => {
     element.props[name] && element.props[name](...args);
     cb();
   };
 
+type RenderCallbackParameter = {
+  current: ReactElement | null;
+  changeState: (status: TransitionState, current?: ReactElement | null) => void;
+  children: ReactElement;
+};
+
 const leaveRenders = {
-  [modes.out]: ({ current, changeState }) =>
+  [modes.out]: ({ current, changeState }: RenderCallbackParameter) =>
+    // @ts-expect-error FIXME: Type 'null' is not assignable to type 'ReactElement<any, string | JSXElementConstructor<any>>'.ts(2769)
     React.cloneElement(current, {
       in: false,
+      // @ts-expect-error FIXME: Type 'null' is not assignable to type 'ReactElement<any, string | JSXElementConstructor<any>>'.ts(2345)
       onExited: callHook(current, 'onExited', () => {
         changeState(ENTERING, null);
       }),
     }),
-  [modes.in]: ({ current, changeState, children }) => [
+  [modes.in]: ({ current, changeState, children }: RenderCallbackParameter) => [
     current,
     React.cloneElement(children, {
       in: true,
@@ -52,16 +64,18 @@ const leaveRenders = {
 };
 
 const enterRenders = {
-  [modes.out]: ({ children, changeState }) =>
+  [modes.out]: ({ children, changeState }: RenderCallbackParameter) =>
     React.cloneElement(children, {
       in: true,
       onEntered: callHook(children, 'onEntered', () => {
         changeState(ENTERED, React.cloneElement(children, { in: true }));
       }),
     }),
-  [modes.in]: ({ current, children, changeState }) => [
+  [modes.in]: ({ current, children, changeState }: RenderCallbackParameter) => [
+    // @ts-expect-error FIXME: Type 'null' is not assignable to type 'ReactElement<any, string | JSXElementConstructor<any>>'.ts(2769)
     React.cloneElement(current, {
       in: false,
+      // @ts-expect-error FIXME: Type 'null' is not assignable to type 'ReactElement<any, string | JSXElementConstructor<any>>'.ts(2345)
       onExited: callHook(current, 'onExited', () => {
         changeState(ENTERED, React.cloneElement(children, { in: true }));
       }),
@@ -70,6 +84,16 @@ const enterRenders = {
       in: true,
     }),
   ],
+};
+
+type Props = {
+  mode: 'in-out' | 'out-in';
+  children: ReactElement;
+};
+
+type State = {
+  status: TransitionState;
+  current: ReactElement | null;
 };
 
 /**
@@ -124,10 +148,29 @@ const enterRenders = {
  * }
  * ```
  */
-class SwitchTransition extends React.Component {
-  state = {
+class SwitchTransition extends React.Component<Props, State> {
+  state: State = {
     status: ENTERED,
     current: null,
+  };
+
+  static propTypes = {
+    /**
+     * Transition modes.
+     * `out-in`: Current element transitions out first, then when complete, the new element transitions in.
+     * `in-out`: New element transitions in first, then when complete, the current element transitions out.
+     *
+     * @type {'out-in'|'in-out'}
+     */
+    mode: PropTypes.oneOf([modes.in, modes.out]),
+    /**
+     * Any `Transition` or `CSSTransition` component.
+     */
+    children: PropTypes.oneOfType([PropTypes.element.isRequired]),
+  };
+
+  static defaultProps = {
+    mode: modes.out,
   };
 
   appeared = false;
@@ -136,7 +179,7 @@ class SwitchTransition extends React.Component {
     this.appeared = true;
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: Props, state: State) {
     if (props.children == null) {
       return {
         current: null,
@@ -162,7 +205,7 @@ class SwitchTransition extends React.Component {
     };
   }
 
-  changeState = (status, current = this.state.current) => {
+  changeState = (status: TransitionState, current = this.state.current) => {
     this.setState({
       status,
       current,
@@ -195,24 +238,5 @@ class SwitchTransition extends React.Component {
     );
   }
 }
-
-SwitchTransition.propTypes = {
-  /**
-   * Transition modes.
-   * `out-in`: Current element transitions out first, then when complete, the new element transitions in.
-   * `in-out`: New element transitions in first, then when complete, the current element transitions out.
-   *
-   * @type {'out-in'|'in-out'}
-   */
-  mode: PropTypes.oneOf([modes.in, modes.out]),
-  /**
-   * Any `Transition` or `CSSTransition` component.
-   */
-  children: PropTypes.oneOfType([PropTypes.element.isRequired]),
-};
-
-SwitchTransition.defaultProps = {
-  mode: modes.out,
-};
 
 export default SwitchTransition;
