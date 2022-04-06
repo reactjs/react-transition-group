@@ -71,12 +71,12 @@ class ReplaceTransition extends React.Component<Props> {
     const {
       children,
       in: inProp,
-      onEnter: _onEnter,
-      onEntering: _onEntering,
-      onEntered: _onEntered,
-      onExit: _onExit,
-      onExiting: _onExiting,
-      onExited: _onExited,
+      onEnter,
+      onEntering,
+      onEntered,
+      onExit,
+      onExiting,
+      onExited,
       ...props
     } = this.props;
     // @ts-expect-error FIXME: Target requires 2 element(s) but source may have fewer.ts(2322)
