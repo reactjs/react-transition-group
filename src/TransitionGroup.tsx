@@ -120,12 +120,7 @@ class TransitionGroup extends React.Component<Props, State> {
     const { contextValue } = this.state;
     // @ts-expect-error FIXME: Type 'undefined' is not assignable to type 'ReactElement<any, string | JSXElementConstructor<any>>'.ts(2345)
     const children = values(this.state.children).map(childFactory);
-    const {
-      appear: _appear,
-      enter: _enter,
-      exit: _exit,
-      ...delegatingProps
-    } = props;
+    const { appear, enter, exit, ...delegatingProps } = props;
 
     if (Component === null) {
       return (
