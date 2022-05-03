@@ -9,6 +9,18 @@ type Props = Omit<TransitionProps, 'children'> & {
   children: [ReactElement<TransitionProps>, ReactElement<TransitionProps>];
 };
 
+type LifecycleMethodNames =
+  | 'onEnter'
+  | 'onEntering'
+  | 'onEntered'
+  | 'onExit'
+  | 'onExiting'
+  | 'onExited';
+
+type HandlerArgs = [HTMLElement | boolean, boolean | undefined];
+type ChildElement = ReactElement<TransitionProps>;
+type ReplaceElements = [ChildElement, ChildElement];
+
 /**
  * The `<ReplaceTransition>` component is a specialized `Transition` component
  * that animates between two children.
@@ -21,22 +33,31 @@ type Props = Omit<TransitionProps, 'children'> & {
  * ```
  */
 class ReplaceTransition extends React.Component<Props> {
-  handleEnter = (...args: any) => this.handleLifecycle('onEnter', 0, args);
-  handleEntering = (...args: any) =>
+  handleEnter = (...args: HandlerArgs) =>
+    this.handleLifecycle('onEnter', 0, args);
+  handleEntering = (...args: HandlerArgs) =>
     this.handleLifecycle('onEntering', 0, args);
-  handleEntered = (...args: any) => this.handleLifecycle('onEntered', 0, args);
+  handleEntered = (...args: HandlerArgs) =>
+    this.handleLifecycle('onEntered', 0, args);
 
-  handleExit = (...args: any) => this.handleLifecycle('onExit', 1, args);
-  handleExiting = (...args: any) => this.handleLifecycle('onExiting', 1, args);
-  handleExited = (...args: any) => this.handleLifecycle('onExited', 1, args);
+  handleExit = (...args: HandlerArgs) =>
+    this.handleLifecycle('onExit', 1, args);
+  handleExiting = (...args: HandlerArgs) =>
+    this.handleLifecycle('onExiting', 1, args);
+  handleExited = (...args: HandlerArgs) =>
+    this.handleLifecycle('onExited', 1, args);
 
-  handleLifecycle(handler: any, idx: number, originalArgs: any) {
+  handleLifecycle(
+    handler: LifecycleMethodNames,
+    idx: number,
+    originalArgs: HandlerArgs
+  ) {
     const { children } = this.props;
     // @ts-expect-error FIXME: Type 'string' is not assignable to type 'ReactElement<Props, string | JSXElementConstructor<any>>'.ts(2322)
     const child: ChildElement = React.Children.toArray(children)[idx];
 
+    // @ts-expect-error FIXME: Type 'false' is not assignable to type '(((boolean | HTMLElement) & (HTMLElement | undefined)) & (HTMLElement | undefined)) & (HTMLElement | undefined)'.ts(2345)
     if (child.props[handler]) child.props[handler](...originalArgs);
-    // @ts-expect-error Element implicitly has an 'any' type because expression of type 'any' can't be used to index type 'Readonly<Props> & Readonly<{ children?: ReactNode; }>'.ts(7053)
     if (this.props[handler]) {
       const maybeNode = child.props.nodeRef
         ? undefined
@@ -47,15 +68,19 @@ class ReplaceTransition extends React.Component<Props> {
   }
 
   render() {
-    const { children, in: inProp, ...props }: any = this.props;
-    const [first, second]: any = React.Children.toArray(children);
-
-    delete props.onEnter;
-    delete props.onEntering;
-    delete props.onEntered;
-    delete props.onExit;
-    delete props.onExiting;
-    delete props.onExited;
+    const {
+      children,
+      in: inProp,
+      onEnter,
+      onEntering,
+      onEntered,
+      onExit,
+      onExiting,
+      onExited,
+      ...props
+    } = this.props;
+    // @ts-expect-error FIXME: Target requires 2 element(s) but source may have fewer.ts(2322)
+    const [first, second]: ReplaceElements = React.Children.toArray(children);
 
     return (
       <TransitionGroup {...props}>
@@ -80,7 +105,7 @@ class ReplaceTransition extends React.Component<Props> {
 // @ts-expect-error To make TS migration diffs minimum, I've left propTypes here instead of defining a static property
 ReplaceTransition.propTypes = {
   in: PropTypes.bool.isRequired,
-  children(props: any, propName: any) {
+  children(props: any, propName: LifecycleMethodNames) {
     if (React.Children.count(props[propName]) !== 2)
       return new Error(
         `"${propName}" must be exactly two transition components.`
