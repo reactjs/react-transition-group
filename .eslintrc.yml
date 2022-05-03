@@ -12,7 +12,7 @@ env:
 plugins:
   - jsx-a11y
 rules:
-  "@typescript-eslint/no-unused-vars":
+  '@typescript-eslint/no-unused-vars':
     - error
     - ignoreRestSiblings: true
 
