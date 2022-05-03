@@ -259,7 +259,7 @@ class CSSTransition extends React.Component<Props> {
   }
 
   render() {
-    const { classNames: _, ...props } = this.props;
+    const { classNames, ...props } = this.props;
 
     return (
       <Transition
