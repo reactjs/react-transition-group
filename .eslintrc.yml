@@ -1,4 +1,4 @@
-parser: babel-eslint
+parser: '@typescript-eslint/parser'
 extends:
   - jason/react
   - plugin:jsx-a11y/recommended
@@ -11,8 +11,9 @@ env:
   browser: true
 plugins:
   - jsx-a11y
+  - '@typescript-eslint'
 rules:
-  "@typescript-eslint/no-unused-vars":
+  '@typescript-eslint/no-unused-vars':
     - error
     - ignoreRestSiblings: true
 
