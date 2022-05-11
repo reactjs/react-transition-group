@@ -50,12 +50,12 @@
   },
   "homepage": "https://github.com/reactjs/react-transition-group#readme",
   "jest": {
-    "testRegex": "-test\\.js",
+    "testRegex": "-test\\.[jt]sx?",
     "setupFiles": [
-      "./test/setup.js"
+      "./test/setup.ts"
     ],
     "setupFilesAfterEnv": [
-      "./test/setupAfterEnv.js"
+      "./test/setupAfterEnv.ts"
     ],
     "roots": [
       "<rootDir>/test"
@@ -83,6 +83,7 @@
     "@storybook/addon-actions": "^6.3.4",
     "@storybook/react": "^6.3.4",
     "@testing-library/react": "alpha",
+    "@types/jest": "^27.5.0",
     "@types/prop-types": "^15.7.4",
     "@types/react": "^17.0.41",
     "@types/react-dom": "^17.0.14",

@@ -1,12 +1,7 @@
-let React;
-let ChildMapping;
+import React from 'react';
+import * as ChildMapping from '../src/utils/ChildMapping';
 
 describe('ChildMapping', () => {
-  beforeEach(() => {
-    React = require('react');
-    ChildMapping = require('../src/utils/ChildMapping');
-  });
-
   it('should support getChildMapping', () => {
     let oneone = <div key="oneone" />;
     let onetwo = <div key="onetwo" />;
@@ -32,102 +27,102 @@ describe('ChildMapping', () => {
 
   it('should support mergeChildMappings for adding keys', () => {
     let prev = {
-      one: true,
-      two: true,
+      one: 'one',
+      two: 'two',
     };
     let next = {
-      one: true,
-      two: true,
-      three: true,
+      one: 'one',
+      two: 'two',
+      three: 'three',
     };
     expect(ChildMapping.mergeChildMappings(prev, next)).toEqual({
-      one: true,
-      two: true,
-      three: true,
+      one: 'one',
+      two: 'two',
+      three: 'three',
     });
   });
 
   it('should support mergeChildMappings for removing keys', () => {
     let prev = {
-      one: true,
-      two: true,
-      three: true,
+      one: 'one',
+      two: 'two',
+      three: 'three',
     };
     let next = {
-      one: true,
-      two: true,
+      one: 'one',
+      two: 'two',
     };
     expect(ChildMapping.mergeChildMappings(prev, next)).toEqual({
-      one: true,
-      two: true,
-      three: true,
+      one: 'one',
+      two: 'two',
+      three: 'three',
     });
   });
 
   it('should support mergeChildMappings for adding and removing', () => {
     let prev = {
-      one: true,
-      two: true,
-      three: true,
+      one: 'one',
+      two: 'two',
+      three: 'three',
     };
     let next = {
-      one: true,
-      two: true,
-      four: true,
+      one: 'one',
+      two: 'two',
+      four: 'four',
     };
     expect(ChildMapping.mergeChildMappings(prev, next)).toEqual({
-      one: true,
-      two: true,
-      three: true,
-      four: true,
+      one: 'one',
+      two: 'two',
+      three: 'three',
+      four: 'four',
     });
   });
 
   it('should reconcile overlapping insertions and deletions', () => {
     let prev = {
-      one: true,
-      two: true,
-      four: true,
-      five: true,
+      one: 'one',
+      two: 'two',
+      four: 'four',
+      five: 'five',
     };
     let next = {
-      one: true,
-      two: true,
-      three: true,
-      five: true,
+      one: 'one',
+      two: 'two',
+      three: 'three',
+      five: 'five',
     };
     expect(ChildMapping.mergeChildMappings(prev, next)).toEqual({
-      one: true,
-      two: true,
-      three: true,
-      four: true,
-      five: true,
+      one: 'one',
+      two: 'two',
+      three: 'three',
+      four: 'four',
+      five: 'five',
     });
   });
 
   it('should support mergeChildMappings with undefined input', () => {
-    let prev = {
-      one: true,
-      two: true,
+    const prev = {
+      one: 'one',
+      two: 'two',
     };
 
-    let next;
+    const next = undefined;
 
     expect(ChildMapping.mergeChildMappings(prev, next)).toEqual({
-      one: true,
-      two: true,
+      one: 'one',
+      two: 'two',
     });
 
-    prev = undefined;
+    const prev2 = undefined;
 
-    next = {
-      three: true,
-      four: true,
+    const next2 = {
+      three: 'three',
+      four: 'four',
     };
 
-    expect(ChildMapping.mergeChildMappings(prev, next)).toEqual({
-      three: true,
-      four: true,
+    expect(ChildMapping.mergeChildMappings(prev2, next2)).toEqual({
+      three: 'three',
+      four: 'four',
     });
   });
 });
