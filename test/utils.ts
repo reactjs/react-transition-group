@@ -1,4 +1,7 @@
-import { render as baseRender, RenderOptions } from '@testing-library/react/pure';
+import {
+  render as baseRender,
+  RenderOptions,
+} from '@testing-library/react/pure';
 import React from 'react';
 
 export * from '@testing-library/react';
