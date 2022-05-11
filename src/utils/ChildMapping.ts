@@ -43,11 +43,11 @@ export function getChildMapping(
  * in `next` in a reasonable order.
  */
 export function mergeChildMappings(
-  prev: Record<string, ReactChild>,
-  next: Record<string, ReactChild>
+  prev_: Record<string, ReactChild> | undefined,
+  next_: Record<string, ReactChild> | undefined
 ) {
-  prev = prev || {};
-  next = next || {};
+  const prev = prev_ || {};
+  const next = next_ || {};
 
   function getValueForKey(key: string) {
     return key in next ? next[key] : prev[key];
