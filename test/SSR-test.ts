@@ -7,5 +7,7 @@
 import * as ReactTransitionGroup from '../src'; // eslint-disable-line no-unused-vars
 
 describe('SSR', () => {
-  it('should import react-transition-group in node env', () => {});
+  it('should import react-transition-group in node env', () => {
+    /* noop */
+  });
 });
