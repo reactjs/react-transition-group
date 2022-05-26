@@ -6,7 +6,6 @@ import Fade from './transitions/CSSFade';
 
 function ToggleFixture({ defaultIn, description, children }) {
   const [show, setShow] = useState(defaultIn || false);
-  console.log(show);
 
   return (
     <StoryFixture description={description}>
