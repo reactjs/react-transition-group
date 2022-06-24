@@ -1,5 +1,3 @@
-import React from 'react';
-
 import TransitionGroup from '../src/TransitionGroup';
 import StoryFixture from './StoryFixture';
 

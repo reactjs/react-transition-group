@@ -1,5 +1,4 @@
 import { render as baseRender } from '@testing-library/react/pure';
-import React from 'react';
 
 export * from '@testing-library/react';
 export function render(element, options) {

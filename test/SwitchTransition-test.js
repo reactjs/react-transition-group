@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { act, render } from './utils';
 
 import Transition, { ENTERED } from '../src/Transition';

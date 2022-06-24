@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import addOneClass from 'dom-helpers/addClass';
 
 import removeOneClass from 'dom-helpers/removeClass';
-import React from 'react';
 
 import Transition from './Transition';
 import { classNamesShape } from './utils/PropTypes';
