@@ -1,3 +1,10 @@
+## [4.4.4](https://github.com/reactjs/react-transition-group/compare/v4.4.3...v4.4.4) (2022-07-30)
+
+
+### Bug Fixes
+
+* missing build files ([#845](https://github.com/reactjs/react-transition-group/issues/845)) ([97af789](https://github.com/reactjs/react-transition-group/commit/97af7893b0a5bbf69211bc3287aee814123ddeea))
+
 ## [4.4.3](https://github.com/reactjs/react-transition-group/compare/v4.4.2...v4.4.3) (2022-07-30)
 
 
