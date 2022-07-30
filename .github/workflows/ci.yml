@@ -61,6 +61,7 @@ jobs:
           node-version: 14
           cache: 'npm'
       - run: yarn
+      - run: yarn build
       - name: Release
         uses: cycjimmy/semantic-release-action@v2
         with:
