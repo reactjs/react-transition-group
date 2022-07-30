@@ -1,3 +1,10 @@
+## [4.4.3](https://github.com/reactjs/react-transition-group/compare/v4.4.2...v4.4.3) (2022-07-30)
+
+
+### Bug Fixes
+
+* enter animations with mountOnEnter or unmountOnExit  ([#749](https://github.com/reactjs/react-transition-group/issues/749)) ([51bdceb](https://github.com/reactjs/react-transition-group/commit/51bdceb96c8b6a79f417c32326ef1b31160edb97))
+
 ## [4.4.2](https://github.com/reactjs/react-transition-group/compare/v4.4.1...v4.4.2) (2021-05-29)
 
 
