@@ -195,7 +195,7 @@ class CSSTransition extends React.Component {
     // This is to force a repaint,
     // which is necessary in order to transition styles when adding a class name.
     if (phase === 'active') {
-      if (node) forceReflow(node)
+      if (node) forceReflow(node);
     }
 
     if (className) {

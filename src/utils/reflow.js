@@ -1,1 +1,1 @@
-export const forceReflow = node => node.scrollTop
+export const forceReflow = (node) => node.scrollTop;

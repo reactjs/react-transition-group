@@ -214,11 +214,13 @@ class Transition extends React.Component {
 
       if (nextStatus === ENTERING) {
         if (this.props.unmountOnExit || this.props.mountOnEnter) {
-          const node = this.props.nodeRef ? this.props.nodeRef.current : ReactDOM.findDOMNode(this);
+          const node = this.props.nodeRef
+            ? this.props.nodeRef.current
+            : ReactDOM.findDOMNode(this);
           // https://github.com/reactjs/react-transition-group/pull/749
           // With unmountOnExit or mountOnEnter, the enter animation should happen at the transition between `exited` and `entering`.
           // To make the animation happen,  we have to separate each rendering and avoid being processed as batched.
-          if (node) forceReflow(node)
+          if (node) forceReflow(node);
         }
         this.performEnter(mounting);
       } else {
