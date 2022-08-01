@@ -1,3 +1,10 @@
+## [4.4.5](https://github.com/reactjs/react-transition-group/compare/v4.4.4...v4.4.5) (2022-08-01)
+
+
+### Bug Fixes
+
+* apply entering animation synchronously when unmountOnExit or mountOnEnter is enabled ([#847](https://github.com/reactjs/react-transition-group/issues/847)) ([1043549](https://github.com/reactjs/react-transition-group/commit/10435492f5a5675b0e80ca6a435834ce4a0f270e))
+
 ## [4.4.4](https://github.com/reactjs/react-transition-group/compare/v4.4.3...v4.4.4) (2022-07-30)
 
 
