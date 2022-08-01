@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import config from './config';
 import { timeoutsShape } from './utils/PropTypes';
 import TransitionGroupContext from './TransitionGroupContext';
-import { nextTick } from './utils/nextTick';
+import { forceReflow } from './utils/reflow';
 
 export const UNMOUNTED = 'unmounted';
 export const EXITED = 'exited';
@@ -213,15 +213,16 @@ class Transition extends React.Component {
       this.cancelNextCallback();
 
       if (nextStatus === ENTERING) {
-        // https://github.com/reactjs/react-transition-group/pull/749
-        // With unmountOnExit or mountOnEnter, the enter animation should happen at the transition between `exited` and `entering`.
-        // To make the animation happen,  we have to separate each rendering and avoid being processed as batched.
         if (this.props.unmountOnExit || this.props.mountOnEnter) {
-          // `exited` -> `entering`
-          nextTick(() => this.performEnter(mounting));
-        } else {
-          this.performEnter(mounting);
+          const node = this.props.nodeRef
+            ? this.props.nodeRef.current
+            : ReactDOM.findDOMNode(this);
+          // https://github.com/reactjs/react-transition-group/pull/749
+          // With unmountOnExit or mountOnEnter, the enter animation should happen at the transition between `exited` and `entering`.
+          // To make the animation happen,  we have to separate each rendering and avoid being processed as batched.
+          if (node) forceReflow(node);
         }
+        this.performEnter(mounting);
       } else {
         this.performExit();
       }

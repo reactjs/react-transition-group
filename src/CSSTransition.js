@@ -6,6 +6,7 @@ import React from 'react';
 
 import Transition from './Transition';
 import { classNamesShape } from './utils/PropTypes';
+import { forceReflow } from './utils/reflow';
 
 const addClass = (node, classes) =>
   node && classes && classes.split(' ').forEach((c) => addOneClass(node, c));
@@ -194,8 +195,7 @@ class CSSTransition extends React.Component {
     // This is to force a repaint,
     // which is necessary in order to transition styles when adding a class name.
     if (phase === 'active') {
-      /* eslint-disable no-unused-expressions */
-      node && node.scrollTop;
+      if (node) forceReflow(node);
     }
 
     if (className) {
