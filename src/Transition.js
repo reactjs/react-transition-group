@@ -513,7 +513,7 @@ Transition.propTypes = {
    * DOM node and a `done` callback. Allows for more fine grained transition end
    * logic. Timeouts are still used as a fallback if provided.
    *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed, so `done` is being passed as the first argument.
    *
    * ```jsx
    * addEndListener={(node, done) => {
@@ -528,7 +528,7 @@ Transition.propTypes = {
    * Callback fired before the "entering" status is applied. An extra parameter
    * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
    *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed, so `isAppearing` is being passed as the first argument.
    *
    * @type Function(node: HtmlElement, isAppearing: bool) -> void
    */
@@ -538,7 +538,7 @@ Transition.propTypes = {
    * Callback fired after the "entering" status is applied. An extra parameter
    * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
    *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed, so `isAppearing` is being passed as the first argument.
    *
    * @type Function(node: HtmlElement, isAppearing: bool)
    */
@@ -548,7 +548,7 @@ Transition.propTypes = {
    * Callback fired after the "entered" status is applied. An extra parameter
    * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
    *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed, so `isAppearing` is being passed as the first argument.
    *
    * @type Function(node: HtmlElement, isAppearing: bool) -> void
    */
