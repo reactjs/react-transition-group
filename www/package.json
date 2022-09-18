@@ -12,6 +12,9 @@
   },
   "author": "",
   "license": "MIT",
+  "engines": {
+    "node": "<=16"
+  },
   "dependencies": {
     "@babel/core": "^7.3.4",
     "babel-preset-gatsby": "^2.7.0",

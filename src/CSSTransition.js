@@ -29,10 +29,11 @@ const removeClass = (node, classes) =>
  * ```jsx
  * function App() {
  *   const [inProp, setInProp] = useState(false);
+ *   const nodeRef = useRef(null);
  *   return (
  *     <div>
- *       <CSSTransition in={inProp} timeout={200} classNames="my-node">
- *         <div>
+ *       <CSSTransition nodeRef={nodeRef} in={inProp} timeout={200} classNames="my-node">
+ *         <div ref={nodeRef}>
  *           {"I'll receive my-node-* classes"}
  *         </div>
  *       </CSSTransition>

@@ -37,6 +37,7 @@ export const EXITING = 'exiting';
  *
  * ```jsx
  * import { Transition } from 'react-transition-group';
+ * import { useRef } from 'react';
  *
  * const duration = 300;
  *
@@ -52,18 +53,21 @@ export const EXITING = 'exiting';
  *   exited:  { opacity: 0 },
  * };
  *
- * const Fade = ({ in: inProp }) => (
- *   <Transition in={inProp} timeout={duration}>
- *     {state => (
- *       <div style={{
- *         ...defaultStyle,
- *         ...transitionStyles[state]
- *       }}>
- *         I'm a fade Transition!
- *       </div>
- *     )}
- *   </Transition>
- * );
+ * function Fade({ in: inProp }) {
+ *   const nodeRef = useRef(null);
+ *   return (
+ *     <Transition nodeRef={nodeRef} in={inProp} timeout={duration}>
+ *       {state => (
+ *         <div ref={nodeRef} style={{
+ *           ...defaultStyle,
+ *           ...transitionStyles[state]
+ *         }}>
+ *           I'm a fade Transition!
+ *         </div>
+ *       )}
+ *     </Transition>
+ *   );
+ * }
  * ```
  *
  * There are 4 main states a Transition can be in:
@@ -80,11 +84,15 @@ export const EXITING = 'exiting';
  * [useState](https://reactjs.org/docs/hooks-reference.html#usestate) hook):
  *
  * ```jsx
+ * import { Transition } from 'react-transition-group';
+ * import { useState, useRef } from 'react';
+ *
  * function App() {
  *   const [inProp, setInProp] = useState(false);
+ *   const nodeRef = useRef(null);
  *   return (
  *     <div>
- *       <Transition in={inProp} timeout={500}>
+ *       <Transition nodeRef={nodeRef} in={inProp} timeout={500}>
  *         {state => (
  *           // ...
  *         )}
@@ -390,9 +398,12 @@ class Transition extends React.Component {
 
 Transition.propTypes = {
   /**
-   * A React reference to DOM element that need to transition:
+   * A React reference to the DOM element that needs to transition:
    * https://stackoverflow.com/a/51127130/4671932
    *
+   *   - This prop is optional, but recommended in order to avoid defaulting to
+   *      [`ReactDOM.findDOMNode`](https://reactjs.org/docs/react-dom.html#finddomnode),
+   *      which is deprecated in `StrictMode`
    *   - When `nodeRef` prop is used, `node` is not passed to callback functions
    *      (e.g. `onEnter`) because user already has direct access to the node.
    *   - When changing `key` prop of `Transition` in a `TransitionGroup` a new
@@ -422,9 +433,9 @@ Transition.propTypes = {
    * specific props to a component.
    *
    * ```jsx
-   * <Transition in={this.state.in} timeout={150}>
+   * <Transition nodeRef={nodeRef} in={this.state.in} timeout={150}>
    *   {state => (
-   *     <MyComponent className={`fade fade-${state}`} />
+   *     <MyComponent ref={nodeRef} className={`fade fade-${state}`} />
    *   )}
    * </Transition>
    * ```
