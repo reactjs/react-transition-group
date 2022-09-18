@@ -3,3 +3,8 @@
   Licensed under the MIT License (MIT), see
   http://jedwatson.github.io/classnames
 */
+
+/*!
+ * domready (c) Dustin Diaz 2014 - License MIT
+ * ie10 fix - Mikael Kristiansson 2019
+ */
