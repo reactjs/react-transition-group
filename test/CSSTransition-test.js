@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, waitFor } from './utils';
 
 import CSSTransition from '../src/CSSTransition';

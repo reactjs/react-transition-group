@@ -1,6 +1,5 @@
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { Container } from 'react-bootstrap';
 import Layout from '../components/Layout';
 import Example from '../components/Example';
