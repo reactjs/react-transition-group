@@ -27,7 +27,7 @@ function Example() {
   const [showNested, setShowNested] = useState(false);
 
   return (
-    <StoryFixture description="nested Transtions">
+    <StoryFixture description="nested Transitions">
       <h3>Nested Animations</h3>
       <button
         onClick={() => {
