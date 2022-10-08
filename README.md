@@ -14,10 +14,10 @@ The recommended installation method is through either [npm](https://www.npmjs.co
 
 ```sh
 # npm
-npm install react-transition-group@1.x --save
+npm install react-transition-group --save
 
 # yarn
-yarn add react-transition-group@1.x
+yarn add react-transition-group
 ```
 
 ## CDN / External
