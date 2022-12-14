@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 export const timeoutsShape =
-  process.env.NODE_ENV !== 'production'
+  typeof process !== 'undefined' && process.env.NODE_ENV !== 'production'
     ? PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.shape({
@@ -13,7 +13,7 @@ export const timeoutsShape =
     : null;
 
 export const classNamesShape =
-  process.env.NODE_ENV !== 'production'
+  typeof process !== 'undefined' && process.env.NODE_ENV !== 'production'
     ? PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.shape({
