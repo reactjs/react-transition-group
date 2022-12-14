@@ -4,6 +4,8 @@ import addOneClass from 'dom-helpers/addClass';
 import removeOneClass from 'dom-helpers/removeClass';
 import React from 'react';
 
+import config from './config';
+
 import Transition from './Transition';
 import { classNamesShape } from './utils/PropTypes';
 import { forceReflow } from './utils/reflow';
@@ -120,6 +122,10 @@ class CSSTransition extends React.Component {
     this.removeClasses(node, type);
     this.addClass(node, type, 'done');
 
+    if (config.disabled) {
+      this.removeClasses(node, 'exit');
+    }
+
     if (this.props.onEntered) {
       this.props.onEntered(maybeNode, maybeAppearing);
     }
@@ -149,6 +155,10 @@ class CSSTransition extends React.Component {
     const [node] = this.resolveArguments(maybeNode);
     this.removeClasses(node, 'exit');
     this.addClass(node, 'exit', 'done');
+
+    if (config.disabled) {
+      this.removeClasses(node, 'enter');
+    }
 
     if (this.props.onExited) {
       this.props.onExited(maybeNode);
