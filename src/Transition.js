@@ -291,8 +291,10 @@ class Transition extends React.Component {
       this.props.onExiting(maybeNode);
 
       this.onTransitionEnd(timeouts.exit, () => {
-        this.safeSetState({ status: EXITED }, () => {
-          this.props.onExited(maybeNode);
+        ReactDOM.flushSync(() => {
+          this.safeSetState({ status: EXITED }, () => {
+            this.props.onExited(maybeNode);
+          });
         });
       });
     });
