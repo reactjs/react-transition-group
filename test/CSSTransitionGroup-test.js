@@ -2,7 +2,6 @@ import hasClass from 'dom-helpers/hasClass';
 import CSSTransition from '../src/CSSTransition';
 
 let React;
-let ReactDOM;
 let TransitionGroup;
 let act;
 let render;
@@ -25,9 +24,7 @@ describe('CSSTransitionGroup', () => {
   beforeEach(() => {
     jest.resetModuleRegistry();
     jest.useFakeTimers();
-
     React = require('react');
-    ReactDOM = require('react-dom');
     const testUtils = require('./utils');
     act = testUtils.act;
     const baseRender = testUtils.render;
@@ -147,13 +144,14 @@ describe('CSSTransitionGroup', () => {
   });
 
   it('should work with a child which renders as null', () => {
+    const nodeRef = React.createRef();
     const NullComponent = () => null;
     // Testing the whole lifecycle of entering and exiting,
     // because those lifecycle methods used to fail when the DOM node was null.
     render(<TransitionGroup />, container);
     render(
       <TransitionGroup>
-        <CSSTransition classNames="yolo" timeout={0}>
+        <CSSTransition classNames="yolo" timeout={0} nodeRef={nodeRef}>
           <NullComponent />
         </CSSTransition>
       </TransitionGroup>,
@@ -208,14 +206,13 @@ describe('CSSTransitionGroup', () => {
     }
 
     render(<Component />, container);
-    render(
+    const { unmount } = render(
       <Component>
         <YoloTransition key="yolo" id="yolo" />
       </Component>,
       container
     );
-
-    ReactDOM.unmountComponentAtNode(container);
+    unmount();
 
     // Testing that no exception is thrown here, as the timeout has been cleared.
     act(() => {

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import { render, waitFor } from './utils';
 
@@ -195,35 +194,6 @@ describe('Transition', () => {
     await waitFor(() => {
       expect(done).toEqual(true);
     });
-  });
-
-  it('should use `React.findDOMNode` when `nodeRef` is not provided', () => {
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-    const findDOMNodeSpy = jest.spyOn(ReactDOM, 'findDOMNode');
-
-    render(
-      <Transition in appear timeout={0}>
-        <div />
-      </Transition>
-    );
-
-    expect(findDOMNodeSpy).toHaveBeenCalled();
-    findDOMNodeSpy.mockRestore();
-    consoleSpy.mockRestore();
-  });
-
-  it('should not use `React.findDOMNode` when `nodeRef` is provided', () => {
-    const findDOMNodeSpy = jest.spyOn(ReactDOM, 'findDOMNode');
-
-    const nodeRef = React.createRef();
-    render(
-      <Transition nodeRef={nodeRef} in appear timeout={0}>
-        <div ref={nodeRef} />
-      </Transition>
-    );
-
-    expect(findDOMNodeSpy).not.toHaveBeenCalled();
-    findDOMNodeSpy.mockRestore();
   });
 
   describe('appearing timeout', () => {

@@ -1,4 +1,4 @@
-import { cleanup } from '@testing-library/react/pure';
+import { cleanup } from '@testing-library/react';
 
 afterEach(() => {
   cleanup();

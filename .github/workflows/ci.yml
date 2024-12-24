@@ -14,18 +14,16 @@ jobs:
       # Otherwise how would we know if a specific React version caused the failure?
       fail-fast: false
       matrix:
-        REACT_DIST: [16, 17, 18]
+        REACT_DIST: [18, 19]
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 14
+      - name: Use Node.js 18
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 18
           cache: 'npm'
       - run: yarn
       - run: yarn add react@${{ matrix.REACT_DIST }} react-dom@${{ matrix.REACT_DIST }}
-      - run: yarn add @testing-library/react@12
-        if: matrix.REACT_DIST == '17' || matrix.REACT_DIST == '16'
       - run: yarn --cwd www
       # Test whether the web page can be built successfully or not
       - run: yarn --cwd www build
@@ -55,10 +53,10 @@ jobs:
     steps:
       - uses: styfle/cancel-workflow-action@0.9.0
       - uses: actions/checkout@v2
-      - name: Use Node.js 14
+      - name: Use Node.js 18
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 18
           cache: 'npm'
       - run: yarn
       - run: yarn build
