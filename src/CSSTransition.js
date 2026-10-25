@@ -190,7 +190,7 @@ class CSSTransition extends React.Component {
     const { doneClassName } = this.getClassNames('enter');
 
     if (type === 'appear' && phase === 'done' && doneClassName) {
-      className += ` ${doneClassName}`;
+      className = className ? `${className} ${doneClassName}` : doneClassName;
     }
 
     // This is to force a repaint,

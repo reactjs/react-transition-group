@@ -203,34 +203,37 @@ describe('CSSTransition', () => {
       expect(nodeRef.current.className).toBe('appear-test-enter-done');
     });
 
-    it('should not add undefined when appearDone is not defined', async () => {
-      const nodeRef = React.createRef();
-      let done = false;
-      render(
-        <CSSTransition
-          timeout={10}
-          nodeRef={nodeRef}
-          classNames={{ appear: 'appear-test' }}
-          in={true}
-          appear={true}
-          onEnter={(isAppearing) => {
-            expect(isAppearing).toEqual(true);
-            expect(nodeRef.current.className).toEqual('appear-test');
-          }}
-          onEntered={(isAppearing) => {
-            expect(isAppearing).toEqual(true);
-            expect(nodeRef.current.className).toEqual('');
-            done = true;
-          }}
-        >
-          <div ref={nodeRef} />
-        </CSSTransition>
-      );
+    it.each(['', 'enter-done'])(
+      'should not add undefined when appearDone is omitted and enterDone is %s',
+      async (enterDone) => {
+        const nodeRef = React.createRef();
+        let done = false;
+        render(
+          <CSSTransition
+            timeout={10}
+            nodeRef={nodeRef}
+            classNames={{ appear: 'appear-test', enterDone }}
+            in={true}
+            appear={true}
+            onEnter={(isAppearing) => {
+              expect(isAppearing).toEqual(true);
+              expect(nodeRef.current.className).toEqual('appear-test');
+            }}
+            onEntered={(isAppearing) => {
+              expect(isAppearing).toEqual(true);
+              expect(nodeRef.current.className).toEqual(enterDone);
+              done = true;
+            }}
+          >
+            <div ref={nodeRef} />
+          </CSSTransition>
+        );
 
-      await waitFor(() => {
-        expect(done).toEqual(true);
-      });
-    });
+        await waitFor(() => {
+          expect(done).toEqual(true);
+        });
+      }
+    );
 
     it('should not be appearing in normal enter mode', async () => {
       let count = 0;
