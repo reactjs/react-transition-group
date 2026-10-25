@@ -157,4 +157,47 @@ describe('SwitchTransition', () => {
 
     expect(container.textContent).toBe('second');
   });
+
+  it.each([
+    ['out-in', 'exiting'],
+    ['out-in', 'entering'],
+    ['in-out', 'entering'],
+    ['in-out', 'exiting'],
+  ])('handles null children in %s mode while %s', (mode, status) => {
+    const firstRef = React.createRef();
+    const secondRef = React.createRef();
+    const first = (
+      <Transition nodeRef={firstRef} timeout={10} key="first">
+        {(state) => <span ref={firstRef}>first: {state}</span>}
+      </Transition>
+    );
+    const second = (
+      <Transition nodeRef={secondRef} timeout={10} key="second">
+        {(state) => <span ref={secondRef}>second: {state}</span>}
+      </Transition>
+    );
+    const { container, rerender } = render(
+      <SwitchTransition mode={mode}>{first}</SwitchTransition>
+    );
+
+    rerender(<SwitchTransition mode={mode}>{second}</SwitchTransition>);
+    if (status === (mode === 'out-in' ? 'entering' : 'exiting')) {
+      act(() => {
+        jest.runOnlyPendingTimers();
+      });
+    }
+    expect(container.textContent).toContain(status);
+
+    rerender(<SwitchTransition mode={mode}>{null}</SwitchTransition>);
+    act(() => {
+      jest.runAllTimers();
+    });
+    expect(container.textContent).toBe('');
+
+    rerender(<SwitchTransition mode={mode}>{first}</SwitchTransition>);
+    act(() => {
+      jest.runAllTimers();
+    });
+    expect(container.textContent).toBe('first: entered');
+  });
 });

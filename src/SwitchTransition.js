@@ -143,6 +143,7 @@ class SwitchTransition extends React.Component {
   static getDerivedStateFromProps(props, state) {
     if (props.children == null) {
       return {
+        status: ENTERED,
         current: null,
       };
     }
