@@ -75,6 +75,43 @@ describe('TransitionGroup', () => {
     renderStrict(<TransitionGroup />, container);
   });
 
+  it('should ignore enumerable prototype properties added after mounting', () => {
+    const { rerender } = render(<TransitionGroup />, { container });
+    // React also checks inherited propTypes and DOM attributes in this test.
+    const consoleError = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+    const property = 'unexpectedTransitionChild';
+    const previousDescriptor = Object.getOwnPropertyDescriptor(
+      Object.prototype,
+      property
+    );
+
+    try {
+      Object.defineProperty(Object.prototype, property, {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        value: { unexpected: true },
+      });
+
+      rerender(
+        <TransitionGroup>
+          <Child key="child" />
+        </TransitionGroup>
+      );
+    } finally {
+      if (previousDescriptor) {
+        Object.defineProperty(Object.prototype, property, previousDescriptor);
+      } else {
+        delete Object.prototype[property];
+      }
+      consoleError.mockRestore();
+    }
+
+    expect(container.querySelectorAll('span')).toHaveLength(1);
+  });
+
   it('should handle transitioning correctly', () => {
     function Parent({ count = 1 }) {
       let children = [];

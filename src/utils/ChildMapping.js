@@ -1,5 +1,7 @@
 import { Children, cloneElement, isValidElement } from 'react';
 
+const hasOwnProperty = Object.prototype.hasOwnProperty;
+
 /**
  * Given `this.props.children`, return an object mapping key to child.
  *
@@ -41,7 +43,7 @@ export function mergeChildMappings(prev, next) {
   next = next || {};
 
   function getValueForKey(key) {
-    return key in next ? next[key] : prev[key];
+    return hasOwnProperty.call(next, key) ? next[key] : prev[key];
   }
 
   // For each key of `next`, the list of keys to insert before that key in
@@ -49,8 +51,8 @@ export function mergeChildMappings(prev, next) {
   let nextKeysPending = Object.create(null);
 
   let pendingKeys = [];
-  for (let prevKey in prev) {
-    if (prevKey in next) {
+  for (let prevKey of Object.keys(prev)) {
+    if (hasOwnProperty.call(next, prevKey)) {
       if (pendingKeys.length) {
         nextKeysPending[prevKey] = pendingKeys;
         pendingKeys = [];
@@ -61,8 +63,8 @@ export function mergeChildMappings(prev, next) {
   }
 
   let i;
-  let childMapping = {};
-  for (let nextKey in next) {
+  let childMapping = Object.create(null);
+  for (let nextKey of Object.keys(next)) {
     if (nextKeysPending[nextKey]) {
       for (i = 0; i < nextKeysPending[nextKey].length; i++) {
         let pendingNextKey = nextKeysPending[nextKey][i];
@@ -106,8 +108,8 @@ export function getNextChildMapping(nextProps, prevChildMapping, onExited) {
 
     if (!isValidElement(child)) return;
 
-    const hasPrev = key in prevChildMapping;
-    const hasNext = key in nextChildMapping;
+    const hasPrev = hasOwnProperty.call(prevChildMapping, key);
+    const hasNext = hasOwnProperty.call(nextChildMapping, key);
 
     const prevChild = prevChildMapping[key];
     const isLeaving = isValidElement(prevChild) && !prevChild.props.in;
